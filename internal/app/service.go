@@ -41,10 +41,7 @@ func (s *Service) requireWorktrees() (*worktree.Manager, error) {
 	return s.Worktrees, nil
 }
 
-func (s *Service) Deploy(ctx context.Context, pr ghapi.PullRequest, target config.WorktreeTarget) (worktree.Deployment, error) {
-	m, err := s.requireWorktrees(); if err != nil { return worktree.Deployment{}, err }
-	return m.Deploy(ctx, worktree.DeployRequest{PRNumber: pr.Number, HeadSHA: pr.HeadSHA, TargetName: target.Name, TargetPath: target.Path, TargetBranch: target.Branch})
-}
+func (s *Service) Deploy(ctx context.Context, pr ghapi.PullRequest, target config.WorktreeTarget) (worktree.Deployment, error) { m, err := s.requireWorktrees(); if err != nil { return worktree.Deployment{}, err }; return m.Deploy(ctx, worktree.DeployRequest{PRNumber: pr.Number, HeadSHA: pr.HeadSHA, TargetName: target.Name, TargetPath: target.Path, TargetBranch: target.Branch}) }
 func (s *Service) WorktreeStatus(ctx context.Context, path string) (worktree.Status, error) { m, err := s.requireWorktrees(); if err != nil { return worktree.Status{}, err }; return m.Status(ctx, path) }
 func (s *Service) CreateWorktree(ctx context.Context, req worktree.CreateRequest) (worktree.Info, error) { m, err := s.requireWorktrees(); if err != nil { return worktree.Info{}, err }; return m.Create(ctx, req) }
 func (s *Service) CreatePRWorktree(ctx context.Context, pr ghapi.PullRequest, path, branch string) (worktree.Info, error) { m, err := s.requireWorktrees(); if err != nil { return worktree.Info{}, err }; ref, err := m.PreparePullRequest(ctx, pr.Number, pr.HeadSHA); if err != nil { return worktree.Info{}, err }; return m.Create(ctx, worktree.CreateRequest{Path: path, StartPoint: ref, Branch: branch}) }
@@ -59,4 +56,6 @@ func (s *Service) Commit(ctx context.Context, path, message string) (string, err
 func (s *Service) Push(ctx context.Context, path string, setUpstream bool) error { m, err := s.requireWorktrees(); if err != nil { return err }; return m.Push(ctx, path, setUpstream) }
 func (s *Service) NewBranch(ctx context.Context, path, name, startPoint string) (worktree.Info, error) { m, err := s.requireWorktrees(); if err != nil { return worktree.Info{}, err }; return m.NewBranch(ctx, path, name, startPoint) }
 func (s *Service) Commits(ctx context.Context, path, revision string, limit, skip int) ([]worktree.Commit, error) { m, err := s.requireWorktrees(); if err != nil { return nil, err }; return m.Commits(ctx, path, revision, limit, skip) }
+func (s *Service) CommitsForPullRequest(ctx context.Context, pr ghapi.PullRequest, limit, skip int) ([]worktree.Commit, error) { m, err := s.requireWorktrees(); if err != nil { return nil, err }; return m.CommitsForPullRequest(ctx, pr.Number, pr.HeadSHA, limit, skip) }
+func (s *Service) CommitsForBranch(ctx context.Context, branch string, limit, skip int) ([]worktree.Commit, error) { m, err := s.requireWorktrees(); if err != nil { return nil, err }; return m.CommitsForBranch(ctx, branch, limit, skip) }
 func (s *Service) CreatePullRequest(ctx context.Context, repo, head, base, title, body string, draft bool) (string, error) { return s.GitHub.CreatePullRequest(ctx, repo, head, base, title, body, draft) }
