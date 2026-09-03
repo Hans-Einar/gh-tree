@@ -29,6 +29,19 @@ func TestDeployWithoutLegacyTargetsEntersInteractiveWorktreeFlow(t *testing.T) {
 	if !strings.Contains(strings.ToLower(m.status),"interactive"){t.Fatalf("status=%q",m.status)}
 }
 
+func TestWorktreePullKeyDoesNotSwitchToPRMode(t *testing.T) {
+	t.Parallel()
+	m:=NewModel("Hans-Einar/ponsse",&fakeBackend{},config.DefaultStripPrefixes,nil,"","",nil)
+	m.mode=modeBranches
+	m.focus=paneWorktrees
+	m.snapshot.WorktreesEnabled=true
+	m.snapshot.Worktrees=[]worktree.Info{{Path:`C:\work\ponsse-test`,Branch:"local/test",Head:strings.Repeat("a",40)}}
+	m.activeWorktree=m.snapshot.Worktrees[0].Path
+	m=updateModel(t,m,runeKey("p"))
+	if m.mode!=modeBranches{t.Fatalf("worktree p changed mode=%v, want branches",m.mode)}
+	if m.focus!=paneWorktrees{t.Fatalf("worktree p changed focus=%v",m.focus)}
+}
+
 func TestWorktreeStatusViewShowsRemoteSHAAndDirtyCounts(t *testing.T) {
 	t.Parallel()
 	sha:=strings.Repeat("d",40);upstreamSHA:=strings.Repeat("e",40)
