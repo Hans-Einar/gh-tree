@@ -7,6 +7,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/Hans-Einar/gh-tree/internal/config"
+	ghapi "github.com/Hans-Einar/gh-tree/internal/github"
 	"github.com/Hans-Einar/gh-tree/internal/worktree"
 )
 
@@ -51,6 +52,17 @@ func TestWorktreeStatusViewShowsRemoteSHAAndDirtyCounts(t *testing.T) {
 	m.worktreeStatus=worktree.Status{Info:worktree.Info{Path:m.activeWorktree,Branch:"local/test",Head:sha},Clean:false,Modified:2,Untracked:1,Upstream:"origin/local/test",UpstreamSHA:upstreamSHA,Ahead:1,Behind:3}
 	view:=m.View()
 	for _,want:=range []string{sha,upstreamSHA,"modified=2","untracked=1","ahead 1 / behind 3"}{if !strings.Contains(view,want){t.Fatalf("view missing %q: %q",want,view)}}
+}
+
+func TestPRWorktreeStatusAssociatesByExactHeadSHA(t *testing.T) {
+	t.Parallel()
+	sha:=strings.Repeat("f",40)
+	m:=NewModel("Hans-Einar/ponsse",&fakeBackend{},config.DefaultStripPrefixes,nil,"","",nil)
+	m.snapshot.PullRequests=[]ghapi.PullRequest{{Number:60,HeadBranch:"steering/Concept1/ui-box",BaseBranch:"main",HeadSHA:sha,IsDraft:true}}
+	m.width=120;m.height=32;m.activeWorktree=`C:\work\ponsse-pr-60`;m.haveWTStatus=true
+	m.worktreeStatus=worktree.Status{Info:worktree.Info{Path:m.activeWorktree,Branch:"gh-tree/pr-60",Head:sha},Clean:true}
+	view:=m.View()
+	for _,want:=range []string{"#60","DRAFT","HEAD matches PR"}{if !strings.Contains(view,want){t.Fatalf("view missing %q: %q",want,view)}}
 }
 
 func TestNarrowLayoutStacksNavigatorWorktreesAndStatus(t *testing.T) {
