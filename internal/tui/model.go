@@ -131,8 +131,6 @@ func NewModel(repo string, backend Backend, prefixes []string, targets []config.
 	return Model{repo:repo,backend:backend,prefixes:append([]string(nil),prefixes...),targets:append([]config.WorktreeTarget(nil),targets...),configPath:configPath,saveFolder:saveFolder,folder:strings.Trim(savedFolder,"/"),prsByID:make(map[string]ghapi.PullRequest),branchesByID:make(map[string]ghapi.Branch),loading:true,status:"Loading GitHub state…",previousMode:modePullRequests}
 }
 
-// WithWorktreeState restores and persists the internally active worktree. It
-// does not try to change the parent shell's cwd.
 func (m Model) WithWorktreeState(saved string, save func(string) error) Model {
 	m.activeWorktree = strings.TrimSpace(saved)
 	m.saveWorktree = save
@@ -173,7 +171,7 @@ func (m Model) updateKey(msg tea.KeyMsg)(tea.Model,tea.Cmd){
 	if msg.String()=="ctrl+c"{return m,tea.Quit};if m.deploying||m.busy{return m,nil};if m.dialog!=dialogNone{return m.updateDialog(msg)};if m.searching{return m.updateSearch(msg)}
 	if m.mode==modeCommits&&(msg.String()=="tab"||msg.String()=="shift+tab"){if m.focus==paneDetails{m.focus=paneNavigator}else{m.focus=paneDetails};m.status="Focus: "+m.focusName();return m,nil}
 	if msg.String()=="tab"{m.focus=(m.focus+1)%3;m.status="Focus: "+m.focusName();return m,nil};if msg.String()=="shift+tab"{m.focus=(m.focus+2)%3;m.status="Focus: "+m.focusName();return m,nil}
-	if msg.String()=="q"{return m,tea.Quit};if msg.String()=="r"{m.loading=true;m.status="Refreshing GitHub and worktree state…";return m,m.refreshCmd()};if msg.String()=="p"{m.mode=modePullRequests;m.focus=paneNavigator;m.cursor=0;m.rebuild();m.persistFolder();return m,nil};if msg.String()=="b"{m.mode=modeBranches;m.focus=paneNavigator;m.cursor=0;m.rebuild();m.persistFolder();return m,nil}
+	if msg.String()=="q"{return m,tea.Quit};if msg.String()=="r"{m.loading=true;m.status="Refreshing GitHub and worktree state…";return m,m.refreshCmd()};if msg.String()=="p"&&m.focus!=paneWorktrees{m.mode=modePullRequests;m.focus=paneNavigator;m.cursor=0;m.rebuild();m.persistFolder();return m,nil};if msg.String()=="b"&&m.focus!=paneWorktrees{m.mode=modeBranches;m.focus=paneNavigator;m.cursor=0;m.rebuild();m.persistFolder();return m,nil}
 	if m.mode==modeCommits{return m.updateCommitKeys(msg)};if m.focus==paneWorktrees{return m.updateWorktreeKeys(msg)};if m.focus==paneDetails{return m.updateDetailsKeys(msg)};return m.updateNavigatorKeys(msg)
 }
 
