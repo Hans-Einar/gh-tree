@@ -17,6 +17,10 @@ func WithRuntimeUX(model Model) RuntimeModel { return RuntimeModel{Model: model}
 func (m RuntimeModel) Init() tea.Cmd { return m.Model.Init() }
 
 func (m RuntimeModel) Update(message tea.Msg) (tea.Model, tea.Cmd) {
+	if key, ok := message.(tea.KeyMsg); ok && m.dialog == dialogLaunchPicker && key.String() == " " {
+		m.keepMakeStackInsideProjectRoot()
+	}
+
 	wasCreate := m.dialog == dialogCreateWorktree
 	if wasCreate && m.inputField < 0 {
 		if key, ok := message.(tea.KeyMsg); ok {
@@ -57,6 +61,27 @@ func (m RuntimeModel) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 	return RuntimeModel{Model: inner}, cmd
 }
 
+func (m *RuntimeModel) keepMakeStackInsideProjectRoot() {
+	if m.launchCursor < 0 || m.launchCursor >= len(m.launchCandidates) {
+		return
+	}
+	current := m.launchCandidates[m.launchCursor]
+	if current.Provider != "make" || len(m.launchSelected) == 0 {
+		return
+	}
+	for _, idx := range m.launchSelected {
+		if idx < 0 || idx >= len(m.launchCandidates) {
+			continue
+		}
+		selected := m.launchCandidates[idx]
+		if selected.Provider == "make" && selected.Dir != current.Dir {
+			m.launchSelected = nil
+			m.status = "Make stacks are scoped to one project root; started a new stack in " + displayProjectRoot(current.Dir)
+			return
+		}
+	}
+}
+
 func wrapRuntimeModel(model tea.Model) tea.Model {
 	if inner, ok := model.(Model); ok {
 		return RuntimeModel{Model: inner}
@@ -65,6 +90,9 @@ func wrapRuntimeModel(model tea.Model) tea.Model {
 }
 
 func (m RuntimeModel) View() string {
+	if m.dialog == dialogLaunchPicker {
+		return m.viewWithLaunchPicker()
+	}
 	if m.dialog != dialogCreateWorktree {
 		return m.Model.View()
 	}
@@ -93,6 +121,67 @@ func (m RuntimeModel) View() string {
 	out.WriteString("\n")
 	out.WriteString(dimStyle.Render(m.renderCreateFooter()))
 	return out.String()
+}
+
+func (m RuntimeModel) viewWithLaunchPicker() string {
+	base := m.Model.View()
+	old := m.Model.renderLaunchPickerDialog()
+	if old == "" {
+		return base
+	}
+	return strings.TrimSuffix(base, old) + m.renderNestedLaunchPickerDialog()
+}
+
+func (m RuntimeModel) renderNestedLaunchPickerDialog() string {
+	lines := []string{
+		headerStyle.Render("Launch discovery · active worktree"),
+		dimStyle.Render("Project roots come from provider manifests; npm ':' names remain one exact script."),
+		"",
+	}
+	visible := min(len(m.launchCandidates), 12)
+	start := 0
+	if m.launchCursor >= visible {
+		start = m.launchCursor - visible + 1
+	}
+	end := min(len(m.launchCandidates), start+visible)
+	selectedMap := map[int]bool{}
+	for _, i := range m.launchSelected {
+		selectedMap[i] = true
+	}
+	for i := start; i < end; i++ {
+		c := m.launchCandidates[i]
+		cursor := "  "
+		if i == m.launchCursor {
+			cursor = "> "
+		}
+		check := "  "
+		if selectedMap[i] {
+			check = "✓ "
+		}
+		label := displayProjectRoot(c.Dir) + " · " + c.Provider + "  "
+		if c.Provider == "npm" {
+			label += c.Script
+		} else {
+			label += strings.Join(c.Targets, ":")
+		}
+		line := cursor + check + label
+		if i == m.launchCursor {
+			line = selectedStyle.Render(line)
+		}
+		lines = append(lines, line)
+	}
+	if c, ok := m.selectedLaunchCandidate(); ok {
+		lines = append(lines, "", dimStyle.Render("selected cwd: "+displayProjectRoot(c.Dir)))
+	}
+	lines = append(lines, "", dimStyle.Render("[↑/↓] choose  [Space] stack Make in same project  [Enter] run once  [s] save default  [Esc] cancel"))
+	return dialogStyle.Render(strings.Join(lines, "\n"))
+}
+
+func displayProjectRoot(dir string) string {
+	if strings.TrimSpace(dir) == "" {
+		return "."
+	}
+	return strings.ReplaceAll(dir, "\\", "/")
 }
 
 func (m RuntimeModel) renderCreateCockpit(width, upperHeight, lowerHeight int) string {
