@@ -47,7 +47,6 @@ func (m *Manager) Stashes(ctx context.Context, path string) ([]Stash, error) {
 				if strings.TrimSpace(name) != "" {
 					item.Files++
 				}
-			}
 		}
 		items = append(items, item)
 	}
@@ -96,6 +95,13 @@ func (m *Manager) StashPatch(ctx context.Context, path, ref string) (string, err
 func (m *Manager) StashApplyRef(ctx context.Context, path, ref string, pop bool) error {
 	if err := validateStashRef(ref); err != nil {
 		return err
+	}
+	status, err := m.Status(ctx, path)
+	if err != nil {
+		return err
+	}
+	if !status.Clean {
+		return fmt.Errorf("worktree is dirty; commit or stash current changes before applying %s", ref)
 	}
 	return m.StashApply(ctx, path, ref, pop)
 }
