@@ -80,7 +80,9 @@ func (r Registry) Discover(root string) ([]Candidate, error) {
 			for i := range items {
 				items[i].Dir = filepath.ToSlash(rel)
 				if rel != "" {
-					prefix := strings.Split(filepath.ToSlash(rel), "/")
+					namespace := filepath.ToSlash(rel)
+					items[i].ID = namespace + "/" + items[i].ID
+					prefix := strings.Split(namespace, "/")
 					items[i].Path = append(prefix, items[i].Path...)
 				}
 			}
