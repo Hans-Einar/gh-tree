@@ -33,7 +33,7 @@ type Provider interface {
 
 type Registry struct { providers []Provider }
 
-func DefaultRegistry() Registry { return Registry{providers: []Provider{NPMProvider{}}} }
+func DefaultRegistry() Registry { return Registry{providers: []Provider{NPMProvider{}, MakeProvider{}}} }
 func NewRegistry(providers ...Provider) Registry { return Registry{providers: append([]Provider(nil), providers...)} }
 
 func (r Registry) Discover(root string) ([]Candidate,error) {
