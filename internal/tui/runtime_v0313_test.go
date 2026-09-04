@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
+	ghversion "github.com/Hans-Einar/gh-tree/internal/version"
 )
 
 func TestTerminalKeyBytes313(t *testing.T) {
@@ -35,11 +36,12 @@ func TestV313HeaderShowsVersion(t *testing.T) {
 	m.repo = "Hans-Einar/gh-tree"
 	m.width = 120
 	header := m.renderHeader313(120)
-	if !strings.Contains(header, "gh-tree v0.3.13") {
-		t.Fatalf("header missing version: %q", header)
+	want := "gh-tree v" + ghversion.Version
+	if !strings.Contains(header, want) {
+		t.Fatalf("header missing version %q: %q", want, header)
 	}
 	first := strings.SplitN(header, "\n", 2)[0]
-	if !strings.Contains(first, "gh-tree v0.3.13") {
+	if !strings.Contains(first, want) {
 		t.Fatalf("version not in top line: %q", first)
 	}
 }
