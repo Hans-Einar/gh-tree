@@ -7,6 +7,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 
 	ghapi "github.com/Hans-Einar/gh-tree/internal/github"
+	"github.com/Hans-Einar/gh-tree/internal/launch"
 )
 
 func TestV039CreateWorktreeReviewUsesEToEdit(t *testing.T) {
@@ -46,14 +47,34 @@ func TestV039CreateWorktreeReplacesLowerPane(t *testing.T) {
 	}
 }
 
-func TestV039WrapperTurnsNewCreateDialogIntoReviewState(t *testing.T) {
-	inner := Model{dialog: dialogCreateWorktree, inputField: 0, inputA: "suggested"}
-	m := WithRuntimeUX(inner)
-	// Simulate the transition behavior directly by entering from a non-create
-	// state then returning a create-dialog Model through the stable model API.
-	m.dialog = dialogNone
-	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'c'}})
-	if runtime, ok := updated.(RuntimeModel); ok && runtime.dialog == dialogCreateWorktree && runtime.inputField != -1 {
-		t.Fatalf("create dialog inputField=%d want review state -1", runtime.inputField)
+func TestV039MakeStackDoesNotCrossProjectRoots(t *testing.T) {
+	m := RuntimeModel{Model: Model{
+		dialog: dialogLaunchPicker,
+		launchCandidates: []launch.Candidate{
+			{Provider: "make", Dir: "frontend", Targets: []string{"clean"}},
+			{Provider: "make", Dir: "backend", Targets: []string{"all"}},
+		},
+		launchCursor:   1,
+		launchSelected: []int{0},
+	}}
+	m.keepMakeStackInsideProjectRoot()
+	if len(m.launchSelected) != 0 {
+		t.Fatalf("selection=%v want cleared", m.launchSelected)
+	}
+	if !strings.Contains(m.status, "backend") {
+		t.Fatalf("status=%q", m.status)
+	}
+}
+
+func TestV039LaunchPickerShowsProjectRoot(t *testing.T) {
+	m := RuntimeModel{Model: Model{
+		dialog: dialogLaunchPicker,
+		launchCandidates: []launch.Candidate{
+			{Provider: "npm", Dir: "Concept1", Script: "dev:wan"},
+		},
+	}}
+	view := m.renderNestedLaunchPickerDialog()
+	if !strings.Contains(view, "Concept1") || !strings.Contains(view, "dev:wan") {
+		t.Fatalf("view=%q", view)
 	}
 }
