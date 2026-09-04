@@ -37,10 +37,25 @@ highlighted in the pane title:
 | --- | --- |
 | `Alt+N` | Navigator |
 | `Alt+W` | Worktrees |
-| `Alt+A` | Active worktree |
-| `Alt+B` | Branch metadata subpane |
+| `Alt+A` | Active worktree root |
+| `Alt+L` | Launch list in the active-worktree pane |
+| `Alt+B` | Branch context / metadata |
 | `Alt+C` | Branch commit-list subpane |
 | `Alt+M` | Commit-message subpane |
+
+The active heading or subheading remains visibly highlighted while it owns
+keyboard focus. `Alt+A`, followed by `Enter`, opens the active-worktree chooser.
+
+## Floating dialogs
+
+Input and confirmation dialogs use a centered floating modal layer. The existing
+cockpit remains behind the modal in a dimmed/shaded state instead of being
+pushed upward or resized. Dialogs prefer a wide, low layout and bounded list
+content so the appearance is obvious even on large terminals.
+
+This applies to worktree selection and the normal create/launch/confirmation
+flows. While a modal is open, background panes are inert until the modal is
+accepted or cancelled.
 
 ## Git graph
 
@@ -82,6 +97,9 @@ In branch mode, `Enter` on a branch opens that branch's context in the right
 pane. The context contains fixed sections for branch identity, a bounded commit
 list, and the selected commit's message. Long messages scroll inside their own
 viewport; they do not resize the whole TUI.
+
+`Alt+B`, `Alt+C`, and `Alt+M` focus Branch context, Commits, and Message
+respectively. The focused subheading is visibly highlighted until focus moves.
 
 While the Commits subpane is active:
 
@@ -130,10 +148,9 @@ Important keys while the worktree pane is focused:
 | `D` | staged diff |
 | `z` / `Z` | stash / pop latest stash with confirmation |
 
-When `c` proposes a worktree path/name, the create UI reuses the lower cockpit
-pane instead of appending another terminal window below the TUI. Press `Enter`
-to accept the suggestion or `e` to edit the suggested path/name; `Tab` then
-moves between the path and local-branch fields.
+`Alt+A` focuses the Active worktree root. Press `Enter` there to open a floating
+chooser listing all discovered worktrees and activate one without moving to the
+Worktrees pane first.
 
 Dirty worktrees block retargeting. The primary worktree is protected. Exact PR
 head SHA is verified before PR-backed checkout/deployment.
@@ -176,10 +193,15 @@ being dumped. In mutable worktree/staged views, `s` stages the selected file and
 one native invocation/process; `gh-tree` is deliberately not a generic command
 orchestrator.
 
+The Active worktree pane shows launch points discovered for that worktree.
+`Alt+L` jumps directly to the Launch list; use `↑`/`↓` to select and `Enter` to
+run the selected native launch point.
+
 Keys:
 
 | Key | Action |
 | --- | --- |
+| `Alt+L` | focus discovered launch list |
 | `F5` | run default launch point |
 | `Ctrl+F5` | discover / choose launch point |
 | `Shift+F5` | stop attached launch |
