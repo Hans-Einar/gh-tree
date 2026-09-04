@@ -82,6 +82,11 @@ Important keys while the worktree pane is focused:
 | `D` | staged diff |
 | `z` / `Z` | stash / pop latest stash with confirmation |
 
+When `c` proposes a worktree path/name, the create UI reuses the lower cockpit
+pane instead of appending another terminal window below the TUI. Press `Enter`
+to accept the suggestion or `e` to edit the suggested path/name; `Tab` then
+moves between the path and local-branch fields.
+
 Dirty worktrees block retargeting. The primary worktree is protected. Exact PR
 head SHA is verified before PR-backed checkout/deployment.
 
@@ -114,27 +119,44 @@ Keys:
 | `Shift+F5` | stop attached launch |
 | `F6` | restart current launch |
 
-The active worktree is always the launch cwd. Output is captured in a bounded
-log buffer and running/exit/failure state is shown in the cockpit. Attached
-launches are stopped when `gh-tree` exits.
+Launch discovery scans the active worktree for actual provider manifests, not
+lockfiles alone. This matters for repositories whose runnable project is below
+the repository root. For example:
+
+```text
+ponsse-pr-60/
+  package-lock.json       # not an npm project by itself
+  Concept1/
+    package.json          # detected npm project root
+    package-lock.json
+```
+
+In that layout `gh-tree` discovers `Concept1` and runs its npm scripts with
+`Concept1` as the process cwd. Common generated/dependency directories such as
+`.git`, `node_modules`, `vendor`, `dist`, `build`, `target` and `.cache` are not
+recursively scanned.
+
+Output is captured in a bounded log buffer and running/exit/failure state is
+shown in the cockpit. Attached launches are stopped when `gh-tree` exits.
 
 ### npm / pnpm / yarn
 
-`package.json` scripts are discovered automatically. A name such as `dev:wan`
-is **one exact script name**:
+`package.json` scripts are discovered automatically, including package manifests
+below the worktree root. A name such as `dev:wan` is **one exact script name**:
 
 ```bash
 npm run dev:wan
 ```
 
 The chooser may display it hierarchically as `npm / dev / wan`, but never splits
-it into multiple commands. A pnpm or yarn lockfile selects that package manager
-for the saved invocation.
+it into multiple commands. A pnpm or yarn lockfile beside that project's
+`package.json` selects that package manager for the saved invocation.
 
 ### Make
 
-Simple Make targets are discovered from `Makefile`, `makefile` or `GNUmakefile`.
-Multiple selected targets form one ordered native invocation. The UI may show:
+Simple Make targets are discovered from `Makefile`, `makefile` or `GNUmakefile`,
+including nested project roots. Multiple selected targets form one ordered native
+invocation. The UI may show:
 
 ```text
 clean : all : install
@@ -151,14 +173,16 @@ Target order is significant.
 ## `.gh-tree/run.json`
 
 A discovered launch can be saved from the chooser. The repository-local file is
-committable and contains launch intent, not machine-specific worktree paths:
+committable and contains launch intent, including a repository-relative project
+cwd when the manifest is below the worktree root:
 
 ```json
 {
-  "default": "dev-wan",
+  "default": "Concept1/dev:wan",
   "launch": {
-    "dev-wan": {
+    "Concept1/dev:wan": {
       "provider": "npm",
+      "dir": "Concept1",
       "script": "dev:wan"
     },
     "release": {
@@ -169,8 +193,9 @@ committable and contains launch intent, not machine-specific worktree paths:
 }
 ```
 
-Configuration is validated before execution and commands are always started as
-an executable plus argument vector, not as shell-concatenated strings.
+The `dir` value is validated as repository-relative before execution; it cannot
+escape the active worktree. Commands are always started as an executable plus
+argument vector, not as shell-concatenated strings.
 
 ## Safety
 
