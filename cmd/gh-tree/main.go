@@ -38,5 +38,5 @@ func run(ctx context.Context,args []string)error{
 	if *graphFlag {if graphReader==nil{return errors.New("--graph requires running inside the selected local repository")};program:=tea.NewProgram(graphui.New(repo,service),tea.WithAltScreen());if _,err:=program.Run();err!=nil{return fmt.Errorf("run Git graph UI: %w",err)};return nil}
 	model:=tui.NewModel(repo,service,loadedConfig.StripPrefixes,loadedConfig.Targets(repo),*configFlag,state.LastFolder(repo),func(folder string)error{return state.SetLastFolder(repo,folder)})
 	model=model.WithWorktreeState(state.LastWorktree(repo),func(path string)error{return state.SetLastWorktree(repo,path)})
-	program:=tea.NewProgram(tui.WithRuntimeUX(model),tea.WithAltScreen());if _,err:=program.Run();err!=nil{return fmt.Errorf("run terminal UI: %w",err)};return nil
+	program:=tea.NewProgram(tui.WithV310UX(model),tea.WithAltScreen());if _,err:=program.Run();err!=nil{return fmt.Errorf("run terminal UI: %w",err)};return nil
 }
