@@ -1,245 +1,191 @@
 # gh-tree
 
-`gh-tree` is a keyboard-first GitHub CLI extension for navigating pull requests,
-branches, commits and local Git worktrees from one TUI. It reuses `gh`
-authentication and keeps destructive Git operations behind explicit safety checks.
+`gh-tree` is a keyboard-first GitHub CLI extension for navigating the real Git
+history, pull requests, branches and local worktrees, reviewing changes, and
+launching known development targets from the active worktree.
 
-## Install
+## Install / upgrade
 
 ```bash
 gh auth login
 gh extension install Hans-Einar/gh-tree
-```
-
-Upgrade later with:
-
-```bash
+# existing install:
 gh extension upgrade tree
 ```
 
-Run it inside a GitHub repository:
+Run inside a GitHub repository:
 
 ```bash
 gh tree
 ```
 
-or browse explicitly:
+The normal cockpit keeps PR/branch navigation on the left, Git-owned local
+worktrees on the right, and selected/active-worktree status below. `Tab` and
+`Shift+Tab` move focus; the footer is context-sensitive.
+
+## Git graph
+
+Press `g` from the navigator/details area to open the real commit DAG inside the
+main TUI, or start directly with:
 
 ```bash
-gh tree --repo Hans-Einar/ponsse
+gh tree --graph
 ```
 
-Worktree operations are enabled when the current directory belongs to the same
-repository being viewed.
+The graph is built from commit parent relationships and decorates commits with:
 
-## The v2 cockpit
+- `HEAD`;
+- local branches (`refs/heads/*`);
+- remote-tracking branches (`refs/remotes/*`);
+- tags;
+- open PR heads;
+- local worktrees.
 
-On a normal-width terminal the UI is arranged as:
+Branches are labels on commits, not separate history nodes. Remote-tracking refs
+are explicitly treated as local observations: they may be stale until a fetch.
+The graph is bounded and `L` loads more history.
+
+A compact mental model:
 
 ```text
-┌────────────────────────────────┬────────────────────────────────┐
-│ PR / branch navigator          │ Local worktrees                │
-│                                │                                │
-│ Concept1/                      │ > ponsse       main            │
-│ MVP1/                          │   ponsse-C1    feature/...     │
-│ > #60 UIBox                    │   ponsse-MVP1  DETACHED        │
-│                                │                                │
-├────────────────────────────────┴────────────────────────────────┤
-│ Selected PR / branch identity + active-worktree status          │
-│ head: steering/Concept1/ui-box                                  │
-│ base: main                                                       │
-│ sha:  <full SHA, never ellipsized>                              │
-│                                                                  │
-│ path: C:\...\ponsse-C1                                         │
-│ branch: steering/Concept1/ui-box                                │
-│ working: CLEAN                                                   │
-│ remote: origin/... · ahead 0 / behind 2                         │
-│ PR: #60 DRAFT · HEAD matches PR                                 │
-└──────────────────────────────────────────────────────────────────┘
+worktree -> HEAD -> local branch -> commit -> parent commit(s)
+                  ^
+                  | push/fetch relationship
+                  v
+             origin/branch
+
+PR = GitHub comparison of a head branch against a base branch
 ```
 
-`Tab` / `Shift+Tab` moves focus between panes. The footer changes to show the
-commands that apply to the focused pane. Narrow terminals stack the panes.
+## Worktrees
 
-## Git mental model
+Existing worktrees are discovered from `git worktree list --porcelain`; no
+manual target configuration is needed. The active worktree is an internal cwd
+used by `gh-tree` operations (a child process cannot change the parent shell's
+cwd).
 
-The TUI deliberately exposes the relationship between the Git objects:
-
-```text
-worktree
-   │
-   ▼
- HEAD ──normally──> local branch ──> commit
-   └──detached─────────────────────> commit
-```
-
-A **commit** is an immutable history node. A **branch** is just a movable name
-pointing to one commit, normally the newest commit on that line of development.
-When you commit while `HEAD` is attached to a branch, that branch moves to the
-new commit.
-
-A **worktree** is a physical checkout directory. The same repository can have
-several worktrees at once, each on a different branch or at a detached commit.
-Git normally prevents the same local branch from being checked out in two
-worktrees simultaneously.
-
-A GitHub **pull request** compares a **head branch** against a **base branch**:
-
-```text
-feature branch ── PR head ──┐
-                            ├──> proposed merge into main
-main branch    ── PR base ──┘
-```
-
-Commits are made to the branch, not to the PR object. After those commits are
-pushed, an open PR based on that branch updates automatically.
-
-## Navigator
-
-PRs are grouped by namespace derived from their head branch. Known technical
-prefixes are stripped:
-
-```text
-steering/Concept1/ui-box          → Concept1/ui-box
-codex/MVP1/machine-service/slc003 → MVP1/machine-service/slc003
-review/emulator/timer2-slc015     → emulator/timer2-slc015
-```
-
-Branches show an associated open PR when one exists.
-
-Navigator keys:
+Important keys while the worktree pane is focused:
 
 | Key | Action |
 | --- | --- |
-| `↑`/`↓`, `k`/`j` | move selection |
-| `Enter` | open namespace / select item |
-| `Backspace` | parent namespace |
-| `p` / `b` | PR / branch mode |
-| `h` | open commit history for selected PR/branch |
-| `/` | filter |
-| `r` | refresh GitHub + worktree state |
-| `Tab` | focus next pane |
-
-The branch/API listing remains bounded to keep refreshes predictable on large
-repositories.
-
-## Worktree manager
-
-Existing worktrees come directly from `git worktree list --porcelain`; no
-`config.json` entry is required. If only the primary checkout exists, focus the
-worktree pane and press `c` to create another one.
-
-Worktree-pane commands:
-
-| Key | Action |
-| --- | --- |
-| `Enter` / `a` | make selected worktree active inside `gh-tree` |
-| `c` | create a worktree from the selected PR/branch/commit |
-| `x` | check out the selected PR/branch in the active secondary worktree |
+| `Enter` / `a` | activate selected worktree |
+| `c` | create worktree from selected PR/branch/commit |
+| `x` | safely retarget selected secondary worktree |
 | `f` | fetch/prune remote state |
-| `p` | fast-forward-only pull of the active tracking branch |
-| `m` | stage all current changes and commit with an entered message |
-| `P` | push the active branch; first push can set upstream |
-| `n` | create a new branch in the active worktree |
-| `o` | create a draft GitHub PR from the active pushed branch |
-| `h` | browse commits reachable from active `HEAD` |
+| `p` | fast-forward-only pull |
+| `m` | commit |
+| `P` | push (never force-push) |
+| `n` | new branch |
+| `o` | create draft PR |
+| `h` | commit history |
+| `d` | worktree diff |
+| `D` | staged diff |
+| `z` / `Z` | stash / pop latest stash with confirmation |
 
-The active worktree is an internal working directory for `gh-tree`. A child
-process cannot change the parent CMD/PowerShell/Bash process's current directory,
-so activating a worktree does not `cd` the shell that launched the extension.
+Dirty worktrees block retargeting. The primary worktree is protected. Exact PR
+head SHA is verified before PR-backed checkout/deployment.
 
-### Creating worktrees
+## Diff / review
 
-The create dialog suggests a sibling path beside the primary repository. It can
-create from:
+Press `d` on a selected PR or commit, or `d`/`D` in the worktree pane. Diff mode
+shows changed files alongside a scrollable patch. Supported sources include:
 
-- selected PR head (the PR ref is fetched and its exact SHA is verified);
-- selected local/remote branch;
-- active commit;
-- a historical commit selected in the commit browser.
+- selected commit vs first parent;
+- active worktree vs `HEAD`;
+- staged changes vs `HEAD`;
+- selected PR head vs its base using the fetched/verified private PR ref.
 
-Leave the branch field empty when intentionally creating a detached historical
-checkout. Otherwise a normal local branch is preferred for continued work.
+Text patches are bounded; binary files are represented as binary instead of
+being dumped. In mutable worktree/staged views, `s` stages the selected file and
+`u` unstages it. Pure PR/commit review remains read-only.
 
-### Retargeting
+## Launch points — F5
 
-`x` changes a secondary clean worktree to the PR or branch selected in the left
-pane. `gh-tree` refuses dirty worktrees and protects the primary worktree. PR
-checkout fetches `refs/pull/<number>/head`, verifies that the fetched SHA still
-matches the one displayed in the TUI, then creates the local worktree branch.
+`gh-tree` detects launch points using build-system providers. One launch point is
+one native invocation/process; `gh-tree` is deliberately not a generic command
+orchestrator.
 
-## Active-worktree status
+Keys:
 
-The lower panel shows:
+| Key | Action |
+| --- | --- |
+| `F5` | run default launch point |
+| `Ctrl+F5` | discover / choose launch point |
+| `Shift+F5` | stop attached launch |
+| `F6` | restart current launch |
 
-- absolute path;
-- primary/current flags;
-- branch or `DETACHED HEAD`;
-- full `HEAD` SHA;
-- clean/dirty state with staged/modified/untracked/conflict counts;
-- upstream tracking branch;
-- ahead/behind counts from the fetched local remote-tracking state;
-- associated open PR and whether local `HEAD` matches its head SHA.
+The active worktree is always the launch cwd. Output is captured in a bounded
+log buffer and running/exit/failure state is shown in the cockpit. Attached
+launches are stopped when `gh-tree` exits.
 
-Remote status is only as current as the last fetch/refresh; use `f` when the
-network-visible state matters.
+### npm / pnpm / yarn
 
-## Commit browser
+`package.json` scripts are discovered automatically. A name such as `dev:wan`
+is **one exact script name**:
 
-Press `h` on a PR, branch or active worktree. The left pane becomes a bounded
-commit list and the right pane shows the selected commit's full metadata and
-message.
-
-```text
-┌────────────────────────────┬───────────────────────────────────┐
-│ Commits                    │ Commit details                    │
-│ > 4d8d72d  fix layout      │ commit: 4d8d72d...               │
-│   a3b1940  refactor model  │ parents: ...                     │
-│   93f024a  add tests       │ author/date                       │
-│                            │                                   │
-│                            │ full scrollable commit message    │
-└────────────────────────────┴───────────────────────────────────┘
+```bash
+npm run dev:wan
 ```
 
-Use `Tab` to focus the details pane and arrows/PageUp/PageDown to scroll the
-message. `L` loads another bounded page. From a historical commit, `c` creates a
-worktree and `n` creates a branch starting at that commit.
+The chooser may display it hierarchically as `npm / dev / wan`, but never splits
+it into multiple commands. A pnpm or yarn lockfile selects that package manager
+for the saved invocation.
 
-## Safety model
+### Make
 
-Hard guarantees:
+Simple Make targets are discovered from `Makefile`, `makefile` or `GNUmakefile`.
+Multiple selected targets form one ordered native invocation. The UI may show:
 
-- dirty worktrees are never silently discarded;
-- browsing never resets the primary worktree;
-- PR identity is checked by exact head SHA before PR-backed checkout/deploy;
-- branch names and paths are passed as process arguments, never interpolated
-  into shell command strings;
-- pull is fast-forward-only in the built-in command path;
-- push never force-pushes;
-- first upstream creation is shown before confirmation;
-- detached HEAD is shown explicitly;
-- Git's one-worktree-per-branch rule is allowed to fail clearly rather than
-  being bypassed;
-- command failures remain visible instead of reporting false success.
+```text
+clean : all : install
+```
 
-The original v1 configured deployment (`w`) remains available for users who
-already have named test targets in config. With no legacy targets, `w` now sends
-you to the interactive worktree pane instead of telling you to hand-edit JSON.
+which executes exactly:
 
-## Configuration and state
+```bash
+make clean all install
+```
 
-Browsing and worktree discovery need no configuration. Paths use the operating
-system's user config/state locations:
+Target order is significant.
 
-| Platform | Configuration | State |
-| --- | --- | --- |
-| Linux | `$XDG_CONFIG_HOME/gh-tree/config.json` or `~/.config/gh-tree/config.json` | `$XDG_STATE_HOME/gh-tree/state.json` or `~/.local/state/gh-tree/state.json` |
-| macOS | `~/Library/Application Support/gh-tree/config.json` | same application-support tree |
-| Windows | `%AppData%\gh-tree\config.json` | `%AppData%\gh-tree\state.json` |
+## `.gh-tree/run.json`
 
-`stripPrefixes` can override the default namespace prefixes. Legacy v1
-`repos.<owner/repo>.worktrees` targets remain supported, but are not needed for
-ordinary v2 worktree discovery/creation.
+A discovered launch can be saved from the chooser. The repository-local file is
+committable and contains launch intent, not machine-specific worktree paths:
+
+```json
+{
+  "default": "dev-wan",
+  "launch": {
+    "dev-wan": {
+      "provider": "npm",
+      "script": "dev:wan"
+    },
+    "release": {
+      "provider": "make",
+      "targets": ["clean", "all", "install"]
+    }
+  }
+}
+```
+
+Configuration is validated before execution and commands are always started as
+an executable plus argument vector, not as shell-concatenated strings.
+
+## Safety
+
+`gh-tree` keeps conservative defaults:
+
+- never silently discard dirty/untracked worktree data;
+- never reset the primary worktree as a browsing side effect;
+- never force-push;
+- exact SHA/ref verification for PR-backed operations;
+- fast-forward-only built-in pull;
+- selective staging paths are repository-relative and path-escape checked;
+- stash operations are explicit and conflicts are surfaced, not auto-resolved;
+- remote-tracking refs are not described as current without a fetch;
+- launch providers build argument vectors; discovered commands do not run until
+  explicitly selected/F5-launched.
 
 ## Development
 
@@ -252,17 +198,6 @@ go vet ./...
 go build ./cmd/gh-tree
 ```
 
-Integration tests create temporary bare repositories and real linked worktrees;
-they do not modify the repository in which the tests run.
-
-## Release
-
-CI tests Windows, Linux and macOS and cross-builds the supported targets. A `v*`
-tag triggers `.github/workflows/release.yml`, using
-`cli/gh-extension-precompile@v2` to publish GitHub CLI-compatible binaries.
-
-After a release:
-
-```bash
-gh extension upgrade tree
-```
+CI covers Windows, Linux and macOS plus release cross-builds. Stable `v*` tags
+are published with `cli/gh-extension-precompile@v2` for direct installation via
+GitHub CLI.
