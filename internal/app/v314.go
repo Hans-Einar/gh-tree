@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 
+	ghapi "github.com/Hans-Einar/gh-tree/internal/github"
 	"github.com/Hans-Einar/gh-tree/internal/worktree"
 )
 
@@ -36,4 +37,24 @@ func (s *Service) StashPatch(ctx context.Context, path, ref string) (string, err
 		return "", err
 	}
 	return m.StashPatch(ctx, path, ref)
+}
+
+func (s *Service) DeployBranchDetached(ctx context.Context, path, branch string) (worktree.Info, error) {
+	m, err := s.requireWorktrees()
+	if err != nil {
+		return worktree.Info{}, err
+	}
+	return m.CheckoutBranchDetached(ctx, path, branch)
+}
+
+func (s *Service) DeployPRDetached(ctx context.Context, path string, pr ghapi.PullRequest) (worktree.Info, error) {
+	m, err := s.requireWorktrees()
+	if err != nil {
+		return worktree.Info{}, err
+	}
+	ref, err := m.PreparePullRequest(ctx, pr.Number, pr.HeadSHA)
+	if err != nil {
+		return worktree.Info{}, err
+	}
+	return m.Checkout(ctx, worktree.CheckoutRequest{Path: path, Revision: ref, Detach: true})
 }
