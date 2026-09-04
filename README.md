@@ -20,15 +20,14 @@ gh tree
 ```
 
 The normal cockpit keeps PR/branch navigation on the left, contextual repository
-information on the right, and the active-worktree state below. The footer is
-context-sensitive.
+information on the right, and active-worktree plus launch-console state below.
+The footer is context-sensitive.
 
 ## Focus and pane navigation
 
-`Tab` moves between the main panes. In the branch-context pane, `Shift+Tab`
-cycles the local subpanes (Branch / Commits / Message) instead of forcing every
-subpane into the main Tab loop. `Ctrl+Shift+Tab` is accepted as a reverse-main-
-focus shortcut where the terminal reports it distinctly.
+`Tab` moves through the main panes, including the Console pane. In branch
+context, `Shift+Tab` continues to cycle the local Branch / Commits / Message
+subpanes. `Ctrl+Shift+Tab` moves backward through the main pane cycle.
 
 YaST/ncurses-style mnemonics provide direct jumps; the mnemonic letter is
 highlighted in the pane title:
@@ -39,12 +38,15 @@ highlighted in the pane title:
 | `Alt+W` | Worktrees |
 | `Alt+A` | Active worktree root |
 | `Alt+L` | Launch list in the active-worktree pane |
+| `Alt+O` | Console pane |
 | `Alt+B` | Branch context / metadata |
 | `Alt+C` | Branch commit-list subpane |
 | `Alt+M` | Commit-message subpane |
 
 The active heading or subheading remains visibly highlighted while it owns
 keyboard focus. `Alt+A`, followed by `Enter`, opens the active-worktree chooser.
+From the Active worktree root, `Down` moves naturally into the Launch list; `Up`
+from its first item returns to the root.
 
 ## Floating dialogs
 
@@ -56,6 +58,10 @@ content so the appearance is obvious even on large terminals.
 This applies to worktree selection and the normal create/launch/confirmation
 flows. While a modal is open, background panes are inert until the modal is
 accepted or cancelled.
+
+`Ctrl+C` is context-sensitive: in Console it interrupts/stops the selected
+running launch. Elsewhere it opens an exit confirmation modal; `Enter` confirms
+exit and `Esc` cancels. It no longer quits the whole TUI immediately.
 
 ## Git graph
 
@@ -187,25 +193,39 @@ Text patches are bounded; binary files are represented as binary instead of
 being dumped. In mutable worktree/staged views, `s` stages the selected file and
 `u` unstages it. Pure PR/commit review remains read-only.
 
-## Launch points — F5
+## Launch points and Console
 
 `gh-tree` detects launch points using build-system providers. One launch point is
-one native invocation/process; `gh-tree` is deliberately not a generic command
-orchestrator.
+one native invocation/process. Launches now open as independent Console tabs, so
+multiple development processes can run concurrently.
 
 The Active worktree pane shows launch points discovered for that worktree.
-`Alt+L` jumps directly to the Launch list; use `↑`/`↓` to select and `Enter` to
-run the selected native launch point.
+`Alt+L` jumps directly to the Launch list. Use `↑`/`↓` to select and either
+`Enter` or `F5` to run the selected launch in a **new Console tab**.
 
-Keys:
+On a wide terminal, Console is displayed to the right of Active worktree. On a
+narrow terminal it stacks below it. `Alt+O` jumps directly to Console.
+
+Console keys:
+
+| Key | Action |
+| --- | --- |
+| `Alt+1` … `Alt+9` | switch directly between the first nine console tabs |
+| `←` / `→` | previous / next console tab |
+| `↑` / `↓`, `PgUp` / `PgDn` | scroll bounded console output |
+| `Ctrl+C` | stop/interrupt the selected running console |
+| `Shift+F5` | explicit stop shortcut for selected/current console |
+| `F6` | restart selected console as a new session |
+
+General launch keys:
 
 | Key | Action |
 | --- | --- |
 | `Alt+L` | focus discovered launch list |
-| `F5` | run default launch point |
+| `F5` | in Launch: run selected item in a new console; elsewhere: run saved default |
 | `Ctrl+F5` | discover / choose launch point |
-| `Shift+F5` | stop attached launch |
-| `F6` | restart current launch |
+| `Shift+F5` | stop selected/current launch console |
+| `F6` | restart selected/current launch |
 
 Launch discovery scans the active worktree for actual provider manifests, not
 lockfiles alone. This matters for repositories whose runnable project is below
@@ -224,8 +244,10 @@ In that layout `gh-tree` discovers `Concept1` and runs its npm scripts with
 `.git`, `node_modules`, `vendor`, `dist`, `build`, `target` and `.cache` are not
 recursively scanned.
 
-Output is captured in a bounded log buffer and running/exit/failure state is
-shown in the cockpit. Attached launches are stopped when `gh-tree` exits.
+Each console captures stdout/stderr in its own bounded log buffer. Running and
+starting states use a lightweight rolling-letter activity animation driven by
+Bubble Tea ticks; there is no busy loop. All still-running attached consoles are
+stopped when `gh-tree` exits.
 
 ### npm / pnpm / yarn
 
@@ -299,7 +321,9 @@ argument vector, not as shell-concatenated strings.
 - stash operations are explicit and conflicts are surfaced, not auto-resolved;
 - remote-tracking refs are not described as current without a fetch;
 - launch providers build argument vectors; discovered commands do not run until
-  explicitly selected/F5-launched.
+  explicitly selected/F5-launched;
+- Ctrl+C never silently exits the whole TUI: outside Console it requires an exit
+  confirmation.
 
 ## Development
 
