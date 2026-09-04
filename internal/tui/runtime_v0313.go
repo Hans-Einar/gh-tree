@@ -83,9 +83,10 @@ func (m V313Model) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 			return m.openTerminal313()
 		}
 
-		// All gh-tree Alt mnemonics stay global even while a shell owns the
-		// console keyboard. Alt+1..9 therefore remain reliable tab switches.
-		if strings.HasPrefix(k, "alt+") || k == "tab" || k == "ctrl+shift+tab" {
+		// Alt mnemonics and Ctrl+Shift+Tab always belong to gh-tree. Plain Tab
+		// is forwarded to an interactive shell so completion keeps working.
+		globalTab := k == "tab" && !(m.consoleFocus && m.selectedInteractive313())
+		if strings.HasPrefix(k, "alt+") || globalTab || k == "ctrl+shift+tab" {
 			model, cmd := m.delegate313(message)
 			if next, ok := model.(V313Model); ok && next.consoleFocus {
 				return next, tea.Batch(cmd, next.resizeSelectedTerminal313())
@@ -376,7 +377,7 @@ func (m V313Model) renderConsole313(width, height int) string {
 func (m V313Model) footer313() string {
 	if m.consoleFocus {
 		if m.selectedInteractive313() {
-			return "[Alt+1..9] tabs  [Alt+T] new terminal  [Ctrl+C] interrupt  [Alt+N/W/A/O] leave console"
+			return "[Alt+1..9] tabs  [Alt+T] new terminal  [Tab] completion  [Ctrl+C] interrupt  [Alt+N/W/A/O] leave console"
 		}
 		return "[←/→] console tabs  [Alt+1..9] direct  [Alt+T] terminal  [Ctrl+C/Shift+F5] stop  [F6] restart"
 	}
@@ -440,8 +441,6 @@ func terminalKeyBytes313(key tea.KeyMsg) ([]byte, bool) {
 			return []byte(b.String()), true
 		}
 	}
-	// Bubble Tea normalizes many printable keys through String even if Runes
-	// is empty in synthetic tests.
 	if len([]rune(k)) == 1 && !strings.HasPrefix(k, "ctrl+") {
 		return []byte(k), true
 	}
