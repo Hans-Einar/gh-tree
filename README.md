@@ -19,9 +19,28 @@ Run inside a GitHub repository:
 gh tree
 ```
 
-The normal cockpit keeps PR/branch navigation on the left, Git-owned local
-worktrees on the right, and selected/active-worktree status below. `Tab` and
-`Shift+Tab` move focus; the footer is context-sensitive.
+The normal cockpit keeps PR/branch navigation on the left, contextual repository
+information on the right, and the active-worktree state below. The footer is
+context-sensitive.
+
+## Focus and pane navigation
+
+`Tab` moves between the main panes. In the branch-context pane, `Shift+Tab`
+cycles the local subpanes (Branch / Commits / Message) instead of forcing every
+subpane into the main Tab loop. `Ctrl+Shift+Tab` is accepted as a reverse-main-
+focus shortcut where the terminal reports it distinctly.
+
+YaST/ncurses-style mnemonics provide direct jumps; the mnemonic letter is
+highlighted in the pane title:
+
+| Key | Destination |
+| --- | --- |
+| `Alt+N` | Navigator |
+| `Alt+W` | Worktrees |
+| `Alt+A` | Active worktree |
+| `Alt+B` | Branch metadata subpane |
+| `Alt+C` | Branch commit-list subpane |
+| `Alt+M` | Commit-message subpane |
 
 ## Git graph
 
@@ -57,6 +76,35 @@ worktree -> HEAD -> local branch -> commit -> parent commit(s)
 PR = GitHub comparison of a head branch against a base branch
 ```
 
+## Branch context and commit browsing
+
+In branch mode, `Enter` on a branch opens that branch's context in the right
+pane. The context contains fixed sections for branch identity, a bounded commit
+list, and the selected commit's message. Long messages scroll inside their own
+viewport; they do not resize the whole TUI.
+
+While the Commits subpane is active:
+
+| Key | Action |
+| --- | --- |
+| `↑` / `↓` | select commit |
+| `c` | create a new worktree from the selected historical commit |
+| `x` | checkout the selected commit detached into the active secondary worktree |
+
+Historical checkout reuses the normal worktree safety gate: the primary
+worktree is protected and dirty worktrees are refused.
+
+Branch-list PR annotations show direction relative to the branch:
+
+```text
+main                 < [PR #60]
+feature/ui           [PR #60] >
+integration          < [PR #72]  [PR #73] >
+```
+
+`< [PR #N]` means this branch is the PR base (the PR flows into this branch).
+`[PR #N] >` means this branch is the PR head (the PR flows out of this branch).
+
 ## Worktrees
 
 Existing worktrees are discovered from `git worktree list --porcelain`; no
@@ -89,6 +137,24 @@ moves between the path and local-branch fields.
 
 Dirty worktrees block retargeting. The primary worktree is protected. Exact PR
 head SHA is verified before PR-backed checkout/deployment.
+
+## Dirty-worktree inspection and cleanup
+
+When the active worktree is dirty, the lower pane lists the paths responsible
+for that state and distinguishes staged, working-tree, untracked and conflicted
+changes. Focus the Active worktree pane to operate on the selected path:
+
+| Key | Action |
+| --- | --- |
+| `s` | stage selected path |
+| `u` | unstage selected path |
+| `d` | open the worktree diff |
+| `z` | stash tracked + untracked changes |
+| `r` | discard only the selected tracked working-tree change, after confirmation |
+
+Cleanup is deliberately conservative. `r` refuses untracked files and conflict
+entries; untracked files are never silently deleted and conflicts are never
+auto-resolved.
 
 ## Diff / review
 
@@ -207,6 +273,7 @@ argument vector, not as shell-concatenated strings.
 - exact SHA/ref verification for PR-backed operations;
 - fast-forward-only built-in pull;
 - selective staging paths are repository-relative and path-escape checked;
+- tracked discard requires explicit confirmation and refuses untracked/conflicts;
 - stash operations are explicit and conflicts are surfaced, not auto-resolved;
 - remote-tracking refs are not described as current without a fetch;
 - launch providers build argument vectors; discovered commands do not run until

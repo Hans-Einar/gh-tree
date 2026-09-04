@@ -32,3 +32,5 @@ func (s *Service) StagePaths(ctx context.Context,path string,paths ...string)err
 func (s *Service) UnstagePaths(ctx context.Context,path string,paths ...string)error{m,err:=s.requireWorktrees();if err!=nil{return err};return m.UnstagePaths(ctx,path,paths...)}
 func (s *Service) StashPush(ctx context.Context,path,message string,includeUntracked bool)(string,error){m,err:=s.requireWorktrees();if err!=nil{return "",err};return m.StashPush(ctx,path,message,includeUntracked)}
 func (s *Service) StashPop(ctx context.Context,path string)error{m,err:=s.requireWorktrees();if err!=nil{return err};return m.StashApply(ctx,path,"stash@{0}",true)}
+func (s *Service) WorktreeChanges(ctx context.Context,path string)([]worktree.Change,error){m,err:=s.requireWorktrees();if err!=nil{return nil,err};return m.Changes(ctx,path)}
+func (s *Service) RestorePaths(ctx context.Context,path string,paths ...string)error{m,err:=s.requireWorktrees();if err!=nil{return err};return m.RestorePaths(ctx,path,paths...)}
