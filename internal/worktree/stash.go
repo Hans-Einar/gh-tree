@@ -47,6 +47,7 @@ func (m *Manager) Stashes(ctx context.Context, path string) ([]Stash, error) {
 				if strings.TrimSpace(name) != "" {
 					item.Files++
 				}
+			}
 		}
 		items = append(items, item)
 	}
