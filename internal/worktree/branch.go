@@ -22,3 +22,9 @@ func (m *Manager) CreateBranchWorktreeAs(ctx context.Context,path,sourceBranch,t
 }
 
 func (m *Manager) CheckoutBranchWorktree(ctx context.Context,path,branch string)(Info,error){start,local,err:=m.ensureBranchStart(ctx,branch);if err!=nil{return Info{},err};if local{return m.Checkout(ctx,CheckoutRequest{Path:path,Revision:start,Branch:branch})};return m.Checkout(ctx,CheckoutRequest{Path:path,Revision:start,Branch:branch,Create:true})}
+
+// CheckoutBranchDetached deploys the exact selected branch tip into an existing
+// secondary worktree without checking out/moving the branch ref itself. This is
+// useful for a stable user-owned test worktree even when the branch is already
+// checked out in an agent/Codex worktree.
+func (m *Manager) CheckoutBranchDetached(ctx context.Context,path,branch string)(Info,error){start,_,err:=m.ensureBranchStart(ctx,branch);if err!=nil{return Info{},err};return m.Checkout(ctx,CheckoutRequest{Path:path,Revision:start,Detach:true})}
