@@ -26,4 +26,4 @@ func TestV3DiffViewRendersFilesAndPatch(t *testing.T){
 
 func TestV3FooterAdvertisesLaunchKeys(t *testing.T){m:=NewModel("Hans-Einar/gh-tree",&fakeBackend{},nil,nil,"","",nil);footer:=m.renderFooter();if!strings.Contains(footer,"[F5] run")||!strings.Contains(footer,"[Ctrl+F5] launch"){t.Fatalf("footer=%q",footer)}}
 
-func TestV3DiffQProducesQuitCommand(t *testing.T){m:=NewModel("Hans-Einar/gh-tree",&fakeBackend{},nil,nil,"","",nil);m.mode=modeDiff;_,cmd:=m.Update(runeKey("q"));if cmd==nil{t.Fatal("q in diff mode must quit")};msg:=cmd();if _,ok:=msg.(tea.QuitMsg);!ok{t.Fatalf("q command returned %T",msg)}}
+func TestV3DiffEscapeReturnsToPreviousMode(t *testing.T){m:=NewModel("Hans-Einar/gh-tree",&fakeBackend{},nil,nil,"","",nil);m.previousMode=modePullRequests;m.mode=modeDiff;m=updateModel(t,m,keyMsg(tea.KeyEsc,""));if m.mode!=modePullRequests{t.Fatalf("mode=%v want PR mode",m.mode)}}
