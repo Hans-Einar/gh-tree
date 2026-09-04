@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"github.com/Hans-Einar/gh-tree/internal/launch"
 )
@@ -61,14 +62,24 @@ func (s *Service) RunDefaultConsole(ctx context.Context, path string) (launch.Pr
 	return snap, nil
 }
 
+// ConsoleSnapshots returns launch and PTY-backed interactive shell consoles in
+// one stable id namespace for the cockpit tab bar.
 func (s *Service) ConsoleSnapshots() []launch.ProcessSnapshot {
-	if s.Launcher == nil {
-		return nil
+	var out []launch.ProcessSnapshot
+	if s.Launcher != nil {
+		out = append(out, s.Launcher.Snapshots()...)
 	}
-	return s.Launcher.Snapshots()
+	if s.Terminal != nil {
+		out = append(out, s.Terminal.Snapshots()...)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].ID < out[j].ID })
+	return out
 }
 
 func (s *Service) StopConsole(id int) error {
+	if s.Terminal != nil && s.Terminal.IsTerminal(id) {
+		return s.Terminal.Stop(id)
+	}
 	if s.Launcher == nil {
 		return nil
 	}
@@ -76,6 +87,9 @@ func (s *Service) StopConsole(id int) error {
 }
 
 func (s *Service) RestartConsole(id int) (launch.ProcessSnapshot, error) {
+	if s.Terminal != nil && s.Terminal.IsTerminal(id) {
+		return s.Terminal.Restart(id, 80, 24)
+	}
 	if s.Launcher == nil {
 		return launch.ProcessSnapshot{}, fmt.Errorf("launch manager is unavailable")
 	}
@@ -88,6 +102,9 @@ func (s *Service) RestartConsole(id int) (launch.ProcessSnapshot, error) {
 }
 
 func (s *Service) SelectConsole(id int) bool {
+	if s.Terminal != nil && s.Terminal.IsTerminal(id) {
+		return true
+	}
 	if s.Launcher == nil {
 		return false
 	}
@@ -95,8 +112,16 @@ func (s *Service) SelectConsole(id int) bool {
 }
 
 func (s *Service) StopAllConsoles() error {
-	if s.Launcher == nil {
-		return nil
+	var first error
+	if s.Launcher != nil {
+		if err := s.Launcher.StopAll(); err != nil {
+			first = err
+		}
 	}
-	return s.Launcher.StopAll()
+	if s.Terminal != nil {
+		if err := s.Terminal.StopAll(); err != nil && first == nil {
+			first = err
+		}
+	}
+	return first
 }
