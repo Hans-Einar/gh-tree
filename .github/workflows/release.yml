@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+    branches:
+      - "release/v*-bootstrap"
 
 permissions:
   contents: write
@@ -19,6 +21,20 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+      - name: Resolve release tag
+        id: release
+        shell: bash
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_REF_TYPE}" == "branch" ]]; then
+            tag="${tag#release/}"
+            tag="${tag%-bootstrap}"
+          fi
+          if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+            echo "invalid release tag: ${tag}" >&2
+            exit 1
+          fi
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
       - name: Verify release commit
         run: |
           go test ./...
@@ -27,3 +43,4 @@ jobs:
         with:
           go_version_file: go.mod
           go_build_options: ./cmd/gh-tree
+          release_tag: ${{ steps.release.outputs.tag }}
