@@ -14,9 +14,9 @@ import (
 func TestOverlay311CentersDialogWithoutGrowingScreen(t *testing.T) {
 	base := "one\ntwo\nthree"
 	dialog := "+----+\n| hi |\n+----+"
-	got := overlay311(base, dialog, 30, 9)
-	if lines := strings.Split(got, "\n"); len(lines) != 9 {
-		t.Fatalf("overlay line count=%d, want 9", len(lines))
+	got := overlay311(base, dialog, 80, 30)
+	if lines := strings.Split(got, "\n"); len(lines) != 30 {
+		t.Fatalf("overlay line count=%d, want 30", len(lines))
 	}
 	if !strings.Contains(ansi.Strip(got), "| hi |") {
 		t.Fatalf("overlay missing dialog: %q", ansi.Strip(got))
