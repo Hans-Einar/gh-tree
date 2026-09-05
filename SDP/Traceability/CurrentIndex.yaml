@@ -7,7 +7,7 @@
   "activeGate": "G-02",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "5b1cf181fd3245a65337f1db28ee8f0fb95c200f",
+  "mainObserved": "11cfef79009bb3956f0ba970470df14843e27e07",
   "designState": "not_started",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
@@ -98,10 +98,13 @@
     },
     {
       "id": "GOV35",
-      "state": "draft",
+      "state": "accepted",
       "issue": 35,
       "doc": "SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md",
-      "kind": "governance"
+      "kind": "governance",
+      "pr": 37,
+      "head": "8b5514e5e69ed6de603ed5f34e6e530a6a8b76f3",
+      "merge": "11cfef79009bb3956f0ba970470df14843e27e07"
     },
     {
       "id": "LR36",
@@ -119,6 +122,645 @@
       "requires": [
         "LR36"
       ]
+    }
+  ],
+  "productFindings": [
+    {
+      "id": "BR21-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "RT25-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "TS-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "APP29-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H06",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "GIT31-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H06",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "DOM33-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
     }
   ]
 }
