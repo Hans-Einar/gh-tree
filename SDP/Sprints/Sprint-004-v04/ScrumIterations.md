@@ -3,7 +3,7 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-01 — focused reviews
-Active gate: G-04 — GitHub review (#43)
+Active gate: G-05 — TUI View review (#46)
 No implementation Slice is active before design and BC freeze.
 
 ## I-01 contract
@@ -34,8 +34,9 @@ record review/merge SHAs and CI URL on Issue and in ledger/index/handoff.
   859eab7af576b6b0eb689da6d7ed7c6d235d5853; merge 3b8923e0fad29eec24a2d8fa1811dba24c2a626f.
 - [x] G-03: Persistence #40 / PR #42 accepted at
   e13639926ca1b34e5021d1a038b83517cb7eec65; merge db07857550cdfd56c114eb42c045b896b229d747.
-- [ ] G-04: accept GitHub review, authorized by #43.
-- [ ] G-05: authorize and accept TUI View review.
+- [x] G-04: GitHub #43 / PR #45 accepted at
+  ea52f8c5c50e178c6e415cbba2284296e2d9b910; merge e16650036c10f764c1b99c76d98d2bd37c3ffbb0.
+- [ ] G-05: accept TUI View review, authorized by #46.
 - [ ] G-06: authorize and accept Composition review, consuming all preceding reviews.
 
 Carry forward: no product finding is resolved by review acceptance. The next
@@ -71,7 +72,7 @@ Verification: actual report/source inspection independent of author summaries,
 question coverage/counts, exact artifact diff and green configured CI.
 Completion: Master acceptance and merge with exact SHA recorded; then GitHub review.
 
-## G-04 active gate contract
+## G-04 completed gate contract
 
 Goal: settle remote facts/mutations, host/PR/branch identity, observation and
 expected-revision semantics before TUI View/Composition and final design.
@@ -83,3 +84,16 @@ freeze; GitHub owns no local Git; Application reconciles remote/local sources.
 Verification: actual source/report/diff inspection independent of author summary,
 complete Issue/template coverage and counts, exact accepted HEAD with green CI.
 Completion: Master acceptance/merge recorded; then TUI View review.
+
+## G-05 active gate contract
+
+Goal: settle rendering-only immutable projections, responsive/modal/graph/help/
+animation behavior and host measurements without interaction/backend authority.
+Authority: #46, all eight preceding accepted layer reviews, BR21 and APS22.
+Files: SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md only on
+codereview-21/layer-tui-view-review; Master owns checkpoint metadata.
+Invariants: frozen v0.3.14 evidence, preserve accepted UI capability, no product
+edits/BC freeze; TUI State owns intent, Application supplies semantic facts.
+Verification: actual source/report/render evidence and exact scope, requirement
+coverage and finding counts; accepted frozen HEAD must pass configured CI.
+Completion: Master acceptance/merge recorded; then Composition review.

@@ -66,3 +66,17 @@ Report HEAD e13639926ca1b34e5021d1a038b83517cb7eec65; merge
 db07857550cdfd56c114eb42c045b896b229d747. All nine CI checks passed in run
 33999062918; no report correction. 2H/6M/1L product findings remain open. Total
 112 report IDs (34H/64M/14L), with overlap. GitHub #43 is next. No BC frozen.
+
+G-04 checkpoint PR #44 independently accepted at
+d611e7df49877fb9865a5bd6614749ac1ff34d4e; merged at
+a0ef95bae4ad27c23323b428b400c97f49b89d3a with green push/PR CI.
+
+GitHub #43 / PR #45 independently accepted by Master at
+ea52f8c5c50e178c6e415cbba2284296e2d9b910; merge
+e16650036c10f764c1b99c76d98d2bd37c3ffbb0. Actual report/source/probe code read;
+two copied source hashes matched; six probes plus copied baseline tests/helper
+rerun PASS. Native gh 2.96.0 source matched tagged GitHub blob
+1a3eba7d88261a4291e988eb3ff288c8efd409e6 and confirmed head scope/no-push behavior.
+All nine CI checks passed in run 33999849098; no correction. 1H/8M/1L product
+findings remain open; total 122 report IDs (35H/72M/15L), overlapping reports.
+TUI View #46 is next. No product implementation or BC freeze.
