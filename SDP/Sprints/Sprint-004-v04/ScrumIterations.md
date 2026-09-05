@@ -9,7 +9,8 @@ No implementation Slice is active before design and BC freeze.
 ## I-01 contract
 
 Goal: complete the focused-review inputs required before designing v0.4.
-Why now: Runtime, TUI State, Application and Git are accepted; Domain is in PR #34.
+Kickoff state: Runtime, TUI State, Application and Git were accepted; Domain was
+in PR #34. Domain and checkpoint scaffolding have since passed their gates below.
 Authority: #21, #33; checkpoint scaffolding authorized by #35.
 
 Planned changes: focused review artifacts only, plus strictly necessary SDP
@@ -27,7 +28,8 @@ record review/merge SHAs and CI URL on Issue and in ledger/index/handoff.
 
 - [x] G-01: Domain #33 / PR #34 accepted at corrected HEAD
   86d2a4c0cc0eb8f427d597617246e85473a6cf55; merge 5b1cf181fd3245a65337f1db28ee8f0fb95c200f.
-- [ ] Establish/merge #35 checkpoint surfaces before broad new work.
+- [x] Establish/merge #35 checkpoint surfaces before broad new work (PR #37,
+  merge 11cfef79009bb3956f0ba970470df14843e27e07).
 - [ ] G-02: accept Launch Discovery review, authorized by #36.
 - [ ] G-03: authorize and accept Persistence review.
 - [ ] G-04: authorize and accept GitHub review.

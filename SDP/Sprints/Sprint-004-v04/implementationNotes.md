@@ -6,10 +6,11 @@ Reconstruction verified main 3531fd165ff2b35036928328685d45d84965e9ef against
 v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b: only governance/review records
 changed. Initial user checkout was clean and fast-forwarded from f2e1bd05a8b123ce2234b0bce96672bbde9a6eba.
 
-PR #34 observed: one new Domain artifact, HEAD ec482795a82371996370ec52e68c5c24b4e240b1,
+Initial PR #34 observation: one new Domain artifact, HEAD ec482795a82371996370ec52e68c5c24b4e240b1,
 draft, all nine configured checks green (three platform test/vet/build jobs,
 Linux race, five release-target cross-builds). These are existing baseline CI
-results, not proof of future refactor behavior. Independent Domain gate review is pending.
+results, not proof of future refactor behavior. Independent Domain gate review
+was pending at that observation; its completed correction/acceptance follows.
 
 Domain gate completed: fresh reviewer required an explicit unborn-HEAD boundary
 policy; corrected report independently accepted at
@@ -24,3 +25,11 @@ located at C:/Users/hanse/.codex/tmp/ponsse-r9-go1.23.12/go/bin/go.exe; its auto
 toolchain selection obtained Go 1.25.0. Full local Windows `go test ./...` passed
 in the Domain-review worktree at the corrected HEAD. Product source equals the
 frozen v0.3.14 baseline. This is baseline evidence only.
+
+Checkpoint scaffolding #35 / PR #37: accepted by a fresh independent reviewer
+at 8b5514e5e69ed6de603ed5f34e6e530a6a8b76f3 and merged at
+11cfef79009bb3956f0ba970470df14843e27e07. All nine jobs passed on both push and
+PR CI. JSON/YAML/NDJSON and links/provenance verified. Historical wording nits
+are clarified in this follow-up. The 91 finding IDs across the six accepted
+reports are now explicitly indexed as open; related reports overlap, so this
+count is not a claim of 91 distinct defects.
