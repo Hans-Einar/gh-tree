@@ -4,10 +4,10 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-01",
-  "activeGate": "G-02",
+  "activeGate": "G-03",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "11cfef79009bb3956f0ba970470df14843e27e07",
+  "mainObserved": "3b8923e0fad29eec24a2d8fa1811dba24c2a626f",
   "designState": "not_started",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
@@ -111,17 +111,38 @@
       "issue": 36,
       "kind": "layer_review",
       "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
-      "state": "authorized",
-      "layer": "Launch Discovery"
+      "state": "accepted",
+      "layer": "Launch Discovery",
+      "pr": 39,
+      "head": "859eab7af576b6b0eb689da6d7ed7c6d235d5853",
+      "merge": "3b8923e0fad29eec24a2d8fa1811dba24c2a626f",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33998243250"
     },
     {
       "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
-      "state": "active",
+      "state": "complete",
       "kind": "governance_gate",
       "id": "G-02",
       "requires": [
         "LR36"
       ]
+    },
+    {
+      "id": "LR40",
+      "kind": "layer_review",
+      "layer": "Persistence",
+      "state": "authorized",
+      "issue": 40,
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "G-03",
+      "kind": "governance_gate",
+      "state": "active",
+      "requires": [
+        "LR40"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
     }
   ],
   "productFindings": [
@@ -761,6 +782,111 @@
       "state": "open",
       "report": "LR33",
       "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "LD36-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
     }
-  ]
+  ],
+  "releaseBaseline": {
+    "tag": "v0.3.14",
+    "url": "https://github.com/Hans-Einar/gh-tree/releases/tag/v0.3.14",
+    "assets": [
+      "darwin-amd64",
+      "darwin-arm64",
+      "freebsd-386",
+      "freebsd-amd64",
+      "freebsd-arm64",
+      "linux-386",
+      "linux-amd64",
+      "linux-arm",
+      "linux-arm64",
+      "windows-386.exe",
+      "windows-amd64.exe",
+      "windows-arm64.exe"
+    ],
+    "installedExtensionObserved": "v0.3.13",
+    "installationChanged": false,
+    "verificationState": "baseline_inventory_only"
+  }
 }

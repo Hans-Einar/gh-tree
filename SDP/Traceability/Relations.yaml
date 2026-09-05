@@ -43,6 +43,24 @@
       "to": "LR36",
       "relation": "accepts",
       "from": "G-02"
+    },
+    {
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36"
+      ],
+      "from": "LR40"
+    },
+    {
+      "relation": "accepts",
+      "to": "LR40",
+      "from": "G-03"
     }
   ],
   "errata": [
