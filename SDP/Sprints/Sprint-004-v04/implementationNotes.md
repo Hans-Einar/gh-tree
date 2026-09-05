@@ -33,3 +33,24 @@ PR CI. JSON/YAML/NDJSON and links/provenance verified. Historical wording nits
 are clarified in this follow-up. The 91 finding IDs across the six accepted
 reports are now explicitly indexed as open; related reports overlap, so this
 count is not a claim of 91 distinct defects.
+
+Finding-index checkpoint PR #38 accepted independently at
+9f33ea31535612d6bd2d7d8d1af167db3d19585f and merged at
+e0fa9c8743c0b68e936169b7997dd0c841e9dc98 with all push/PR CI green.
+
+Release baseline read-only inventory: v0.3.14 publishes 12 assets, not merely the
+five CI cross-build targets. Preserve darwin amd64/arm64; freebsd 386/amd64/arm64;
+linux 386/amd64/arm/arm64; windows 386/amd64/arm64 (.exe). Exact names are in
+CurrentIndex.yaml. Evidence: `gh release view v0.3.14 --repo Hans-Einar/gh-tree`
+and https://github.com/Hans-Einar/gh-tree/releases/tag/v0.3.14 . Composition and
+REFDES must include all targets in packaging parity and cross-build verification.
+`gh extension list` reports installed gh tree v0.3.13; no upgrade performed.
+
+Launch Discovery #36 / PR #39 accepted after fresh independent source/artifact
+review at 859eab7af576b6b0eb689da6d7ed7c6d235d5853; merged at
+3b8923e0fad29eec24a2d8fa1811dba24c2a626f. All nine CI jobs passed in run33998243250.
+Master independently matched the four probe source hashes and reran all five
+nonexecuting probes, reproducing reported baseline behavior. Report author also
+ran 7 launch and 4 TUI tests. No report correction required. Its 2 HIGH / 9 MEDIUM /
+1 LOW findings remain open product work; total indexed IDs now 103 (32H/58M/13L),
+with overlap across reports. Next focused review: Persistence #40. No BC frozen.
