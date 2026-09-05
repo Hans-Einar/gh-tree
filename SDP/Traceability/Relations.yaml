@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "relations": [
+    {
+      "relation": "uses_target",
+      "from": "BR21",
+      "to": "APS22"
+    },
+    {
+      "relation": "depends_on",
+      "from": "LR33",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31"
+      ]
+    },
+    {
+      "relation": "accepts",
+      "from": "G-01",
+      "to": "LR33"
+    },
+    {
+      "relation": "records",
+      "from": "GOV35",
+      "to": "G-01"
+    },
+    {
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33"
+      ],
+      "relation": "depends_on",
+      "from": "LR36"
+    },
+    {
+      "to": "LR36",
+      "relation": "accepts",
+      "from": "G-02"
+    }
+  ],
+  "errata": [
+    {
+      "scope": "Challenge of known findings",
+      "correction": "APP29-H03/H06 headings are transposed: reconciliation=APP29-H06, confirmation=APP29-H03; meanings unchanged.",
+      "artifact": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    }
+  ]
+}
