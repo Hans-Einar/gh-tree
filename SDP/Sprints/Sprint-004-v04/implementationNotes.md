@@ -54,3 +54,15 @@ nonexecuting probes, reproducing reported baseline behavior. Report author also
 ran 7 launch and 4 TUI tests. No report correction required. Its 2 HIGH / 9 MEDIUM /
 1 LOW findings remain open product work; total indexed IDs now 103 (32H/58M/13L),
 with overlap across reports. Next focused review: Persistence #40. No BC frozen.
+
+G-03 checkpoint PR #41 independently accepted at
+0339fd59170289ef39c247e559445789896464e4; merged at
+7113e4111ff9e0e4de04f86cacc42a209c011727 with green push/PR CI.
+
+Persistence #40 / PR #42 accepted by Master independently of the fresh report
+author: complete actual report/source read, five copied hashes matched, six
+nonexecuting storage probes rerun PASS, Go 1.25.0 library claims checked locally.
+Report HEAD e13639926ca1b34e5021d1a038b83517cb7eec65; merge
+db07857550cdfd56c114eb42c045b896b229d747. All nine CI checks passed in run
+33999062918; no report correction. 2H/6M/1L product findings remain open. Total
+112 report IDs (34H/64M/14L), with overlap. GitHub #43 is next. No BC frozen.

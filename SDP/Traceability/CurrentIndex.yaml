@@ -4,10 +4,10 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-01",
-  "activeGate": "G-03",
+  "activeGate": "G-04",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "3b8923e0fad29eec24a2d8fa1811dba24c2a626f",
+  "mainObserved": "db07857550cdfd56c114eb42c045b896b229d747",
   "designState": "not_started",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
@@ -131,16 +131,37 @@
       "id": "LR40",
       "kind": "layer_review",
       "layer": "Persistence",
-      "state": "authorized",
+      "state": "accepted",
       "issue": 40,
-      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "pr": 42,
+      "head": "e13639926ca1b34e5021d1a038b83517cb7eec65",
+      "merge": "db07857550cdfd56c114eb42c045b896b229d747",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33999062918"
     },
     {
       "id": "G-03",
       "kind": "governance_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "LR40"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "LR43",
+      "kind": "layer_review",
+      "layer": "GitHub",
+      "state": "authorized",
+      "issue": 43,
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "G-04",
+      "kind": "governance_gate",
+      "state": "active",
+      "requires": [
+        "LR43"
       ],
       "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
     }
@@ -866,6 +887,69 @@
       "state": "open",
       "report": "LR36",
       "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "PS40-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
     }
   ],
   "releaseBaseline": {
