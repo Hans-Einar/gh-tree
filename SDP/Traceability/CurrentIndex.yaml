@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "project": "gh-tree",
+  "programIssue": 21,
+  "sprint": "Sprint-004-v04",
+  "activeIteration": "I-01",
+  "activeGate": "G-02",
+  "implementationSlice": null,
+  "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
+  "mainObserved": "5b1cf181fd3245a65337f1db28ee8f0fb95c200f",
+  "designState": "not_started",
+  "boundaryContracts": [],
+  "productFindingsState": "all_unresolved",
+  "items": [
+    {
+      "kind": "architecture",
+      "state": "accepted",
+      "issue": 22,
+      "id": "APS22",
+      "pr": 23,
+      "doc": "SDP/Architecture/AS-#22/APS--001.md"
+    },
+    {
+      "head": "76dacca56fc003f244bf038ce9bbe3e95db3040e",
+      "kind": "broad_review",
+      "merge": "488697f8ced27c60e5a906ad1c30a1d696c29957",
+      "id": "BR21",
+      "issue": 21,
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "pr": 24,
+      "state": "accepted"
+    },
+    {
+      "state": "accepted",
+      "merge": "dd93a5f8ce0bb65e407a29fb98673d596019c2c9",
+      "layer": "Runtime",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "head": "a2bd2e46cbe08273367a65ad9e254e0c5f6594d1",
+      "id": "LR25",
+      "issue": 25,
+      "kind": "layer_review",
+      "pr": 27
+    },
+    {
+      "state": "accepted",
+      "merge": "3a9588d91b8c5112ac1a83573588909c585dafd8",
+      "layer": "TUI State",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "head": "7146a4379c8967bec366d816d43f23749ab0ff4f",
+      "id": "LR26",
+      "issue": 26,
+      "kind": "layer_review",
+      "pr": 28
+    },
+    {
+      "state": "accepted",
+      "merge": "f2e1bd05a8b123ce2234b0bce96672bbde9a6eba",
+      "layer": "Application",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "head": "210e1b020af37f20cc653b566b367c44d5020405",
+      "id": "LR29",
+      "issue": 29,
+      "kind": "layer_review",
+      "pr": 30
+    },
+    {
+      "state": "accepted",
+      "merge": "3531fd165ff2b35036928328685d45d84965e9ef",
+      "layer": "Git",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "head": "c9b703ce26f5809415ad56225f3fba2c2064a6f3",
+      "id": "LR31",
+      "issue": 31,
+      "kind": "layer_review",
+      "pr": 32
+    },
+    {
+      "head": "86d2a4c0cc0eb8f427d597617246e85473a6cf55",
+      "kind": "layer_review",
+      "id": "LR33",
+      "issue": 33,
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "pr": 34,
+      "state": "accepted",
+      "layer": "Domain",
+      "originalHead": "ec482795a82371996370ec52e68c5c24b4e240b1",
+      "merge": "5b1cf181fd3245a65337f1db28ee8f0fb95c200f",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33997317388"
+    },
+    {
+      "id": "G-01",
+      "state": "complete",
+      "requires": [
+        "LR33"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+      "kind": "governance_gate"
+    },
+    {
+      "id": "GOV35",
+      "state": "draft",
+      "issue": 35,
+      "doc": "SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md",
+      "kind": "governance"
+    },
+    {
+      "id": "LR36",
+      "issue": 36,
+      "kind": "layer_review",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "state": "authorized",
+      "layer": "Launch Discovery"
+    },
+    {
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+      "state": "active",
+      "kind": "governance_gate",
+      "id": "G-02",
+      "requires": [
+        "LR36"
+      ]
+    }
+  ]
+}
