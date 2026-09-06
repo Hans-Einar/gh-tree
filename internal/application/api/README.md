@@ -1,0 +1,87 @@
+# Application semantic values
+
+Issue #59 supplies the complete M2 API leaf under all seven FROZEN 1.0.0
+boundaries and BoundaryTypes--001. It imports the accepted Domain foundation
+directly. It performs no orchestration, allocation, observation, clock read,
+filesystem access, process execution, or network activity.
+
+Every semantic record has a private representation, `NewName(NameData)` validating
+constructor, `Valid`, `Data`, and `Clone`. Its zero is invalid. `NameData` is an
+ordinary construction/copy record, never a mutable reference to the stored value.
+Constructors and Data copy all slices, including slices inside Optional and
+StoredField. Nested records, identities, and strings are already immutable;
+Clone can safely share their private storage. No getter exposes owned mutable
+storage. Constructors return invalid zero plus error on failure.
+
+Optional explicitly distinguishes absence; it does not promise arbitrary generic
+T is valid or immutable. Every actual containing family checks its concrete T and
+copies mutable containers. StoredField distinguishes Absent, Null, and Present;
+only StripPrefixes accepts Null among specified known document fields. An explicit
+empty list stays present. Unknown-provider strings and every known/unknown member
+are retained; a storage string is not execution authorization.
+
+All 32 union families are sealed interfaces whose containing constructors use
+exact concrete type switches. Nil, typed nil, pointer variants, and foreign
+embedding implementations refuse even if they implement Valid. Public Command
+has 28 alternatives, Query has 13, Result has their 41 matching alternatives,
+and EventPayload has six. Request contains exactly one command or query, with
+the proper correlation domain. `Request.AcceptsResult` and `ValidateTerminalFor`
+check matching families and original correlation. SessionOutputProjection wraps
+the Runtime-owned semantic SessionOutputResult plus captured projection sources
+and ContextVersion. FetchResult and CreatePullRequestResult are the same semantic
+facts at the port and public terminal; they are not duplicate adapter DTOs.
+
+| Files | Complete family |
+|---|---|
+| primitives, ids, enums, values_records | Distinct IDs/versions, explicit presence/pages, observations, worktree/remote/cwd binding, invocation/environment, diagnostics, effects and typed recovery versions |
+| git_records | Git facts, exact reads/comparisons/stash parents and tree OIDs, all eight preparations, safe summaries, candidate-versus-final-index facts, closed outcomes, fetch and seven-facet reconciliation |
+| remote_records | Qualified remote repositories/branches/PR endpoints, unavailable fields, observations/pages, exact creation expectations and six creation outcomes |
+| storage_records, json_values, storage_validation | All three whole documents, every specified known/nested/legacy field and unknown member, load/commit outcomes and stable StorageRecovery detail |
+| discovery_records | Passive observations, project inputs/profiles, definitions, exact discovered/saved/ordered Make selections and resolved invocation facts |
+| runtime_records | Invocation requests, retained failed-start identity, all session phases/capabilities/exit/cleanup/control/output/event/ACK/shutdown values |
+| application_records, client, result_binding | Five-method Client, full commands/queries/results/events, canonical relations, active context, pending ACK transfer and aggregate residuals |
+| unions, evidence, evidence_records | Closed-family admission and explicit evidence traversal; no reflection or generic command dispatcher |
+
+SourceVersion is opaque comparable namespace/scope/issuer/token equality. API
+does not order or interpret it. StorageVersion retains family, store identity,
+missing/present state, length, SHA-256 and, for RunConfig, exact WorktreeID/root
+identity. `NewRunStorageVersion` and `MatchesRunScope` prevent cross-worktree/root
+use without resolving a path. Observer-supplied store identity represents the
+native parent or validated missing-ancestry anchor; Persistence must revalidate it.
+Different repositories, version families and sequence domains never interchange.
+
+ObservationInterval takes ordered UTC acquisition bounds. Commit/stash author
+times, commit committer times, and PR UpdatedAt retain the supplied source property
+and offset; they are not observation freshness. Stash/commit parent selections
+use zero-based indices into the actual returned parent vector. Root comparisons
+are explicit alternatives. Tree objects are OIDs, never fabricated Revisions.
+
+OpaqueJSON uses json.Valid plus pure UTF-8, bounded shape/depth and duplicate-name
+predicates; escaped-name equivalence is checked, including surrogate pairs. It
+exposes copied bytes and never decodes or encodes a document. JSONMembers retain
+exact ordered unique names and values. Whole-document constructors reject known
+name collisions, invalid field placement/presence, duplicate semantic map keys
+and invalid UTF-8; they apply bounded retention/depth budgets. Persistence owns
+the strict complete input/schema codec, exact encoded 4 MiB limit, unknown-member
+preservation against guarded prior bytes, and actual load/publication proof.
+
+Structured errors supplement results. Evidence traversal rejects dangling
+post-observation/recovery references and inconsistent reused RecoveryIDs.
+NormalizeRecovery preserves each shared record plus complete StorageRecovery
+family/kind/locator/artifact identity and typed document versions. Result and
+terminal recovery unions must retain these facts. LocalConfiguration is an
+independent effect; Git Reconcile accepts exactly the seven specified shared
+facets and rejects Storage, RuntimeResources and duplicates.
+
+The types enforce structural identity, variant, copy, and representable factual
+consistency. They do not establish that an observation occurred, validate an
+adapter registry, consume confirmation, prove native cleanup, guarantee network
+creation, or implement exactly-once operation/workflow behavior. Environment
+keys use exact equality generally and Windows case-insensitive collision checks
+when admitted into an invocation for a Windows observed cwd.
+
+Verification: `go test ./internal/application/... -count=1`, the corresponding
+race run, full test/vet/build, and M1's architecture checker across all twelve
+target selections. Closed-family negatives cover every union; external fakes
+compile all five Client and all 48 port methods. These are M2 leaf checks, not
+completed Slices, native adapter evidence, or a release claim.
