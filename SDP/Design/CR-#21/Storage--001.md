@@ -1,6 +1,6 @@
 # Storage--001 — concrete persistence and migration contract
 
-State: DRAFT correction for DES52-H03 under #52; normative REFDES appendix.
+State: ACCEPTED DESIGN (effective after PR #54 merge) correction for DES52-H03 under #52; normative REFDES appendix.
 Select Feasibility/Persistence.md sections 1–5 as the native mechanism, with the
 schema, semantic ownership and explicit limits below. Its section 6 records
 bounded evidence and remaining product/native-platform proof. No BC is frozen.

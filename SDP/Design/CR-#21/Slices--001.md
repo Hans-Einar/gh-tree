@@ -1,6 +1,6 @@
 # Slices--001 — complete vertical migration contract
 
-State: DRAFT, normative appendix to REFDES--001 under #52.
+State: ACCEPTED DESIGN (effective after PR #54 merge), normative appendix to REFDES--001 under #52.
 Selection: all SLC-01..13. No subset is authorized by omission or folder completion.
 The per-Slice behavior below is source-grounded in the complete baseline inventory
 in MigrationMap.yaml. API--001 defines its requests/results; Verification--001

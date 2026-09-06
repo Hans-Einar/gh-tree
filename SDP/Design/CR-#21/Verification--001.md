@@ -1,6 +1,6 @@
 # Verification--001 — v0.4 acceptance contract
 
-State: DRAFT, normative design appendix under #52. No check below is claimed run
+State: ACCEPTED DESIGN (effective after PR #54 merge), normative design appendix under #52. No check below is claimed run
 against v0.4. Accepted review and feasibility evidence applies only to its recorded
 source/probe, not to future implementation. Test names may be chosen by workers;
 the behavior, platforms, failure injection and proof obligations are mandatory.

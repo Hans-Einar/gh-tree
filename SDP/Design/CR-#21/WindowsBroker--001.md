@@ -1,6 +1,6 @@
 # WindowsBroker--001 — native startup barrier and retained capability
 
-State: DRAFT correction for DES52-H04 under #52; normative REFDES appendix.
+State: ACCEPTED DESIGN (effective after PR #54 merge) correction for DES52-H04 under #52; normative REFDES appendix.
 This selects the mechanisms demonstrated in Feasibility/Evidence/windows-startup
 and windows-broker, with the complete build/ownership/verification rules below.
 It supersedes release of cwd guards merely when CreateProcess returns.

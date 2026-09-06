@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "state": "DRAFT",
+  "state": "accepted_design_effective_after_pr54_merge",
   "issue": 52,
   "parentIssue": 21,
   "baseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
@@ -1556,5 +1556,6 @@
     "integrationGate": "M3 Runtime after independent source/image reproducibility and native review",
     "ciInvocationOwner": "MC Composition",
     "publicReleaseAssetCount": 12
-  }
+  },
+  "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83"
 }

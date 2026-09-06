@@ -8,7 +8,7 @@
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
   "mainObserved": "58f1cb9eda941db0941cbb8e04e6a0559a3ca896",
-  "designState": "in_progress",
+  "designState": "accepted_pending_final_metadata_review_and_merge",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
   "items": [
@@ -214,7 +214,7 @@
     {
       "id": "REFDES52",
       "kind": "refactor_design",
-      "state": "windows_broker_correction_awaiting_rereview",
+      "state": "accepted_pending_merge",
       "issue": 52,
       "doc": "SDP/Design/CR-#21/REFDES--001.md",
       "branch": "codex/cr21-refactor-design",
@@ -228,12 +228,13 @@
         "DES52-M01",
         "DES52-M02"
       ],
-      "designFindingDisposition": "H01/H02/H03/M01/M02 mechanism/API corrections independently accepted at design level; H04 native broker correction awaits exact-HEAD review",
+      "designFindingDisposition": "All DES52 findings resolved at design level by independent exact-HEAD review; all143 product findings remain open",
       "pr": 54,
       "initialReviewHead": "f1dec60cbd3892f068410f2d7f3caa7f855ba52e",
       "fullReview": "SDP/Design/CR-#21/DesignReview--002.md",
       "correctedReviewHead": "8c109b1e4308eb301d7c1418292044d714c2f33b",
-      "latestReview": "SDP/Design/CR-#21/DesignReview--003.md"
+      "latestReview": "SDP/Design/CR-#21/DesignReview--004.md",
+      "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83"
     },
     {
       "id": "G-07",
@@ -1280,6 +1281,7 @@
     "DesignReview--001.md",
     "DesignReview--002.md",
     "WindowsBroker--001.md",
-    "DesignReview--003.md"
+    "DesignReview--003.md",
+    "DesignReview--004.md"
   ]
 }

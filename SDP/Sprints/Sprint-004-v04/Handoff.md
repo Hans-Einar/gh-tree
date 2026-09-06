@@ -17,8 +17,9 @@ Active authority: #52 (Refactor Design)
   and append-only Ledger.ndjson; findings overlap across reports. Counts 36H/89M/18L.
 - Last report: Composition PR #51, reviewed e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c,
   merged e0e716fd44421c221d00375fc0c0d0b8ea85bdff; nine CI checks passed.
-- No accepted REFDES, no FROZEN BC, no active implementation Slice, no v0.4
-  product changes. Review acceptance is not product-finding resolution.
+- Complete technical REFDES accepted at664f0c051344e3abdfd7d3c5698e4fbd3f584a83;
+  final acceptance-metadata review/CI/merge pending. No FROZEN BC, implementation
+  Slice or v0.4 product change. Design acceptance is not product-finding resolution.
 - Release parity requires all twelve v0.3.14 assets, including FreeBSD, 32-bit
   and Windows ARM64; exact names in CurrentIndex.releaseBaseline. Installed
   extension was observed at v0.3.13 and remains unchanged.
@@ -57,11 +58,14 @@ breakpoint barrier, ConPTY and final outer-Job cleanup. Three followup archives
 preserve43 checked source/log/build-output hashes and37 committed-text candidates;
 temporary executable probes are not product implementation. DesignReview--003
 records failed assumptions and the proposed correction. The next permitted action
-is freeze/independently review the complete new draft and its helper build/ABI/
-cleanup contracts; H04 is not self-accepted. All143 product findings remain open.
+was independent review of the complete native correction. DesignReview--004 now
+records ACCEPT at664f0c051344e3abdfd7d3c5698e4fbd3f584a83, with H04 resolved at
+design level and all18 CI checks passing (34022527812/34022530503). All143 product
+findings remain open. Final acceptance labels are effective only after PR54 merge.
 
-Fresh independent re-review at frozen exact SHA and green CI precede
-acceptance/merge. Then authorize BC review/freeze; no product implementation before
+Next: narrowly review the acceptance-metadata commit at its exact SHA, require
+its green CI and merge PR54 with expected-head protection. Then authorize BC
+review/freeze; no product implementation before
 both gates. Master owns metadata/contracts/integration and delegates bounded
 product work to fresh workers with separate reviewers when implementation begins.
 

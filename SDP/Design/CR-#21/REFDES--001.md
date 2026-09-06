@@ -1,6 +1,6 @@
 # REFDES--001 — gh-tree v0.4 architecture and migration
 
-State: DRAFT — not implementation authority
+State: ACCEPTED DESIGN — effective after Master acceptance and PR #54 merge; BC gate separate
 Parent program: #21; design authority: #52
 Product baseline: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b
 Design base: 58f1cb9eda941db0941cbb8e04e6a0559a3ca896
@@ -505,9 +505,12 @@ BC--Application--LaunchDiscovery, BC--Application--Persistence.
 Domain invariants and Composition wiring policy are governed here and in API/CI;
 they do not add an adapter layer or giant Composition runtime BC.
 
-## Draft disposition
+## Acceptance and next gate
 
-This record is not accepted. Complete and cross-review all normative appendices,
-resolve the two early safety findings with concrete feasible protocols, then
-freeze the complete design HEAD for the independent design gate. Feasibility
-proposals and a machine-complete inventory do not themselves authorize product work.
+Fresh independent review accepted the complete technical design at
+664f0c051344e3abdfd7d3c5698e4fbd3f584a83; Master acceptance and all18 successful
+CI checks are recorded on #52 and in DesignReview--004. Earlier findings and
+corrections remain traceable in the preceding review records. Final acceptance
+metadata receives its own exact-HEAD review/CI before PR #54 merges; the accepted
+design becomes effective on that merge. Then authorize the separate seven-BC
+review/freeze stage. No product implementation is authorized until its gate passes.

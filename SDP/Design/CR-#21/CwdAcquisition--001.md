@@ -1,6 +1,6 @@
 # CwdAcquisition--001 — bind launch scope through native Start
 
-State: DRAFT correction for DES52-H04 under #52. Normative part of REFDES.
+State: ACCEPTED DESIGN (effective after PR #54 merge) correction for DES52-H04 under #52. Normative part of REFDES.
 Runtime and Launch Discovery retain separate ownership; no shared filesystem
 adapter or adapter-to-adapter invocation is introduced.
 

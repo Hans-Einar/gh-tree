@@ -155,3 +155,10 @@ native probes. Native ARM64 implementation/emulation remains required, now with
 the documented windows-11-arm hosted CI route. Full source/log reports are archived;
 WindowsBroker--001 specifies the final topology/protocol/build contract. Fresh
 exact-HEAD review must accept this correction before any design/BC/product gate.
+
+Fresh independent complete design ACCEPT at
+664f0c051344e3abdfd7d3c5698e4fbd3f584a83; H04 and prior design findings resolved
+at design level. All18 CI checks pass in runs34022527812/34022530503. Master posted
+technical acceptance on #52 and recorded DesignReview--004. Acceptance labels
+become effective after final metadata exact-HEAD review/CI and PR54 merge. The next
+authorized program gate is separate BC review/freeze; product findings stay open.

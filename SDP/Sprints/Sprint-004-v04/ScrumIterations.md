@@ -154,3 +154,8 @@ pending a complete native startup correction. WindowsBroker--001 now supplies
 native-bitness helper delivery, actual cwd breakpoint/identity, ConPTY and final
 outer-Job barriers with bounded evidence. Review the new exact committed draft;
 do not infer acceptance from its author or earlier18 successful CI checks.
+
+Complete technical design independently ACCEPTED at
+664f0c051344e3abdfd7d3c5698e4fbd3f584a83, all18 CI checks successful. G-07 awaits
+only final acceptance-metadata exact-HEAD review/CI and PR54 merge. G-08 BC authority
+is opened after that merge; no implementation Slice is active yet.

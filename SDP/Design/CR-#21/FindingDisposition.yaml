@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "state": "DRAFT",
+  "state": "accepted_design_effective_after_pr54_merge",
   "issue": 52,
   "parentIssue": 21,
   "rule": "Every source finding remains open. Implement the selected REFDES/API protocol and linked checks; the source recommendation is context, not permission to weaken that protocol. Planned clauses/checks are not resolution evidence. Close only with exact implementation/review/integration SHAs and executed proof, or an explicit independently reviewed accepted disposition under Issue authority.",
@@ -5143,5 +5143,6 @@
       "integrationSHAs": [],
       "verificationEvidence": []
     }
-  ]
+  ],
+  "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83"
 }
