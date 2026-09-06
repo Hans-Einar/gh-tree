@@ -257,3 +257,25 @@ Fresh worker owns only Runtime and its report. No Git-review retry/substitution,
 serial integration, concrete adapter coupling or native safety waiver occurs.
 The first Runtime input activates the existing helper conformance gate; incomplete
 checkpoints remain explicit. No permanent placeholder implementation is accepted.
+
+## Reviewed Windows artifact identity adoption (#63)
+
+Master accepts M3-Identity-Review--001's bounded proposal assessment at6fc6c2c:
+full volume/128-bit FileIdInfo plus all64 native ObjectID-buffer bytes for newly
+and exclusively FILE_CREATE-created regular artifacts. CREATE_OR_GET precedes
+first journal/data flush; all later validation is GET-only and profile-directed.
+Existing originals never receive an ID for proof; only exact missing-ID errno2
+permits initial strict birth selection. Recorded ObjectID profiles never fall
+back, and old birth manifests stay exact without automatic upgrade. Directory,
+lock, root/Expected-anchor, whole-version, class65/class11, byte/security and
+outcome rules remain unchanged. See the independent report's complete adoption
+and product-verification requirements. No frozen BC change is needed or made.
+
+A fresh bounded worker may implement this private correction under#63. Native
+mechanism acceptance is not product acceptance: public repeated commit/recovery,
+process-death/error/mismatch/legacy profiles, native amd64/386/ARM64 and full
+required gates still need proof and a separate fresh implementation review.
+Git review remains blocked; no serial integration is authorized by this decision.
+
+Discovery20bd8ac/review4e9f479 is independently ACCEPTED, M364-M01 resolved,
+CI34065291612 19PASS/helper skip. Candidate remains held for prior serial gates.

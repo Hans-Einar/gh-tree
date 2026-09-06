@@ -525,6 +525,13 @@
       "relation": "review_blocked_by",
       "to": "external_review_access",
       "doc": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "source_accepted",
+      "to": "20bd8acf3576ca19f08b68205289f25cfe9dd3d9",
+      "reviewHead": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
+      "ci": 34065291612
     }
   ],
   "errata": [

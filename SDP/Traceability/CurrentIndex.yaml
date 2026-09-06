@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "independent_identity_proposal_review",
+      "state": "private_identity_adoption_dispatch_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -741,13 +741,15 @@
         "head": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
         "run": 34063842833,
         "result": "16 SUCCESS, 3 FAILURE (Windows amd64/ARM64 and native FreeBSD), helper skip; test-selection compilation failure resolved"
-      }
+      },
+      "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
+      "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending"
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "bounded_correction",
+      "state": "accepted_candidate_held_for_serial_integration",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -769,23 +771,23 @@
       "integrationHead": null,
       "worktreeCreated": true,
       "activeWorker": "m3_discovery_worker",
-      "lastCheckpoint": "8e2d2d1218ef6dcb70cbe06d55678e0420a20b36",
+      "lastCheckpoint": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
       "sharedPrerequisiteAdoption": "4bfcf7fa20657556f13d9b53f4a65d1e83992dc8",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
       "checkpointScope": "complete candidate; no independent acceptance/integration",
-      "sourceHead": "2a18fdd5b884568d832afeb7fab54bb4d4b50682",
+      "sourceHead": "20bd8acf3576ca19f08b68205289f25cfe9dd3d9",
       "sourceCI": {
-        "run": 34059784449,
-        "result": "SUCCESS; independent acceptance pending"
+        "run": 34065291612,
+        "result": "19 SUCCESS; expected pre-Runtime helper skip"
       },
-      "reviewHead": "591cb46cc1a5b5e57deefb12eb11fc2c6bec8453",
-      "reviewDisposition": "CHANGES_REQUIRED: M364-M01 Make comment classification"
+      "reviewHead": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
+      "reviewDisposition": "ACCEPT; M364-M01 resolved"
     },
     {
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "implementation_dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -1972,7 +1974,6 @@
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL64",
     "IMPL63",
     "IMPL65"
   ],

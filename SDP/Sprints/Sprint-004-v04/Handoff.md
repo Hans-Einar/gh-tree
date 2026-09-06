@@ -34,8 +34,10 @@ Git review. No model/permission change or withheld-output retrieval is authorize
 The Git gate remains open; all original M3..M8 requirements remain.
 Runtime#65 also starts independently from26d5f4f after its accepted M2/frozen
 prerequisites and shared CI were verified; its authoring does not depend on Git
-review. Discovery review found M364-M01 and a bounded parser correction is active.
-Persistence native identity proposal assessment is active; no adoption yet.
+review. Discovery M364-M01 correction20bd8ac/review4e9f479 is independently ACCEPTED,
+CI34065291612 19PASS/helper skip, held for serial integration. Persistence proposal
+assessment M3-Identity-Review--001 accepts the bounded private native mechanism;
+Master authorizes fresh implementation within its constraints, not adapter acceptance.
 
 ## Durable state
 
@@ -53,7 +55,7 @@ Current status-only commits do not change that verified product tree.
 | Git#61 | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | technical8c2584b; 11 facts, registry/ReleasePlan, scheduler/native locks; CI34063202321 19PASS/helper skip; review blocked, mutations incomplete |
 | GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
 | Persistence#63 | codereview-21/layer-persistence | 6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12 | all6 methods unaccepted; ObjectID probe699a69f only, product adoption pending; Windows regression/FreeBSD and full profile/fault gates remain |
-| Discovery#64 | codereview-21/layer-launchdiscovery | 8e2d2d1218ef6dcb70cbe06d55678e0420a20b36 | technical2a18fdd, CI34059784449 SUCCESS; independent review pending |
+| Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | 412f33e477cec03cb6eafe7b846c9bcdd02c0a25 | queued; no implementation |
 
 Exact implementation worktrees are in M3-Assignments/CurrentIndex. All five live
