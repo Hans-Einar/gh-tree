@@ -54,3 +54,21 @@ Remaining: exact-source CI, independent review/corrections and serial Master
 integration after accepted Git. SLC-01/02/03/05/08/12/13 contributions do not close
 any Slice or baseline finding. Full Application/State/View/Composition and release
 proof remains later gates. No completion tag, product PR or integration is claimed.
+
+## Bounded M3GH-R01 correction
+
+Independent review of926b2b70900fa5f0c2277b086fda0d9b6aad1194 required one P2
+correction: globally rejecting invalid UTF-8 discarded valid neighboring records.
+`decodeList` now validates array framing into unchanged RawMessage bytes;
+`strictJSON` still rejects invalid UTF-8 before decoding each record. Valid branch
+and PR siblings survive with Unknown completeness and malformed-record diagnostics.
+Broken envelopes still refuse entirely; no replacement-character coercion occurs.
+
+`record_utf8_test.go` contains both raw0xff sibling regressions, exact surviving
+Unicode/identity/OID assertions, raw-byte preservation and broken-envelope controls.
+Native Windows/amd64 Go1.25.0 package test, race and vet pass. The reviewer's existing
+independent overlay also passes all four test groups, including the previously
+failing branch/PR cases and unchanged creation/Unicode controls. Only parsing,
+these regressions and this worker report changed. Native lifecycle source and the
+reviewer report are unchanged. Corrected-source CI and independent bounded re-review
+remain required; the author does not self-accept the finding or integration.

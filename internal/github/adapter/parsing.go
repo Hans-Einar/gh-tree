@@ -71,9 +71,9 @@ func strictJSON(raw []byte, into any) error {
 }
 
 func decodeList(raw []byte) ([]json.RawMessage, error) {
-	if !utf8.Valid(raw) {
-		return nil, protocolError("invalid UTF-8")
-	}
+	// RawMessage preserves each record's original bytes without decoding string
+	// scalars. Validate envelope syntax here; strictJSON rejects invalid UTF-8
+	// within each record so independently valid neighbors can still survive.
 	var records []json.RawMessage
 	if e := json.Unmarshal(raw, &records); e != nil || records == nil {
 		return nil, protocolError("invalid list shape")
