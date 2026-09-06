@@ -183,8 +183,42 @@ execution. It was not retried or bypassed. Root/user were informed; the old loca
 fixture remains intact. Later tests restore DACLs through already-owned native
 handles before close, and their cleanup passes. No user store/global ACL changed.
 
+## Milestone P2e — native Unix metadata inspection and copy
+
+Exact source is the commit adding this subsection, reported after push. Private
+helpers bound attribute lists/values to1MiB, read them twice around native stat,
+and apply Fchown before Fchmod and native xattrs, followed by complete verification.
+Additional inherited attributes refuse instead of being silently removed. Linux
+inspects inode flags and copies user attributes and system.posix_acl_access;
+other returned security namespaces or unsupported flags refuse. Extents allocation
+is supported. Native unprivileged Linux/ext4 UID/GID65534 full Persistence package
+and Linux-target vet PASS, including real named-user POSIX ACL, mode/uid/gid/xattr
+copies, changed attributes, inherited extra metadata and invalid-descriptor errors.
+
+Darwin fgetattrlist explicitly asks for returned-attribute bitmap plus extended
+security, validates bounded native attrreference/filesec representation and accepts
+only actual absent ACL or KAUTH_FILESEC_NOACL, never a valid empty deny-all ACL.
+FreeBSD direct ExtattrListFd preserves both namespace errors. This avoids pinned
+x/sys xattr_bsd.go Flistxattr's intentional system EPERM suppression and the
+FlistxattrNS error path's nil error. Native __acl_get_fd inspects current POSIX and
+NFS4 types; nontrivial POSIX and NFS4 ACLs refuse. Native header:24+254*16=4088
+bytes across target ABIs. Unsupported EINVAL is propagated, not treated absent.
+
+Darwin ARM64 and all three FreeBSD test binaries cross-build; native metadata
+execution is pending and no profile acceptance is claimed. The Darwin test adds
+a real ACL through /bin/chmod only in its owned fixture. FreeBSD ordinary-user
+system attribute enumeration may deny; Root has this concrete concern and #66
+must record the actual native result. No error is discarded to make that profile
+pass. Source references: [Apple native ACL layout](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/kauth.h)
+and [FreeBSD native ACL layout](https://github.com/freebsd/freebsd-src/blob/releng/14.3/sys/sys/acl.h).
+
+P2c exact0630ded CI34055865289 passed18 SUCCESS plus the pre-Runtime helper skip,
+independently confirmed by Master. It proves those mechanisms on current native
+CI platforms, not P2d/P2e metadata or the forthcoming complete request protocol.
+
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: commit/push P2d; complete Unix metadata and constructor/port wiring with
+NEXT: commit/push P2e; obtain native Darwin/FreeBSD metadata results and wire
+constructor/ports with
 version/manifest/retention/admission/restart barriers around these primitives;
 freeze the complete adapter later for independent review and full native gates.

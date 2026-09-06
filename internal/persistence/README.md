@@ -107,6 +107,19 @@ The accepted ordinary-account profile excludes audit-only SACL replication;
 limited READ_CONTROL queries do not prove audit ACE absence or a full security
 descriptor copy. There is no public audit option or privilege escalation.
 
+Unix metadata helpers perform bounded native attribute enumeration, double-read
+comparison, Fchown then Fchmod, exact attribute copy and post-copy verification.
+Linux copies user attributes and POSIX access ACLs, rejects other returned
+security namespaces and unsupported inode flags; extents allocation is allowed.
+Native unprivileged Linux/ext4 tests prove named-user ACL/uid/gid/mode and xattr
+copying, extra inherited metadata refusal and native-query error propagation.
+Darwin separately queries fgetattrlist extended security, requiring a returned
+attribute and validating the native no-ACL sentinel; extended ACLs refuse.
+FreeBSD queries native POSIX/NFS4 ACLs and direct ExtattrListFd for both namespaces,
+preserving errors that the pinned convenience wrappers hide. Darwin/FreeBSD
+metadata mechanisms currently have cross-build evidence only; FreeBSD unprivileged
+system-namespace enumeration must be proved before claiming ordinary-user support.
+
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing
 parent revalidation, exact class65/class11 or Renameat/Linkat publication,
