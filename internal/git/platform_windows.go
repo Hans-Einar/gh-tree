@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"unicode/utf8"
 	"unsafe"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -17,6 +18,9 @@ import (
 func hideWindow(cmd *exec.Cmd) { cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} }
 
 func observeDirectory(path string) (directoryObservation, error) {
+	if !utf8.ValidString(path) {
+		return directoryObservation{}, errors.New("unsupported non-UTF-8 Windows directory locator")
+	}
 	p, err := windows.UTF16PtrFromString(path)
 	if err != nil {
 		return directoryObservation{}, err

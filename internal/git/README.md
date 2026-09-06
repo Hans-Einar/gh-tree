@@ -51,6 +51,15 @@ patch output without inserting UI text. Exact tree attributes are selected via
 Git's GIT_ATTR_SOURCE, independently of later worktree .gitattributes edits.
 General ReadDiff and ObserveStatus await the explicit status-cause correction #67.
 
+Private native-directory acquisition now validates supplied physical identity and
+opens/creates one literal child relative to the held directory. Unix uses
+Openat/O_NOFOLLOW/O_EXCL; Windows uses aligned NtCreateFile with RootDirectory,
+OBJ_DONT_REPARSE, no-follow child inspection and protected user/System DACL for
+new private files. Native Windowsamd64/386 ABI/ACL/exclusive-create/replacement and
+junction controls pass. Symlink creation needs unavailable local privilege and is
+reported skipped separately. These primitives do not constitute the retained
+publisher, its race/crash proof, or a public mutation implementation.
+
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
 `birth-filetime:<decimal uint64>`. Aligned native storage is required; a raw byte
