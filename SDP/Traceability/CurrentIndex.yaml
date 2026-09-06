@@ -936,12 +936,18 @@
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "dispatch_ready",
+      "state": "implementation_in_progress",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
       "scope": "cmd/helpergen and brokerassets only; no native extraction or broker edits",
-      "report": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets--001.md"
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets--001.md",
+      "sharedPrerequisiteFiles": [
+        "internal/composition/architecture/policy.go",
+        "internal/composition/architecture/check.go",
+        "internal/composition/architecture/testdata/cases.json"
+      ],
+      "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate"
     }
   ],
   "productFindings": [

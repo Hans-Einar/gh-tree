@@ -309,3 +309,12 @@ Before dispatch, untouched #70 base advanced to ab608327 after #69 pushed its
 real parent-client/protocol tests (pipes/ConPTY/force stop/root-first cleanup).
 Broker package must not import assets through client/extraction code; parent
 Runtime supplies private asset values. No native/full candidate acceptance.
+
+#70 narrow shared prerequisite: Master permits only Composition architecture
+policy.go/check.go/testdata/cases.json to admit encoding/json and debug/pe for
+assets, retaining in-memory use and typed rejection of pe.Open (also referenced
+or aliased). Existing dependency/inventory/CI/frozen rules stay unchanged.
+Standard parsers avoid handwritten JSON/PE validation and extra generated output.
+Positive byte-reader and negative path/native-I/O/recursive-import fixtures use
+the existing test format. Separate helper candidate review includes this small
+delta; no extra review round or broader Composition ownership is authorized.
