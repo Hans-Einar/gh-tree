@@ -302,6 +302,33 @@ The ordinary FreeBSD system-EA EPERM profile remains unresolved without a waiver
 
 ## Exact successor work
 
+P3b private manifest checkpoint (the commit adding this paragraph) now supplies
+bounded strict manifest decoding, family/store/parent/root/Expected/Original/
+Proposed and generated-name structural checks, per-artifact cryptographic IDs,
+native artifact identity checks, and shared typed recovery construction. Native
+Windows amd64 full package/vet PASS; Linux/ext4 UID65534 targeted manifest tests
+PASS in owned `/tmp/gh-tree-persistence-p3b.Fs2rkC/tmp`. Fresh acquire/lock/close
+cycles preserve all IDs; late writes to the retained original leave raw backup
+unchanged; replacing a raw backup with identical bytes refuses its old ID, while
+independent unaffected records survive. Malformed/foreign bindings refuse.
+These private helpers are not yet connected to loads or public commits and do
+not establish the complete restart/publication protocol or profile acceptance.
+
+Master verified P2f87506ee CI34057603393 and P3a8775a80 CI34058262124 SUCCESS;
+the corrected Darwin selector therefore has actual native CI evidence. Accepted
+shared FreeBSD CI prerequisite canonicald5eeaac CI34058149301 is awaiting its
+Master-owned merge at this clean P3b boundary. New native adapter execution must
+preserve the ordinary system-EA EPERM error. No FreeBSD profile waiver is made.
+
+Manifest identity is a recorded observation, distinct from the stable RecoveryID;
+the frozen contract does not demand recursively embedding a manifest's final
+ctime. Native no-birth association still needs explicit supported-profile proof;
+changed inode observation alone cannot prove replacement absence. Existing
+birth-stamped native controls pass. Full own-effect directory/root transitions,
+native ancestor verification of missing-parent Expected evidence, persistent
+payload publication/recovery naming, and constructor namespace exclusions remain
+part of the next complete-protocol work, not accepted by this partial checkpoint.
+
 Stop clean after this pushed milestone for the Master-requested fresh request-
 protocol worker. Existing private helpers are not an assembled safety protocol.
 Implement all three public commits and wire recovery into loads: expected whole-

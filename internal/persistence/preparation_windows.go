@@ -1,14 +1,35 @@
 package persistence
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"strings"
+	"time"
 	"unicode"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
 )
 
 type nativeMetadata = winMetadata
+type nativeStoreLock = winStoreLock
+
+func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
+	return winLock(ctx, parent, basename, wait)
+}
+func nativeRetainOriginal(original, parent *nativeObject, target, name string) (*nativeObject, error) {
+	return winRetainOriginal(original, parent, name)
+}
+
+func nativeArtifactIdentity(object *nativeObject) (diskIdentity, error) {
+	v, err := winObserve(object.handle())
+	if err != nil {
+		return diskIdentity{}, err
+	}
+	birth := uint64(v.basic.CreationTime.HighDateTime)<<32 | uint64(v.basic.CreationTime.LowDateTime)
+	return diskIdentity{api.DirectoryWindows, v.id.Volume, v.id.File, fmt.Sprintf("birth-filetime:%d", birth)}, nil
+}
 
 func nativeNameKey(name string) string {
 	// Use the same equivalence relation as nativeSameName/EqualFold. Lowercase

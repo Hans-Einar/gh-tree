@@ -3,12 +3,34 @@
 package persistence
 
 import (
+	"context"
+	"encoding/binary"
 	"errors"
+	"time"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/unix"
 )
 
 type nativeMetadata = unixMetadata
+type nativeStoreLock = unixStoreLock
+
+func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
+	return unixLock(ctx, parent, basename, wait)
+}
+func nativeRetainOriginal(original, parent *nativeObject, target, name string) (*nativeObject, error) {
+	return unixRetainOriginal(original, parent, target, name)
+}
+
+func nativeArtifactIdentity(object *nativeObject) (diskIdentity, error) {
+	v, err := unixObserve(object.fd())
+	if err != nil {
+		return diskIdentity{}, err
+	}
+	var id [16]byte
+	binary.LittleEndian.PutUint64(id[:8], uint64(v.stat.Ino))
+	return diskIdentity{api.DirectoryUnix, uint64(v.stat.Dev), id, v.stamp}, nil
+}
 
 func nativeNameKey(name string) string { return name }
 func nativeObjectSize(object *nativeObject) (int64, error) {
