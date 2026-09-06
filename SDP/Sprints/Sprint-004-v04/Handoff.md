@@ -3,13 +3,13 @@
 State: ACTIVE — focused review gates, no product implementation
 Repository: Hans-Einar/gh-tree
 Parent: #21, reopened under explicit user authority
-Sprint/iteration/gate: Sprint-004-v04 / I-01 / G-04
-Master owns coordination; GitHub #43 is authorized.
+Sprint/iteration/gate: Sprint-004-v04 / I-01 / G-05
+Master owns coordination; TUI View #46 is authorized.
 
 ## Exact current evidence
 
 - Product: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-- Main governance: db07857550cdfd56c114eb42c045b896b229d747.
+- Main governance: e16650036c10f764c1b99c76d98d2bd37c3ffbb0.
 - Domain #33 / PR #34 / codereview-21/layer-domain-review:
   corrected HEAD 86d2a4c0cc0eb8f427d597617246e85473a6cf55, accepted and merged
   at 5b1cf181fd3245a65337f1db28ee8f0fb95c200f; #33 closed.
@@ -22,13 +22,15 @@ Master owns coordination; GitHub #43 is authorized.
   Windows ARM64. See CurrentIndex.releaseBaseline and parent #21 packaging comment.
 - Persistence #40 / PR #42 accepted at e13639926ca1b34e5021d1a038b83517cb7eec65,
   merged at db07857550cdfd56c114eb42c045b896b229d747; #40 closed. 2H/6M/1L findings.
+- GitHub #43 / PR #45 accepted at ea52f8c5c50e178c6e415cbba2284296e2d9b910,
+  merged at e16650036c10f764c1b99c76d98d2bd37c3ffbb0; #43 closed. 1H/8M/1L findings.
 
 ## Continue
 
 Read AGENTS.md, developmentInstructions.md, full #21 comments, the full
 UserRunContract.md and the current index/ledger before acting. Inspect exact
 remote refs and clean/dirty state; preserve any unpublished or user work.
-Seven focused reviews and #35 scaffolding are complete. Execute GitHub review Issue #43
+Eight focused reviews and #35 scaffolding are complete. Execute TUI View review Issue #46
 in a dedicated review-only worktree/branch using LayerReview.md; consume all
 accepted earlier reviews. Follow the ordered gate sequence in ScrumIterations.md.
 
