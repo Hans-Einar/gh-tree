@@ -98,3 +98,32 @@ implementationNotes/Handoff/CurrentIndex/Relations/append-only Ledger. No produc
 PR, entry cutover, legacy retirement, main merge, tag or release is authorized by
 these adapter Issues. M3 ends only after all five contribution gates pass; the
 full M4..M8 objective and all13 Slices remain afterward.
+
+## Native value interoperability conventions
+
+Implementation detail within frozen B3/Cwd/remote scope semantics, coordinated
+between the emitting and consuming workers; no new layer or authority is added.
+- Remote RepositoryID: domain.Remote with lowercase DNS-host/owner/name token,
+  e.g. github.com/hans-einar/gh-tree. Transport .git normalization is separate;
+  adapters still verify/register associations, never decode tokens into authority.
+- Windows DirectoryIdentity: DirectoryWindows; full FileIdInfo uint64 volume and
+  native16 FileID bytes; stamp birth-filetime:<unsigned CreationTime FILETIME>.
+  Use native aligned storage and verified ABI; legacy64 file IDs are insufficient.
+- Unix: DirectoryUnix; native device as uint64, inode uint64 little-endian in
+  FileID bytes0..7 and zero bytes8..15. Prefer proved-available birth:<signed-sec>:<nsec>;
+  otherwise explicitly use change:<signed-sec>:<nsec>. Decimal is canonical without
+  padding, nsec0..999999999. Never fabricate availability or a clock stamp.
+- Consumers compare the supplied stamp profile, without silently upgrading it or
+  ignoring drift. Birth stamps remain stable under child creation; change fallback
+  is short-lived and must honor frozen stale/held-object/own-effect rules. Test
+  child creation/rename versus replacement and unsupported/unavailable profiles.
+
+Value vectors: Unix device42/inode0x0102030405060708 has FileID
+08070605040302010000000000000000 and stamp birth:1:2 (or explicitly change:1:2).
+Windows device42/FileID000102030405060708090a0b0c0d0e0f uses the same16 native bytes
+and stamp birth-filetime:116444736000000000. These are layout vectors, not native
+proof. Native observation, nofollow acquisition and process/resource gates remain.
+
+Shared CI support is queued under#66 (Composition). Existing Linux/macOS/Windows/
+ARM64 jobs and x/sys0.44.0 already support native milestones;#66 adds reviewed
+FreeBSD execution/evidence without changing adapter ownership or release behavior.

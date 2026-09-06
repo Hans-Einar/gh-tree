@@ -34,6 +34,11 @@ own only their adapter folder/tests/bounded report; no legacy, shared workflow/m
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
 
+Current pushed partial milestones: Git dd80cde (transport/physical scope/worktrees),
+GitHub235b32a (all remote methods, hardening pending), Persistencea95d112 (strict
+codec/version foundation). None is accepted or integrated. Shared FreeBSD CI#66
+is queued; native interoperability conventions are in M3-Adapters--001.
+
 No M3 product work existed at resume. Before the next substantial step ensure the
 previous milestone is verified, committed and pushed. A partial recovery checkpoint
 is not completion. Canonical docs-only commits may skip CI; executable/build changes

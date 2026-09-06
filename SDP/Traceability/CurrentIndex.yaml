@@ -601,7 +601,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -630,13 +630,15 @@
         "V-GIT-01..10"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "lastCheckpoint": "dd80cdecc0c835d119dc21671fbba2efacc23644",
+      "checkpointScope": "partial, not accepted/integrated"
     },
     {
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -659,13 +661,15 @@
         "V-GH-01..03"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "lastCheckpoint": "235b32a26913589e380d81465bc3bda261b841cb",
+      "checkpointScope": "partial, not accepted/integrated"
     },
     {
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -688,7 +692,9 @@
         "V-PER-01..04"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "lastCheckpoint": "a95d112aa493d3899d34728843b59090ab3c6f17",
+      "checkpointScope": "partial, not accepted/integrated"
     },
     {
       "id": "IMPL64",
@@ -742,6 +748,16 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true
+    },
+    {
+      "id": "IMPL66",
+      "kind": "shared_CI_support",
+      "issue": 66,
+      "state": "authorized_queued",
+      "layer": "Composition",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
+      "integrationHead": null
     }
   ],
   "productFindings": [
