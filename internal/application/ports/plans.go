@@ -163,6 +163,16 @@ func PlanSummary(plan PreparedGitPlan) (api.MutationPlanSummary, error) {
 	}
 	return p.summary, nil
 }
+
+// PlanSummaryDigest returns the adapter-issued summary digest by value.
+// Observing it grants no approval or native execution authority.
+func PlanSummaryDigest(plan PreparedGitPlan) ([32]byte, error) {
+	p, ok := identity(plan)
+	if !ok {
+		return [32]byte{}, invalid("plan")
+	}
+	return p.digest, nil
+}
 func PlanOperation(plan PreparedGitPlan) (api.OperationID, error) {
 	p, ok := identity(plan)
 	if !ok {
