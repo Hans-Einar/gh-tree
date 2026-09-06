@@ -55,7 +55,15 @@ index stages/semantic flags and physically observed file facts. Full-content has
 detect same-size preserved-mtime changes. Missing/unproved current facts produce
 partial diagnostics; no absent file, zero Revision or clean status is fabricated.
 Upstream none/resolved/gone/unresolved/not-applicable and optional ahead/behind
-counts remain explicit. General ReadDiff is the remaining facts method.
+counts remain explicit. The physical worktree version excludes status cause/index
+encoding, so index-only staging does not renew unchanged filesystem consent.
+
+All eleven GitFacts signatures are implemented and compile-checked against ports.
+ReadDiff supports exact commit root/selected-parent/pair, index-to-worktree and
+Head-to-index comparisons with source revalidation and independent file/byte bounds.
+HeadVersion comes from the selected WorktreeFacts.Observation.Version; index and
+worktree versions come from StatusFacts. A changed source refuses its old comparison.
+Every GitMutations method remains to be implemented before adapter acceptance.
 
 Private native-directory acquisition now validates supplied physical identity and
 opens/creates one literal child relative to the held directory. Unix uses

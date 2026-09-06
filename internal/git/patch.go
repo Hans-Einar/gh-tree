@@ -157,7 +157,11 @@ func (s *readSession) treePatch(repo repository, from, to domain.OID, paths []ap
 	env := []string{"GIT_ATTR_SOURCE=" + to.String()}
 	run := func(args ...string) commandResult { return s.commandEnv(repo.common.path, env, args...) }
 	base := []string{"--git-dir=" + repo.common.path, "diff", "--no-ext-diff", "--no-textconv", "--no-color", "--find-renames"}
-	comparison := []string{from.String(), to.String(), "--"}
+	return nativePatch(run, base, []string{from.String(), to.String()}, paths, limits)
+}
+
+func nativePatch(run func(...string) commandResult, base, endpoints []string, paths []api.GitPath, limits api.PatchLimits) (api.PatchFacts, error) {
+	comparison := append(append([]string(nil), endpoints...), "--")
 	for _, path := range paths {
 		comparison = append(comparison, path.String())
 	}
@@ -188,7 +192,7 @@ func (s *readSession) treePatch(repo repository, from, to domain.OID, paths []ap
 	}
 	// Bound patch file scope as well as metadata scope. Rename sources remain
 	// literal operands and are included with their destinations.
-	patchComparison := []string{from.String(), to.String(), "--"}
+	patchComparison := append(append([]string(nil), endpoints...), "--")
 	for _, file := range selected {
 		patchComparison = append(patchComparison, file.Path.String())
 		if old, p := file.OldPath.Value(); p {
@@ -267,7 +271,7 @@ func (a *Adapter) ReadStashPatch(ctx context.Context, request api.ReadStashPatch
 				toCommit = parents[2]
 			}
 		case api.StashParent:
-			if int(view.Data().Index) >= len(parents) {
+			if uint64(view.Data().Index) >= uint64(len(parents)) {
 				err = diagnostic(api.Invalid, "StashParentMissing", "The selected stash parent does not exist.")
 			} else {
 				fromCommit = parents[view.Data().Index]

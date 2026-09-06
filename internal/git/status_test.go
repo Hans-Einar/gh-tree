@@ -70,7 +70,11 @@ func TestStatusSeparatesStagedUnstagedAndBothWithoutIndexWrites(t *testing.T) {
 				t.Fatal("unstaged cause lost")
 			}
 			fixtureGit(t, a, root, "add", "--", "file.txt")
+			beforeStagingFilesystem := status.Data().WorktreeVersion
 			status = observeFixtureStatus(t, a, id)
+			if status.Data().WorktreeVersion != beforeStagingFilesystem {
+				t.Fatal("index-only staging changed the physical worktree version")
+			}
 			causes = causesFor(status, "file.txt")
 			if len(causes) != 1 || !causes[api.IndexChangeCause].Valid() {
 				t.Fatal("staged cause lost")

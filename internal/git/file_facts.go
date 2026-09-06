@@ -10,6 +10,9 @@ import (
 )
 
 func (s *readSession) fileState(scope api.WorktreeScope, path api.GitPath) (api.FileState, error) {
+	if err := s.ctx.Err(); err != nil {
+		return nil, err
+	}
 	d := scope.Data()
 	root, err := acquireDirectory(directoryObservation{path: d.RootLocator, identity: d.RootIdentity})
 	if err != nil {

@@ -263,20 +263,41 @@ func (s *readSession) status(repo repository, id domain.WorktreeID) (statusSnaps
 	failed := make(map[api.GitPath]bool)
 	var changes []api.ChangeFact
 	var sourceParts []string
+	// The filesystem version is independent of which side of the index a
+	// change occupies. Otherwise an owned StageAll would invalidate unchanged
+	// worktree consent merely by moving a row from Worktree to Index or clean.
+	pathSet := make(map[api.GitPath]bool, len(result.entries)+len(candidates))
+	for path := range result.entries {
+		pathSet[path] = true
+	}
+	for _, row := range candidates {
+		pathSet[row.Path] = true
+	}
+	allPaths := make([]api.GitPath, 0, len(pathSet))
+	for path := range pathSet {
+		allPaths = append(allPaths, path)
+	}
+	sort.Slice(allPaths, func(i, j int) bool { return allPaths[i].String() < allPaths[j].String() })
+	if len(allPaths) > 10000 {
+		return result, diagnostic(api.Unavailable, "StatusPathLimit", "The full status source exceeds the supported path observation bound.")
+	}
+	for _, path := range allPaths {
+		state, e := s.fileState(scope, path)
+		if e != nil {
+			failed[path] = true
+			result.diagnostics = append(result.diagnostics, safeError(e))
+			continue
+		}
+		states[path] = state
+		if _, present := state.(api.PresentFile); present {
+			sourceParts = append(sourceParts, path.String(), fmt.Sprint(state))
+		}
+	}
 	for _, candidate := range candidates {
 		if failed[candidate.Path] {
 			continue
 		}
-		state, p := states[candidate.Path]
-		if !p {
-			state, err = s.fileState(scope, candidate.Path)
-			if err != nil {
-				failed[candidate.Path] = true
-				result.diagnostics = append(result.diagnostics, safeError(err))
-				continue
-			}
-			states[candidate.Path] = state
-		}
+		state := states[candidate.Path]
 		candidate.WorktreeState = state
 		candidate.IndexEntries = result.entries[candidate.Path]
 		if candidate.Cause == api.UntrackedChangeCause {
@@ -287,7 +308,6 @@ func (s *readSession) status(repo repository, id domain.WorktreeID) (statusSnaps
 			return result, ce
 		}
 		changes = append(changes, value)
-		sourceParts = append(sourceParts, fmt.Sprint(value.Data()))
 	}
 	var drift error
 	endIndex, ie := indexBytes(admin)
@@ -309,7 +329,7 @@ func (s *readSession) status(repo repository, id domain.WorktreeID) (statusSnaps
 	if drift != nil {
 		result.diagnostics = append(result.diagnostics, safeError(drift))
 	}
-	worktreeVersion := sourceVersion("worktree", queryBinding(repo.id.Token(), id.AdministrativeKey()), s.a.lifetime, []byte(queryBinding(string(working.stdout), string(untracked.stdout), strings.Join(sourceParts, "\x00"))))
+	worktreeVersion := sourceVersion("worktree", queryBinding(repo.id.Token(), id.AdministrativeKey()), s.a.lifetime, []byte(queryBinding(sourceParts...)))
 	version := sourceVersion("status", queryBinding(repo.id.Token(), id.AdministrativeKey()), s.a.lifetime, []byte(queryBinding(fmt.Sprint(head), fmt.Sprint(indexVersion), fmt.Sprint(worktreeVersion), fmt.Sprint(configuration), fmt.Sprint(result.inventory))))
 	complete := api.Complete
 	if len(result.diagnostics) > 0 || inventory.observation.Data().Completeness != api.Complete {

@@ -22,12 +22,12 @@ func TestNativeGitRefCommandAcquiredDirectoryControl(t *testing.T) {
 	fixtureGit(t, a, root, "-c", "commit.gpgsign=false", "commit", "--allow-empty", "-m", "New root object")
 	next := line(fixtureGit(t, a, root, "rev-parse", "HEAD"))
 	fixtureGit(t, a, root, "update-ref", "refs/heads/main", old, next)
+	fixtureGit(t, a, root, "update-ref", "refs/heads/fixture-new", next)
 	parent := t.TempDir()
 	clone := filepath.Join(parent, "clone")
 	fixtureGit(t, a, root, "clone", "--no-local", "--", root, clone)
 	// Preserve the new object in the clone too, so an accidental pathname CAS
 	// could otherwise succeed against its identical old endpoint.
-	fixtureGit(t, a, clone, "fetch", "--", root, next)
 	observed, err := observeDirectory(filepath.Join(root, ".git"))
 	if err != nil {
 		t.Fatal(err)
