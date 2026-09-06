@@ -1,0 +1,124 @@
+{
+  "stage": "M3",
+  "state": "authorized_before_dispatch",
+  "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+  "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+  "assignments": [
+    {
+      "key": "git",
+      "id": "IMPL61",
+      "issue": 61,
+      "layer": "Git",
+      "branch": "codereview-21/layer-git",
+      "worktree": "git-implementation",
+      "owned": "internal/git/",
+      "report": "SDP/Implementation/CR-#21/Git/M3-Git--001.md",
+      "checks": [
+        "V-GIT-01..10"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "dispatch": "initial"
+    },
+    {
+      "key": "github",
+      "id": "IMPL62",
+      "issue": 62,
+      "layer": "GitHub",
+      "branch": "codereview-21/layer-github",
+      "worktree": "github-implementation",
+      "owned": "internal/github/adapter/",
+      "report": "SDP/Implementation/CR-#21/GitHub/M3-GitHub--001.md",
+      "checks": [
+        "V-GH-01..03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-08",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "dispatch": "initial"
+    },
+    {
+      "key": "persistence",
+      "id": "IMPL63",
+      "issue": 63,
+      "layer": "Persistence",
+      "branch": "codereview-21/layer-persistence",
+      "worktree": "persistence-implementation",
+      "owned": "internal/persistence/",
+      "report": "SDP/Implementation/CR-#21/Persistence/M3-Persistence--001.md",
+      "checks": [
+        "V-PER-01..04"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-05",
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "dispatch": "initial"
+    },
+    {
+      "key": "discovery",
+      "id": "IMPL64",
+      "issue": 64,
+      "layer": "Launch Discovery",
+      "branch": "codereview-21/layer-launchdiscovery",
+      "worktree": "discovery-implementation",
+      "owned": "internal/launchdiscovery/",
+      "report": "SDP/Implementation/CR-#21/Launch-Discovery/M3-Discovery--001.md",
+      "checks": [
+        "V-LCH-01..03"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "dispatch": "queued"
+    },
+    {
+      "key": "runtime",
+      "id": "IMPL65",
+      "issue": 65,
+      "layer": "Runtime",
+      "branch": "codereview-21/layer-runtime",
+      "worktree": "runtime-implementation",
+      "owned": "internal/runtime/",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-Runtime--001.md",
+      "checks": [
+        "V-RUN-01..08"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "dispatch": "queued"
+    }
+  ]
+}

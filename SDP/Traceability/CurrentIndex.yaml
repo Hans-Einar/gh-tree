@@ -4,7 +4,7 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
-  "activeGate": "M3-preparation",
+  "activeGate": "M3",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
   "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
@@ -574,9 +574,14 @@
     {
       "id": "M3",
       "kind": "integration_gate",
-      "state": "preparation",
+      "state": "active",
       "requires": [
-        "M2"
+        "M2",
+        "IMPL61",
+        "IMPL62",
+        "IMPL63",
+        "IMPL64",
+        "IMPL65"
       ],
       "order": [
         "Git",
@@ -585,7 +590,148 @@
         "Launch Discovery",
         "Runtime"
       ],
-      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md"
+    },
+    {
+      "id": "IMPL61",
+      "kind": "implementation_contribution",
+      "issue": 61,
+      "state": "authorized",
+      "layer": "Git",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-git",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/git-implementation",
+      "ownedPath": "internal/git/",
+      "workerReport": "SDP/Implementation/CR-#21/Git/M3-Git--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-GIT-01..10"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL62",
+      "kind": "implementation_contribution",
+      "issue": 62,
+      "state": "authorized",
+      "layer": "GitHub",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-08",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-github",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/github-implementation",
+      "ownedPath": "internal/github/adapter/",
+      "workerReport": "SDP/Implementation/CR-#21/GitHub/M3-GitHub--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-GH-01..03"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL63",
+      "kind": "implementation_contribution",
+      "issue": 63,
+      "state": "authorized",
+      "layer": "Persistence",
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-05",
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-persistence",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/persistence-implementation",
+      "ownedPath": "internal/persistence/",
+      "workerReport": "SDP/Implementation/CR-#21/Persistence/M3-Persistence--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-PER-01..04"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL64",
+      "kind": "implementation_contribution",
+      "issue": 64,
+      "state": "authorized_queued",
+      "layer": "Launch Discovery",
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-launchdiscovery",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/discovery-implementation",
+      "ownedPath": "internal/launchdiscovery/",
+      "workerReport": "SDP/Implementation/CR-#21/Launch-Discovery/M3-Discovery--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-LCH-01..03"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL65",
+      "kind": "implementation_contribution",
+      "issue": 65,
+      "state": "authorized_queued",
+      "layer": "Runtime",
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-runtime",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation",
+      "ownedPath": "internal/runtime/",
+      "workerReport": "SDP/Implementation/CR-#21/Runtime/M3-Runtime--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-RUN-01..08"
+      ],
+      "integrationHead": null
     }
   ],
   "productFindings": [
@@ -1659,7 +1805,11 @@
     "SLC-12",
     "SLC-13"
   ],
-  "activeContribution": "M3-PREPARATION",
+  "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
-  "activeContributions": []
+  "activeContributions": [
+    "IMPL61",
+    "IMPL62",
+    "IMPL63"
+  ]
 }

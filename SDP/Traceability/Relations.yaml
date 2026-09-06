@@ -394,6 +394,62 @@
       "from": "M3",
       "relation": "depends_on",
       "to": "M2"
+    },
+    {
+      "from": "IMPL61",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL62",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL62",
+      "relation": "integrates_after",
+      "to": "IMPL61"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "integrates_after",
+      "to": "IMPL62"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "integrates_after",
+      "to": "IMPL63"
+    },
+    {
+      "from": "IMPL65",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL65",
+      "relation": "integrates_after",
+      "to": "IMPL64"
+    },
+    {
+      "from": "M3",
+      "relation": "accepts",
+      "to": [
+        "IMPL61",
+        "IMPL62",
+        "IMPL63",
+        "IMPL64",
+        "IMPL65"
+      ]
     }
   ],
   "errata": [

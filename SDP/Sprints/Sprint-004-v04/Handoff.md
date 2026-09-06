@@ -1,6 +1,6 @@
 # Program handoff
 
-State: ACTIVE - Sprint-004-v04 / I-03 / M3 preparation.
+State: ACTIVE - Sprint-004-v04 / I-03 / M3 adapter implementation.
 Full long-running goal #21 remains open. M1/M2 Issues #57..60 are complete/closed.
 Canonical codereview-21/refactor worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor.
@@ -43,14 +43,17 @@ Product trees match accepted sources and no unexpected shared/build inputs chang
 API#59 and viewmodel#60 are CLOSED, verified on GitHub. M1/M2 are complete; no
 full Slice, baseline finding, coordinator/native behavior or release gate is closed.
 
-Active stage: I-03 / M3 preparation. Read AGENTS/developmentInstructions, current
+Active stage: I-03 / M3 adapter implementation. Read AGENTS/developmentInstructions, current
 full#21, accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker/MigrationMap/
 Slices/Verification/FindingDisposition, relevant full frozen BCs/shared types and
-actual accepted Domain/API/ports. Next create M3 implementation Issues and Master
-slice/contribution contracts, update current index/relations/ledger before dispatch,
-then use fresh worker contexts and separate independent reviewers. Workers own
-one adapter folder only; Master owns shared integration/traceability. No M3
-implementation Issue/dispatch exists yet at this checkpoint.
+actual accepted Domain/API/ports. M3 Issues61/62/63/64/65 and Master contract
+SDP/Implementation/CR-#21/M3-Adapters--001.md are created. Index/relations/ledger54
+record scope before dispatch. Master next creates the five dedicated worktrees
+from this kickoff and records their actual base, then starts fresh Git/GitHub/
+Persistence authors; Discovery/Runtime remain queued. Every worker owns only its
+one declared adapter folder/tests/report; separate fresh reviewers and Master
+serial integration remain required. No M3 product author has started yet at this
+kickoff; exact base/dispatch follow in the authoritative records.
 
 M3 serial integration: Git → GitHub → Persistence → Launch Discovery → Runtime.
 Then M4 Application → State → View; M5 full real new-stack headless Slices; M6
@@ -103,5 +106,5 @@ Inspect actual HEAD/dirty/unpublished state before each next action. No product
 PR/tag/release/install-upgrade has occurred; installed extension was observedv0.3.13
 and is unchanged. No external blocker is known. Use explicit UTF-8 for scripts and
 scoped byte-preserving attributes for native evidence. CurrentIndex/Relations/
-Ledger through53 and CurrentMatrix65 checks record M2 completion; no whole check
+Ledger through54 and CurrentMatrix65 checks record M2 completion; no whole check
 is manufactured complete from leaf-only proof.

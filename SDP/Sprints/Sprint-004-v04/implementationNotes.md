@@ -360,3 +360,13 @@ M3 preparation now opens bounded adapter Issues under#21, records exact contract
 traceability before fresh implementation, and uses separate reviewers. Accepted
 serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
 M4..M8/full native/vertical/packaging/release gates remain intact.
+
+M3 adapter Issues61 Git,62 GitHub,63 Persistence,64 Launch Discovery and65 Runtime
+are authorized under#21 after complete M2. Contract M3-Adapters--001 and current
+index/relations/ledger54 precede fresh worker dispatch. First parallel authors:
+Git/GitHub/Persistence; Discovery/Runtime queued. Exact worker base is the Master
+kickoff commit, recorded in dispatch ledger/Issue comments after worktree creation.
+No product source is changed by this kickoff; serial integration order stays
+Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
+M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
+passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.

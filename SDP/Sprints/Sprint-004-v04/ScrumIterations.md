@@ -3,7 +3,7 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-03 - complete refactor implementation
-Active gate: M3 preparation - bounded Git/GitHub/Persistence/Discovery/Runtime Issues
+Active gate: M3 - adapter implementation under Issues #61..65
 All SLC-01..13 selected; M1/M2 dependencies are complete, full adapter implementation is next.
 
 ## I-01 contract
@@ -274,7 +274,7 @@ CI. M259-M01..M08 and M260-M01 are resolved; Issues58/59/60 are closed. Original
 failed review rounds, probes, mutations and exact hashes remain in the M2 review
 artifacts, implementationNotes and append-only ledger. They are not erased.
 
-## I-03 / M3 preparation
+## I-03 / M3 active adapter contracts
 
 Read current#21 and accepted REFDES/MigrationMap/Slices/Verification/frozen BCs,
 then create bounded adapter Issues and Master contracts/traceability before fresh
@@ -284,3 +284,13 @@ Git→GitHub→Persistence→Discovery→Runtime. No legacy retirement, host cut
 frozen contract edits or shared workflow/module edits are delegated by default.
 M1 Runtime helper check remains the exact accepted future interface. All13 Slices,
 143 baseline findings and full M3..M8/native/vertical/release proof remain required.
+
+M3 adapter Issues61 Git,62 GitHub,63 Persistence,64 Launch Discovery and65 Runtime
+are authorized under#21 after complete M2. Contract M3-Adapters--001 and current
+index/relations/ledger54 precede fresh worker dispatch. First parallel authors:
+Git/GitHub/Persistence; Discovery/Runtime queued. Exact worker base is the Master
+kickoff commit, recorded in dispatch ledger/Issue comments after worktree creation.
+No product source is changed by this kickoff; serial integration order stays
+Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
+M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
+passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
