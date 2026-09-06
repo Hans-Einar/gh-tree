@@ -1,6 +1,6 @@
 # M2 parallel leaf contribution contracts
 
-State: ACTIVE kickoff. State: COMPLETE atd60afe8fb763269964bcdc05958c8cdbc7849dea.
+State: COMPLETE atd60afe8fb763269964bcdc05958c8cdbc7849dea.
 Authority: completed #59 and #60 under #21; I-03 / M2.
 Accepted Domain source/review/integration6113ca55b57cb628b016c483070dbb52cd5dd79a.
 Source CI34033181820 and integration push CI34033772732 each passed18 applicable
