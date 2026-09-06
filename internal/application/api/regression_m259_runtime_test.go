@@ -1,0 +1,80 @@
+package api_test
+
+import (
+	a "github.com/Hans-Einar/gh-tree/internal/application/api"
+	d "github.com/Hans-Einar/gh-tree/internal/domain"
+	"strings"
+	"testing"
+)
+
+func rvSession(w d.WorktreeID, id uint64, phase a.SessionPhase) a.SessionSnapshot {
+	cwd := rvMust(a.NewCwdObservation(a.CwdObservationData{Worktree: rvScope(w), ProjectIdentity: rvScope(w).Data().RootIdentity, Source: rvSource("cwd")}))
+	geometry := rvMust(a.NewGeometry(a.GeometryData{Rows: 24, Columns: 80}))
+	display := rvMust(a.NewInvocationSummary(a.InvocationSummaryData{Cwd: cwd, AcceptedLocator: "C:/review", Terminal: a.Terminal, Geometry: geometry}))
+	cleanup := a.CleanupPending
+	if phase == a.Cleaned {
+		cleanup = a.CleanupComplete
+	}
+	return rvMust(a.NewSessionSnapshot(a.SessionSnapshotData{SessionID: rvMust(d.NewSessionID(id)), WorktreeID: w, StartOperation: rvMust(a.NewOperationID(id)), Display: display, Capabilities: rvMust(a.NewSessionCapabilities(a.SessionCapabilitiesData{})), Phase: phase, Cleanup: rvMust(a.NewSessionCleanup(a.SessionCleanupData{State: cleanup})), Sequence: rvMust(a.NewSessionSequence(1)), OutputRange: rvMust(a.NewOutputRange(a.OutputRangeData{})), AcquiredCwd: a.Some(rvMust(a.NewAcquiredCwd(a.AcquiredCwdData{Observation: cwd})))}))
+}
+func TestReviewRuntimeConsistency(t *testing.T) {
+	wa, wb := rvWork(rvRepo("A"), "one"), rvWork(rvRepo("B"), "two")
+	t.Run("unadmitted_start_reports_applied_resources", func(t *testing.T) {
+		_, e := a.NewSessionStartResult(a.SessionStartResultData{Effects: rvEffect(a.RuntimeResources, a.AppliedVerified)})
+		rvReject(t, e)
+	})
+	t.Run("running_session_reports_never_established", func(t *testing.T) {
+		_, e := a.NewSessionStartResult(a.SessionStartResultData{Session: a.Some(rvSession(wa, 1, a.Running)), Effects: rvEffects()})
+		rvReject(t, e)
+	})
+	old := rvMust(a.NewSessionStopResult(a.SessionStopResultData{Session: rvSession(wa, 1, a.Cleaned), CleanupComplete: true, Effects: rvEffects()}))
+	replaced := rvSession(wb, 2, a.Running).Data()
+	replaced.RestartOf = a.Some(rvMust(d.NewSessionID(1)))
+	replacement := rvMust(a.NewSessionStartResult(a.SessionStartResultData{Session: a.Some(rvMust(a.NewSessionSnapshot(replaced))), Established: true, Effects: rvEffect(a.RuntimeResources, a.AppliedVerified)}))
+	t.Run("restart_changes_worktree_and_cwd", func(t *testing.T) {
+		_, e := a.NewSessionRestartResult(a.SessionRestartResultData{Old: old, Replacement: a.Some(replacement)})
+		rvReject(t, e)
+	})
+}
+func TestReviewCopiesAndBounds(t *testing.T) {
+	wa := rvWork(rvRepo("copy"), "one")
+	scope := rvScope(wa)
+	bytes := []byte{0, 255, 1}
+	chunk := rvMust(a.NewSessionOutputChunk(a.SessionOutputChunkData{Stream: a.Stdout, Bytes: bytes, Sequence: rvMust(a.NewSessionSequence(1))}))
+	out := rvMust(a.NewSessionOutputResult(a.SessionOutputResultData{SessionID: rvMust(d.NewSessionID(1)), Sequence: rvMust(a.NewSessionSequence(1)), Chunks: []a.SessionOutputChunk{chunk}, End: 3, NextOffset: 3}))
+	bytes[0] = 9
+	x := out.Data()
+	x.Chunks[0].Data().Bytes[0] = 8
+	x.Chunks[0] = a.SessionOutputChunk{}
+	if out.Data().Chunks[0].Data().Bytes[0] != 0 {
+		t.Fatal("nested output alias")
+	}
+	unknown := rvMust(a.NewJSONMembers(nil))
+	names := []string{"a", " b "}
+	def := rvMust(a.NewSavedLaunchDefinition(a.SavedLaunchDefinitionData{Provider: "make", Targets: a.PresentField(names), UnknownMembers: unknown}))
+	entry := rvMust(a.NewSavedLaunchEntry(a.SavedLaunchEntryData{Alias: " exact ", Definition: def}))
+	entries := []a.SavedLaunchEntry{entry}
+	doc := rvMust(a.NewRunConfigDocument(a.RunConfigDocumentData{SchemaVersion: 1, Launch: a.PresentField(entries), UnknownMembers: unknown}))
+	names[0] = "changed"
+	entries[0] = a.SavedLaunchEntry{}
+	stored, _ := doc.Data().Launch.Value()
+	targets, _ := stored[0].Data().Definition.Data().Targets.Value()
+	targets[0] = "getter"
+	stored[0] = a.SavedLaunchEntry{}
+	got, _ := doc.Data().Launch.Value()
+	tg, _ := got[0].Data().Definition.Data().Targets.Value()
+	if tg[0] != "a" {
+		t.Fatal("stored nested alias")
+	}
+	for _, raw := range []string{`{"A":1,"A":2}`, `{"z":[{"𝄞":1,"𝄞":2}]}`, strings.Repeat("[", 65) + "0" + strings.Repeat("]", 65)} {
+		if _, e := a.NewOpaqueJSON([]byte(raw)); e == nil {
+			t.Fatal("invalid JSON accepted")
+		}
+	}
+	v := rvRunVersion(wa)
+	other := scope.Data()
+	other.RootIdentity = rvMust(a.NewDirectoryIdentity(a.DirectoryWindows, 1, [16]byte{2}, "stamp"))
+	if v.MatchesRunScope(rvMust(a.NewWorktreeScope(other))) {
+		t.Fatal("replaced root accepted")
+	}
+}

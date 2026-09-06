@@ -1,0 +1,72 @@
+package api
+
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+
+func sameGitComparison(a, b GitComparison) bool {
+	if !validGitComparison(a) || !validGitComparison(b) {
+		return false
+	}
+	switch x := a.(type) {
+	case CommitParentComparison:
+		y, p := b.(CommitParentComparison)
+		return p && x.data == y.data
+	case CommitPairComparison:
+		y, p := b.(CommitPairComparison)
+		return p && x.data == y.data
+	case IndexToWorktreeComparison:
+		y, p := b.(IndexToWorktreeComparison)
+		return p && x.data == y.data
+	case HeadToIndexComparison:
+		y, p := b.(HeadToIndexComparison)
+		return p && x.data == y.data
+	}
+	return false
+}
+func samePRBase(a, b PRBaseSelection) bool {
+	if !validPRBaseSelection(a) || !validPRBaseSelection(b) {
+		return false
+	}
+	switch x := a.(type) {
+	case ExactPRBase:
+		y, p := b.(ExactPRBase)
+		return p && x.data == y.data
+	case ObserveCurrentPRBase:
+		_, p := b.(ObserveCurrentPRBase)
+		return p
+	}
+	return false
+}
+func sameStashView(a, b StashPatchView) bool {
+	if !validStashPatchView(a) || !validStashPatchView(b) {
+		return false
+	}
+	switch x := a.(type) {
+	case StashBaseToWorktree:
+		_, p := b.(StashBaseToWorktree)
+		return p
+	case StashBaseToIndex:
+		_, p := b.(StashBaseToIndex)
+		return p
+	case StashIndexToWorktree:
+		_, p := b.(StashIndexToWorktree)
+		return p
+	case StashUntracked:
+		_, p := b.(StashUntracked)
+		return p
+	case StashParent:
+		y, p := b.(StashParent)
+		return p && x.data == y.data
+	}
+	return false
+}
+func sameRevisions(a, b []domain.Revision) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}

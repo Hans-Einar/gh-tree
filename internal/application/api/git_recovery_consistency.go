@@ -1,0 +1,156 @@
+package api
+
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+
+func subjectRepositories(s RecoverySubject) []domain.RepositoryID {
+	var repos []domain.RepositoryID
+	v := s.data
+	if r, p := v.Repository.Value(); p {
+		repos = append(repos, r)
+	}
+	if w, p := v.Worktree.Value(); p {
+		repos = append(repos, w.Repository())
+	}
+	if x, p := v.Stash.Value(); p {
+		repos = append(repos, x.Repository())
+	}
+	if x, p := v.Revision.Value(); p {
+		repos = append(repos, x.Repository())
+	}
+	if x, p := v.Branch.Value(); p {
+		repos = append(repos, x.Repository())
+	}
+	return repos
+}
+func gitRecoverySubjects(records []RecoveryRecord, repo domain.RepositoryID, w Optional[domain.WorktreeID], remotes []domain.RepositoryID, unobservedPush bool) error {
+	subjects := make([]RecoverySubject, len(records))
+	for i, r := range records {
+		subjects[i] = r.data.Subject
+	}
+	return gitSubjects(subjects, repo, w, remotes, unobservedPush)
+}
+func gitSubjects(subjects []RecoverySubject, repo domain.RepositoryID, w Optional[domain.WorktreeID], remotes []domain.RepositoryID, unobservedPush bool) error {
+	for _, subject := range subjects {
+		if expected, p := w.Value(); p {
+			if actual, p := subject.data.Worktree.Value(); p && actual != expected {
+				return invalid("Git recovery worktree subject")
+			}
+		}
+		for _, r := range subjectRepositories(subject) {
+			if r.Scope() == domain.LocalCommon {
+				if repo.Valid() && r != repo {
+					return invalid("Git recovery local repository subject")
+				}
+				if !repo.Valid() {
+					repo = r
+				}
+			} else {
+				matched := false
+				for _, allowed := range remotes {
+					matched = matched || allowed == r
+				}
+				if !matched && !(unobservedPush && len(remotes) == 0) {
+					return invalid("Git recovery remote association")
+				}
+			}
+		}
+	}
+	return nil
+}
+func mutationRecoveryAssociations(d GitMutationResultData) (domain.RepositoryID, Optional[domain.WorktreeID], []domain.RepositoryID) {
+	repo, w := outcomeRepository(d.Outcome)
+	if o, p := d.Observation.Value(); p {
+		if !repo.Valid() {
+			repo = o.data.Repository
+		}
+		if !w.Present() {
+			w = o.data.Worktree
+		}
+	}
+	var remote []domain.RepositoryID
+	addBinding := func(b Optional[RemoteBinding]) {
+		if v, p := b.Value(); p && (!repo.Valid() || v.data.LocalRepository == repo) {
+			remote = append(remote, v.data.RemoteRepository)
+		}
+	}
+	addRefs := func(f GitPostFacts) {
+		for _, r := range f.data.Refs {
+			switch x := r.data.Locator.(type) {
+			case CachedRemoteRef:
+				addBinding(Some(x.data.Binding))
+			case RemoteRef:
+				addBinding(Some(x.data.Binding))
+			}
+		}
+	}
+	switch x := d.Outcome.(type) {
+	case Pushed:
+		addBinding(Some(x.data.Binding))
+	case WorktreeCreated:
+		addBinding(x.data.Target.data.Binding)
+	case WorktreeRetargeted:
+		addBinding(x.data.Target.data.Binding)
+	case PartialMutation:
+		addRefs(x.data.Facts)
+	case MutationIndeterminate:
+		addRefs(x.data.Facts)
+	}
+	knownBinding := len(remote) > 0
+	for _, step := range d.Steps {
+		if step.data.Kind == RemotePushStep && !knownBinding && d.Kind == PushMutation {
+			for _, r := range subjectRepositories(step.data.Target) {
+				if r.Scope() == domain.Remote {
+					remote = append(remote, r)
+				}
+			}
+		}
+	}
+	return repo, w, remote
+}
+
+func consistentGitPreparationResult(d GitPreparationResultData) error {
+	var repo domain.RepositoryID
+	var w Optional[domain.WorktreeID]
+	var remotes []domain.RepositoryID
+	push := false
+	if s, p := d.Summary.Value(); p {
+		repo = s.data.Repository
+		w = s.data.Worktree
+		push = s.data.Kind == PushMutation
+		if b, p := s.data.PushBinding.Value(); p {
+			remotes = append(remotes, b.data.RemoteRepository)
+		}
+		if t, p := s.data.Target.Value(); p && t.ExpectedRevision().Repository().Scope() == domain.Remote {
+			remotes = append(remotes, t.ExpectedRevision().Repository())
+		}
+	}
+	if o, p := d.Observation.Value(); p {
+		if repo.Valid() && repo != o.data.Repository {
+			return invalid("preparation summary observation repository")
+		}
+		repo = o.data.Repository
+		if !w.Present() {
+			w = o.data.Worktree
+		} else if actual, p := o.data.Worktree.Value(); p {
+			expected, _ := w.Value()
+			if actual != expected {
+				return invalid("preparation summary observation worktree")
+			}
+		}
+	}
+	return gitRecoverySubjects(d.Recovery, repo, w, remotes, push)
+}
+func consistentPartialMutation(d PartialMutationData) error {
+	repo, err := postRepository(d.Facts.data)
+	if err != nil {
+		return err
+	}
+	return gitRecoverySubjects(d.Recovery, repo, None[domain.WorktreeID](), nil, true)
+}
+func consistentMutationIndeterminate(d MutationIndeterminateData) error {
+	repo, err := postRepository(d.Facts.data)
+	if err != nil {
+		return err
+	}
+	return gitRecoverySubjects(d.Recovery, repo, None[domain.WorktreeID](), nil, true)
+}
