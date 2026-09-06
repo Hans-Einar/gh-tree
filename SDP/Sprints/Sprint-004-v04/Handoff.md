@@ -59,8 +59,8 @@ No adapter work before required M2 surfaces; a faulty BC triggers BC-CHANGE.
 
 ## Traceability and remaining scope
 
-CurrentIndex/Relations/Ledger through42 record Domain completion and parallel
-kickoff before implementation. CurrentMatrix has65 accepted checks; M1 and Domain
+CurrentIndex/Relations/Ledger through46 record accepted predecessors, M2
+correction/acceptance states and bounded native tool preparation. CurrentMatrix has65 accepted checks; M1 and Domain
 contributions are partial evidence for full clauses. It does not close a Slice,
 Runtime allocator/exhaustion or native Git identity requirement. Original failed
 assumptions/probes remain in verification archives; use exact source/hash evidence.
@@ -89,28 +89,32 @@ attributes. No external blocker is known. Go1.25/native tools are available as
 recorded in implementationNotes. Installed extension was observed at v0.3.13 and
 is unchanged. No main product PR, tag, publication or install-upgrade occurred.
 
-Current M2 leaves: API/ports#59 final7e3dd0a3545cc259af6dfe67885b20c8ddc57749
-(product3e45f31) is under independent review/current CI34038064464. Viewmodel#60
-atdbb89ea received M260-M01 MEDIUM despite CI34037022233 green18/M3skip: disjoint
-modes reject retained simultaneous Navigator/Branch cockpit. Independent copies,
-identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
-adds no scope. Actual report/test/control/raw/hash evidence is archived in
-M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
-new exact re-review/CI required. No M2 integration or baseline finding closure.
+## Latest M2 state and exact next action
 
-Viewmodel#60 source d279c3f2af59e48029e77d845f5a55271c7889cf independently
-ACCEPTED; M260-M01 resolved, source CI34038307701 green18/explicitM3skip. Full
-correction/review/control/raw/hash evidence is in M2-Viewmodel-Review--002. This
-leaf waits for accepted API/ports#59 before serial integration; do not integrate
-or close60 yet. API#59 current7e3dd0a is still independently reviewed, with a
-separate Runtime/Storage sub-review consolidating semantic findings. No M2/full
-Slice/baseline finding closure; all143 baseline findings remain open.
+API/ports #59: CHANGES_REQUIRED at7e3dd0a3545cc259af6dfe67885b20c8ddc57749,
+product3e45f313d3e953f3293b9d42405f6843264656e0. Independent primary/bounded reviews
+record eight MEDIUM groups M259-M01..M08 and26 invalid admissions, with passing
+copy/positive controls. Evidence: M2-API-Review--001. Product/source final CI18/
+explicitM3skip does not override findings. Worker merged Master04eb90a at5634642
+and is actively correcting; its working tree is dirty and is not a frozen candidate.
+Require a new frozen complete source, independent re-review and current CI.
 
-API/ports#59 independent complete review at7e3dd0a3545cc259af6dfe67885b20c8ddc57749
-is CHANGES_REQUIRED for eight MEDIUM groups M259-M01..M08 (26 invalid admissions).
-Separate Runtime/Storage reviewer confirms six cases in M06/M07; positive/race/
-copy tests pass, but cross-field semantics do not. Actual full reports/probes/logs/
-source hashes are in M2-API-Review--001 and its archive. Source/final CI passed18/
-explicitM3skip; this does not override findings. Worker corrects all groups before
-new frozen review/current CI. Viewmodeld279c3f is accepted and waits unintegrated
-for API/ports. All143 baseline findings/full13 Slices remain; no M2 completion.
+Viewmodel #60: independent ACCEPT atd279c3f2af59e48029e77d845f5a55271c7889cf;
+M260-M01 resolved, CI34038307701 passed18/explicitM3skip. Complete independent
+controls and original failure history are in M2-Viewmodel-Review--001/002. Preserve
+this frozen source until accepted API/ports integrates first. Neither leaf is
+integrated and neither Issue is closed. Master serially integrates accepted API,
+then viewmodel, verifying the actual integrated SHA/CI and recording both gates.
+Only then may M2 complete and M3 adapter implementation Issues be dispatched.
+
+Tooling-Preparation--001 supplies only a local native signing baseline: Git2.48.1,
+real SSH/OpenPGP signatures and tamper rejection in SHA-1/SHA-256 temporary repos.
+All4 final profiles pass; original agent-home/header probe failures are retained.
+This does not verify the actual Git adapter or G8a transparent bridge. Archive
+contains scripts/logs/results/hashes only, no private keys. No CurrentMatrix check
+or baseline finding is closed. Canonical04eb90a CI34039754376 and prior5e3aa2e
+CI34039134247 each passed18 applicable jobs plus the explicit Runtime M3 skip.
+
+All13 Slices/all143 baseline findings remain open. M3..M8/full native verification,
+final product PR, main CI, release assets and isolated extension install/upgrade
+remain required. No external blocker is known and no scope reduction is authorized.

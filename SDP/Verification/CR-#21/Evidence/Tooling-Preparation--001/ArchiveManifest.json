@@ -1,0 +1,85 @@
+{
+  "scope": "Native tool preparation; no product verification. Explicit four-file allowlist per attempt excludes keys and repositories.",
+  "files": [
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m3-signing-baseline-2743fe0c711041919c98a90e645fbe85\\probe.py",
+      "archive": "01-windows-long-home/probe.py.txt",
+      "sha256": "859d104b2492085f41308ba56b8edb84eb93dc3cda465cec28e6a10bcd7d2bf5"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m3-signing-baseline-2743fe0c711041919c98a90e645fbe85\\commands.json",
+      "archive": "01-windows-long-home/commands.json",
+      "sha256": "f12080c019a1985fbc6a2aadb820b791a242f4728ad6f87e0b480f2d3f9831d3"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m3-signing-baseline-2743fe0c711041919c98a90e645fbe85\\results.json",
+      "archive": "01-windows-long-home/results.json",
+      "sha256": "65ab104bcf766b0ee7b7d6deca1c7dbd0e030a8c0b7af68e57be02684dbe438d"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m3-signing-baseline-2743fe0c711041919c98a90e645fbe85\\manifest.json",
+      "archive": "01-windows-long-home/manifest.json",
+      "sha256": "f295fc2134b66ee9052c8407ebdb929cd8870c8edb4fac5e5e054a5fa87ecefb"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764\\probe.py",
+      "archive": "02-windows-short-home/probe.py.txt",
+      "sha256": "e5842107edcdf2e855e6c02ed13b768e114365e6a0007c3fdc8cf9f9e4c130ba"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764\\commands.json",
+      "archive": "02-windows-short-home/commands.json",
+      "sha256": "73b5804c64d4de969de15e6aa37875ae972635ecb93f778dc98c7fbe5cd2d383"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764\\results.json",
+      "archive": "02-windows-short-home/results.json",
+      "sha256": "65ab104bcf766b0ee7b7d6deca1c7dbd0e030a8c0b7af68e57be02684dbe438d"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764\\manifest.json",
+      "archive": "02-windows-short-home/manifest.json",
+      "sha256": "8d68f2dde1aa695bb4142a3fcfdbc8b2a41fb06fce24967beb088ceef20073cc"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\probe.py",
+      "archive": "03-msys-home-header-assertion/probe.py.txt",
+      "sha256": "61a9ea2420ad48d6ea1e5d4e0eb35a80d3bbb12efaeff6dfbe7df9126659884a"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\commands.json",
+      "archive": "03-msys-home-header-assertion/commands.json",
+      "sha256": "e5db6812620631ca785f7a86fb31c2ec9e897b2efc3ba78d71ea53b69468771f"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\results.json",
+      "archive": "03-msys-home-header-assertion/results.json",
+      "sha256": "75bfb2a59c02491403ab6ee218701f0ceea10e657b568356a9183cf313ae1f6a"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\manifest.json",
+      "archive": "03-msys-home-header-assertion/manifest.json",
+      "sha256": "2fd77c8d93772f7c634de3cb2e8d308de6a4fac093645fbc53b2d8bd70d78cf1"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-049cb4a1d3\\probe.py",
+      "archive": "04-native-signatures/probe.py.txt",
+      "sha256": "98926935fb99150933c5bceebac3ea68fc99b4498a26ddeb301edc8212142695"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-049cb4a1d3\\commands.json",
+      "archive": "04-native-signatures/commands.json",
+      "sha256": "abe2fcc5f72ec52332679003b14c6d6df101edba986678ae9ee776684a28d01a"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-049cb4a1d3\\results.json",
+      "archive": "04-native-signatures/results.json",
+      "sha256": "acd80bfc663c03480951ade03ce6759990e2ca674f62c433595cf0fa255b5d0f"
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-049cb4a1d3\\manifest.json",
+      "archive": "04-native-signatures/manifest.json",
+      "sha256": "1b56b2169d3e7d56314cbec989d7cf4e144656bdf3e1697904852640a1ab90b6"
+    }
+  ]
+}

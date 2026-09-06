@@ -330,6 +330,13 @@
       "to": "SDP/Verification/CR-#21/M2-API-Review--001.md",
       "head": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
       "state": "changes_required"
+    },
+    {
+      "from": "TOOL-M3-01",
+      "relation": "prepares_verification_of",
+      "to": "BC--Application--Git",
+      "state": "native_tools_only",
+      "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md"
     }
   ],
   "errata": [

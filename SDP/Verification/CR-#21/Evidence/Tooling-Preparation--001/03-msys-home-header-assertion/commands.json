@@ -1,0 +1,540 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "--version"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "git version 2.48.1.windows.1\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+      "--version"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "gpg (GnuPG) 2.2.41-unknown\nlibgcrypt 1.9.4-unknown\nCopyright (C) 2022 g10 Code GmbH\nLicense GNU GPL-3.0-or-later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nHome: /c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home\nSupported algorithms:\nPubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA\nCipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,\n        CAMELLIA128, CAMELLIA192, CAMELLIA256\nHash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224\nCompression: Uncompressed, ZIP, ZLIB, BZIP2\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\WINDOWS\\System32\\OpenSSH\\ssh-keygen.exe",
+      "-q",
+      "-t",
+      "ed25519",
+      "-N",
+      "",
+      "-C",
+      "fixture@example.invalid",
+      "-f",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\ssh-key"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+      "--batch",
+      "--pinentry-mode",
+      "loopback",
+      "--passphrase",
+      "",
+      "--quick-generate-key",
+      "gh-tree isolated fixture <fixture@example.invalid>",
+      "ed25519",
+      "sign",
+      "1d"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "gpg: keybox '/c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home/pubring.kbx' created\ngpg: /c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home/trustdb.gpg: trustdb created\ngpg: directory '/c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home/openpgp-revocs.d' created\ngpg: revocation certificate stored as '/c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home/openpgp-revocs.d/87431D626075BD9AAC98EEA0903BF5C7D878D944.rev'\n"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+      "--batch",
+      "--with-colons",
+      "--list-secret-keys"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "sec:u:255:22:903BF5C7D878D944:1788706162:1788792562::u:::scSC:::+::ed25519:::0:\nfpr:::::::::87431D626075BD9AAC98EEA0903BF5C7D878D944:\ngrp:::::::::FD160E1B9A46D3E5211970E680113302124DB06B:\nuid:u::::1788706162::66D8412434C8D20D2F86D6D6A4E490C999E8F6FB::gh-tree isolated fixture <fixture@example.invalid>::::::::::0:\n",
+    "stderr": "gpg: checking the trustdb\ngpg: marginals needed: 3  completes needed: 1  trust model: pgp\ngpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u\ngpg: next trustdb check due at 2026-09-07\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "init",
+      "-q",
+      "--object-format=sha1",
+      "-b",
+      "main",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "commit.gpgsign",
+      "true"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.format",
+      "ssh"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "user.signingkey",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\ssh-key"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.ssh.program",
+      "C:\\WINDOWS\\System32\\OpenSSH\\ssh-keygen.exe"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.ssh.allowedSignersFile",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\allowed-signers"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "add",
+      "--",
+      "file.txt"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "commit",
+      "-qm",
+      "native ssh signature baseline"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "e330c6c7e900ef14fae2e7c20233a4f185bcf8f4\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "verify-commit",
+      "--raw",
+      "e330c6c7e900ef14fae2e7c20233a4f185bcf8f4"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Good \"git\" signature for fixture@example.invalid with ED25519 key SHA256:UmIs+cKCS12izUtInzQ6GUQcJnyW2zzbEzZNZavteLg\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "cat-file",
+      "commit",
+      "e330c6c7e900ef14fae2e7c20233a4f185bcf8f4"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "tree 80dbbac7f56c06409fe3831928f51fa013e607f7\nauthor gh-tree isolated fixture <fixture@example.invalid> 1788706162 +0200\ncommitter gh-tree isolated fixture <fixture@example.invalid> 1788706162 +0200\ngpgsig -----BEGIN SSH SIGNATURE-----\n U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgagK2aWS1Y8A3ihejwHcHCmYtgQ\n ZPTzHxurZpg6S/QD8AAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5\n AAAAQBBK/XHSUWs1Oe+m17BYotdTzm98EB0hUXqw+lNPbgtSKFLc8MIyX/CxPmXFHyFf1W\n A0BiWQWbwH2bP/dvad+Qg=\n -----END SSH SIGNATURE-----\n\nnative ssh signature baseline\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "hash-object",
+      "-t",
+      "commit",
+      "-w",
+      "--stdin"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 0,
+    "stdout": "c5ed4f253a27d32922de69c7d92c06e2ec12ec78\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "verify-commit",
+      "--raw",
+      "c5ed4f253a27d32922de69c7d92c06e2ec12ec78"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-ssh",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Could not verify signature.\nSignature verification failed: incorrect signature\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "init",
+      "-q",
+      "--object-format=sha1",
+      "-b",
+      "main",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "commit.gpgsign",
+      "true"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.format",
+      "openpgp"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "user.signingkey",
+      "87431D626075BD9AAC98EEA0903BF5C7D878D944"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.program",
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "add",
+      "--",
+      "file.txt"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "commit",
+      "-qm",
+      "native openpgp signature baseline"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "9dcb6ccf74563c1787b37bdf17854d287623b2b1\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "verify-commit",
+      "--raw",
+      "9dcb6ccf74563c1787b37bdf17854d287623b2b1"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "[GNUPG:] NEWSIG\n[GNUPG:] KEY_CONSIDERED 87431D626075BD9AAC98EEA0903BF5C7D878D944 0\n[GNUPG:] SIG_ID QBd4quJuJt6O5wVJwajOXppLqyM 2026-09-06 1788706163\n[GNUPG:] KEY_CONSIDERED 87431D626075BD9AAC98EEA0903BF5C7D878D944 0\n[GNUPG:] GOODSIG 903BF5C7D878D944 gh-tree isolated fixture <fixture@example.invalid>\n[GNUPG:] VALIDSIG 87431D626075BD9AAC98EEA0903BF5C7D878D944 2026-09-06 1788706163 0 4 0 22 8 00 87431D626075BD9AAC98EEA0903BF5C7D878D944\n[GNUPG:] KEY_CONSIDERED 87431D626075BD9AAC98EEA0903BF5C7D878D944 0\n[GNUPG:] TRUST_ULTIMATE 0 pgp\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "cat-file",
+      "commit",
+      "9dcb6ccf74563c1787b37bdf17854d287623b2b1"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "tree 80dbbac7f56c06409fe3831928f51fa013e607f7\nauthor gh-tree isolated fixture <fixture@example.invalid> 1788706163 +0200\ncommitter gh-tree isolated fixture <fixture@example.invalid> 1788706163 +0200\ngpgsig -----BEGIN PGP SIGNATURE-----\n \n iHUEABYIAB0WIQSHQx1iYHW9mqyY7qCQO/XH2HjZRAUCap19cwAKCRCQO/XH2HjZ\n RN0wAP9fXnMNkM9/WOMgPsf0Sln1euW3UROvlQqGOmjV4iROhwD8DSfLJuaeFDA+\n 5hNEa7OSC4yxvI6D+8LcfAhh5stIwgE=\n =BPKd\n -----END PGP SIGNATURE-----\n\nnative openpgp signature baseline\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "hash-object",
+      "-t",
+      "commit",
+      "-w",
+      "--stdin"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 0,
+    "stdout": "eb84caef3f1559fcf3582e87ea2fb2f147d76a0d\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "verify-commit",
+      "--raw",
+      "eb84caef3f1559fcf3582e87ea2fb2f147d76a0d"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha1-openpgp",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "[GNUPG:] NEWSIG\n[GNUPG:] KEY_CONSIDERED 87431D626075BD9AAC98EEA0903BF5C7D878D944 0\n[GNUPG:] KEY_CONSIDERED 87431D626075BD9AAC98EEA0903BF5C7D878D944 0\n[GNUPG:] BADSIG 903BF5C7D878D944 gh-tree isolated fixture <fixture@example.invalid>\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "init",
+      "-q",
+      "--object-format=sha256",
+      "-b",
+      "main",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "commit.gpgsign",
+      "true"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.format",
+      "ssh"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "user.signingkey",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\ssh-key"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.ssh.program",
+      "C:\\WINDOWS\\System32\\OpenSSH\\ssh-keygen.exe"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "config",
+      "--local",
+      "gpg.ssh.allowedSignersFile",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\allowed-signers"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "add",
+      "--",
+      "file.txt"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "commit",
+      "-qm",
+      "native ssh signature baseline"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "a9a4bedc6000335907302a627fbc8d7448ad5a7c951f0bb1d294aceedcdbd030\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "verify-commit",
+      "--raw",
+      "a9a4bedc6000335907302a627fbc8d7448ad5a7c951f0bb1d294aceedcdbd030"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "Good \"git\" signature for fixture@example.invalid with ED25519 key SHA256:UmIs+cKCS12izUtInzQ6GUQcJnyW2zzbEzZNZavteLg\n"
+  },
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "cat-file",
+      "commit",
+      "a9a4bedc6000335907302a627fbc8d7448ad5a7c951f0bb1d294aceedcdbd030"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887\\sha256-ssh",
+    "exit": 0,
+    "stdout": "tree 1c980755bd66405d479c6760e7ca583d47c60eba456f8ffabad65ec1585fccf0\nauthor gh-tree isolated fixture <fixture@example.invalid> 1788706163 +0200\ncommitter gh-tree isolated fixture <fixture@example.invalid> 1788706163 +0200\ngpgsig-sha256 -----BEGIN SSH SIGNATURE-----\n U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgagK2aWS1Y8A3ihejwHcHCmYtgQ\n ZPTzHxurZpg6S/QD8AAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5\n AAAAQLpPVXvnuMHPDlHyLwOFhhvZkxRvnJ1/u7QtcnEo8gIhne/4qRQPFHkNO6zrAl4OAq\n PAaBMb7V2+M8LebsF+cA0=\n -----END SSH SIGNATURE-----\n\nnative ssh signature baseline\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpgconf.exe",
+      "--homedir",
+      "/c/Users/hanse/.codex/tmp/m3sign-d7a19f3887/gpg-home",
+      "--kill",
+      "gpg-agent"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

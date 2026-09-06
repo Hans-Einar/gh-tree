@@ -1,0 +1,5 @@
+{
+  "state": "FAIL",
+  "exception": "command failed C:\\Program Files\\Git\\usr\\bin\\gpg.exe exit=2",
+  "cases": []
+}
