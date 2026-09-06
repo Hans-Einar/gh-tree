@@ -69,6 +69,11 @@ annex on codex/cr21-boundary-contracts at
 C:/Users/hanse/GIT/gh-tree-wt/boundary-contracts. #55 authorizes this document-only
 gate; sprint/index/ledger kickoff is recorded before broad authoring. Fresh frozen-
 set review/correction, FROZEN1.0.0 metadata review/CI and merge precede product work.
+
+All seven drafts plus BoundaryTypes--001 now exist. BCReview--001 records the
+whole-set candidate and mechanical specializations, including25 temporary native
+commit cases and Windows batch argv evidence. Next: exact committed candidate
+independent review, corrections and re-review; no BC is frozen yet.
 No product implementation before
 both gates. Master owns metadata/contracts/integration and delegates bounded
 product work to fresh workers with separate reviewers when implementation begins.

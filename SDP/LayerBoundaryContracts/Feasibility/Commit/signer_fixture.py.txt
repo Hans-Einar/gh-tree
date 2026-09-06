@@ -1,0 +1,5 @@
+import json,os,pathlib,sys
+payload=sys.stdin.read()
+pathlib.Path('signer-log.json').write_text(json.dumps(dict(argv=sys.argv[1:],cwd=os.getcwd(),git_dir=os.environ.get('GIT_DIR'),index=os.environ.get('GIT_INDEX_FILE'),stdin=payload),indent=2))
+sys.stderr.write('[GNUPG:] SIG_CREATED D 1 10 00 0 fixture\n')
+sys.stdout.write('-----BEGIN PGP SIGNATURE-----\nRklYVFVSRSBOT1QgQSBSRUFMIFNJR05BVFVSRQ==\n-----END PGP SIGNATURE-----\n')

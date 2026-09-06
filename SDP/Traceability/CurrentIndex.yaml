@@ -13,49 +13,49 @@
     {
       "id": "BC--TUIState--TUIView",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md"
     },
     {
       "id": "BC--TUIState--Application",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md"
     },
     {
       "id": "BC--Application--Git",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md"
     },
     {
       "id": "BC--Application--GitHub",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md"
     },
     {
       "id": "BC--Application--Runtime",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md"
     },
     {
       "id": "BC--Application--LaunchDiscovery",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md"
     },
     {
       "id": "BC--Application--Persistence",
       "version": "1.0.0",
-      "state": "planned",
+      "state": "DRAFT",
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md"
     }
@@ -305,10 +305,11 @@
       "id": "BC55",
       "kind": "boundary_contract_gate",
       "issue": 55,
-      "state": "authoring",
+      "state": "draft_set_awaiting_review",
       "branch": "codex/cr21-boundary-contracts",
       "base": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
-      "doc": "SDP/LayerBoundaryContracts/README.md"
+      "doc": "SDP/LayerBoundaryContracts/BCReview--001.md",
+      "sharedTypes": "SDP/LayerBoundaryContracts/BoundaryTypes--001.md"
     },
     {
       "id": "G-08",

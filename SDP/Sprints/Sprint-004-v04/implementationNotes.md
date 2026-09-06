@@ -171,3 +171,14 @@ Master recorded completion on #21 and opened #55 for the separate seven-BC1.0.0
 review/freeze. New codex/cr21-boundary-contracts worktree is based on exact4a42222.
 I-02/G-08 kickoff updates sprint/index/relations/append-only ledger before authoring.
 All143 product findings remain open; no product implementation branch or BC freeze.
+
+BC55 initial whole-set draft complete: seven contracts + shared types and review
+candidate. Separate authors covered Git/GitHub and Runtime/Persistence; Master
+reconciled versions/private wrappers, optional unavailable facts, compound receipts,
+active context/intent and pure presentation. A bounded separate native commit
+specialization produced25 captured PASS cases; Root read protocol/probe/bridge/
+fixture and checked results/hashes. Signing fixture is noncryptographic. Root's
+native Windows batch argv carrier probe passed exact supported operands. Sources
+and outcomes are archived below LayerBoundaryContracts/Feasibility as evidence,
+not product code. No accepted design file or product source changed. Independent
+whole-set review of the committed draft precedes freeze.

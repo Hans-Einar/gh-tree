@@ -187,3 +187,8 @@ reviewed contracts receive FROZEN1.0.0 labels, followed by final metadata review
 configured CI and expected-HEAD merge. Record freeze/source/merge on #21 and ledger.
 Next gate after completion: issue-authorized Composition CI bootstrap and reviewed
 layer Slice contributions on codereview-21/refactor; no premature product work.
+
+G-08 draft progress: all seven contracts and BoundaryTypes--001 are written,
+including selected commit continuation/hook/index/ref mechanics and explicit
+Windows batch carrier. BCReview--001 records the candidate; full independent
+frozen-HEAD review is next. Every contract remains DRAFT1.0.0.

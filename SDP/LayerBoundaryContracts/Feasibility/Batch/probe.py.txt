@@ -1,0 +1,17 @@
+import json,os,pathlib,subprocess,sys,tempfile
+with tempfile.TemporaryDirectory(prefix='bc55-batch-argv-') as td:
+ root=pathlib.Path(td);project=root/'space & (project)';project.mkdir()
+ dump=root/'argv.py';dump.write_text('import json,sys,os;print(json.dumps(dict(args=sys.argv[1:],cwd=os.getcwd()),ensure_ascii=True))',encoding='utf-8')
+ batch=root/'tool with space.cmd';batch.write_text('@echo off\r\n"'+sys.executable+'" "'+str(dump)+'" %*\r\n',encoding='utf-8')
+ args=['run','dev:wan',' space ','a/b','A&B','foo(bar)','µ漢字','C:\\end\\','two\\\\','literal!value','-dash','']
+ def quote(arg):
+  assert not any(ch in arg for ch in ['\0','\r','\n','"','%'])
+  trailing=len(arg)-len(arg.rstrip('\\'))
+  return '"'+arg+'\\'*trailing+'"'
+ source='"'+' '.join(quote(x) for x in [str(batch)]+args)+'"'
+ cmd=os.path.join(os.environ['SystemRoot'],'System32','cmd.exe')
+ # Explicit raw command-line tail for /S /C, avoiding CRT re-quoting of CMD source.
+ command='"'+cmd+'" /D /V:OFF /S /C '+source
+ result=subprocess.run(command,executable=cmd,cwd=str(project),stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True)
+ actual=json.loads(result.stdout.decode());assert actual['args']==args,(actual,args)
+ print(json.dumps(dict(result='PASS',args=actual['args'],cwd=actual['cwd'],driver='cmd /D /V:OFF /S /C',rejectedGrammar=['NUL','CR','LF','quote','percent']),ensure_ascii=True))
