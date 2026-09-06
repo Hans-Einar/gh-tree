@@ -1,0 +1,6 @@
+{
+  "Source": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+  "Command": "GOFLAGS=-trimpath go run ./internal/composition/architecture -target windows/amd64",
+  "Exit": 1,
+  "Output": "architecture: windows/amd64 (staged)\narchitecture: internal/composition/architecture/check_test.go: forbidden test import \"testing\" from architecture-tool\nexit status 1"
+}

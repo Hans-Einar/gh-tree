@@ -373,7 +373,7 @@
       "id": "IMPL57",
       "kind": "implementation_contribution",
       "issue": 57,
-      "state": "worker_active",
+      "state": "correction_in_progress",
       "layer": "Composition",
       "slices": [
         "SLC-13"
@@ -382,7 +382,23 @@
       "branch": "codereview-21/layer-composition-bootstrap",
       "base": "97cc0d8257603766dd741b49b7d8005857b421a9",
       "doc": "SDP/Implementation/CR-#21/Plan--001.md",
-      "kickoffHead": "4c0cee9f6693c4f0ab58a16a7e98299a67a0f76b"
+      "kickoffHead": "4c0cee9f6693c4f0ab58a16a7e98299a67a0f76b",
+      "reviewedHead": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+      "disposition": "CHANGES_REQUIRED",
+      "findings": [
+        "M157-M01",
+        "M157-M02",
+        "M157-M03",
+        "M157-M04",
+        "M157-M05"
+      ],
+      "review": "SDP/Verification/CR-#21/M1-Review--001.md",
+      "ciRun": "34029160810",
+      "ciSummary": {
+        "success": 17,
+        "failure": 1,
+        "skippedM3": 1
+      }
     },
     {
       "id": "M1",

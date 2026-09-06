@@ -228,3 +228,12 @@ SLC-13 build prerequisites; all13 Slices remain selected and none is complete.
 No cmd cutover/legacy retirement/other layer/publication in this contribution.
 Next after M1 acceptance/integration: issue-bounded reviewed Domain/API/ports/
 viewmodel leaves at M2. All143 product findings remain open.
+
+M1 candidate6685b4f76ca071be0125289925e7c9aa466dc10a received independent
+CHANGES_REQUIRED for M157-M01..05 (five MEDIUM); actual review/source/probe/CI
+records are in SDP/Verification/CR-#21/M1-Review--001.md and its evidence archive.
+CI34029160810 finished17 success/1 macOS failure/1 explicit M3 skip. Worker is
+correcting root aliases, nested callbacks, private helper boundaries, Git clean
+semantics and trimpath toolchain identity. No product contribution is integrated.
+Re-review corrected exact source and current CI before M1 acceptance; all143
+baseline findings remain open and full Slice verification remains ahead.

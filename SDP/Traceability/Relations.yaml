@@ -228,6 +228,13 @@
         "SDP/Design/CR-#21/Slices--001.md",
         "BC55"
       ]
+    },
+    {
+      "from": "IMPL57",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M1-Review--001.md",
+      "head": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+      "state": "changes_required"
     }
   ],
   "errata": [

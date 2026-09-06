@@ -1,0 +1,32 @@
+{
+  "sourceHead": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+  "kind": "independent_review_evidence_not_product",
+  "reviewer": "m1_composition_review",
+  "checkerSHA256": "5AB4FFFD71768B045E6D7F7D4556D30B2A20762F66142836BCBC710A40BA9646",
+  "files": [
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\probe.ps1",
+      "archive": "probe.ps1.txt",
+      "bytes": 3113,
+      "sha256": "570fdae145ad3b5ffaae041a74ebd8826f0bab8977f315afe37b37ad1bde910f"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\probe-results.json",
+      "archive": "probe-results.json",
+      "bytes": 1843,
+      "sha256": "220d9d622aead0a05696d9ef4e462b3514490b3917d8c05b8562f74ab8afdc51"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\blob-results.json",
+      "archive": "blob-results.json",
+      "bytes": 481,
+      "sha256": "832c76135704fce3ebc851e7933249c919c870c6e2ff1296f4ee1462af3cee9a"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\trimpath-results.json",
+      "archive": "trimpath-results.json",
+      "bytes": 365,
+      "sha256": "1ccbc4d49eedfc9ce27bf17a7b88c011c91aee713288829ce95333e95fcfa2dc"
+    }
+  ]
+}

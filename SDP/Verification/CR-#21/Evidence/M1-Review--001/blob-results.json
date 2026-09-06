@@ -1,0 +1,9 @@
+{
+  "Source": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+  "ExpectedBaselineBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa",
+  "ActualGitCleanBlob": "f9c880865942fcf2d20e179bf941f34751b84174",
+  "Attributes": "internal/app/service.go -text",
+  "CoreAutoCRLF": "false",
+  "CheckerExit": 0,
+  "CheckerOutput": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 61 exact legacy/shared-entry allowances used; ownership review still required"
+}
