@@ -1,0 +1,61 @@
+import hashlib, json, os, pathlib, platform, subprocess, sys
+root=pathlib.Path(__file__).resolve().parent
+home=root/'isolated-home'; home.mkdir()
+git=pathlib.Path(r'C:\Users\hanse\.codex\tmp\gh-tree-design-git-safety-52\MinGit-2.48.1\cmd\git.exe')
+gpg=pathlib.Path(r'C:\Program Files\Git\usr\bin\gpg.exe')
+gpgconf=gpg.with_name('gpgconf.exe')
+ssh=pathlib.Path(r'C:\WINDOWS\System32\OpenSSH\ssh-keygen.exe')
+env=os.environ.copy()
+for name in list(env):
+    if name.startswith('GIT_') or name in ('GNUPGHOME','SSH_AUTH_SOCK','GPG_AGENT_INFO'):
+        env.pop(name,None)
+env.update(HOME=str(home),USERPROFILE=str(home),XDG_CONFIG_HOME=str(home/'xdg'),GNUPGHOME=(root/'gpg-home').as_posix(),GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,GIT_TERMINAL_PROMPT='0',GIT_AUTHOR_NAME='gh-tree isolated fixture',GIT_AUTHOR_EMAIL='fixture@example.invalid',GIT_COMMITTER_NAME='gh-tree isolated fixture',GIT_COMMITTER_EMAIL='fixture@example.invalid')
+pathlib.Path(env['GNUPGHOME']).mkdir()
+log=[]; cases=[]
+def run(args,cwd=None,data=None,check=True):
+    p=subprocess.run([str(a) for a in args],cwd=cwd or root,env=env,input=data,capture_output=True,timeout=60)
+    log.append({'argv':[str(a) for a in args],'cwd':str(cwd or root),'exit':p.returncode,'stdout':p.stdout.decode('utf-8','replace'),'stderr':p.stderr.decode('utf-8','replace')})
+    if check and p.returncode: raise RuntimeError(f'command failed {args[0]} exit={p.returncode}')
+    return p
+try:
+    versions={'git':run([git,'--version']).stdout.decode().strip(),'gpg':run([gpg,'--version']).stdout.decode().splitlines()[0],'platform':platform.platform(),'python':sys.version}
+    key=root/'ssh-key'
+    run([ssh,'-q','-t','ed25519','-N','','-C','fixture@example.invalid','-f',key])
+    public=key.with_suffix('.pub').read_text(encoding='utf-8').strip()
+    allowed=root/'allowed-signers'; allowed.write_text('fixture@example.invalid '+public+'\n',encoding='utf-8')
+    run([gpg,'--batch','--pinentry-mode','loopback','--passphrase','','--quick-generate-key','gh-tree isolated fixture <fixture@example.invalid>','ed25519','sign','1d'])
+    listing=run([gpg,'--batch','--with-colons','--list-secret-keys']).stdout.decode()
+    fingerprint=next(x.split(':')[9] for x in listing.splitlines() if x.startswith('fpr:'))
+    for fmt in ('sha1','sha256'):
+        for signing in ('ssh','openpgp'):
+            repo=root/(fmt+'-'+signing); repo.mkdir()
+            run([git,'init','-q','--object-format='+fmt,'-b','main',repo])
+            config={'commit.gpgsign':'true','gpg.format':signing,'user.signingkey':str(key) if signing=='ssh' else fingerprint}
+            config.update({'gpg.ssh.program':str(ssh),'gpg.ssh.allowedSignersFile':str(allowed)} if signing=='ssh' else {'gpg.program':str(gpg)})
+            for k,v in config.items():run([git,'config','--local',k,v],repo)
+            (repo/'file.txt').write_text('isolated native signature baseline\n',encoding='utf-8')
+            run([git,'add','--','file.txt'],repo)
+            run([git,'commit','-qm','native '+signing+' signature baseline'],repo)
+            oid=run([git,'rev-parse','HEAD'],repo).stdout.decode().strip()
+            verified=run([git,'verify-commit','--raw',oid],repo)
+            raw=run([git,'cat-file','commit',oid],repo).stdout
+            assert b'\ngpgsig ' in raw
+            # Preserve a valid object envelope with a changed message: verification must fail.
+            bad=raw+b'tampered message\n'
+            bad_oid=run([git,'hash-object','-t','commit','-w','--stdin'],repo,bad).stdout.decode().strip()
+            rejected=run([git,'verify-commit','--raw',bad_oid],repo,check=False)
+            assert rejected.returncode != 0
+            cases.append({'objectFormat':fmt,'signing':signing,'commit':oid,'validSignatureExit':verified.returncode,'tamperedCommit':bad_oid,'tamperedSignatureExit':rejected.returncode,'result':'PASS'})
+    result={'state':'PASS','scope':'Native tool baseline only; no gh-tree adapter or transparent signer bridge under test; no V-GIT or release gate satisfied. Keys and repositories remain local isolated fixtures.','versions':versions,'cases':cases}
+except Exception as exc:
+    result={'state':'FAIL','exception':str(exc),'cases':cases}
+finally:
+    try:run([gpgconf,'--homedir',env['GNUPGHOME'],'--kill','gpg-agent'],check=False)
+    except Exception as exc:log.append({'cleanupError':str(exc)})
+    (root/'commands.json').write_text(json.dumps(log,indent=2),encoding='utf-8')
+    (root/'results.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
+    hashes={name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in ('probe.py','commands.json','results.json')}
+    (root/'manifest.json').write_text(json.dumps(hashes,indent=2),encoding='utf-8')
+    print(json.dumps({'root':str(root),'result':result,'hashes':hashes}))
+    sys.exit(0 if result['state']=='PASS' else 1)
+

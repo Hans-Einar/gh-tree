@@ -293,3 +293,11 @@ source hashes are in M2-API-Review--001 and its archive. Source/final CI passed1
 explicitM3skip; this does not override findings. Worker corrects all groups before
 new frozen review/current CI. Viewmodeld279c3f is accepted and waits unintegrated
 for API/ports. All143 baseline findings/full13 Slices remain; no M2 completion.
+
+Native tool preparation under #21: Tooling-Preparation--001 records actual SSH/
+OpenPGP signed commits and tamper rejection for SHA-1/SHA-256 on local Windows
+Git2.48.1. All four profiles pass after recorded MSYS home/header probe corrections.
+Only bounded script/log/result/manifest files are archived; keys remain outside
+the repo. No adapter/bridge/Slice check is satisfied. Canonical checkpoint CI
+34039754376 at04eb90a and34039134247 at5e3aa2e each passed18/explicitM3skip.
+API#59 correction continues; accepted viewmodel remains held for API-first merge.

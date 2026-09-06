@@ -552,6 +552,14 @@
         "IMPL60"
       ],
       "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+    },
+    {
+      "id": "TOOL-M3-01",
+      "kind": "verification_preparation",
+      "state": "native_tools_only",
+      "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md",
+      "observedHead": "04eb90a54fed3acdc6f87614af7f919ffedb167e",
+      "productGateSatisfied": false
     }
   ],
   "productFindings": [

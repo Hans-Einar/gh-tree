@@ -1,0 +1,72 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\MinGit-2.48.1\\cmd\\git.exe",
+      "--version"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+    "exit": 0,
+    "stdout": "git version 2.48.1.windows.1\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+      "--version"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+    "exit": 0,
+    "stdout": "gpg (GnuPG) 2.2.41-unknown\nlibgcrypt 1.9.4-unknown\nCopyright (C) 2022 g10 Code GmbH\nLicense GNU GPL-3.0-or-later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n\nHome: C:/Users/hanse/.codex/tmp/m3sign-8e02d65764/gpg-home\nSupported algorithms:\nPubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA\nCipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,\n        CAMELLIA128, CAMELLIA192, CAMELLIA256\nHash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224\nCompression: Uncompressed, ZIP, ZLIB, BZIP2\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\WINDOWS\\System32\\OpenSSH\\ssh-keygen.exe",
+      "-q",
+      "-t",
+      "ed25519",
+      "-N",
+      "",
+      "-C",
+      "fixture@example.invalid",
+      "-f",
+      "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764\\ssh-key"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpg.exe",
+      "--batch",
+      "--pinentry-mode",
+      "loopback",
+      "--passphrase",
+      "",
+      "--quick-generate-key",
+      "gh-tree isolated fixture <fixture@example.invalid>",
+      "ed25519",
+      "sign",
+      "1d"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+    "exit": 2,
+    "stdout": "",
+    "stderr": "gpg: keybox 'C:/Users/hanse/.codex/tmp/m3sign-8e02d65764/gpg-home/pubring.kbx' created\ngpg: can't connect to the agent: IPC connect call failed\ngpg: agent_genkey failed: No agent running\ngpg: key generation failed: No agent running\n"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\Git\\usr\\bin\\gpgconf.exe",
+      "--homedir",
+      "C:/Users/hanse/.codex/tmp/m3sign-8e02d65764/gpg-home",
+      "--kill",
+      "gpg-agent"
+    ],
+    "cwd": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

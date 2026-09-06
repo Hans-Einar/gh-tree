@@ -1,0 +1,48 @@
+{
+  "state": "PASS",
+  "scope": "Native tool baseline only; no gh-tree adapter or transparent signer bridge under test; no V-GIT or release gate satisfied. Keys and repositories remain local isolated fixtures.",
+  "versions": {
+    "git": "git version 2.48.1.windows.1",
+    "gpg": "gpg (GnuPG) 2.2.41-unknown",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "cases": [
+    {
+      "objectFormat": "sha1",
+      "signing": "ssh",
+      "commit": "b781e9f8edc35c1bb647ac71e1f7096941197ffe",
+      "validSignatureExit": 0,
+      "tamperedCommit": "25d17a68f0654e1c7aeacdfdb13a13d494c3fec3",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    },
+    {
+      "objectFormat": "sha1",
+      "signing": "openpgp",
+      "commit": "acc6bffb4675da678feca42b3c970d4a47cec757",
+      "validSignatureExit": 0,
+      "tamperedCommit": "e6b1f8ae12fdb1976d6ec4b18a9cf22d9bce4c27",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    },
+    {
+      "objectFormat": "sha256",
+      "signing": "ssh",
+      "commit": "a685afb718a9d5f72b383bc31cdb21620c1e7380673156f8fbd8af26a0ace209",
+      "validSignatureExit": 0,
+      "tamperedCommit": "1ff5849f8374f6c47c9a0179daf734ae235dcd824dce11b59819dfa500712406",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    },
+    {
+      "objectFormat": "sha256",
+      "signing": "openpgp",
+      "commit": "6fc1152dd7059d1b9ca7e63ace7fe27602e80c13d3ed97a1ee90368bbbffe343",
+      "validSignatureExit": 0,
+      "tamperedCommit": "0fdc7f8e8045d9ef6d9c7d1a8890427093520b14fa817845fc71ce71a0a52887",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    }
+  ]
+}

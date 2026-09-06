@@ -1,0 +1,24 @@
+{
+  "state": "FAIL",
+  "exception": "",
+  "cases": [
+    {
+      "objectFormat": "sha1",
+      "signing": "ssh",
+      "commit": "e330c6c7e900ef14fae2e7c20233a4f185bcf8f4",
+      "validSignatureExit": 0,
+      "tamperedCommit": "c5ed4f253a27d32922de69c7d92c06e2ec12ec78",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    },
+    {
+      "objectFormat": "sha1",
+      "signing": "openpgp",
+      "commit": "9dcb6ccf74563c1787b37bdf17854d287623b2b1",
+      "validSignatureExit": 0,
+      "tamperedCommit": "eb84caef3f1559fcf3582e87ea2fb2f147d76a0d",
+      "tamperedSignatureExit": 1,
+      "result": "PASS"
+    }
+  ]
+}
