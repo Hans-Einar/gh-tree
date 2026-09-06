@@ -42,6 +42,15 @@ Git2.48.1 reftable controls pass for SHA-1/SHA-256; this proves no stash deletio
 Tests optionally select an explicit executable/ref backend with GH_TREE_TEST_GIT
 and GH_TREE_TEST_REF_STORAGE, with no developer-local path in source.
 
+ReadGraph retains requested exact roots and native refs/Head/parent facts across
+source-bound pages. ReadStashPatch reads selected full objects after reflog shifts
+or deletion, returns exact tree endpoints for staged/worktree/untracked/parent
+views and keeps absent untracked views explicit. Native diff parsing preserves
+NUL-delimited renames and binary/count facts; file and byte caps constrain raw
+patch output without inserting UI text. Exact tree attributes are selected via
+Git's GIT_ATTR_SOURCE, independently of later worktree .gitattributes edits.
+General ReadDiff and ObserveStatus await the explicit status-cause correction #67.
+
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
 `birth-filetime:<decimal uint64>`. Aligned native storage is required; a raw byte

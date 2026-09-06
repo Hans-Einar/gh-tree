@@ -33,7 +33,18 @@ func (a *Adapter) readSession(ctx context.Context) (*readSession, context.Cancel
 
 func (s *readSession) command(cwd string, args ...string) commandResult {
 	r := s.a.command(s.ctx, cwd, false, args...)
-	d := r.transport.Data()
+	s.recordTransport(r.transport)
+	return r
+}
+
+func (s *readSession) commandEnv(cwd string, extra []string, args ...string) commandResult {
+	r := s.a.commandEnvironment(s.ctx, cwd, false, nil, extra, args...)
+	s.recordTransport(r.transport)
+	return r
+}
+
+func (s *readSession) recordTransport(transport api.CommandTransportOutcome) {
+	d := transport.Data()
 	if d.Started {
 		s.transport.Started = true
 		s.transport.RootReaped = d.RootReaped
@@ -44,7 +55,6 @@ func (s *readSession) command(cwd string, args ...string) commandResult {
 	s.transport.StderrTruncated = s.transport.StderrTruncated || d.StderrTruncated
 	s.transport.CancellationRequested = s.transport.CancellationRequested || d.CancellationRequested
 	s.transport.Diagnostics = append(s.transport.Diagnostics, d.Diagnostics...)
-	return r
 }
 
 func (s *readSession) observation(repo domain.RepositoryID, w api.Optional[domain.WorktreeID], version api.SourceVersion, complete api.Completeness) (api.GitObservation, error) {

@@ -53,6 +53,10 @@ func (a *Adapter) command(ctx context.Context, cwd string, mutation bool, args .
 }
 
 func (a *Adapter) commandInput(ctx context.Context, cwd string, mutation bool, input []byte, args ...string) commandResult {
+	return a.commandEnvironment(ctx, cwd, mutation, input, nil, args...)
+}
+
+func (a *Adapter) commandEnvironment(ctx context.Context, cwd string, mutation bool, input []byte, extra []string, args ...string) commandResult {
 	if ctx == nil {
 		return commandResult{transport: transportValue(api.CommandTransportOutcomeData{CleanupKnown: true}), err: diagnostic(api.Invalid, "InvalidContext", "A context is required.")}
 	}
@@ -74,6 +78,7 @@ func (a *Adapter) commandInput(ctx context.Context, cwd string, mutation bool, i
 	cmd := exec.CommandContext(runctx, a.options.GitExecutable, nativeArgs...)
 	cmd.Dir = cwd
 	cmd.Env = commandEnvironment(a.options.Environment)
+	cmd.Env = append(cmd.Env, extra...)
 	if !mutation {
 		// Also prevents a concurrently enabled promisor remote from turning an
 		// object lookup into a successful implicit fetch. Empty native protocol
