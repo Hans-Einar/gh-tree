@@ -149,7 +149,37 @@
       "from": "REFDES52",
       "relation": "plans_disposition_of",
       "to": "SDP/Design/CR-#21/FindingDisposition.yaml",
-      "state": "draft_all_product_findings_open"
+      "state": "accepted_design_all_product_findings_open"
+    },
+    {
+      "from": "BC55",
+      "relation": "depends_on",
+      "to": "REFDES52"
+    },
+    {
+      "from": "G-08",
+      "relation": "accepts",
+      "to": "BC55"
+    },
+    {
+      "from": "BC55",
+      "relation": "reviewed_by",
+      "to": "SDP/LayerBoundaryContracts/BCReview--002.md",
+      "state": "historical_initial_changes_required",
+      "head": "c291606c2ecfaae15f1bef7b5155d82aa6966712"
+    },
+    {
+      "from": "BC55",
+      "relation": "reviewed_by",
+      "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "state": "technical_accept",
+      "head": "7685494e45c0ef44fbccf9b49a589a90a78026d0"
+    },
+    {
+      "relation": "frozen_by",
+      "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "state": "effective_after_final_metadata_merge",
+      "from": "BC55"
     }
   ],
   "errata": [

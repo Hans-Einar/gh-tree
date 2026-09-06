@@ -1,0 +1,274 @@
+import hashlib, json, os, pathlib, shutil, subprocess, sys, tempfile, time
+
+ROOT = pathlib.Path(__file__).resolve().parent
+RUN = pathlib.Path(tempfile.mkdtemp(prefix='run-', dir=ROOT))
+GIT_NEW = pathlib.Path(r'C:\Users\hanse\.codex\tmp\gh-tree-design-git-safety-52\MinGit-2.48.1\cmd\git.exe')
+GIT_OLD = pathlib.Path(shutil.which('git'))
+GIT = GIT_NEW
+RESULTS = []
+ENV = {k:v for k,v in os.environ.items() if not k.startswith('GIT_')}
+ENV.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=str(RUN/'absent-global'), GIT_TERMINAL_PROMPT='0', GIT_EDITOR=':', GIT_AUTHOR_DATE='2026-09-06T10:00:00+0000', GIT_COMMITTER_DATE='2026-09-06T10:00:00+0000')
+
+def git(repo, *args, data=None, env=None, check=True):
+    p=subprocess.run([str(GIT), '-C', str(repo), *args], input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=ENV| (env or {}))
+    if check and p.returncode: raise AssertionError((args, p.returncode, p.stdout.decode(errors='replace'), p.stderr.decode(errors='replace')))
+    return p
+
+def out(repo,*args, **kw): return git(repo,*args,**kw).stdout.decode().strip()
+def write(path, data):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_bytes(data.encode() if isinstance(data,str) else data)
+
+def init(name, fmt='sha1', born=True):
+    r=RUN/name
+    r.mkdir()
+    git(r,'init','-q','-b','main',f'--object-format={fmt}')
+    for key,value in [('user.name','Fixture'),('user.email','fixture@example.invalid'),('gc.auto','0'),('maintenance.auto','false'),('core.autocrlf','false')]: git(r,'config',key,value)
+    if born:
+        write(r/'a.txt','A\n'); git(r,'add','a.txt'); git(r,'commit','-qm','initial')
+    return r
+
+class Tx:
+    def __init__(self,repo,commands,no_deref=False):
+        self.repo=repo
+        args=[str(GIT),'-C',str(repo),'update-ref','--stdin','--create-reflog','-m','commit: fixture']
+        if no_deref: args.append('--no-deref')
+        self.p=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=ENV)
+        self.p.stdin.write(('start\n'+commands+'\nprepare\n').encode()); self.p.stdin.flush()
+        self.start=self.p.stdout.readline().decode().strip()
+        self.prepared=self.p.stdout.readline().decode().strip()
+    def end(self,commit=False):
+        if self.p.poll() is None:
+            self.p.stdin.write(b'commit\n' if commit else b'abort\n'); self.p.stdin.flush()
+        stdout,stderr=self.p.communicate(timeout=5)
+        return self.p.returncode,stdout.decode(),stderr.decode()
+
+def case(name,fn):
+    try:
+        facts=fn(); RESULTS.append(dict(case=name,result='PASS',facts=facts))
+        print(name,'PASS',flush=True)
+    except Exception as e:
+        RESULTS.append(dict(case=name,result='FAIL',error=repr(e))); print(name,'FAIL',repr(e),flush=True)
+
+def ref_probe(version,mode,stale=False):
+    global GIT
+    GIT = GIT_OLD if version=='old' else GIT_NEW
+    r=init('ref-'+version+'-'+mode+('-stale' if stale else ''),born=mode!='unborn')
+    old=out(r,'rev-parse','HEAD') if mode!='unborn' else '0'*40
+    if mode=='detached': git(r,'switch','--detach','-q',old)
+    if mode!='unborn':
+        git(r,'branch','other',old)
+        if stale: git(r,'symbolic-ref','HEAD','refs/heads/other')
+    tree=out(r,'write-tree')
+    args=['commit-tree',tree,'-m','candidate']
+    if mode!='unborn': args += ['-p',old]
+    new=out(r,*args)
+    tx=Tx(r,f'update HEAD {new} {old}',no_deref=mode=='detached')
+    assert tx.prepared=='prepare: ok', tx.end()
+    locks=sorted(str(p.relative_to(r/'.git')) for p in (r/'.git').rglob('*.lock'))
+    current=(r/'.git'/'HEAD').read_text().strip()
+    assert 'HEAD.lock' in locks,locks
+    race=git(r,'symbolic-ref','HEAD','refs/heads/other',check=False)
+    assert race.returncode!=0, race
+    expected = old if mode=='detached' else 'ref: refs/heads/main'
+    good=current==expected
+    assert good != stale,(current,expected)
+    code,stdout,stderr=tx.end(commit=good)
+    assert code==0,(stdout,stderr)
+    actual=out(r,'rev-parse','HEAD')
+    assert actual==(old if stale else new),actual
+    return dict(git=out(r,'--version'),mode=mode,stale=stale,locks=locks,head_under_lock=current,racing_symbolic_ref_exit=race.returncode,head_after=actual,reflog=out(r,'reflog','show','HEAD'))
+
+def symref_composition():
+    global GIT
+    GIT=GIT_NEW; r=init('symref-composition'); old=out(r,'rev-parse','HEAD'); tree=out(r,'write-tree'); new=out(r,'commit-tree',tree,'-p',old,'-m','candidate')
+    p=git(r,'update-ref','--stdin','--no-deref',data=f'start\nsymref-verify HEAD refs/heads/main\nupdate refs/heads/main {new} {old}\nprepare\ncommit\n'.encode(),check=False)
+    code,stdout,stderr=p.returncode,p.stdout.decode(),p.stderr.decode()
+    assert code!=0 and 'multiple updates' in stderr,(code,stdout,stderr)
+    assert out(r,'rev-parse','HEAD')==old
+    return dict(exit=code,stderr=stderr,head_unchanged=True)
+
+def install_bridge(scratch,real):
+    hooks=scratch/'.git'/'bridge-hooks'; hooks.mkdir()
+    script=ROOT/'bridge.py'
+    for name in ['pre-commit','prepare-commit-msg','commit-msg']:
+        text=f'#!/bin/sh\nexec "{sys.executable.replace(chr(92),chr(47))}" "{script.as_posix()}" "{name}" "{real.as_posix()}" "$@"\n'
+        write(hooks/name,text)
+    git(scratch,'config','core.hooksPath',hooks.as_posix())
+
+def scratch(real,name,fmt='sha1',born=True):
+    s=init(name,fmt=fmt,born=False)
+    git(s,'config','core.hooksPath',(s/'.git'/'no-hooks').as_posix())
+    write(s/'.git'/'objects'/'info'/'alternates',(real/'.git'/'objects').as_posix()+'\n')
+    if born:
+        old=out(real,'rev-parse','HEAD')
+        if (real/'.git'/'HEAD').read_text().startswith('ref: '): git(s,'update-ref','refs/heads/main',old)
+        else: git(s,'update-ref','--no-deref','HEAD',old)
+    if (real/'.git'/'index').exists(): shutil.copyfile(real/'.git'/'index',s/'.git'/'index')
+    for p in real.iterdir():
+        if p.is_file(): shutil.copyfile(p,s/p.name)
+    install_bridge(s,real)
+    return s
+
+def object_transfer(s,r,oid):
+    pack=git(s,'pack-objects','--stdout','--revs',data=(oid+'\n').encode()).stdout
+    git(r,'index-pack','--stdin',data=pack)
+
+def hook_commit(fmt='sha1',born=True,late_index=False,reject=False,detached=False):
+    global GIT
+    GIT=GIT_NEW
+    suffix=fmt+('-initial' if not born else '')+('-late-index' if late_index else '')+('-reject' if reject else '')+('-detached' if detached else '')
+    r=init('hook-real-'+suffix,fmt=fmt,born=born)
+    if detached: git(r,'switch','--detach','-q','HEAD')
+    write(r/'a.txt','B\n'); git(r,'add','a.txt')
+    before_index=(r/'.git'/'index').read_bytes(); old=out(r,'rev-parse','HEAD') if born else '0'*(40 if fmt=='sha1' else 64)
+    s=scratch(r,'hook-scratch-'+suffix,fmt=fmt,born=born)
+    hooks=r/'.git'/'hooks'
+    write(hooks/'pre-commit', '#!/bin/sh\nprintf "hook-new\\n" > hook.txt\ngit add -- hook.txt\nprintf "late-worktree\\n" > a.txt\nprintf "pre|%s|%s|%s|%s|%s\\n" "$PWD" "$GIT_DIR" "$GIT_WORK_TREE" "$GIT_INDEX_FILE" "$GIT_EDITOR" >> hook-log\n')
+    write(hooks/'prepare-commit-msg','#!/bin/sh\nprintf "prepare|%s|%s|%s\\n" "$PWD" "$1" "$2" >> hook-log\nprintf "\\n  prepared  \\n# comment\\n" >> "$1"\n')
+    cm='#!/bin/sh\nprintf "message|%s|%s\\n" "$PWD" "$1" >> hook-log\nprintf "\\ncommitted-hook\\n" >> "$1"\n'
+    if late_index: cm+='printf "late-stage\\n" > late.txt\ngit add -- late.txt\n'
+    if reject: cm+='exit 1\n'
+    write(hooks/'commit-msg',cm)
+    write(hooks/'post-commit','#!/bin/sh\nprintf "post|%s|%s\\n" "$PWD" "$(git rev-parse HEAD)" >> hook-log\nprintf "post-worktree\\n" > post.txt\n')
+    write(hooks/'reference-transaction','#!/bin/sh\nprintf "ref|%s|%s\\n" "$PWD" "$1" >> hook-log\ncat >/dev/null\n')
+    p=git(s,'commit','-qm','  subject  \n\n# retained comment\n',check=False)
+    log=(r/'hook-log').read_text()
+    assert 'post|' not in log and 'ref|' not in log,log
+    assert (r/'.git'/'index').read_bytes()==before_index
+    assert (r/'a.txt').read_text()=='late-worktree\n'
+    if reject:
+        assert p.returncode!=0
+        assert out(r,'rev-parse','HEAD')==old
+        return dict(hook_exit=p.returncode,real_index_unchanged=True,real_worktree_hook_edits_preserved=True,log=log,candidate_index_retained=str(s/'.git'/'index'))
+    assert p.returncode==0,(p.stdout,p.stderr)
+    new=out(s,'rev-parse','HEAD'); raw=out(s,'cat-file','-p',new)
+    assert ('parent '+old in raw)==born
+    assert out(s,'show',new+':hook.txt')=='hook-new'
+    in_commit=git(s,'cat-file','-e',new+':late.txt',check=False).returncode==0
+    assert not in_commit
+    if late_index: assert 'late.txt' in out(s,'ls-files')
+    object_transfer(s,r,new)
+    # Later hook index-only roots need independent transfer, too.
+    candidate_tree=out(s,'write-tree'); object_transfer(s,r,candidate_tree)
+    tx=Tx(r,f'update HEAD {new} {old}',no_deref=detached)
+    assert tx.prepared=='prepare: ok',tx.end()
+    assert (r/'.git'/'HEAD').read_text().strip()==(old if detached else 'ref: refs/heads/main')
+    lock=r/'.git'/'index.lock'
+    fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_BINARY)
+    assert (r/'.git'/'index').read_bytes()==before_index
+    candidate=(s/'.git'/'index').read_bytes(); os.write(fd,candidate); os.close(fd)
+    recovery=r/'.git'/'retained'; recovery.mkdir()
+    os.rename(r/'.git'/'index',recovery/'old-index')
+    os.link(lock,recovery/'new-index'); os.link(lock,r/'.git'/'index'); lock.unlink()
+    code,stdout,stderr=tx.end(commit=True); assert code==0,(stdout,stderr)
+    git(r,'hook','run','--ignore-missing','post-commit',env={'GIT_EDITOR':':'})
+    log=(r/'hook-log').read_text()
+    assert log.count('post|')==1
+    assert out(r,'rev-parse','HEAD')==new
+    assert (r/'a.txt').read_text()=='late-worktree\n' and (r/'post.txt').read_text()=='post-worktree\n'
+    status=out(r,'status','--porcelain')
+    return dict(new=new,old=old,raw_commit=raw,status=status,late_index=late_index,detached=detached,log=log,index_capture_retained=True)
+
+def empty_commit():
+    global GIT
+    GIT=GIT_NEW; r=init('empty-real'); s=scratch(r,'empty-scratch')
+    p=git(s,'commit','-qm','empty',check=False)
+    assert p.returncode==1
+    return dict(exit=p.returncode,real_head_unchanged=out(r,'rev-parse','HEAD')==out(s,'rev-parse','HEAD'),stdout=p.stdout.decode())
+
+def signed_commit():
+    global GIT
+    GIT=GIT_NEW; r=init('sign-real'); write(r/'a.txt','B\n'); git(r,'add','a.txt'); s=scratch(r,'sign-scratch')
+    signer=RUN/'signer-wrapper'
+    write(signer,f'#!/bin/sh\ncd "{r.as_posix()}" || exit 1\nunset GIT_CONFIG_PARAMETERS GIT_CONFIG_COUNT GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES GIT_COMMON_DIR\nexport GIT_DIR="{(r/".git").as_posix()}" GIT_WORK_TREE="{r.as_posix()}" GIT_INDEX_FILE="{(s/".git"/"index").as_posix()}"\nexec "{sys.executable.replace(chr(92),chr(47))}" "{(ROOT/"signer_fixture.py").as_posix()}" "$@"\n')
+    for key,value in [('commit.gpgSign','true'),('gpg.format','openpgp'),('user.signingKey','FIXTURE-KEY'),('gpg.program',signer.as_posix())]: git(s,'config',key,value)
+    git(s,'commit','-qm','signed fixture')
+    raw=out(s,'cat-file','-p','HEAD'); signed=json.loads((r/'signer-log.json').read_text())
+    assert 'gpgsig -----BEGIN PGP SIGNATURE-----' in raw
+    assert signed['argv']==['--status-fd=2','-bsau','FIXTURE-KEY'],signed
+    assert pathlib.Path(signed['cwd'])==r
+    assert signed['stdin'].startswith('tree ') and 'parent '+out(r,'rev-parse','HEAD') in signed['stdin']
+    assert out(r,'rev-parse','HEAD')!=out(s,'rev-parse','HEAD')
+    return dict(native_commit_contains_signature=True,cryptographic_validity_tested=False,fixture=signed,raw=raw)
+
+def index_guard(kind):
+    global GIT
+    GIT=GIT_NEW; r=init('index-'+kind)
+    original=(r/'.git'/'index').read_bytes()
+    write(r/'a.txt','B\n')
+    candidate=r/'.git'/'candidate-index'; write(candidate,original)
+    git(r,'add','a.txt',env={'GIT_INDEX_FILE':str(candidate)})
+    desired=candidate.read_bytes()
+    old=out(r,'rev-parse','HEAD')
+    tree=out(r,'write-tree',env={'GIT_INDEX_FILE':str(candidate)})
+    new=out(r,'commit-tree',tree,'-p',old,'-m','candidate')
+    if kind=='prelock-stale':
+        write(r/'external.txt','external\n'); git(r,'add','external.txt')
+    tx=Tx(r,f'update HEAD {new} {old}')
+    assert tx.prepared=='prepare: ok',tx.end()
+    lock=r/'.git'/'index.lock'; fd=os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_BINARY)
+    try:
+        actual=(r/'.git'/'index').read_bytes()
+        if kind=='prelock-stale':
+            assert actual!=original
+            code,_,_=tx.end(); assert code==0
+            assert 'external.txt' in out(r,'ls-files') and out(r,'rev-parse','HEAD')==old
+            return dict(stale_rejected=True,external_index_preserved=True,head_unchanged=True)
+        native=git(r,'add','a.txt',check=False); assert native.returncode!=0
+        if kind=='cancel-before-publication':
+            code,_,_=tx.end(); assert code==0
+            assert (r/'.git'/'index').read_bytes()==original and out(r,'rev-parse','HEAD')==old
+            return dict(canceled=True,index_unchanged=True,head_unchanged=True,native_add_exit=native.returncode)
+        os.write(fd,desired); os.close(fd); fd=None
+        retained=r/'.git'/'retained'; retained.mkdir()
+        if kind=='direct-late-write':
+            # A direct noncooperating editor bypasses index.lock after last check.
+            write(r/'.git'/'index',b'external late index bytes\n')
+        os.rename(r/'.git'/'index',retained/'old-index')
+        captured=(retained/'old-index').read_bytes()
+        if kind=='direct-late-write':
+            assert captured!=original
+            os.link(retained/'old-index',r/'.git'/'index')
+            code,_,_=tx.end(); assert code==0
+            assert captured==(r/'.git'/'index').read_bytes() and out(r,'rev-parse','HEAD')==old
+            return dict(captured_late_bytes=captured.decode(),restored_without_replace=True,ref_aborted=True)
+        if kind=='recreated-index':
+            write(r/'.git'/'index',b'external recreated index bytes\n')
+            collision=False
+            try: os.link(lock,r/'.git'/'index')
+            except FileExistsError: collision=True
+            assert collision and (r/'.git'/'index').read_bytes()==b'external recreated index bytes\n'
+            code,_,_=tx.end(); assert code==0
+            assert out(r,'rev-parse','HEAD')==old
+            return dict(no_replace_refused=True,external_recreated_index_retained=True,original_retained=True,ref_aborted=True)
+        os.link(lock,retained/'new-index'); os.link(lock,r/'.git'/'index')
+        lock.unlink()
+        code,_,_=tx.end(commit=kind=='cancel-after-ref'); assert code==0
+        assert (r/'.git'/'index').read_bytes()==desired
+        assert out(r,'rev-parse','HEAD')==(new if kind=='cancel-after-ref' else old)
+        return dict(canceled=True,index_applied=True,ref_applied=kind=='cancel-after-ref',old_index_retained=True,automatic_rollback=False)
+    finally:
+        if fd is not None: os.close(fd)
+        if lock.exists(): lock.unlink()
+
+def main():
+    case('symref-verify-plus-branch-update-rejected',symref_composition)
+    for version in ['old','new']:
+        for mode in ['attached','detached','unborn']:
+            case('guarded-head-'+version+'-'+mode,lambda v=version,m=mode: ref_probe(v,m))
+        case('guarded-head-'+version+'-same-oid-switch-aborts',lambda v=version: ref_probe(v,'attached',True))
+    for fmt in ['sha1','sha256']:
+        case('hook-native-commit-'+fmt,lambda f=fmt:hook_commit(f))
+        case('hook-native-initial-'+fmt,lambda f=fmt:hook_commit(f,born=False))
+        case('hook-native-detached-'+fmt,lambda f=fmt:hook_commit(f,detached=True))
+    case('hook-late-index-native-semantics',lambda:hook_commit(late_index=True))
+    case('hook-rejection-preserves-effects',lambda:hook_commit(reject=True))
+    case('native-no-empty-default',empty_commit)
+    case('native-signature-fixture',signed_commit)
+    for kind in ['prelock-stale','cancel-before-publication','direct-late-write','recreated-index','cancel-after-index','cancel-after-ref']:
+        case('index-'+kind,lambda k=kind:index_guard(k))
+    (ROOT/'results.json').write_text(json.dumps(dict(run=str(RUN),results=RESULTS),indent=2))
+    print(json.dumps(dict(run=str(RUN),passed=sum(x['result']=='PASS' for x in RESULTS),failed=sum(x['result']=='FAIL' for x in RESULTS)),indent=2))
+
+if __name__=='__main__': main()

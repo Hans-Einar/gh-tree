@@ -3,7 +3,7 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-02 — Refactor Design and contracts
-Active gate: G-07 — Refactor Design (#52)
+Active gate: G-08 — Boundary Contract review/freeze (#55)
 No implementation Slice is active before design and BC freeze.
 
 ## I-01 contract
@@ -159,3 +159,54 @@ Complete technical design independently ACCEPTED at
 664f0c051344e3abdfd7d3c5698e4fbd3f584a83, all18 CI checks successful. G-07 awaits
 only final acceptance-metadata exact-HEAD review/CI and PR54 merge. G-08 BC authority
 is opened after that merge; no implementation Slice is active yet.
+
+## I-02 / G-08 active contract
+
+State: ACTIVE. Authority: #55 under #21. G-07 is COMPLETE: PR54 final reviewed
+e63547771d89f892ebe8e13f66a1ed8ef0807ba2 merged at
+4a42222f7bfedc1d80693effbb25a1a82fcff65e; all18 final CI checks passed in
+34022968145/34022971176. #52 is closed. Accepted design is now effective.
+
+Goal: turn accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker and complete
+Slice/verification maps into seven mutually consistent implementation BCs1.0.0.
+Files: SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md,
+BC--TUIState--Application.md, BC--Application--Git.md,
+BC--Application--GitHub.md, BC--Application--Runtime.md,
+BC--Application--LaunchDiscovery.md, BC--Application--Persistence.md; necessary
+shared type/signature annex and review record; Master checkpoint metadata.
+Branch/worktree: codex/cr21-boundary-contracts / gh-tree-wt/boundary-contracts,
+base4a42222f7bfedc1d80693effbb25a1a82fcff65e.
+
+Invariants: no product changes, no implementation branch/Slice, no silent design
+change; all143 product findings remain open. Boundaries keep exact identities,
+ownership, operation/session terminal separation, reliable transfer/ACK, acquired
+cwd/native broker, storage commit outcomes, pure State/View and full capability.
+Master authors/reconciles contracts; fresh independent reviewer reads the whole
+frozen set. Findings require correction and exact-HEAD re-review. Only consistent
+reviewed contracts receive FROZEN1.0.0 labels, followed by final metadata review,
+configured CI and expected-HEAD merge. Record freeze/source/merge on #21 and ledger.
+Next gate after completion: issue-authorized Composition CI bootstrap and reviewed
+layer Slice contributions on codereview-21/refactor; no premature product work.
+
+G-08 draft progress: all seven contracts and BoundaryTypes--001 are written,
+including selected commit continuation/hook/index/ref mechanics and explicit
+Windows batch carrier. BCReview--001 records the candidate; full independent
+frozen-HEAD review is next. Every contract remains DRAFT1.0.0.
+
+Initial whole-set review at c291606c2ecfaae15f1bef7b5155d82aa6966712 returned
+CHANGES_REQUIRED: BC55-TYPES-01/02, two MEDIUM vocabulary/recovery findings.
+All18 candidate CI checks passed (34026364910/34026398215). BCReview--002 records
+the actual review and proposed shared/Git/Persistence correction. Exact corrected-
+HEAD re-review is next; all seven contracts stay DRAFT1.0.0 until accepted.
+
+BC55 complete technical set independently ACCEPTED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0; BC55-TYPES-01/02 resolved and
+all18 CI checks SUCCESS in34027057276/34027058992. Master records REVIEWED then
+FROZEN1.0.0 metadata for seven contracts/shared annex in BCFreeze--001, effective
+only after final metadata exact-HEAD review/CI and PR56 merge. One reference-only
+Git method-name correction is included for that review. G-08 remains active;
+no implementation branch/Slice is active and all143 product findings stay open.
+
+Metadata review at a4d160f returned BC55-META-01 (MEDIUM) for mixed initial/current
+review fields. Technical acceptance stands. Corrected index/relations preserve
+both exact review SHAs distinctly; metadata re-review/current CI is next.

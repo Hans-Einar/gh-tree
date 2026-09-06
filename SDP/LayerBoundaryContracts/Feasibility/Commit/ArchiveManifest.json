@@ -1,0 +1,50 @@
+[
+  {
+    "source": "gpg-interface.c",
+    "sha256": "bed3d128e23439e4bfec1ea3775deec258fa9aa8b65afe562c67e7cbe4531872",
+    "archivedAs": null,
+    "kind": "upstream_tagged_source_hash_and_link_only"
+  },
+  {
+    "source": "files-backend.c",
+    "sha256": "485fdfb926475529f0b358d586b2279368da310ea19df5fb2d7a2d10a3229efd",
+    "archivedAs": null,
+    "kind": "upstream_tagged_source_hash_and_link_only"
+  },
+  {
+    "source": "PROTOCOL.md",
+    "sha256": "4c839f0a81bbe25589f139397c5fc6913b298f22e82246b78a8b204f6c5ae37e",
+    "archivedAs": "PROTOCOL.md",
+    "kind": "owned_probe_or_protocol"
+  },
+  {
+    "source": "signer_fixture.py",
+    "sha256": "83254979f7a5bb20a1b7d474ef5a4b70466fcf861385e8b79b80cb99054eb051",
+    "archivedAs": "signer_fixture.py.txt",
+    "kind": "owned_probe_or_protocol"
+  },
+  {
+    "source": "results.json",
+    "sha256": "6bdcff8920a27571a28927cc93d438d7ba22a9c35864ed9e100898f8e3bea5ab",
+    "archivedAs": "results.json",
+    "kind": "owned_probe_or_protocol"
+  },
+  {
+    "source": "probe_commit.py",
+    "sha256": "1042e9c78b34884deb8f54a7c3d4cf04b2c280c9b8e13f3471e2ede2360e940a",
+    "archivedAs": "probe_commit.py.txt",
+    "kind": "owned_probe_or_protocol"
+  },
+  {
+    "source": "commit.c",
+    "sha256": "f1c9144652b971fae2213b9249f97c2334b11163b093905c1d76fe34787f9b45",
+    "archivedAs": null,
+    "kind": "upstream_tagged_source_hash_and_link_only"
+  },
+  {
+    "source": "bridge.py",
+    "sha256": "eba2aa187015acc0e09df7d7998015abe04b092c54061d5ddf16064373615d5a",
+    "archivedAs": "bridge.py.txt",
+    "kind": "owned_probe_or_protocol"
+  }
+]

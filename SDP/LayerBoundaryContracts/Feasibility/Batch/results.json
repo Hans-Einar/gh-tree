@@ -1,0 +1,1 @@
+{"result": "PASS", "args": ["run", "dev:wan", " space ", "a/b", "A&B", "foo(bar)", "\u00b5\u6f22\u5b57", "C:\\end\\", "two\\\\", "literal!value", "-dash", ""], "cwd": "C:\\Users\\hanse\\AppData\\Local\\Temp\\bc55-batch-argv-knhc50sz\\space & (project)", "driver": "cmd /D /V:OFF /S /C", "rejectedGrammar": ["NUL", "CR", "LF", "quote", "percent"]}

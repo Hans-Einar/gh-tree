@@ -1,0 +1,249 @@
+{
+  "run": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33",
+  "results": [
+    {
+      "case": "symref-verify-plus-branch-update-rejected",
+      "result": "FAIL",
+      "error": "OSError(22, 'Invalid argument')"
+    },
+    {
+      "case": "guarded-head-old-attached",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.43.0.windows.1",
+        "mode": "attached",
+        "stale": false,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\main.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/main",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "8ba3e2a6aff5234984fd661ecc59e9fac5eb6f90",
+        "reflog": "8ba3e2a HEAD@{0}: commit: fixture\n0b1a47a HEAD@{1}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "guarded-head-old-detached",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.43.0.windows.1",
+        "mode": "detached",
+        "stale": false,
+        "locks": [
+          "HEAD.lock"
+        ],
+        "head_under_lock": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "8ba3e2a6aff5234984fd661ecc59e9fac5eb6f90",
+        "reflog": "8ba3e2a HEAD@{0}: commit: fixture\n0b1a47a HEAD@{1}: checkout: moving from main to 0b1a47aca48d9bf12c53d72867479f1c7ab33244\n0b1a47a HEAD@{2}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "guarded-head-old-unborn",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.43.0.windows.1",
+        "mode": "unborn",
+        "stale": false,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\main.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/main",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "a63e93cfbb796f8a841a62a3f81a99149cbc8e58",
+        "reflog": "a63e93c HEAD@{0}: commit: fixture"
+      }
+    },
+    {
+      "case": "guarded-head-old-same-oid-switch-aborts",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.43.0.windows.1",
+        "mode": "attached",
+        "stale": true,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\other.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/other",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "reflog": "0b1a47a HEAD@{0}: \n0b1a47a HEAD@{1}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "guarded-head-new-attached",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.48.1.windows.1",
+        "mode": "attached",
+        "stale": false,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\main.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/main",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "8ba3e2a6aff5234984fd661ecc59e9fac5eb6f90",
+        "reflog": "8ba3e2a HEAD@{0}: commit: fixture\n0b1a47a HEAD@{1}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "guarded-head-new-detached",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.48.1.windows.1",
+        "mode": "detached",
+        "stale": false,
+        "locks": [
+          "HEAD.lock"
+        ],
+        "head_under_lock": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "8ba3e2a6aff5234984fd661ecc59e9fac5eb6f90",
+        "reflog": "8ba3e2a HEAD@{0}: commit: fixture\n0b1a47a HEAD@{1}: checkout: moving from main to 0b1a47aca48d9bf12c53d72867479f1c7ab33244\n0b1a47a HEAD@{2}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "guarded-head-new-unborn",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.48.1.windows.1",
+        "mode": "unborn",
+        "stale": false,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\main.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/main",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "a63e93cfbb796f8a841a62a3f81a99149cbc8e58",
+        "reflog": "a63e93c HEAD@{0}: commit: fixture"
+      }
+    },
+    {
+      "case": "guarded-head-new-same-oid-switch-aborts",
+      "result": "PASS",
+      "facts": {
+        "git": "git version 2.48.1.windows.1",
+        "mode": "attached",
+        "stale": true,
+        "locks": [
+          "HEAD.lock",
+          "refs\\heads\\other.lock"
+        ],
+        "head_under_lock": "ref: refs/heads/other",
+        "racing_symbolic_ref_exit": 1,
+        "head_after": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "reflog": "0b1a47a HEAD@{0}: \n0b1a47a HEAD@{1}: commit (initial): initial"
+      }
+    },
+    {
+      "case": "hook-native-commit-sha1",
+      "result": "PASS",
+      "facts": {
+        "new": "05649975a2de394995b906df1447636499189b9f",
+        "old": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "raw_commit": "tree a5014bcc9746577425b0d47f346025cdc13e5bc1\nparent 0b1a47aca48d9bf12c53d72867479f1c7ab33244\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\n  subject\n\n# retained comment\n\n  prepared\n# comment\n\ncommitted-hook",
+        "status": "M a.txt\n?? hook-log\n?? post.txt",
+        "late_index": false,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1\\.git\\COMMIT_EDITMSG\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|prepared\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|committed\npost|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1|05649975a2de394995b906df1447636499189b9f\n",
+        "index_capture_retained": true
+      }
+    },
+    {
+      "case": "hook-native-initial-sha1",
+      "result": "PASS",
+      "facts": {
+        "new": "bf13bc93959606eb5a822e00a205dbebdb954f19",
+        "old": "0000000000000000000000000000000000000000",
+        "raw_commit": "tree a5014bcc9746577425b0d47f346025cdc13e5bc1\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\n  subject\n\n# retained comment\n\n  prepared\n# comment\n\ncommitted-hook",
+        "status": "M a.txt\n?? hook-log\n?? post.txt",
+        "late_index": false,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-initial\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-initial\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-initial\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-initial\\.git\\COMMIT_EDITMSG\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|prepared\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|committed\npost|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-initial|bf13bc93959606eb5a822e00a205dbebdb954f19\n",
+        "index_capture_retained": true
+      }
+    },
+    {
+      "case": "hook-native-commit-sha256",
+      "result": "PASS",
+      "facts": {
+        "new": "169fe01accbf1466dd315af73377af0b401042946745ce271e83a65c64b827d5",
+        "old": "68e25827b08dfc169ef2a36aaee728531f845dde8877c9eb4fa20a9db2c4c169",
+        "raw_commit": "tree 3ea747ee34eff725d35fbb696de93cabd4f1cd388f7428ad36c662d16298771d\nparent 68e25827b08dfc169ef2a36aaee728531f845dde8877c9eb4fa20a9db2c4c169\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\n  subject\n\n# retained comment\n\n  prepared\n# comment\n\ncommitted-hook",
+        "status": "M a.txt\n?? hook-log\n?? post.txt",
+        "late_index": false,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha256\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha256|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256\\.git\\COMMIT_EDITMSG\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|prepared\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|committed\npost|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256|169fe01accbf1466dd315af73377af0b401042946745ce271e83a65c64b827d5\n",
+        "index_capture_retained": true
+      }
+    },
+    {
+      "case": "hook-native-initial-sha256",
+      "result": "PASS",
+      "facts": {
+        "new": "f57e9d2f8c0f88d2497f726e09ea50fd5f82bd810322b87a52d9123eb991bc59",
+        "old": "0000000000000000000000000000000000000000000000000000000000000000",
+        "raw_commit": "tree 3ea747ee34eff725d35fbb696de93cabd4f1cd388f7428ad36c662d16298771d\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\n  subject\n\n# retained comment\n\n  prepared\n# comment\n\ncommitted-hook",
+        "status": "M a.txt\n?? hook-log\n?? post.txt",
+        "late_index": false,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha256-initial\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha256-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256-initial\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256-initial\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha256-initial\\.git\\COMMIT_EDITMSG\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|prepared\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|committed\npost|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha256-initial|f57e9d2f8c0f88d2497f726e09ea50fd5f82bd810322b87a52d9123eb991bc59\n",
+        "index_capture_retained": true
+      }
+    },
+    {
+      "case": "hook-late-index-native-semantics",
+      "result": "PASS",
+      "facts": {
+        "new": "05649975a2de394995b906df1447636499189b9f",
+        "old": "0b1a47aca48d9bf12c53d72867479f1c7ab33244",
+        "raw_commit": "tree a5014bcc9746577425b0d47f346025cdc13e5bc1\nparent 0b1a47aca48d9bf12c53d72867479f1c7ab33244\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\n  subject\n\n# retained comment\n\n  prepared\n# comment\n\ncommitted-hook",
+        "status": "M a.txt\nA  late.txt\n?? hook-log\n?? post.txt",
+        "late_index": true,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-late-index\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-late-index|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-late-index\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-late-index\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-late-index\\.git\\COMMIT_EDITMSG\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|prepared\nref|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|committed\npost|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-late-index|05649975a2de394995b906df1447636499189b9f\n",
+        "index_capture_retained": true
+      }
+    },
+    {
+      "case": "hook-rejection-preserves-effects",
+      "result": "PASS",
+      "facts": {
+        "hook_exit": 1,
+        "real_index_unchanged": true,
+        "real_worktree_hook_edits_preserved": true,
+        "log": "pre|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-reject|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-reject\\.git|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-real-sha1-reject|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-reject\\.git\\index|:\nprepare|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-reject|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-reject\\.git\\COMMIT_EDITMSG|message\nmessage|/c/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/hook-real-sha1-reject|C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-reject\\.git\\COMMIT_EDITMSG\n",
+        "candidate_index_retained": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\hook-scratch-sha1-reject\\.git\\index"
+      }
+    },
+    {
+      "case": "native-no-empty-default",
+      "result": "PASS",
+      "facts": {
+        "exit": 1,
+        "real_head_unchanged": true,
+        "stdout": "On branch main\nnothing to commit, working tree clean\n"
+      }
+    },
+    {
+      "case": "native-signature-fixture",
+      "result": "PASS",
+      "facts": {
+        "native_commit_contains_signature": true,
+        "cryptographic_validity_tested": false,
+        "fixture": {
+          "argv": [
+            "--status-fd=2",
+            "-bsau",
+            "FIXTURE-KEY"
+          ],
+          "cwd": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc\\run-ipvibo33\\sign-real",
+          "git_dir": "C:/Users/hanse/.codex/tmp/gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc/run-ipvibo33/sign-real/.git",
+          "index": null,
+          "stdin": "tree 1d9df110626a718b87cfbb5b95231c72888a03e3\nparent 0b1a47aca48d9bf12c53d72867479f1c7ab33244\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\n\nsigned fixture\n"
+        },
+        "raw": "tree 1d9df110626a718b87cfbb5b95231c72888a03e3\nparent 0b1a47aca48d9bf12c53d72867479f1c7ab33244\nauthor Fixture <fixture@example.invalid> 1788688800 +0000\ncommitter Fixture <fixture@example.invalid> 1788688800 +0000\ngpgsig -----BEGIN PGP SIGNATURE-----\n RklYVFVSRSBOT1QgQSBSRUFMIFNJR05BVFVSRQ==\n -----END PGP SIGNATURE-----\n\nsigned fixture"
+      }
+    }
+  ]
+}

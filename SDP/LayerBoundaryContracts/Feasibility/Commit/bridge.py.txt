@@ -1,0 +1,21 @@
+import os,pathlib,subprocess,sys,json
+name,real,*args=sys.argv[1:]
+real=pathlib.Path(real)
+scratch_cwd=pathlib.Path.cwd()
+env=os.environ.copy()
+# Native scratch commit exports the candidate index and author identity. Retain
+# those deliberate values; replace repository path/config context completely.
+index=pathlib.Path(env['GIT_INDEX_FILE'])
+if not index.is_absolute(): index=scratch_cwd/index
+for key in list(env):
+    if key in ['GIT_DIR','GIT_COMMON_DIR','GIT_WORK_TREE','GIT_OBJECT_DIRECTORY','GIT_ALTERNATE_OBJECT_DIRECTORIES','GIT_CONFIG_PARAMETERS','GIT_CONFIG_COUNT','GIT_PREFIX'] or key.startswith('GIT_CONFIG_KEY_') or key.startswith('GIT_CONFIG_VALUE_'):
+        env.pop(key,None)
+env.update(GIT_DIR=str(real/'.git'),GIT_WORK_TREE=str(real),GIT_INDEX_FILE=str(index),GIT_EDITOR=':')
+# Hook argv message paths are absolute and refer to the native operation-owned
+# message. This probe does not claim compatibility with hardcoded COMMIT_EDITMSG.
+if args:
+    path=pathlib.Path(args[0])
+    if not path.is_absolute(): args[0]=str(scratch_cwd/path)
+git=r'C:\Users\hanse\.codex\tmp\gh-tree-design-git-safety-52\MinGit-2.48.1\cmd\git.exe'
+p=subprocess.run([git,'-C',str(real),'hook','run','--ignore-missing',name,'--',*args],env=env)
+sys.exit(p.returncode)
