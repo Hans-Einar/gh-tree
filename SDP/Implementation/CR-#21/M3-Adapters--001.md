@@ -279,3 +279,11 @@ Git review remains blocked; no serial integration is authorized by this decision
 
 Discovery20bd8ac/review4e9f479 is independently ACCEPTED, M364-M01 resolved,
 CI34065291612 19PASS/helper skip. Candidate remains held for prior serial gates.
+
+Runtime parallel ownership #69: original #65 author owns Unix private owners and
+parent registry/Sessions assembly; fresh Windows author owns only broker Windows
+files, broker/cmd, brokerassets and cmd/helpergen plus M3-Windows--001 report, on
+codex/cr21-runtime-windows at46fe59c. Shared broker/protocol.go/start.go and common
+tests are coordinated interfaces. This explicit Issue ownership exception remains
+inside Runtime; no new layer/BC or neighboring edits. Master integrates only after
+separate Windows review and exact source gates, then verifies combined Runtime.

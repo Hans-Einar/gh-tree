@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "identity_adoption_and_freebsd_assessment",
+      "state": "identity_code_review_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,7 +713,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
+      "lastCheckpoint": "bfdc79c2289274636f66574a3c86f467bb993615",
       "checkpointScope": "all6 methods present but unaccepted; native ObjectID mechanism probes only, product adoption pending; Windows repeated-publication, FreeBSD/no-birth/source-name/fault/profile gates remain",
       "sourceCI": {
         "run": 34063088464,
@@ -751,7 +751,9 @@
         "retain full requirement and design explicitly privileged mechanism",
         "explicitly approve bounded profile/metadata scope revision",
         "keep FreeBSD part blocked pending decision"
-      ]
+      ],
+      "identityTechnicalSource": "0058949bf0f9bdc81021e53e8ef4f9f1e6713968",
+      "identityLocalChecks": "amd64/386 native product and race/vet, all12 builds/test compilation PASS; full source CI/native ARM64 and independent code review pending"
     },
     {
       "id": "IMPL64",
@@ -818,7 +820,11 @@
       "integrationHead": null,
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
-      "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d"
+      "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
+      "lastCheckpoint": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
+      "subContributions": [
+        "IMPL69"
+      ]
     },
     {
       "id": "IMPL66",
@@ -906,6 +912,17 @@
       },
       "localIntegrationChecks": "ports race/vet/windows architecture and exact accepted source tree match PASS",
       "gitAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc"
+    },
+    {
+      "id": "IMPL69",
+      "kind": "runtime_platform_contribution",
+      "issue": 69,
+      "state": "dispatch_ready",
+      "branch": "codex/cr21-runtime-windows",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
+      "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
+      "scope": "Windows broker files/cmd/assets/helpergen only; shared protocol coordinated",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md"
     }
   ],
   "productFindings": [

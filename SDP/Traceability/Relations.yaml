@@ -532,6 +532,11 @@
       "to": "20bd8acf3576ca19f08b68205289f25cfe9dd3d9",
       "reviewHead": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
       "ci": 34065291612
+    },
+    {
+      "from": "IMPL65",
+      "relation": "delegates_windows_native_scope",
+      "to": "IMPL69"
     }
   ],
   "errata": [
