@@ -1,0 +1,53 @@
+//go:build linux
+
+package persistence
+
+import (
+ "context"
+ "errors"
+ "os"
+ "path/filepath"
+ "testing"
+ "github.com/Hans-Einar/gh-tree/internal/application/api"
+)
+
+func TestReviewConfirmationStagingRefusal(t *testing.T){
+ for _,stage:=range []string{"final-check","before-publication"}{for _,replacement:=range []string{"symlink","regular"}{for _,present:=range []bool{false,true}{
+  t.Run(stage+"/"+replacement+"/"+map[bool]string{false:"absent",true:"present"}[present],func(t *testing.T){
+   root:=physicalStoreTemp(t);target:=filepath.Join(root,"config.json");original:=[]byte(`{"schemaVersion":1}`)
+   if present{if err:=os.WriteFile(target,original,0600);err!=nil{t.Fatal(err)}}
+   outside:=filepath.Join(physicalStoreTemp(t),"sentinel");sentinel:=[]byte("external owned sentinel")
+   if err:=os.WriteFile(outside,sentinel,0600);err!=nil{t.Fatal(err)}
+   s:=newTestStore(t,root);loaded,err:=s.LoadUserConfig(context.Background());if err!=nil{t.Fatal(err)}
+   v,_:=loaded.Observation().Data().Version.Value();reached:=false
+   s.hook=func(at string)error{if at!=stage{return nil};reached=true
+    names,err:=filepath.Glob(filepath.Join(root,"*.publication"));if err!=nil{return err};if len(names)!=1{t.Fatalf("publication names %v",names)}
+    if err:=os.Rename(names[0],names[0]+".test-retained");err!=nil{return err}
+    if replacement=="symlink"{return os.Symlink(outside,names[0])}
+    return os.WriteFile(names[0],[]byte(`{"schemaVersion":1,"stripPrefixes":["substitution"]}`),0600)
+   }
+   result,err:=s.CommitUserConfig(context.Background(),userProposal(t,v,"proposal"));d:=result.Data()
+   if !reached||!errors.Is(err,errBindingChanged)||!result.Valid()||d.Outcome!=api.NotCommitted||d.PublicationKnown{t.Fatalf("substitution not truthfully refused: reached=%v valid=%v outcome=%v known=%v err=%v",reached,result.Valid(),d.Outcome,d.PublicationKnown,err)}
+   for _,facet:=range d.Effects.Data().Facets{if facet.Data().Facet==api.Storage&&facet.Data().State!=api.VerifiedNoTargetChange{t.Fatal("wrong storage effect")}}
+   if present{raw,e:=os.ReadFile(target);if e!=nil||string(raw)!=string(original){t.Fatal("original changed",e)}}else if _,e:=os.Lstat(target);!errors.Is(e,os.ErrNotExist){t.Fatal("expected absence changed",e)}
+   raw,e:=os.ReadFile(outside);if e!=nil||string(raw)!=string(sentinel){t.Fatal("external sentinel changed",e)}
+   t.Log("substitution refused with unchanged target and external sentinel")
+  })
+ }}}
+}
+
+func TestReviewConfirmationRecoveryIDsBesideUnsupported(t *testing.T){
+ root:=physicalStoreTemp(t);s:=newTestStore(t,root)
+ loaded,err:=s.LoadUserConfig(context.Background());if err!=nil{t.Fatal(err)};v,_:=loaded.Observation().Data().Version.Value()
+ committed,err:=s.CommitUserConfig(context.Background(),userProposal(t,v,"proposal"));assertCommitted(t,committed,err)
+ before,err:=newTestStore(t,root).LoadUserConfig(context.Background());if err!=nil{t.Fatal(err)}
+ outside:=filepath.Join(physicalStoreTemp(t),"outside");if err:=os.WriteFile(outside,[]byte("sentinel"),0600);err!=nil{t.Fatal(err)}
+ if err:=os.Symlink(outside,filepath.Join(root,recoveryPrefix("config.json")+"unsupported"));err!=nil{t.Fatal(err)}
+ after,err:=newTestStore(t,root).LoadUserConfig(context.Background())
+ if err==nil||!after.Valid()||!after.Document().Present()||after.Observation().Data().State!=api.ValidCurrent{t.Fatal("current facts lost",err)}
+ old:=before.Observation().Data();now:=after.Observation().Data()
+ if old.Version!=now.Version{t.Fatal("unchanged current version lost")}
+ ids:=map[api.RecoveryID]bool{};for _,r:=range now.Recovery{ids[r.Data().Record.Data().RecoveryID]=true}
+ for _,r:=range old.Recovery{if !ids[r.Data().Record.Data().RecoveryID]{t.Fatal("independent persisted recovery ID lost")}}
+ t.Logf("valid current and %d independent recovery IDs retained with unsupported-entry error",len(old.Recovery))
+}

@@ -166,3 +166,53 @@ Preservation check: the initial .go evidence suffix caused `go list ./...` to
 consider the SDP path a package and reject its # character. Renaming those three
 unchanged source artifacts to .go.txt restores package discovery; this is evidence
 packaging only, not a product or review-test correction.
+
+## Independent bounded correction confirmation — 91acac5
+
+Disposition: **M363-PR01/PR02/PR03 RESOLVED IN THE BOUNDED REVIEWED CASES** at
+`91acac5ecff941f95dbdaf00c86e9ced64b2a76f`. Reviewer reopened the actual changed
+commit/preparation/store/inventory/manifest code and reran native controls in the
+same clean detached review worktree, with the same Go1.25.0 and owned Windows/
+ordinary-account Linux ext4 profiles above. No source edit, commit or integration.
+
+| Finding | Actual correction and independent result |
+|---|---|
+| PR01 | Final checks now compare the named publication and retained-payload entries against the retained publisher; the Unix publication wrapper checks its source entry again immediately before Renameat/Linkat. Eight Linux cases (absent/present × symlink/regular substitution × final-check/before-publication hooks) return valid NotCommitted, PublicationKnown=false, VerifiedNoTargetChange, preserve the original or absence, and leave the external sentinel unchanged. |
+| PR02 | Original metadata is applied and independently verified again after all payload/raw-byte writes, before flush. The original unmodified Linux control now commits successfully with nil error and preserves04750 exactly. |
+| PR03 | An auxiliary recovery error no longer overwrites an established usable current state. Inventory continues bounded observation past unsupported entries while retaining the error. The original control now preserves valid current/document/version with ELOOP; an added assertion confirms all three independently reloadable persisted recovery IDs also survive beside that unsupported entry. |
+
+The original unchanged Linux selector initially exited1 only because its absent
+staging test unconditionally Lstat'ed the target: the corrected implementation
+correctly left it absent. That attempt remains in
+`confirmation-91acac5-linux-original-controls.log`. A separate stronger confirmation
+test explicitly requires valid NotCommitted/refusal, unchanged target or actual
+absence, unchanged external bytes and correct effect; it does not weaken or edit
+the original retained tests. All eight refusal cases pass.
+
+Final Linux selector (same crosscompile/ordinary `runuser` route as above):
+`TestReviewConfirmation|TestReviewUnixMode|TestReviewUnixRecovery|TestReviewKnown|TestManifest|TestCommitFaults|TestCommitStale`, exit0.
+The original Windows selector also exits0. Independent known-publication/error/
+cancellation and distinct Proposed/Current controls pass on both, together with
+the targeted existing journal/stale/fault/manifest controls. Source remains clean.
+
+Small additional local evidence, beneath the existing evidence root:
+
+| File | SHA256 |
+|---|---|
+| review_confirmation_linux_test.go | db7dc64b126fd45b77e9c759969e1d2d6b182ad505bbcaa8ae3e985db0f55b46 |
+| confirmation-91acac5-linux.log | f98db8d4eb37faf333607b93ee58e4c0cef5f56d04d5d9ccd6551e34a81dc8eb |
+| confirmation-91acac5-windows.log | 0fc6c78e625619d0a6ccd32853a72c42fb1115876460977c6655bc561489b9a3 |
+
+PR01 resolution covers the demonstrated observable source substitution. Unix
+still invokes publication by name after its last source-entry check; this bounded
+confirmation does not prove atomic binding across that remaining interval or
+silently extend the accepted external-editor **target** race to source replacement.
+That distinction remains an explicit complete-protocol verification question.
+No additional adverse interleaving inside that final check/syscall interval was
+tested here. No full candidate, native-profile, crash/fault-matrix, layer, Slice,
+integration or release acceptance is granted. Master may preserve this confirmation
+and continue the already tracked remaining implementation and acceptance gates.
+
+Master also preserved the small confirmation source as .go.txt and the three
+confirmation logs (including the disclosed original-control fixture failure) in
+the same existing evidence folder. No test binary or duplicate checkout was added.

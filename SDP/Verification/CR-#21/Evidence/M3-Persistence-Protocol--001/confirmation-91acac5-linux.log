@@ -1,0 +1,71 @@
+=== RUN   TestCommitStaleWholeVersionAndForeignStoreRefuse
+--- PASS: TestCommitStaleWholeVersionAndForeignStoreRefuse (0.02s)
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/lock
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/prepare.payload
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/manifest-flushed
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/before-publication
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/native-return-lost
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/directory-flush
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/outcome-delivery
+--- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation (0.07s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/lock (0.00s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/prepare.payload (0.00s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/manifest-flushed (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/before-publication (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/native-return-lost (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/directory-flush (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/outcome-delivery (0.01s)
+=== RUN   TestManifestJournalPartialPreparationRetainsPersistedIDs
+--- PASS: TestManifestJournalPartialPreparationRetainsPersistedIDs (0.01s)
+=== RUN   TestManifestJournalTornTailPreservesEarlierFacts
+--- PASS: TestManifestJournalTornTailPreservesEarlierFacts (0.03s)
+=== RUN   TestManifestRestartStableRecoveryIDsAndLateOriginalWrites
+--- PASS: TestManifestRestartStableRecoveryIDsAndLateOriginalWrites (0.01s)
+=== RUN   TestManifestRefusesSameByteArtifactReplacement
+--- PASS: TestManifestRefusesSameByteArtifactReplacement (0.01s)
+=== RUN   TestManifestRefusesForeignBindingAndMalformedData
+--- PASS: TestManifestRefusesForeignBindingAndMalformedData (0.01s)
+=== RUN   TestReviewConfirmationStagingRefusal
+=== RUN   TestReviewConfirmationStagingRefusal/final-check/symlink/absent
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/final-check/symlink/present
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/final-check/regular/absent
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/final-check/regular/present
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/before-publication/symlink/absent
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/before-publication/symlink/present
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/before-publication/regular/absent
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+=== RUN   TestReviewConfirmationStagingRefusal/before-publication/regular/present
+    review_confirmation_linux_test.go:34: substitution refused with unchanged target and external sentinel
+--- PASS: TestReviewConfirmationStagingRefusal (0.13s)
+    --- PASS: TestReviewConfirmationStagingRefusal/final-check/symlink/absent (0.01s)
+    --- PASS: TestReviewConfirmationStagingRefusal/final-check/symlink/present (0.02s)
+    --- PASS: TestReviewConfirmationStagingRefusal/final-check/regular/absent (0.01s)
+    --- PASS: TestReviewConfirmationStagingRefusal/final-check/regular/present (0.02s)
+    --- PASS: TestReviewConfirmationStagingRefusal/before-publication/symlink/absent (0.02s)
+    --- PASS: TestReviewConfirmationStagingRefusal/before-publication/symlink/present (0.02s)
+    --- PASS: TestReviewConfirmationStagingRefusal/before-publication/regular/absent (0.01s)
+    --- PASS: TestReviewConfirmationStagingRefusal/before-publication/regular/present (0.02s)
+=== RUN   TestReviewConfirmationRecoveryIDsBesideUnsupported
+    review_confirmation_linux_test.go:52: valid current and 3 independent recovery IDs retained with unsupported-entry error
+--- PASS: TestReviewConfirmationRecoveryIDsBesideUnsupported (0.02s)
+=== RUN   TestReviewUnixModePreservedAfterWriting
+    review_linux_test.go:56: result valid=true outcome=2 known=true mode_before=4750 mode_after=4750 error=<nil>
+--- PASS: TestReviewUnixModePreservedAfterWriting (0.02s)
+=== RUN   TestReviewUnixRecoveryRefusalPreservesCurrent
+    review_linux_test.go:69: load valid=true document=true state=3 version=true error=storage-load: Storage load did not complete without diagnostics.
+        too many levels of symbolic links
+--- PASS: TestReviewUnixRecoveryRefusalPreservesCurrent (0.01s)
+=== RUN   TestReviewKnownCommitPreservesCanceledDelivery
+    review_protocol_test.go:21: known commit survives delivery error/cancel with 3 recovery records
+--- PASS: TestReviewKnownCommitPreservesCanceledDelivery (0.01s)
+=== RUN   TestReviewKnownCommitIndependentCurrent
+    review_protocol_test.go:33: known publication retains distinct proposed/current content versions
+--- PASS: TestReviewKnownCommitIndependentCurrent (0.01s)
+PASS

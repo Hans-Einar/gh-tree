@@ -1,0 +1,36 @@
+=== RUN   TestCommitStaleWholeVersionAndForeignStoreRefuse
+--- PASS: TestCommitStaleWholeVersionAndForeignStoreRefuse (0.01s)
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/lock
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/prepare.payload
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/manifest-flushed
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/before-publication
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/native-return-lost
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/directory-flush
+=== RUN   TestCommitFaultsPreserveKnownOutcomeAndCancellation/outcome-delivery
+--- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation (0.05s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/lock (0.00s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/prepare.payload (0.00s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/manifest-flushed (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/before-publication (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/native-return-lost (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/directory-flush (0.01s)
+    --- PASS: TestCommitFaultsPreserveKnownOutcomeAndCancellation/outcome-delivery (0.01s)
+=== RUN   TestManifestJournalPartialPreparationRetainsPersistedIDs
+--- PASS: TestManifestJournalPartialPreparationRetainsPersistedIDs (0.02s)
+=== RUN   TestManifestJournalTornTailPreservesEarlierFacts
+--- PASS: TestManifestJournalTornTailPreservesEarlierFacts (0.02s)
+=== RUN   TestManifestRestartStableRecoveryIDsAndLateOriginalWrites
+--- PASS: TestManifestRestartStableRecoveryIDsAndLateOriginalWrites (0.02s)
+=== RUN   TestManifestRefusesSameByteArtifactReplacement
+--- PASS: TestManifestRefusesSameByteArtifactReplacement (0.01s)
+=== RUN   TestManifestRefusesForeignBindingAndMalformedData
+--- PASS: TestManifestRefusesForeignBindingAndMalformedData (0.01s)
+=== RUN   TestReviewKnownCommitPreservesCanceledDelivery
+    review_protocol_test.go:21: known commit survives delivery error/cancel with 3 recovery records
+--- PASS: TestReviewKnownCommitPreservesCanceledDelivery (0.01s)
+=== RUN   TestReviewKnownCommitIndependentCurrent
+    review_protocol_test.go:33: known publication retains distinct proposed/current content versions
+--- PASS: TestReviewKnownCommitIndependentCurrent (0.01s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.821s

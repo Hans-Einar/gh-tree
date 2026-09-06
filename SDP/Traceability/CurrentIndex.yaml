@@ -603,7 +603,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "implementation_in_progress",
+      "state": "mutation_worker_dispatch_ready",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -633,8 +633,8 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "d539a73cb615c558eb8a1317543e12a3973b00fc",
-      "checkpointScope": "ten GitFacts methods/native foundations; general diff and all mutations incomplete",
+      "lastCheckpoint": "855a144689dae3ce69fdc6bb1fa2d303c7e27da0",
+      "checkpointScope": "all11 GitFacts, bounded plan registry and ReleasePlan; eight Prepare methods/ExecutePrepared/Fetch/Reconcile/native mutations absent",
       "blockedScope": null,
       "sourceCI": {
         "run": 34057368746,
@@ -643,7 +643,8 @@
       },
       "pendingCI": 34057368746,
       "sharedPrerequisiteAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc",
-      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending"
+      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
+      "activeWorker": "m3_git_mutation_worker"
     },
     {
       "id": "IMPL62",
@@ -687,7 +688,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "implementation_in_progress",
+      "state": "finishing_worker_dispatch_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -711,15 +712,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
+      "lastCheckpoint": "a147a1d57d2eadda1ab998a218eb03c53b66540a",
       "checkpointScope": "three public loads and private preparation/manifest/native mechanisms; public commits/recovery assembly incomplete",
       "sourceCI": {
         "run": 34058262124,
         "head": "8775a80a15cdc52de8ce8eb46a450b1ef050b76a",
         "result": "18 applicable SUCCESS, including corrected native macOS metadata; helper skip"
       },
-      "activeWorker": "m3_persistence_commit_worker",
-      "pendingNativeFinding": "FreeBSD system namespace EPERM blocks ordinary positive write profile; no-birth restart association/own-effect stamps under protocol work",
+      "activeWorker": "m3_persistence_finish_worker",
+      "pendingNativeFinding": "Native Windows repeated-commit recovery fails when NTFS rename transfers CreationTime with same full FileID; failing12-cycle control preserved. FreeBSD system-EA profile and no-birth/source-name interval proof remain.",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
       "earlyProtocolReview": {
@@ -731,14 +732,16 @@
           "M363-PR03"
         ],
         "correctionCandidate": "ca758efafec7cdbfb5ca6d838b56772bf4cabae9",
-        "state": "three_reproduced_findings_author_corrected_pending_confirmation"
+        "state": "three_bounded_findings_resolved",
+        "confirmedSource": "91acac5ecff941f95dbdaf00c86e9ced64b2a76f",
+        "scope": "bounded confirmation only; full candidate not accepted"
       }
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "implementation_in_progress",
+      "state": "frozen_candidate_review_queued",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -760,10 +763,15 @@
       "integrationHead": null,
       "worktreeCreated": true,
       "activeWorker": "m3_discovery_worker",
-      "lastCheckpoint": "4bfcf7fa20657556f13d9b53f4a65d1e83992dc8",
+      "lastCheckpoint": "8e2d2d1218ef6dcb70cbe06d55678e0420a20b36",
       "sharedPrerequisiteAdoption": "4bfcf7fa20657556f13d9b53f4a65d1e83992dc8",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
-      "checkpointScope": "both methods present; native/cross-target/limits hardening incomplete; known Unix ABI fix pending"
+      "checkpointScope": "complete candidate; no independent acceptance/integration",
+      "sourceHead": "2a18fdd5b884568d832afeb7fab54bb4d4b50682",
+      "sourceCI": {
+        "run": 34059784449,
+        "result": "SUCCESS, independent review pending"
+      }
     },
     {
       "id": "IMPL65",
@@ -1955,8 +1963,7 @@
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
     "IMPL61",
-    "IMPL63",
-    "IMPL64"
+    "IMPL63"
   ],
   "pausedInitialContributions": [
     "IMPL61",

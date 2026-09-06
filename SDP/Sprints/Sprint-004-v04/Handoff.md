@@ -41,18 +41,25 @@ FreeBSD infrastructure (source489a731/reviewbe94b44, integrationd5eeaac4acb11894
 CI34058149301, 19PASS/helper skip). Earlier prerequisite gates each18PASS/helper
 skip. Local source matches/targeted verification pass. These are not full Slices.
 
-Active adapter branches adopted d5eeaac at clean boundaries, owned source unchanged:
-Gitd539a73 (ten facts methods/native foundations; general diff/all mutations remain),
-Persistence8a8a987 (three loads/private native/preparation/manifest helpers; public
-commits/recovery assembly and no-birth profile proof remain), Discovery4bfcf7f
-(both methods present; native/limits/cross-target hardening remains). Compile-only
-compatibility checks pass; newly combined branch CI is pending. Runtime stays queued.
-Git ee42b1b CI34057368746 resolved prior race/Windows ACL failures,18PASS/helper
-skip. Persistence8775a80 CI34058262124 and87506ee CI34057603393 pass18/helper skip,
-including corrected macOS ACL detection. FreeBSD system-EA EPERM remains a real
-ordinary-user write-profile issue; it is never treated as empty metadata.
-GitHub7382617/reviewccbc843 remains accepted and held for Git-first integration.
-No M3 adapter has entered canonical; all13 Slices/all143 baseline findings remain.
+Git855a144 now has all11 facts, bounded registry and ReleasePlan; fresh mutation
+author must implement eight preparations/ExecutePrepared/Fetch/Reconcile and all
+native protected mutation protocols. Complete facts source1dbf421 CI34059556332
+passed; latest registry CI34062195057 pending. Fresh foundation review is queued.
+
+Persistencea147a1d explicitly preserves a failing Windows12-cycle regression:
+NTFS replacement changes CreationTime on the same full FileID, breaking recovery
+on the third load. Fresh finishing author must solve native identity/restart
+binding and remaining fault/resource/profile gates. All6 methods exist. Early
+three-findings audit is independently resolved at91acac5; complete adapter is not
+accepted. Ordinary FreeBSD system-EA EPERM and Unix source-name/no-birth proof
+remain unresolved; no guard waiver. Read the current worker report's newest native
+findings and exact source; older milestone NEXT text is historical.
+
+Discovery2a18fdd/final report8e2d2d1 is frozen; corrected CI34059784449 SUCCESS,
+independent review queued. Actual FreeBSD EMLINK classification and macOS fixture
+corrections are preserved. GitHub7382617/reviewccbc843 remains accepted and held
+for Git-first. Runtime stays queued. All active branches received shared d5eeaac;
+no M3 adapter is integrated, all13 Slices/all143 baseline findings remain in scope.
 
 Latest recovery marker: checkpoint/m3-shared-prerequisites/20260906-2046Z tags the
 commit adding this current status. It preserves accepted shared prerequisites

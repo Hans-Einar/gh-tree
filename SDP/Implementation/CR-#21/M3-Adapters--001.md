@@ -200,3 +200,19 @@ is short-lived (BoundaryTypes103..105). Reobserve current facts and preserve
 proven store/artifact association without equating changed observations or
 waiving replacement checks. No-birth profiles still need actual restart proof;
 unknown association cannot become authority to adopt/replay/delete an artifact.
+
+Git constructor wiring for M4/Composition: create one immutable coordinator
+ports.ApprovalIssuer and supply the same value to coordinator and Git
+Options.ApprovalAuthority. Git verifies both Issued and ValidFor; it never issues
+approvals. Zero authority provides facts only and cannot prepare executable plans.
+This implements existing G5 ownership, not a new boundary API or confirmation rule.
+
+Persistence early audit findings M363-PR01/02/03 are independently resolved at
+91acac5 in bounded native controls; complete acceptance remains pending. New actual
+Windows12-cycle regression at a147a1d shows the same FileIdInfo file ID with a changed
+CreationTime after native replacement, consistent with MS-FSA FileRenameInformation
+tunneling. A file creation timestamp cannot silently be treated as immutable.
+No timestamp-writing workaround, identity-check removal, or selected native
+primitive change is accepted. Fresh finishing worker must establish a safe native
+profile and crash/restart association; any frozen primitive change needs BC review.
+Shared DirectoryIdentity conventions concern directories and remain unchanged.
