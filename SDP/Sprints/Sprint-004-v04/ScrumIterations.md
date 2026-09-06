@@ -134,3 +134,11 @@ evidence, correction and re-review, design-only diff and green configured CI.
 Completion: explicit Master design acceptance/merge. Only then authorize required
 BC creation/review/freeze at G-08. Product implementation remains gated until
 design and required BCs are accepted/frozen; no implementation Slice is active.
+
+Current design draft: REFDES/API, MigrationMap (70 exact baseline paths and 90
+test functions), Slices--001 (all 13 capabilities), Verification--001 and complete
+FindingDisposition (143 open IDs). DesignReview--001 records independent early
+DES52-H01/H02 corrections and seven migration completeness inputs. Git scratch
+publication and Unix supervisor corrections are incorporated, supported by bounded
+native probes with source/log snapshots retained in Feasibility/Evidence. The
+complete frozen-HEAD review is next. No product finding is closed by this progress.

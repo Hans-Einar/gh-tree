@@ -1,0 +1,113 @@
+{
+  "run": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\scratch-bx4nok3u",
+  "git_version": "git version 2.43.0.windows.1",
+  "results": [
+    {
+      "probe": "scratch-stash-push-sha1",
+      "native_three_parent_semantics": true,
+      "real_unchanged_during_prepare": true,
+      "pack_bytes": 967,
+      "published": true,
+      "ignored_preserved": true
+    },
+    {
+      "probe": "scratch-stash-apply-sha1",
+      "staged_and_worktree_versions_preserved": true,
+      "untracked_restored": true,
+      "stash_retained": true
+    },
+    {
+      "probe": "scratch-stash-push-sha256",
+      "native_three_parent_semantics": true,
+      "real_unchanged_during_prepare": true,
+      "pack_bytes": 1220,
+      "published": true,
+      "ignored_preserved": true
+    },
+    {
+      "probe": "scratch-stash-apply-sha256",
+      "staged_and_worktree_versions_preserved": true,
+      "untracked_restored": true,
+      "stash_retained": true
+    },
+    {
+      "probe": "real-reference-hook-race",
+      "status": "captured-stale",
+      "hook_tracked_and_new_untracked_preserved": true,
+      "stash_exists": true
+    },
+    {
+      "probe": "scratch-checkout",
+      "real_unchanged_during_native_switch": true,
+      "exact_detached_head": true,
+      "native_index_clean": true
+    },
+    {
+      "probe": "scratch-prepared-fastforward",
+      "no_live_read_tree": true,
+      "exact_attached_head": true,
+      "clean": true
+    },
+    {
+      "probe": "native-index-contention",
+      "git_add_exit": 128
+    },
+    {
+      "probe": "scratch-index-restore",
+      "restores_index_B_not_HEAD_A": true,
+      "index_bytes_unchanged": true
+    },
+    {
+      "probe": "last-check-edit",
+      "status": "captured-stale",
+      "late_bytes_preserved": true
+    },
+    {
+      "probe": "installed-edit-and-stale-retry",
+      "installed_inode_retained": true,
+      "retry_status": "captured-stale",
+      "edited_bytes_preserved": true
+    },
+    {
+      "probe": "recreated-destination",
+      "status": "destination-collision",
+      "both_objects_retained": true
+    },
+    {
+      "probe": "scratch-conflict-publication",
+      "native_apply_exit": 1,
+      "unmerged_index_preserved": true,
+      "markers_published": true,
+      "stash_retained": true
+    },
+    {
+      "probe": "real-index-changed-after-prepare",
+      "status": "index-stale",
+      "file_and_new_staging_unchanged": true
+    },
+    {
+      "probe": "scratch-ignored-collision",
+      "prepare_exit": 1,
+      "real_ignored_user_data_untouched": true
+    },
+    {
+      "probe": "native-symbolic-HEAD-and-new-branch-transaction",
+      "git": "2.48.1.windows.1",
+      "exact_new_branch": true,
+      "clean": true,
+      "native_head_reflog_retained": true,
+      "old_branch_verify_only_lock_blocks_updates": true
+    },
+    {
+      "probe": "native-symbolic-HEAD-CAS-same-OID",
+      "git": "2.48.1.windows.1",
+      "exit": 128,
+      "changed_branch_identity_refused": true
+    },
+    {
+      "probe": "open-handle-after-capture",
+      "live_result_correct": true,
+      "late_original_inode_bytes_retained": true
+    }
+  ]
+}

@@ -1,0 +1,5063 @@
+{
+  "schemaVersion": 1,
+  "state": "DRAFT",
+  "issue": 52,
+  "parentIssue": 21,
+  "rule": "Every source finding remains open. Implement the selected REFDES/API protocol and linked checks; the source recommendation is context, not permission to weaken that protocol. Planned clauses/checks are not resolution evidence. Close only with exact implementation/review/integration SHAs and executed proof, or an explicit independently reviewed accepted disposition under Issue authority.",
+  "sourceCount": 143,
+  "severityCounts": {
+    "HIGH": 36,
+    "MEDIUM": 89,
+    "LOW": 18
+  },
+  "overlap": "143 report findings are not 143 independent defects. Shared treatment/evidence is allowed, but each source ID receives a disposition.",
+  "errata": [
+    "Canonical APP29-H03 is confirmation/preconditions; APP29-H06 is reconciliation. Git LR challenge headings transposed them; this map uses canonical Application IDs."
+  ],
+  "findings": [
+    {
+      "id": "BR21-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-RUN-03",
+        "V-RUN-04"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime lifecycle contract absent; launch package owns an incomplete OS-process implementation",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-02",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "TUI State and Application async authority are mixed; no explicit ordering/supersession contract",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime activity semantics missing; TUI infers operational state from provider strings",
+      "layers": [
+        "Runtime",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model"
+      ],
+      "verification": [
+        "V-APP-03",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Vertical Application use case is implemented in TUI State wrapper and coupled to historical backend interfaces",
+      "layers": [
+        "Application"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-GIT-03",
+        "V-GH-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Domain model and Application reconciliation missing",
+      "layers": [
+        "Application",
+        "Git",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-GIT-10",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Git adapter and Application read-model composition are mixed",
+      "layers": [
+        "Application",
+        "Git",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-04",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "TUI owns durable-state transition rather than Application + Persistence boundary",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-07",
+        "V-COMP-02"
+      ],
+      "slices": [
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime ownership fragmented across launch/terminal/app facade",
+      "layers": [
+        "Composition",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-01",
+        "V-STATE-03",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "TUI State first, then TUI View; Application review must consume findings",
+      "layers": [
+        "Composition",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-H05",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application; Git/GitHub/Runtime ports",
+      "layers": [
+        "Application",
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-LCH-03",
+        "V-RUN-01",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime + Launch Discovery",
+      "layers": [
+        "Composition",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-GIT-02",
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git + Domain + Application",
+      "layers": [
+        "Application",
+        "Composition",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-04",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Persistence + Application + TUI State",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-04",
+        "V-VIEW-02",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "TUI State/TUI View",
+      "layers": [
+        "Composition",
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "BR21-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-02",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-04",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Composition after other reviews",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-RUN-03",
+        "V-RUN-04"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime platform lifecycle implementation",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-RUN-07"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime state machine",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-RUN-05"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime restart lifecycle",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "One Runtime session registry / opaque globally unique IDs",
+      "layers": [
+        "Domain",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-RUN-01",
+        "V-RUN-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime unified session abstraction + Application port",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-01",
+        "V-APP-01"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime lifecycle + Application--Runtime BC",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-APP-02",
+        "V-RUN-01",
+        "V-RUN-07"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application operation policy + Runtime cancellable operations",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-APP-01",
+        "V-RUN-02",
+        "V-RUN-06"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime event source + Application operation/event API",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-05",
+        "V-RUN-07"
+      ],
+      "slices": [
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime terminal-session implementation",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-07",
+        "V-COMP-02"
+      ],
+      "slices": [
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Runtime shutdown contract + Composition lifecycle root",
+      "layers": [
+        "Composition",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-LCH-03",
+        "V-RUN-01",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Domain/Application API + Runtime private types; discovery-specific Candidate/Provider remain Launch Discovery",
+      "layers": [
+        "Composition",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-RUN-02",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime capability/fact model; TUI consumes facts only",
+      "layers": [
+        "Runtime",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-M09",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-RUN-06",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime owns bounded transport/output facts; TUI View owns presentation interpretation unless a dedicated terminal-emulation contract is accepted",
+      "layers": [
+        "Runtime",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-01",
+        "V-RUN-06"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime registry retention policy",
+      "layers": [
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "RT25-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-COMP-03",
+        "V-GIT-09",
+        "V-GH-02",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-05",
+        "SLC-08",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime support or adapter-local utility",
+      "layers": [
+        "Composition",
+        "Git",
+        "GitHub",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--GitHub@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-01",
+        "V-STATE-03",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "TUI State reducer",
+      "layers": [
+        "Composition",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-02",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "TUI State + Application event contract",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model"
+      ],
+      "verification": [
+        "V-APP-03",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Application owns use cases; TUI State emits commands",
+      "layers": [
+        "Application"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-03",
+        "V-APP-03"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-09",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "One typed TUI modal authority correlated to op/intent",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-H05",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-01",
+        "V-APP-02",
+        "V-STATE-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-06",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Application operation IDs + TUI correlation state",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-02",
+        "V-STATE-03",
+        "V-VIEW-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-04",
+        "SLC-06",
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Application read models; TUI caches projections only",
+      "layers": [
+        "Application",
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-01",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "TUI State owns selected console ID; Application/Runtime owns sessions only",
+      "layers": [
+        "Runtime",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-02",
+        "V-STATE-02",
+        "V-RUN-07"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-05",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application owns cancellable operation lifetime; host cancels by operation ID/context root",
+      "layers": [
+        "Application",
+        "Runtime",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01",
+        "V-VIEW-03",
+        "V-COMP-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "TUI View",
+      "layers": [
+        "Composition",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-04",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Application session context + Persistence; TUI projection only",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-04",
+        "V-VIEW-02",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Reuse common TUI State architecture + TUI View",
+      "layers": [
+        "Composition",
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-02",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-03",
+        "SLC-06",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "TUI State intent token contract",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-01",
+        "V-STATE-03",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "TUI State types/invariants",
+      "layers": [
+        "Composition",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TS-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-COMP-03",
+        "V-STATE-04"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Master-controlled extraction/deletion",
+      "layers": [
+        "Composition",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Replace facade with Application API/use cases + Application-owned port interfaces",
+      "layers": [
+        "Application",
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-01",
+        "V-APP-02",
+        "V-STATE-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-06",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Application operation coordinator/API",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-APP-03",
+        "V-GIT-06",
+        "V-GIT-07"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Application use cases + confirmation tokens/precondition versions",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-RUN-01",
+        "V-RUN-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application--Runtime port redesign; one Runtime session model",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H05",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-04",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Application session context + PersistencePort",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-H06",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-GIT-03",
+        "V-GH-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Application reconciliation read model over Git + GitHub ports",
+      "layers": [
+        "Application",
+        "Git",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-APP-02",
+        "V-APP-05",
+        "V-GH-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Application typed query result/error policy",
+      "layers": [
+        "Application",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-GIT-10",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Git returns local facts; Application joins semantic read model; TUI View formats",
+      "layers": [
+        "Application",
+        "Git",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-LCH-03",
+        "V-PER-04"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "LaunchDiscoveryPort + RuntimePort (+ Persistence responsibility as design resolves)",
+      "layers": [
+        "Application",
+        "Launch Discovery",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Collapse into coherent use cases; keep primitives behind ports",
+      "layers": [
+        "Application",
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-02",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-03",
+        "SLC-06",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Application command/query envelope + opaque client correlation echoed to TUI",
+      "layers": [
+        "Application",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-07",
+        "V-COMP-02"
+      ],
+      "slices": [
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application `Shutdown` over accepted Runtime shutdown contract",
+      "layers": [
+        "Composition",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-RUN-05",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "typed Application/Runtime errors and capabilities",
+      "layers": [
+        "Application",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "semantic Application read model; TUI View formatting",
+      "layers": [
+        "Application",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-M09",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model"
+      ],
+      "verification": [
+        "V-APP-01",
+        "V-APP-02",
+        "V-APP-03",
+        "V-APP-04",
+        "V-APP-05",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application unit/contract tests with fake ports",
+      "layers": [
+        "Application"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-COMP-03",
+        "V-STATE-04"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "target `api/`, `ports/`, `usecases/` organization",
+      "layers": [
+        "Composition",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "APP29-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-COMP-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Composition capability wiring + typed Application availability errors",
+      "layers": [
+        "Application",
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-02",
+        "V-GIT-02"
+      ],
+      "slices": [
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Application declares source/expected SHA; Git fetch/resolve primitive verifies exact target",
+      "layers": [
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-03",
+        "V-APP-05"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git authoritative fact model + Application reconciliation",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-APP-03"
+      ],
+      "slices": [
+        "SLC-06"
+      ],
+      "sourceRecommendedTreatment": "Git stable stash object identity + precondition revalidation; Application confirmation token",
+      "layers": [
+        "Application",
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-APP-03"
+      ],
+      "slices": [
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Git precondition fingerprint + typed changed-since-confirmation refusal",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H05",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-09",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git mutation result/effect-state contract + Application cancellation policy",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-H06",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-07",
+        "V-APP-03"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Git port safety/precondition API consumed by Application",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-GIT-02"
+      ],
+      "slices": [
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Application + Git primitives",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-APP-06",
+        "V-GIT-02"
+      ],
+      "slices": [
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Application orchestration; Git ref/worktree primitives",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-02",
+        "V-GIT-05",
+        "V-GIT-09"
+      ],
+      "slices": [
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Git temporary/managed ref policy; Application correlation",
+      "layers": [
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-08",
+        "V-GIT-09"
+      ],
+      "slices": [
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git typed mutation result/read-after-write facts",
+      "layers": [
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-01"
+      ],
+      "slices": [
+        "SLC-04",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Git worktree fact model",
+      "layers": [
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-GIT-10",
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Git + Application + TUI View split",
+      "layers": [
+        "Application",
+        "Git",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-GIT-10",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03",
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Git semantic diff result; TUI View formatting",
+      "layers": [
+        "Git",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-03",
+        "V-APP-05"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git freshness token/observation metadata",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-DOM-03",
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Domain/Application port DTO split; Git-private parsing structs",
+      "layers": [
+        "Application",
+        "Composition",
+        "Domain"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GIT31-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-09"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Git layer test suite",
+      "layers": [
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-02",
+        "V-GIT-02"
+      ],
+      "slices": [
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Domain Revision/BranchTarget semantics + Application exact target + Git expected-OID verification",
+      "layers": [
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-APP-03"
+      ],
+      "slices": [
+        "SLC-06"
+      ],
+      "sourceRecommendedTreatment": "Domain StashID = repository + exact stash OID; Git revalidates locator -> expected OID",
+      "layers": [
+        "Application",
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-H03",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Domain opaque SessionID value; Runtime is sole allocator/authority",
+      "layers": [
+        "Domain",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-H04",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics"
+      ],
+      "verification": [
+        "V-APP-03",
+        "V-GIT-06",
+        "V-GIT-07"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Domain typed target values; Application OperationID/ConfirmationID + Git precondition fingerprint remain outside Domain",
+      "layers": [
+        "Application",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-DOM-02"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-05",
+        "SLC-06",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Domain generic OID/Revision value supporting SHA-1 and SHA-256",
+      "layers": [
+        "Domain"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-02",
+        "V-GIT-01"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-04",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Domain established-Head semantic value; Git/Application explicitly represent or refuse unborn state without fabricating a Revision",
+      "layers": [
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-GIT-01",
+        "V-GH-01",
+        "V-PER-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Domain opaque RepositoryID; source-specific locator/path mapping stays outside Domain",
+      "layers": [
+        "Domain",
+        "Git",
+        "GitHub",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--GitHub@1.0.0",
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-03",
+        "V-GH-01",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Domain PR/Branch IDs; GitHub facts mapped to Application DTOs",
+      "layers": [
+        "Application",
+        "Domain",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-DOM-03",
+        "V-LCH-02",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Domain LaunchPointID only now; Launch Discovery/Application/Runtime own provider/execution DTOs",
+      "layers": [
+        "Domain",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-GIT-10",
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Git facts + Application read models + TUI View formatting; Domain IDs embedded only",
+      "layers": [
+        "Application",
+        "Git",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-03",
+        "V-APP-05",
+        "V-GIT-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02"
+      ],
+      "sourceRecommendedTreatment": "Git/GitHub facts + Application BranchRelationship read model",
+      "layers": [
+        "Application",
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-03",
+        "V-GIT-01",
+        "V-APP-04"
+      ],
+      "slices": [
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Git facts + Application active-worktree context + Persistence preference",
+      "layers": [
+        "Application",
+        "Domain",
+        "Git"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-DOM-02"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-05",
+        "SLC-06",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Domain constructors with unexported/validated representation",
+      "layers": [
+        "Domain"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "DOM33-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-DOM-02",
+        "V-DOM-03",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-05",
+        "SLC-06",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "New Domain unit tests + import-boundary CI after migration design",
+      "layers": [
+        "Composition",
+        "Domain"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-LCH-02",
+        "V-RUN-01"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Launch Discovery resolves/validates physical project scope; Runtime must preserve accepted cwd semantics at start. Persistence separately protects storage paths.",
+      "layers": [
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-02",
+        "V-APP-06"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Application owns ordered launch-selection intent; Launch Discovery validates all selected members share one project/source/executable before resolution. TUI guard is UX only.",
+      "layers": [
+        "Application",
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-DOM-01",
+        "V-LCH-02",
+        "V-PER-04"
+      ],
+      "slices": [
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Scoped opaque LaunchPointID, unambiguous identity encoding, separate saved alias namespace, explicit alias-conflict behavior in Application/Persistence.",
+      "layers": [
+        "Domain",
+        "Launch Discovery",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-02"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Provider validates native operand grammar or uses a supported delimiter/escaping policy verified for the chosen tool.",
+      "layers": [
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-01",
+        "V-LCH-02"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Launch Discovery aligns manifest selection with supported native tool semantics and preserves selected manifest provenance through Build.",
+      "layers": [
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-01",
+        "V-LCH-02"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Preserve exact accepted script/path bytes; explicitly reject unsupported names rather than silently retarget them. Display normalization never defines identity.",
+      "layers": [
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-LCH-03",
+        "V-APP-02",
+        "V-STATE-02"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Immutable Application-owned definition/selection with source version; Launch Discovery resolves/revalidates it at execution preparation; Application rejects stale worktree/query intent. Executable-override policy must be explicit.",
+      "layers": [
+        "Application",
+        "Launch Discovery",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-01",
+        "V-LCH-02",
+        "V-APP-01"
+      ],
+      "slices": [
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Cancellable passive discovery, bounded reads/walk, source diagnostics and explicit completeness; Application decides partial availability and exactly-once operation results.",
+      "layers": [
+        "Application",
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-01",
+        "V-LCH-03"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "Provider-private manager-selection policy with deterministic compatibility rules and diagnostics; final design must choose conflict/override semantics.",
+      "layers": [
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-LCH-03",
+        "V-RUN-01",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Physical separation into Launch Discovery, Application ports/API, Persistence, Runtime; no concrete adapter DTOs or runtime routing by provider above the port.",
+      "layers": [
+        "Composition",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Runtime@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-M09",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-02",
+        "V-PER-04"
+      ],
+      "slices": [
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Persistence owns atomic replacement, serialization/version conflict detection and compatibility; Application owns save/default intent and publishes durability result.",
+      "layers": [
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "LD36-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-LCH-01",
+        "V-LCH-02"
+      ],
+      "slices": [
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Document passive parser scope, deterministic unique provider registration/order, explicit limits/diagnostics, and focused boundary tests. Do not silently expand to a full Make interpreter.",
+      "layers": [
+        "Launch Discovery"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-01",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Persistence transactional replacement and explicit platform durability/effect-state contract.",
+      "layers": [
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-H02",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-04"
+      ],
+      "slices": [
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Persistence enforces the accepted project-storage root/link policy, independent of Discovery's cwd validation.",
+      "layers": [
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-APP-04",
+        "V-PER-02"
+      ],
+      "slices": [
+        "SLC-04",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Application owns commit/publication and preserves failure notices; Persistence returns immutable committed snapshots and truthful write outcomes.",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-02",
+        "V-PER-04"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Cooperative writer serialization plus expected-version conflict semantics; Application retries/merges only accepted intent.",
+      "layers": [
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-03",
+        "V-APP-04"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Application/Composition/Git establish scope; Persistence maps explicit canonical keys and diagnoses migration collisions.",
+      "layers": [
+        "Application",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence"
+      ],
+      "verification": [
+        "V-PER-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-09",
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "Persistence schema/version/unknown-field preservation and safe migration; Application owns unsupported-format availability policy.",
+      "layers": [
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a6",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-PER-03",
+        "V-GIT-01",
+        "V-COMP-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Outer-boundary path/identity policy; Persistence must not silently retarget strings, and Application matches Git-issued identities.",
+      "layers": [
+        "Composition",
+        "Git",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-PER-04",
+        "V-LCH-03",
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-09"
+      ],
+      "sourceRecommendedTreatment": "Split Persistence mechanics, Launch Discovery semantics and Application workflows behind Application-owned ports; serial Master cutover.",
+      "layers": [
+        "Application",
+        "Composition",
+        "Launch Discovery",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--LaunchDiscovery@1.0.0",
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "PS40-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-PER-01",
+        "V-STATE-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-05"
+      ],
+      "sourceRecommendedTreatment": "Define deterministic display ordering/duplicate-label policy without conflating label equality with repository-key canonicalization.",
+      "layers": [
+        "Persistence",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-GH-03",
+        "V-APP-05"
+      ],
+      "slices": [
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Application binds intended base/head repository and branch using Git/GitHub facts; GitHub accepts explicit scoped remote mutation data and never supplies an implicit push.",
+      "layers": [
+        "Application",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-PER-03",
+        "V-COMP-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Composition/Application explicit host-aware remote context; GitHub maps canonical remote scope; Persistence PS40-M03 common-repository distinction retained.",
+      "layers": [
+        "Composition",
+        "GitHub",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-APP-05"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-04",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "GitHub supplies scoped endpoint facts; Application owns relationship/activation reconciliation; TUI renders supplied relationships.",
+      "layers": [
+        "Application",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-DOM-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Strict structural/semantic mapping into Domain identities and Application facts, explicit unknown/missing optional fields, consistent request validation.",
+      "layers": [
+        "Domain",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-GH-02",
+        "V-APP-05",
+        "V-STATE-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Bounded page/result completeness in GitHub port; Application must not interpret omitted rows as absence or an exhaustive remote set.",
+      "layers": [
+        "Application",
+        "GitHub",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-GH-02",
+        "V-APP-02",
+        "V-STATE-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02"
+      ],
+      "sourceRecommendedTreatment": "GitHub observation metadata; Application source/query generations and reconciliation; TUI current-intent acceptance. UpdatedAt is not observation time.",
+      "layers": [
+        "Application",
+        "GitHub",
+        "TUI State"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-GH-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Separate machine payload and bounded diagnostics; validate typed created PR identity/URL and retain uncertainty when a remote effect may already exist.",
+      "layers": [
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions"
+      ],
+      "verification": [
+        "V-GH-02",
+        "V-GH-03",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "GitHub normalized remote errors/results, preserved evidence; Application exactly-once outcome and reconcile-before-retry policy.",
+      "layers": [
+        "Application",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-APP-06",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "Application-owned ports/facts/API; private CLI structs; GitHub remains remote adapter, Domain stays small. Confirms APP29-H01/H06 and DOM33-M04.",
+      "layers": [
+        "Application",
+        "Composition",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "GH43-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-GH-01",
+        "V-GH-02",
+        "V-GH-03",
+        "V-APP-05",
+        "V-COMP-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-08"
+      ],
+      "sourceRecommendedTreatment": "GitHub contract fixtures plus Application fake-port and Composition context tests; platform subprocess checks at accepted verification stage.",
+      "layers": [
+        "Application",
+        "Composition",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-03",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Immutable presentation input; all capabilities supplied through Application/TUI State. No service handles or callbacks in View.",
+      "layers": [
+        "Composition",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-02",
+        "SLC-04"
+      ],
+      "sourceRecommendedTreatment": "Application owns scoped relationships, multiplicity, freshness/completeness and applicability. View formats supplied facts only; carries GH43-M02/M04/M05 and APP29-H06.",
+      "layers": [
+        "Application",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-05",
+        "SLC-06",
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "View layout must keep the selected/focused behavior visible or give an explicit bounded degradation affordance. No hidden actionable list due to wrapper fallback.",
+      "layers": [
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-05",
+        "SLC-06",
+        "SLC-09",
+        "SLC-10"
+      ],
+      "sourceRecommendedTreatment": "View distinguishes unknown initial size from a known small viewport; measures/clips panels and reserves modal actions within available cells.",
+      "layers": [
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-03",
+        "V-RUN-05"
+      ],
+      "slices": [
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "View returns measured console content rectangles; host forwards changed dimensions by current SessionID through Application. State never recreates layout math.",
+      "layers": [
+        "Runtime",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-APP-03",
+        "V-VIEW-01",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-05",
+        "SLC-06",
+        "SLC-07"
+      ],
+      "sourceRecommendedTreatment": "Display supplied bound confirmation identity, exact target revision and stable stash identity/context; Application/Git own revalidation. Detail availability must survive layout.",
+      "layers": [
+        "Application",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M07",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-03",
+        "V-STATE-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Instance-local immutable theme and explicit pane/subpane focus facts; no title-string authority or global mutation. Concurrent construction/render race is inferred, not executed.",
+      "layers": [
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M08",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01",
+        "V-STATE-01"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "One semantic action/keymap projection shared with State/host; View selects responsive wording/mnemonic styling and shows actual input ownership/availability.",
+      "layers": [
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M09",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-02",
+        "V-COMP-02",
+        "V-RUN-02"
+      ],
+      "slices": [
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Runtime/Application supply lifecycle/activity meaning; View maps explicit presentation activity to frames. Host schedules frame ticks; product polling has separate Application ownership.",
+      "layers": [
+        "Composition",
+        "Runtime",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M10",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01",
+        "V-VIEW-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "One bounded cell/grapheme/ANSI-aware display policy; distinguish trusted styling, ordinary external text and terminal stream interpretation. No raw external control passthrough.",
+      "layers": [
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-M11",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a3",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-STATE-04",
+        "V-VIEW-02",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-03"
+      ],
+      "sourceRecommendedTreatment": "Converge both entries on common State/View contracts; semantic Application graph data, presentation-owned lane/decoration formatting with page-continuity contract.",
+      "layers": [
+        "Composition",
+        "TUI State",
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0",
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "TV46-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#tui-state-view-and-restricted-host"
+      ],
+      "verification": [
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-05",
+        "SLC-06",
+        "SLC-10",
+        "SLC-11"
+      ],
+      "sourceRecommendedTreatment": "Focused renderer conformance tests plus host/state integration; preserve meaningful behavior tests while retiring wrapper-only expectations.",
+      "layers": [
+        "TUI View"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--TUIView@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-H01",
+      "severity": "HIGH",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-04",
+        "V-REL-01",
+        "V-REL-02",
+        "V-REL-03"
+      ],
+      "slices": [
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "Master release workflow: exact source/artifact/evidence gate, safe triggers and immutable publication policy.",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M01",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate",
+        "REFDES--001.md#runtime-resource-model"
+      ],
+      "verification": [
+        "V-COMP-02",
+        "V-RUN-07",
+        "V-APP-01"
+      ],
+      "slices": [
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Root preserves primary plus aggregate cleanup; Application quiesces operations; Runtime proves all cleanup and rejects new starts. Carries RT25-M06/APP29-M06.",
+      "layers": [
+        "Application",
+        "Composition",
+        "Runtime"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Runtime@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M02",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a2",
+        "API--001.md#a4",
+        "API--001.md#a6",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-02",
+        "V-APP-02"
+      ],
+      "slices": [
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Explicit root, Application operation, host and independent bounded teardown contexts; cancellation is not rollback.",
+      "layers": [
+        "Application",
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M03",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a1",
+        "API--001.md#a3",
+        "API--001.md#a5",
+        "REFDES--001.md#application-operation-and-event-model",
+        "REFDES--001.md#git-safety-and-mutation-mechanics",
+        "REFDES--001.md#identity-and-observation-decisions",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-01",
+        "V-GH-01",
+        "V-GIT-01",
+        "V-APP-05"
+      ],
+      "slices": [
+        "SLC-01"
+      ],
+      "sourceRecommendedTreatment": "Scoped Git/GitHub facts and Application association policy; root injects explicit remote/local capabilities. Carries PS40-M03/GH43-M01/DOM33-M03.",
+      "layers": [
+        "Application",
+        "Composition",
+        "Git",
+        "GitHub"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Git@1.0.0",
+        "BC--Application--GitHub@1.0.0",
+        "BC--TUIState--Application@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M04",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-01",
+        "V-PER-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "Lazy defaults and testable ordering; preserve explicit paths.",
+      "layers": [
+        "Composition",
+        "Persistence"
+      ],
+      "plannedBoundaryContracts": [
+        "BC--Application--Persistence@1.0.0"
+      ],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M05",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-02",
+        "V-COMP-03"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-03",
+        "SLC-04",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12"
+      ],
+      "sourceRecommendedTreatment": "Application API/ports, one host, Persistence intent through Application and State-owned viewmodel leaf. Confirms BR21-L02/APP29-H01/TS-M05/TV46-M01/M11.",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-M06",
+      "severity": "MEDIUM",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a5",
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-03",
+        "V-COMP-04",
+        "V-REL-01"
+      ],
+      "slices": [
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "Accepted first Composition CI bootstrap; twelve-target parity and dependency enforcement, with no early product-PR workaround.",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-L01",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-01",
+        "V-REL-01",
+        "V-REL-02",
+        "V-REL-04"
+      ],
+      "slices": [
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "One Composition-owned build/version identity and noninteractive binary verification; compare source/binary/tag.",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    },
+    {
+      "id": "CO49-L02",
+      "severity": "LOW",
+      "state": "open_planned",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "designClauses": [
+        "API--001.md#a6",
+        "REFDES--001.md#migration-and-release-gate"
+      ],
+      "verification": [
+        "V-COMP-01",
+        "V-COMP-02"
+      ],
+      "slices": [
+        "SLC-01",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "sourceRecommendedTreatment": "Small bootstrap/host constructor seams and lifecycle fake tests, not a generic framework.",
+      "layers": [
+        "Composition"
+      ],
+      "plannedBoundaryContracts": [],
+      "implementationSHAs": [],
+      "reviewEvidence": [],
+      "integrationSHAs": [],
+      "verificationEvidence": []
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+//go:build windows
+
+// Disposable API feasibility probe, not product implementation.
+package main
+
+import (
+ "fmt"
+ "bytes"
+ "os"
+ "os/exec"
+ "runtime"
+ "syscall"
+ "sync"
+ "time"
+ "unsafe"
+ "golang.org/x/sys/windows"
+)
+
+type accounting struct {
+ User, Kernel, PeriodUser, PeriodKernel int64
+ Faults, Total, Active, Terminated uint32
+}
+type processList struct { Assigned, Count uint32; PIDs [16]uintptr }
+func check(e error) { if e != nil { panic(e) } }
+func jobActive(job windows.Handle) uint32 {
+ var a accounting
+ check(windows.QueryInformationJobObject(job, windows.JobObjectBasicAccountingInformation, uintptr(unsafe.Pointer(&a)), uint32(unsafe.Sizeof(a)), nil))
+ return a.Active
+}
+func until(d time.Duration, f func() bool) { end:=time.Now().Add(d); for !f(){if time.Now().After(end){panic("bounded wait expired")};time.Sleep(10*time.Millisecond)} }
+func helper() {
+ // Every helper has an independent safety expiry and performs no file access.
+ if os.Args[1] != "leaf" {
+  arg := "leaf"; if os.Args[1]=="root" {arg="branch"}
+  c:=exec.Command(os.Args[0], arg)
+  c.SysProcAttr=&syscall.SysProcAttr{CreationFlags:windows.CREATE_NO_WINDOW,HideWindow:true}
+  check(c.Start())
+  defer func(){_ = c.Process.Kill(); _ = c.Wait()}()
+ }
+ fmt.Println("probe helper",os.Args[1],os.Getpid())
+ time.Sleep(12*time.Second)
+}
+func run(terminal bool, abortBeforeResume bool) {
+ job,e:=windows.CreateJobObject(nil,nil);check(e)
+ defer windows.CloseHandle(job)
+ defer windows.TerminateJobObject(job,9)
+ var limits windows.JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+ limits.BasicLimitInformation.LimitFlags=windows.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+ _,e=windows.SetInformationJobObject(job,windows.JobObjectExtendedLimitInformation,uintptr(unsafe.Pointer(&limits)),uint32(unsafe.Sizeof(limits)));check(e)
+ var hpc,inRead,inWrite,outRead,outWrite windows.Handle
+ var outputDone chan struct{}
+ var outputFile *os.File
+ var outputMu sync.Mutex
+ var output bytes.Buffer
+ var attrs *windows.ProcThreadAttributeListContainer
+ if terminal {
+  check(windows.CreatePipe(&inRead,&inWrite,nil,0));defer windows.CloseHandle(inWrite)
+  check(windows.CreatePipe(&outRead,&outWrite,nil,0))
+  check(windows.CreatePseudoConsole(windows.Coord{X:80,Y:24},inRead,outWrite,0,&hpc))
+  outputFile=os.NewFile(uintptr(outRead),"probe-output")
+  defer outputFile.Close()
+  outputDone=make(chan struct{})
+  go func(){b:=make([]byte,4096);for{n,e:=outputFile.Read(b);if n>0{outputMu.Lock();if output.Len()+n<32768 {output.Write(b[:n])};outputMu.Unlock()};if e!=nil{break}};close(outputDone)}()
+  attrs,e=windows.NewProcThreadAttributeList(1);check(e);defer attrs.Delete()
+  check(attrs.Update(windows.PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE,unsafe.Pointer(hpc),unsafe.Sizeof(hpc)))
+ }
+ closedPTY:=false
+ defer func(){if hpc!=0&&!closedPTY{windows.ClosePseudoConsole(hpc)}}()
+ exe,e:=os.Executable();check(e)
+ exe16,e:=windows.UTF16PtrFromString(exe);check(e)
+ args16,e:=windows.UTF16PtrFromString(windows.ComposeCommandLine([]string{exe,"root"}));check(e)
+ si:=windows.StartupInfoEx{}
+ si.Cb=uint32(unsafe.Sizeof(si))
+ si.Flags=windows.STARTF_USESHOWWINDOW;si.ShowWindow=windows.SW_HIDE
+ flags:=uint32(windows.CREATE_SUSPENDED|windows.CREATE_UNICODE_ENVIRONMENT|windows.EXTENDED_STARTUPINFO_PRESENT)
+ if terminal {si.ProcThreadAttributeList=attrs.List();si.Flags|=windows.STARTF_USESTDHANDLES} else {flags|=windows.CREATE_NO_WINDOW}
+ var pi windows.ProcessInformation
+ check(windows.CreateProcess(exe16,args16,nil,nil,false,flags,nil,nil,&si.StartupInfo,&pi))
+ defer windows.CloseHandle(pi.Process);defer windows.CloseHandle(pi.Thread)
+ defer windows.TerminateProcess(pi.Process,9)
+ if terminal {check(windows.CloseHandle(inRead));check(windows.CloseHandle(outWrite))}
+ check(windows.AssignProcessToJobObject(job,pi.Process))
+ time.Sleep(80*time.Millisecond)
+ if n:=jobActive(job);n!=1 {panic(fmt.Sprintf("before resume active=%d",n))}
+ var cpu windows.Filetime
+ var times [4]windows.Filetime
+ check(windows.GetProcessTimes(pi.Process,&times[0],&times[1],&times[2],&times[3]))
+ cpu=times[3]
+ fmt.Printf("terminal=%v abort=%v before_resume_active=1 user_cpu_ticks=%d\n",terminal,abortBeforeResume,uint64(cpu.HighDateTime)<<32|uint64(cpu.LowDateTime))
+ if !abortBeforeResume {
+  previous,e:=windows.ResumeThread(pi.Thread);check(e)
+  if previous!=1 {panic("unexpected suspension count")}
+  until(5*time.Second,func()bool{var list processList;check(windows.QueryInformationJobObject(job,windows.JobObjectBasicProcessIdList,uintptr(unsafe.Pointer(&list)),uint32(unsafe.Sizeof(list)),nil));helpers:=0;for _,id:=range list.PIDs[:list.Count]{h,e:=windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION,false,uint32(id));check(e);b:=make([]uint16,1024);n:=uint32(len(b));e=windows.QueryFullProcessImageName(h,0,&b[0],&n);windows.CloseHandle(h);check(e);if windows.UTF16ToString(b[:n])==exe {helpers++}};return helpers==3})
+  if terminal {check(windows.ResizePseudoConsole(hpc,windows.Coord{X:100,Y:30}))}
+ }
+ var members processList
+ check(windows.QueryInformationJobObject(job,windows.JobObjectBasicProcessIdList,uintptr(unsafe.Pointer(&members)),uint32(unsafe.Sizeof(members)),nil))
+ handles:=[]windows.Handle{}
+ for _,id:=range members.PIDs[:members.Count] {h,e:=windows.OpenProcess(windows.SYNCHRONIZE,false,uint32(id));check(e);handles=append(handles,h);defer windows.CloseHandle(h)}
+ check(windows.TerminateJobObject(job,7))
+ until(3*time.Second,func()bool{return jobActive(job)==0})
+ for _,h:=range handles {r,e:=windows.WaitForSingleObject(h,1000);check(e);if r!=windows.WAIT_OBJECT_0 {panic("member not signaled")}}
+ var exit uint32;check(windows.GetExitCodeProcess(pi.Process,&exit))
+ if terminal {
+  done:=make(chan struct{});go func(){windows.ClosePseudoConsole(hpc);close(done)}()
+  select{case <-done:closedPTY=true;case <-time.After(3*time.Second):panic("ClosePseudoConsole timeout")}
+  select{case <-outputDone:case <-time.After(3*time.Second):panic("output reader timeout")}
+  outputMu.Lock();captured:=bytes.Contains(output.Bytes(),[]byte("probe helper root"));outputMu.Unlock()
+  if !abortBeforeResume&&!captured {panic("ConPTY did not capture root output")}
+  fmt.Printf("terminal_output_marker_captured=%v\n",captured)
+ }
+ fmt.Printf("terminal=%v abort=%v members=%d after_terminate_active=0 all_handles_signaled=true exit=%d pty_reader_joined=%v\n",terminal,abortBeforeResume,members.Count,exit,terminal)
+ runtime.KeepAlive(attrs)
+}
+func pipeCancelProbe(write bool){
+ var r,w windows.Handle;check(windows.CreatePipe(&r,&w,nil,0));rf:=os.NewFile(uintptr(r),"probe-read");wf:=os.NewFile(uintptr(w),"probe-write");defer rf.Close();defer wf.Close()
+ done:=make(chan struct{});go func(){if write{_,_=wf.Write(make([]byte,1<<20))}else{_,_=rf.Read(make([]byte,1))};close(done)}()
+ time.Sleep(50*time.Millisecond)
+ closed:=make(chan error,1);go func(){if write{closed<-wf.Close()}else{closed<-rf.Close()}}()
+ select{case e:=<-closed:check(e);case <-time.After(time.Second):panic("pipe close timeout")};select{case <-done:case <-time.After(time.Second):panic("pipe IO join timeout")}
+ fmt.Printf("blocked_pipe_write=%v close_joined=true\n",write)
+}
+func main(){if len(os.Args)>1 {helper();return}; fmt.Printf("compiler=%s os=%s arch=%s\n",runtime.Version(),runtime.GOOS,runtime.GOARCH); for _,term:=range []bool{false,true}{run(term,false);run(term,true)};pipeCancelProbe(false);pipeCancelProbe(true)}

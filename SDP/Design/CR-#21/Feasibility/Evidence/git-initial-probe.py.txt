@@ -1,0 +1,131 @@
+import subprocess, os, pathlib, tempfile, json, hashlib, time
+
+ROOT=pathlib.Path(__file__).parent
+RUN=pathlib.Path(tempfile.mkdtemp(prefix='run-', dir=ROOT))
+ENV=dict(os.environ, GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=str(RUN/'no-global-config'), GIT_TERMINAL_PROMPT='0')
+results=[]
+def git(p,*args,ok=True):
+    r=subprocess.run(['git','-C',str(p),*args],env=ENV,capture_output=True)
+    if ok and r.returncode: raise RuntimeError((args,r.returncode,r.stderr.decode(errors='replace')))
+    return r
+def txt(p,*args): return git(p,*args).stdout.decode().strip()
+def init(name,fmt='sha1'):
+    p=RUN/name;p.mkdir();git(p,'init','-q','--initial-branch=main','--object-format='+fmt)
+    git(p,'config','user.name','Feasibility');git(p,'config','user.email','probe@example.invalid')
+    git(p,'config','core.autocrlf','false');git(p,'config','gc.auto','0')
+    (p/'f').write_bytes(b'base\n');git(p,'add','f');git(p,'commit','-qm','base');return p
+def stash(p,content,label):
+    (p/'f').write_bytes(content);git(p,'stash','push','-m',label);return txt(p,'rev-parse','refs/stash')
+def inventory(p): return txt(p,'stash','list','--format=%H').splitlines()
+def add(name,**v): results.append(dict(probe=name,**v))
+
+for fmt in ['sha1','sha256']:
+    p=init('stash-'+fmt,fmt); a=stash(p,b'A\n','A');b=stash(p,b'B\n','B')
+    drop=git(p,'stash','drop',a,ok=False);pop=git(p,'stash','pop','--index',a,ok=False)
+    git(p,'stash','apply','--index',a)
+    assert (p/'f').read_bytes()==b'A\n' and inventory(p)==[b,a] and drop.returncode and pop.returncode
+    add('exact-oid-'+fmt,oid_length=len(a),apply='A',stack_unchanged=True,drop_exit=drop.returncode,pop_exit=pop.returncode,drop_stderr=drop.stderr.decode().strip())
+
+p=init('positional-race');a=stash(p,b'A\n','A');observed='stash@{0}';b=stash(p,b'B\n','B')
+git(p,'stash','drop',observed)
+assert inventory(p)==[a]
+add('precheck-gap',confirmed=a,inserted=b,remaining=inventory(p),wrong_entry_deleted=True)
+
+p=init('prepared-lock');a=stash(p,b'A\n','A')
+cmd=subprocess.Popen(['git','-C',str(p),'update-ref','--stdin'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=ENV)
+cmd.stdin.write(('start\nverify refs/stash '+a+'\nprepare\n').encode());cmd.stdin.flush()
+assert cmd.stdout.readline().strip()==b'start: ok';assert cmd.stdout.readline().strip()==b'prepare: ok'
+store=git(p,'stash','store','-m','again',a,ok=False);drop=git(p,'stash','drop','stash@{0}',ok=False)
+assert store.returncode and drop.returncode and inventory(p)==[a]
+cmd.stdin.write(b'abort\n');cmd.stdin.flush();cmd.stdin.close();assert cmd.stdout.readline().strip()==b'abort: ok';assert cmd.wait()==0
+add('native-ref-transaction-lock',store_exit=store.returncode,drop_exit=drop.returncode,stack_unchanged=True)
+
+p=init('restore-gap');(p/'f').write_bytes(b'confirmed\n');before=txt(p,'status','--porcelain=v1');savedstat=(p/'f').stat()
+(p/'f').write_bytes(b'newedited\n');os.utime(p/'f',ns=(savedstat.st_atime_ns,savedstat.st_mtime_ns));after=txt(p,'status','--porcelain=v1')
+git(p,'restore','--worktree','--','f');assert before==after and (p/'f').read_bytes()==b'base\n'
+add('restore-gap',same_status=True,same_size_and_mtime=True,new_bytes_lost_by_native_restore=True)
+
+p=init('capture-restore');(p/'f').write_bytes(b'confirmed\n');expected=hashlib.sha256((p/'f').read_bytes()).hexdigest();(p/'f').write_bytes(b'newedited\n')
+recovery=p/'saved-original';os.rename(p/'f',recovery);mismatch=hashlib.sha256(recovery.read_bytes()).hexdigest()!=expected
+assert mismatch;os.link(recovery,p/'f');assert (p/'f').read_bytes()==b'newedited\n'
+add('capture-mismatch',refused=True,latest_bytes_preserved=True,recovery_retained=True)
+
+p=init('capture-collision');(p/'f').write_bytes(b'confirmed\n');saved=p/'saved-original';os.rename(p/'f',saved);(p/'f').write_bytes(b'external-created\n')
+try: os.open(p/'f',os.O_WRONLY|os.O_CREAT|os.O_EXCL)
+except FileExistsError: pass
+else: raise AssertionError('exclusive install should refuse')
+assert saved.read_bytes()==b'confirmed\n' and (p/'f').read_bytes()==b'external-created\n'
+add('capture-collision',refused=True,both_versions_preserved=True)
+
+p=init('ignore-overwrite');(p/'.gitignore').write_text('ignored\n');git(p,'add','.gitignore');git(p,'commit','-qm','ignore');old=txt(p,'rev-parse','HEAD')
+git(p,'switch','-qc','target');(p/'ignored').write_bytes(b'target-content\n');git(p,'add','-f','ignored');git(p,'commit','-qm','target');target=txt(p,'rev-parse','HEAD');git(p,'switch','-q','main')
+(p/'ignored').write_bytes(b'user-ignored\n');refuse=git(p,'switch','--no-overwrite-ignore','--detach',target,ok=False)
+assert refuse.returncode and (p/'ignored').read_bytes()==b'user-ignored\n' and txt(p,'rev-parse','HEAD')==old
+git(p,'switch','--detach',target);assert (p/'ignored').read_bytes()==b'target-content\n'
+add('ignored-collision',safe_switch_exit=refuse.returncode,default_switch_overwrites=True)
+
+p=init('ref-cas');old=txt(p,'rev-parse','HEAD');(p/'f').write_bytes(b'new\n');git(p,'commit','-qam','new');new=txt(p,'rev-parse','HEAD')
+git(p,'branch','other',old);git(p,'update-ref','refs/heads/other',new,old);refuse=git(p,'update-ref','refs/heads/other',old,old,ok=False)
+assert refuse.returncode and txt(p,'rev-parse','other')==new
+wt=RUN/'occupied';git(p,'worktree','add',str(wt),'other');refuse2=git(p,'branch','-f','other',old,ok=False)
+assert refuse2.returncode
+git(p,'update-ref','refs/heads/other',old,new);assert txt(wt,'rev-parse','HEAD')==old and (wt/'f').read_bytes()==b'new\n'
+add('ref-cas-and-occupancy',stale_cas_exit=refuse.returncode,branch_force_occupied_exit=refuse2.returncode,update_ref_does_not_check_occupancy=True)
+
+# Deliberately isolated feasibility model of the files ref backend. Not product
+# implementation: omits production validation/journal/fsync/platform hardening.
+for fmt in ['sha1','sha256']:
+    p=init('locked-reflog-'+fmt,fmt);c=stash(p,b'C\n','C');a=stash(p,b'A\n','A');b=stash(p,b'B\n','B')
+    d=p/'.git';lock=d/'refs/stash.lock';log=d/'logs/refs/stash';hexlen=len(a)
+    for i,oid in enumerate([c,a,b]):git(p,'update-ref','refs/gh-tree/recovery/probe/'+str(i),oid,'0'*hexlen)
+    fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
+    blocked=git(p,'stash','store','-m','external-A',a,ok=False);assert blocked.returncode
+    rows=log.read_bytes().splitlines(keepends=True);assert sum(row.split(b' ',2)[1].decode()==a for row in rows)==1
+    out=[];old=('0'*hexlen).encode()
+    for row in rows:
+        _,new,tail=row.split(b' ',2)
+        if new.decode()==a:continue
+        out.append(old+b' '+new+b' '+tail);old=new
+    staged=log.with_name('stash.lock');staged.write_bytes(b''.join(out));os.write(fd,old+b'\n');os.close(fd);os.replace(staged,log);os.replace(lock,d/'refs/stash')
+    assert inventory(p)==[b,c];assert txt(p,'cat-file','-t',a)=='commit'
+    add('locked-oid-delete-'+fmt,external_store_exit=blocked.returncode,survivors_correct=True,target_recoverable=True)
+
+p=init('log-ref-crash-window');a=stash(p,b'A\n','A');b=stash(p,b'B\n','B');d=p/'.git';log=d/'logs/refs/stash';lock=d/'refs/stash.lock'
+fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY);rows=log.read_bytes().splitlines(keepends=True);newlog=b''.join(rows[:-1]);tmp=log.with_name('stash.lock');tmp.write_bytes(newlog);os.write(fd,(a+'\n').encode());os.close(fd);os.replace(tmp,log)
+assert txt(p,'rev-parse','refs/stash')==b and log.read_bytes()==newlog
+blocked=git(p,'stash','store','-m','external',b,ok=False);assert blocked.returncode
+os.replace(lock,d/'refs/stash');assert inventory(p)==[a]
+add('log-ref-crash-window',midstate='new reflog / old ref / retained ref lock',external_store_exit=blocked.returncode,finish_recovered=True)
+
+p=init('empty-ref-cleanup-race');a=stash(p,b'A\n','A');d=p/'.git';(d/'logs/refs/stash').write_bytes(b'')
+external_b=stash(p,b'B\n','external-other-OID')
+git(p,'stash','store','-m','external-same-OID',a)
+cmd=subprocess.Popen(['git','-C',str(p),'update-ref','--stdin'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=ENV)
+cmd.stdin.write(('start\ndelete refs/stash '+a+'\nprepare\n').encode());cmd.stdin.flush()
+assert cmd.stdout.readline().strip()==b'start: ok';assert cmd.stdout.readline().strip()==b'prepare: ok'
+assert (d/'logs/refs/stash').read_bytes()!=b''
+cmd.stdin.write(b'abort\n');cmd.stdin.flush();cmd.stdin.close();assert cmd.stdout.readline().strip()==b'abort: ok';assert cmd.wait()==0
+assert inventory(p)==[a,external_b]
+add('empty-ref-cleanup-race',expected_oid_alone_misses_reinsert=True,prepared_reflog_check_aborts=True)
+
+p=init('exact-remote');bare=RUN/'remote.git';git(RUN,'init','--bare','-q',str(bare));git(p,'remote','add','origin',str(bare));git(p,'push','-u','origin','main');selected=txt(p,'rev-parse','HEAD')
+wt=RUN/'deploy-worktree';git(p,'worktree','add','--detach',str(wt),selected);(p/'f').write_bytes(b'new-remote\n');git(p,'commit','-qam','advance');tip=txt(p,'rev-parse','HEAD');git(p,'push','origin','main')
+git(p,'fetch','--no-tags','origin','+refs/heads/main:refs/gh-tree/operations/probe/source');observed=txt(p,'rev-parse','refs/gh-tree/operations/probe/source^{commit}')
+assert observed!=selected and txt(wt,'rev-parse','HEAD')==selected
+git(wt,'switch','--no-overwrite-ignore','--detach',tip);assert txt(wt,'rev-parse','HEAD')==tip
+add('exact-remote',selected_stale_refused_before_worktree_change=True,exact_oid_switch=True)
+
+p=init('prepared-fastforward');old=txt(p,'rev-parse','HEAD');git(p,'switch','-qc','source');(p/'f').write_bytes(b'next\n');git(p,'commit','-qam','next');new=txt(p,'rev-parse','HEAD');git(p,'switch','-q','main')
+cmd=subprocess.Popen(['git','-C',str(p),'update-ref','--stdin'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=ENV)
+cmd.stdin.write(('start\nupdate refs/heads/main '+new+' '+old+'\nprepare\n').encode());cmd.stdin.flush()
+assert cmd.stdout.readline().strip()==b'start: ok';reply=cmd.stdout.readline().strip()
+assert reply==b'prepare: ok', (reply,cmd.stderr.read())
+assert (p/'.git/HEAD.lock').exists() and (p/'.git/refs/heads/main.lock').exists()
+assert txt(p,'symbolic-ref','HEAD')=='refs/heads/main';git(p,'merge-base','--is-ancestor',old,new)
+git(p,'read-tree','-m','-u',old,new)
+cmd.stdin.write(b'commit\n');cmd.stdin.flush();cmd.stdin.close();assert cmd.stdout.readline().strip()==b'commit: ok';assert cmd.wait()==0
+assert txt(p,'rev-parse','HEAD')==new and (p/'f').read_bytes()==b'next\n' and txt(p,'status','--porcelain=v1')==''
+add('prepared-fastforward',head_and_branch_locks=True,exact_head=True,clean_index_worktree=True)
+
+(ROOT/'results.json').write_text(json.dumps(dict(run=str(RUN),git_version=txt(RUN,'--version'),results=results),indent=2))
+print(json.dumps(dict(run=str(RUN),results=results),indent=2))

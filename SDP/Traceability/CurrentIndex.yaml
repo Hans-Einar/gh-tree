@@ -7,7 +7,7 @@
   "activeGate": "G-07",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "e0e716fd44421c221d00375fc0c0d0b8ea85bdff",
+  "mainObserved": "58f1cb9eda941db0941cbb8e04e6a0559a3ca896",
   "designState": "in_progress",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
@@ -214,9 +214,17 @@
     {
       "id": "REFDES52",
       "kind": "refactor_design",
-      "state": "authorized",
+      "state": "complete_draft_awaiting_review",
       "issue": 52,
-      "doc": "SDP/Design/CR-#21/REFDES--001.md"
+      "doc": "SDP/Design/CR-#21/REFDES--001.md",
+      "branch": "codex/cr21-refactor-design",
+      "base": "58f1cb9eda941db0941cbb8e04e6a0559a3ca896",
+      "earlyReview": "SDP/Design/CR-#21/DesignReview--001.md",
+      "designFindings": [
+        "DES52-H01",
+        "DES52-H02"
+      ],
+      "designFindingDisposition": "proposed_corrections_incorporated_independent_review_pending"
     },
     {
       "id": "G-07",
@@ -1251,5 +1259,13 @@
     "installedExtensionObserved": "v0.3.13",
     "installationChanged": false,
     "verificationState": "baseline_inventory_only"
-  }
+  },
+  "designAppendices": [
+    "API--001.md",
+    "MigrationMap.yaml",
+    "Slices--001.md",
+    "Verification--001.md",
+    "FindingDisposition.yaml",
+    "DesignReview--001.md"
+  ]
 }

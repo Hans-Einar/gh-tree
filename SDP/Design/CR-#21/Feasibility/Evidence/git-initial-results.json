@@ -1,0 +1,101 @@
+{
+  "run": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52\\run-_z0r6f22",
+  "git_version": "git version 2.43.0.windows.1",
+  "results": [
+    {
+      "probe": "exact-oid-sha1",
+      "oid_length": 40,
+      "apply": "A",
+      "stack_unchanged": true,
+      "drop_exit": 1,
+      "pop_exit": 1,
+      "drop_stderr": "error: 'd4fdfc26d714cadf60079d3d56d15bbd5bd94bab' is not a stash reference"
+    },
+    {
+      "probe": "exact-oid-sha256",
+      "oid_length": 64,
+      "apply": "A",
+      "stack_unchanged": true,
+      "drop_exit": 1,
+      "pop_exit": 1,
+      "drop_stderr": "error: '34ea0dcbd2c5ccf67a40e2344a7821aa6a165c91f31189bbecd6915848aa9fa7' is not a stash reference"
+    },
+    {
+      "probe": "precheck-gap",
+      "confirmed": "7f507c3737c5194e2ad1d6bb5b18ce2bfe49d20a",
+      "inserted": "43ab28f68f31bedf2838d73957f5af91a3c861a4",
+      "remaining": [
+        "7f507c3737c5194e2ad1d6bb5b18ce2bfe49d20a"
+      ],
+      "wrong_entry_deleted": true
+    },
+    {
+      "probe": "native-ref-transaction-lock",
+      "store_exit": 1,
+      "drop_exit": 1,
+      "stack_unchanged": true
+    },
+    {
+      "probe": "restore-gap",
+      "same_status": true,
+      "same_size_and_mtime": true,
+      "new_bytes_lost_by_native_restore": true
+    },
+    {
+      "probe": "capture-mismatch",
+      "refused": true,
+      "latest_bytes_preserved": true,
+      "recovery_retained": true
+    },
+    {
+      "probe": "capture-collision",
+      "refused": true,
+      "both_versions_preserved": true
+    },
+    {
+      "probe": "ignored-collision",
+      "safe_switch_exit": 1,
+      "default_switch_overwrites": true
+    },
+    {
+      "probe": "ref-cas-and-occupancy",
+      "stale_cas_exit": 128,
+      "branch_force_occupied_exit": 128,
+      "update_ref_does_not_check_occupancy": true
+    },
+    {
+      "probe": "locked-oid-delete-sha1",
+      "external_store_exit": 1,
+      "survivors_correct": true,
+      "target_recoverable": true
+    },
+    {
+      "probe": "locked-oid-delete-sha256",
+      "external_store_exit": 1,
+      "survivors_correct": true,
+      "target_recoverable": true
+    },
+    {
+      "probe": "log-ref-crash-window",
+      "midstate": "new reflog / old ref / retained ref lock",
+      "external_store_exit": 1,
+      "finish_recovered": true
+    },
+    {
+      "probe": "empty-ref-cleanup-race",
+      "expected_oid_alone_misses_reinsert": true,
+      "prepared_reflog_check_aborts": true
+    },
+    {
+      "probe": "exact-remote",
+      "selected_stale_refused_before_worktree_change": true,
+      "exact_oid_switch": true
+    },
+    {
+      "probe": "prepared-fastforward",
+      "head_and_branch_locks": true,
+      "exact_head": true,
+      "clean_index_worktree": true
+    }
+  ]
+}
