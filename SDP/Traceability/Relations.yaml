@@ -309,6 +309,13 @@
       "relation": "inventoried_by",
       "to": "SDP/Implementation/CR-#21/API-Inventory--001.md",
       "state": "preparation_only"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
+      "head": "dbb89ea813a954bb8bbb276bea2bb46647826810",
+      "state": "changes_required"
     }
   ],
   "errata": [

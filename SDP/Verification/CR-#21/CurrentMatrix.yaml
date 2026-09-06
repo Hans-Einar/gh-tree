@@ -248,9 +248,20 @@
     },
     {
       "id": "V-VIEW-03",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "rework_required",
+      "evidence": [
+        {
+          "kind": "viewmodel_leaf_initial_review",
+          "sourceHead": "dbb89ea813a954bb8bbb276bea2bb46647826810",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
+          "ciRun": "34037022233",
+          "result": "CHANGES_REQUIRED_M260-M01"
+        }
+      ],
+      "limits": [
+        "Mixed navigator/branch cockpit representation requires correction; no renderer/State/full Slice proof or integration yet."
+      ]
     },
     {
       "id": "V-PER-01",

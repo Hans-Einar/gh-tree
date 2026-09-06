@@ -1,0 +1,3 @@
+# Preserve exact independent source/log bytes, including labeled failed attempts.
+* -text whitespace=cr-at-eol
+*.tar -diff

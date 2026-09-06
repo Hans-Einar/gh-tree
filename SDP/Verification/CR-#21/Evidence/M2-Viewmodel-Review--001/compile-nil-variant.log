@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel_test [github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel.test]
+.\compile-nil-variant.go.txt:3:22: cannot use nil as viewmodel.ModalBody value in variable declaration
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel [build failed]
+FAIL

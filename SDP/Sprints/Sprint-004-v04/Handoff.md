@@ -88,3 +88,12 @@ Use explicit UTF-8 in scripts; exact native evidence has scoped byte-preserving
 attributes. No external blocker is known. Go1.25/native tools are available as
 recorded in implementationNotes. Installed extension was observed at v0.3.13 and
 is unchanged. No main product PR, tag, publication or install-upgrade occurred.
+
+Current M2 leaves: API/ports#59 final7e3dd0a3545cc259af6dfe67885b20c8ddc57749
+(product3e45f31) is under independent review/current CI34038064464. Viewmodel#60
+atdbb89ea received M260-M01 MEDIUM despite CI34037022233 green18/M3skip: disjoint
+modes reject retained simultaneous Navigator/Branch cockpit. Independent copies,
+identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
+adds no scope. Actual report/test/control/raw/hash evidence is archived in
+M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
+new exact re-review/CI required. No M2 integration or baseline finding closure.

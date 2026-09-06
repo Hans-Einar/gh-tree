@@ -275,3 +275,12 @@ are the only product dependency of viewmodel; it cannot import API or State pare
 Each source freezes for separate fresh review/current CI; Master integrates API/
 ports then viewmodel serially and verifies integrated CI before declaring M2 done.
 No workflow/reducer/renderer/adapter/legacy/module/frozen-contract edits delegated.
+
+Current M2 leaves: API/ports#59 final7e3dd0a3545cc259af6dfe67885b20c8ddc57749
+(product3e45f31) is under independent review/current CI34038064464. Viewmodel#60
+atdbb89ea received M260-M01 MEDIUM despite CI34037022233 green18/M3skip: disjoint
+modes reject retained simultaneous Navigator/Branch cockpit. Independent copies,
+identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
+adds no scope. Actual report/test/control/raw/hash evidence is archived in
+M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
+new exact re-review/CI required. No M2 integration or baseline finding closure.

@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel_test [github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel.test]
+.\compile-modal-key.go.txt:3:20: cannot convert "not a capability" (untyped string constant) to type viewmodel.ModalID
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel [build failed]
+FAIL

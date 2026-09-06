@@ -1,0 +1,104 @@
+[
+  {
+    "Path": "internal/tuistate/viewmodel/action.go",
+    "ExpectedBlob": "daa9521aae4e813e60eece0dc1ab6236d3e9db34",
+    "ActualBlob": "09db3c7ad178aa0d58f13f89adaa7b002ccc203a",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/closed_test.go",
+    "ExpectedBlob": "58baf6d76c4f1f7bcd068ed3b2a40471e74db9d5",
+    "ActualBlob": "036881ad6d1305542f5b80886e87242af894643a",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/console.go",
+    "ExpectedBlob": "27ef682d430c6a8e7c8d47248c405e6ce387e4fe",
+    "ActualBlob": "f23ed7877944cbfb52a177fb8afcc2b7dad27ecf",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/detail.go",
+    "ExpectedBlob": "9c7d689c14e244503b219bd0290641023fe508e7",
+    "ActualBlob": "66966c0ff2c94af3e6acfec627f5e291f3768eda",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/identity.go",
+    "ExpectedBlob": "a0052c27638f95619085e1ccf063b008d364ec50",
+    "ActualBlob": "3481d5a0415933160426a1a94307ec63ae89ed10",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/modal_test.go",
+    "ExpectedBlob": "313def47499fd5059f53d6485a62dd5a6a587337",
+    "ActualBlob": "d59381adbb8b1b2b429160d4e71c3dd3afc6ac4f",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/modal.go",
+    "ExpectedBlob": "754e7db5b4e53f800e14526fcc5fb34fbc9740f9",
+    "ActualBlob": "ea7cf04d1f2215ff2f38d89c175f00a412af56fa",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/pane.go",
+    "ExpectedBlob": "51136df488282afb5f74d251fe57334d365d71f5",
+    "ActualBlob": "e710b68a8f134efc47c786c56ee39db574bef531",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/README.md",
+    "ExpectedBlob": "a057ab8f5763aafdd54c4ee849a89d18f9fc1725",
+    "ActualBlob": "286d6e4ba3118a6c1e890ba0ce1507e692b41230",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/rows.go",
+    "ExpectedBlob": "bc3830b9119b4b1f8686bb40806fefddd01b91ec",
+    "ActualBlob": "1cf9e961f1574ff4921503fa64422ab5c6d3a546",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/snapshot.go",
+    "ExpectedBlob": "03396ad74d1432d7f2d01376c28d8843a09d525a",
+    "ActualBlob": "8bfce7b13b776900f7c7e27308289749fcb9b697",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/stash_time_test.go",
+    "ExpectedBlob": "79e8f5a3089f2e611ac6d45e1447b26e61c8cded",
+    "ActualBlob": "a95955900e605c384315acaf84c46b969f1e7900",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/stash.go",
+    "ExpectedBlob": "9eaa6fae0277d8d9c1d1be11f64d1ce3905a8a88",
+    "ActualBlob": "96974299dc1ee7ef3ebdbafed5c2e5b2c2013af8",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/surface_test.go",
+    "ExpectedBlob": "a82fce1d5ae58e58885936586efe2a2e5925c160",
+    "ActualBlob": "de873821e20dc069a30d43ef8bad364036abf00b",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/time.go",
+    "ExpectedBlob": "b7125a0c7ece91cc5abe35491785d3342b5baf02",
+    "ActualBlob": "f86940fe17e4ef40057081b848caf1ec179654ec",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/value.go",
+    "ExpectedBlob": "b7d2d585daa3d5c00bfb8d8b1b99906af69868a4",
+    "ActualBlob": "c25823a479f417988ab3c7b97ded74a89d22a73b",
+    "Match": false
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/viewmodel_test.go",
+    "ExpectedBlob": "c977d3e28df647b7a7db4e8682aea6d0035e1d11",
+    "ActualBlob": "fd67600339685e1901db75e80ee9c57f6e9d83ed",
+    "Match": false
+  }
+]

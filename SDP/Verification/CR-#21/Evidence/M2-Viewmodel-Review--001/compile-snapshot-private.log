@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel_test [github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel.test]
+.\compile-snapshot-private.go.txt:3:21: cannot refer to unexported field valid in struct literal of type viewmodel.Snapshot
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel [build failed]
+FAIL

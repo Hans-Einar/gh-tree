@@ -471,7 +471,7 @@
       "id": "IMPL59",
       "kind": "implementation_contribution",
       "issue": 59,
-      "state": "kickoff",
+      "state": "awaiting_independent_review",
       "layer": "Application API/ports",
       "slices": [
         "SLC-01",
@@ -490,13 +490,16 @@
       ],
       "branch": "codereview-21/layer-application-api",
       "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "head": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "productHead": "3e45f313d3e953f3293b9d42405f6843264656e0",
+      "sourceCiRun": "34038064464"
     },
     {
       "id": "IMPL60",
       "kind": "implementation_contribution",
       "issue": 60,
-      "state": "kickoff",
+      "state": "correction_in_progress",
       "layer": "TUI State viewmodel",
       "slices": [
         "SLC-01",
@@ -515,7 +518,14 @@
       ],
       "branch": "codereview-21/layer-tuistate-viewmodel",
       "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "reviewedHead": "dbb89ea813a954bb8bbb276bea2bb46647826810",
+      "disposition": "CHANGES_REQUIRED",
+      "findings": [
+        "M260-M01"
+      ],
+      "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
+      "sourceCiRun": "34037022233"
     },
     {
       "id": "M2-SURFACES",
