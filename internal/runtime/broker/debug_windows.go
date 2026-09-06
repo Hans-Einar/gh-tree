@@ -51,6 +51,9 @@ func processProfile(process windows.Handle) (startupProfile, error) {
 		return startupProfile{}, errors.New("unknown target runtime machine")
 	}
 	if target == machine386 && native != machine386 {
+		if unsafe.Sizeof(uintptr(0)) == 4 {
+			return startupProfile{4, 0x10, 0x2c, false}, nil
+		}
 		return startupProfile{4, 0x10, 0x2c, true}, nil
 	}
 	if target != 0 {
@@ -195,17 +198,14 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 				return errors.New("duplicate debug creation")
 			}
 			created = true
-			for i := 0; i < 3; i++ {
-				h := word(offset + i*int(unsafe.Sizeof(uintptr(0))))
-				if h != 0 && h != d.process.Process && h != d.process.Thread {
-					d.owned = append(d.owned, h)
-				}
-			}
-		case 2: // CREATE_THREAD_DEBUG_EVENT
-			h := word(offset)
-			if h != 0 && h != d.process.Thread {
+			// Event process/thread handles are system-owned until exit/detach;
+			// closing them early permits the debugger's later close to hit reused
+			// values. Our independently returned CreateProcess handles stay owned.
+			if h := word(offset); h != 0 {
 				d.owned = append(d.owned, h)
 			}
+		case 2: // CREATE_THREAD_DEBUG_EVENT
+			// ContinueDebugEvent(EXIT_THREAD) / detach closes the event handle.
 		case 6: // LOAD_DLL_DEBUG_EVENT
 			h := word(offset)
 			if h != 0 {

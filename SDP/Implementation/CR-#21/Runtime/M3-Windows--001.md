@@ -33,3 +33,29 @@ the original Runtime author. Shared wire/start files remain unchanged.
 Next permitted action: continue owned native implementation in tested/pushed
 partial checkpoints; obtain separate fresh Windows review before Master alone
 integrates into the Runtime branch. No product PR, merge or release.
+
+## Partial checkpoint 2
+
+The live native user launcher now exercises acquired cwd, inner Job assignment
+before resume, the complete debug cwd barrier and pending-event detach. Native
+amd64 fixtures pass pipes, immediate user chdir, literal argv (including empty,
+quotes, trailing slash, Unicode and shell metacharacters), no user initialization
+before the barrier, no debugger/anchor visible afterward, real ConPTY input and
+100x30 resize, root wait and terminal/output joining. The initial test fixture
+omitted the testing flag terminator and exited 2; this was corrected. Native
+tests also exposed premature closure of system-owned debug process/thread event
+handles; only image/DLL handles are now explicitly closed, while the separately
+returned CreateProcess handles retain Runtime ownership. Microsoft documents
+event-handle closure in ContinueDebugEvent; the corrected tests pass.
+
+`broker/cmd/main_windows.go` now calls the fixed real
+`broker.RunWindowsPrivate() int` entry. The authenticated bounded engine skeleton
+is wired to the actual native implementation, including output transfer, serialized
+input/resize, root-exit cleanup and Quiescent/Release. Its whole parent protocol
+still requires the private client and end-to-end tests; entry compilation alone
+does not verify that protocol. Parent output transfer pulls a duplicate from its
+retained broker process handle before ACK, avoiding unknown allocated remote
+handles when a transfer message fails.
+
+Validation: Go1.25.0 Windows amd64 broker tests and vet. Build/generator source
+closure remains incomplete and will change during the remaining implementation.
