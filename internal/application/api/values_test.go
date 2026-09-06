@@ -158,6 +158,16 @@ func TestExactScopeAndReconciliationFacets(t *testing.T) {
 	if _, e := NewGitExpectedState(wrong); e == nil {
 		t.Fatal("mismatched expected worktree")
 	}
+	if _, e := NewCommitFact(CommitFactData{Revision: selected, Message: "root"}); e == nil {
+		t.Fatal("remote root commit in Git facts")
+	}
+	if _, e := NewUniqueMergeBase(UniqueMergeBaseData{Base: selected}); e == nil {
+		t.Fatal("remote merge base in Git facts")
+	}
+	base := must(NewUniqueMergeBase(UniqueMergeBaseData{Base: revision(other, "1")}))
+	if _, e := NewMergeBaseResult(MergeBaseResultData{Left: revision(repo, "1"), Right: revision(repo, "2"), Outcome: Some[MergeBaseOutcome](base), Transport: must(NewCommandTransportOutcome(CommandTransportOutcomeData{}))}); e == nil {
+		t.Fatal("cross-clone merge-base result")
+	}
 }
 
 func TestOpaqueJSONAndWholeDocumentRetention(t *testing.T) {

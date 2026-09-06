@@ -79,6 +79,44 @@ func containsChoice(choices []Choice, c Choice) bool {
 func sameLocal(a, b domain.Revision) bool {
 	return a.Valid() && b.Valid() && a.Repository().Scope() == domain.LocalCommon && a.Repository() == b.Repository() && a.OID().Format() == b.OID().Format()
 }
+func validateReadCommitsResult(d ReadCommitsResultData) error {
+	repo := d.Endpoint.Repository()
+	if repo.Scope() != domain.LocalCommon {
+		return invalid("history result endpoint scope")
+	}
+	for _, c := range d.Commits {
+		if c.data.Revision.Repository() != repo {
+			return invalid("history result commit scope")
+		}
+	}
+	if o, p := d.Observation.Value(); p && o.data.Repository != repo {
+		return invalid("history result observation scope")
+	}
+	return nil
+}
+func validateMergeBaseResult(d MergeBaseResultData) error {
+	if !sameLocal(d.Left, d.Right) {
+		return invalid("merge-base result endpoints")
+	}
+	if outcome, p := d.Outcome.Value(); p {
+		switch b := outcome.(type) {
+		case UniqueMergeBase:
+			if !sameLocal(d.Left, b.data.Base) {
+				return invalid("merge-base result scope")
+			}
+		case AmbiguousMergeBase:
+			for _, r := range b.data.Candidates {
+				if !sameLocal(d.Left, r) {
+					return invalid("merge-base candidate scope")
+				}
+			}
+		}
+	}
+	if o, p := d.Observation.Value(); p && o.data.Repository != d.Left.Repository() {
+		return invalid("merge-base result observation scope")
+	}
+	return nil
+}
 func validFullRef(ref, prefix string) bool {
 	if !strings.HasPrefix(ref, prefix) || len(ref) == len(prefix) {
 		return false

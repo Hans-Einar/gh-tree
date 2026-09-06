@@ -1475,6 +1475,9 @@ func (d CommitFactData) validate() error {
 		}
 	}
 
+	if d.Revision.Repository().Scope() != domain.LocalCommon {
+		return invalid("commit local scope")
+	}
 	for _, p := range d.Parents {
 		if !sameLocal(d.Revision, p) {
 			return invalid("commit parent scope")
@@ -2129,7 +2132,9 @@ func (d UniqueMergeBaseData) validate() error {
 	if !d.Base.Valid() {
 		return invalid("d.Base")
 	}
-
+	if d.Base.Repository().Scope() != domain.LocalCommon {
+		return invalid("merge base local scope")
+	}
 	return nil
 }
 
@@ -2840,8 +2845,7 @@ func (d ReadCommitsResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
-	return nil
+	return validateReadCommitsResult(d)
 }
 
 // ReadGraphRequest is an immutable semantic boundary value. Its zero is invalid.
@@ -3058,8 +3062,7 @@ func (d MergeBaseResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
-	return nil
+	return validateMergeBaseResult(d)
 }
 
 // ReadDiffRequest is an immutable semantic boundary value. Its zero is invalid.
