@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
+	"github.com/Hans-Einar/gh-tree/internal/application/ports"
 	"github.com/Hans-Einar/gh-tree/internal/domain"
 )
 
@@ -23,15 +24,18 @@ import (
 // Environment is copied; nil snapshots the process environment. CurrentDirectory
 // identifies the launch context, independent of later ResolveLocal calls.
 type Options struct {
-	GitExecutable    string
-	CurrentDirectory string
-	Environment      []string
-	ReadTimeout      time.Duration
-	MutationTimeout  time.Duration
-	DrainTimeout     time.Duration
-	MaxStdoutBytes   int
-	MaxStderrBytes   int
-	MaxRepositories  int
+	GitExecutable     string
+	CurrentDirectory  string
+	Environment       []string
+	ReadTimeout       time.Duration
+	MutationTimeout   time.Duration
+	DrainTimeout      time.Duration
+	MaxStdoutBytes    int
+	MaxStderrBytes    int
+	MaxRepositories   int
+	ApprovalAuthority ports.ApprovalIssuer
+	PlanTTL           time.Duration
+	MaxPlanBytes      uint64
 }
 
 // Adapter retains only copied identity/locator observations between calls.
@@ -42,6 +46,7 @@ type Adapter struct {
 	current      directoryObservation
 	mu           sync.Mutex
 	repositories map[domain.RepositoryID]repository
+	plans        *planRegistry
 }
 
 type repository struct {
@@ -123,6 +128,15 @@ func New(options Options) (*Adapter, error) {
 	if options.MaxRepositories == 0 {
 		options.MaxRepositories = 64
 	}
+	if options.PlanTTL == 0 {
+		options.PlanTTL = 5 * time.Minute
+	}
+	if options.MaxPlanBytes == 0 {
+		options.MaxPlanBytes = 16 << 20
+	}
+	if options.PlanTTL < 0 || options.PlanTTL > 30*time.Minute || options.MaxPlanBytes > 64<<20 {
+		return nil, diagnostic(api.Invalid, "InvalidPlanBounds", "The Git plan lifetime or retained-byte bound is invalid.")
+	}
 	if options.ReadTimeout < 0 || options.MutationTimeout < 0 || options.DrainTimeout < 0 || options.MaxStdoutBytes < 1 || options.MaxStdoutBytes > 16<<20 || options.MaxStderrBytes < 1 || options.MaxStderrBytes > 256<<10 || options.MaxRepositories < 1 || options.MaxRepositories > 64 {
 		return nil, diagnostic(api.Invalid, "InvalidAdapterBounds", "Git adapter construction bounds are invalid.")
 	}
@@ -130,7 +144,11 @@ func New(options Options) (*Adapter, error) {
 	if _, err = rand.Read(nonce[:]); err != nil {
 		return nil, err
 	}
-	return &Adapter{options: options, lifetime: hex.EncodeToString(nonce[:]), current: current, repositories: make(map[domain.RepositoryID]repository)}, nil
+	plans, err := newPlanRegistry(options.ApprovalAuthority, options.PlanTTL, options.MaxPlanBytes)
+	if err != nil {
+		return nil, err
+	}
+	return &Adapter{options: options, lifetime: hex.EncodeToString(nonce[:]), current: current, repositories: make(map[domain.RepositoryID]repository), plans: plans}, nil
 }
 
 func diagnostic(code api.ErrorCode, reason, message string) api.Diagnostic {

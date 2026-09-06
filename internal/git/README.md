@@ -63,7 +63,7 @@ ReadDiff supports exact commit root/selected-parent/pair, index-to-worktree and
 Head-to-index comparisons with source revalidation and independent file/byte bounds.
 HeadVersion comes from the selected WorktreeFacts.Observation.Version; index and
 worktree versions come from StatusFacts. A changed source refuses its old comparison.
-Every GitMutations method remains to be implemented before adapter acceptance.
+Native GitMutations operations remain to be implemented before adapter acceptance.
 
 Private native-directory acquisition now validates supplied physical identity and
 opens/creates one literal child relative to the held directory. Unix uses
@@ -80,6 +80,21 @@ actual command budgets and parent race reporting remain unchanged. Private-file
 creation verifies the protected native DACL using ACE type/mask/flags and binary
 current-user/System SID equality, supporting native SID aliases without widening
 permissions. Tests reject extra users, insufficient rights and unprotected ACLs.
+
+The private plan registry now owns at most64 operation reservations and a bounded
+retained-summary budget (16MiB/default, configurable to64MiB). Default plan lifetime
+is5min, bounded to30min. It performs atomic one-use admission, stored step/receipt
+checks, expiry and release; release during execution waits for the native owner's
+completion barrier. It owns no native locks/scratch/resources. ReleasePlan is the
+only mutation-port method currently exposed. Actual preparations/execution must
+still prove the exact operation-specific original intent and native source facets.
+
+Composition/coordinator supplies the same immutable ports.ApprovalIssuer through
+Options.ApprovalAuthority and coordinator construction. Git only checks Issued and
+ValidFor; it never issues approvals. Zero authority is explicitly read-only. A
+separate private plan/receipt issuer lifetime is never the public SourceVersion
+issuer. Summary digests bind the issuer's complete immutable summary encoding;
+Application obtains them through PlanSummaryDigest instead of recreating encoding.
 
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
