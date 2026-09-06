@@ -4,6 +4,7 @@ package git
 
 import (
 	"encoding/binary"
+	"fmt"
 	"os"
 	"path/filepath"
 	"syscall"
@@ -81,4 +82,73 @@ func (d *nativeDirectory) createPrivate(name string) (*os.File, error) {
 		return nil, err
 	}
 	return os.NewFile(uintptr(fd), filepath.Join(d.expected.path, name)), nil
+}
+
+func (d *nativeDirectory) openChild(name string) (*nativeDirectory, error) {
+	if err := nativeComponent(name); err != nil {
+		return nil, err
+	}
+	fd, err := unix.Openat(int(d.file.Fd()), name, unix.O_RDONLY|unix.O_DIRECTORY|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0)
+	if err != nil {
+		return nil, err
+	}
+	f := os.NewFile(uintptr(fd), filepath.Join(d.expected.path, name))
+	info, err := f.Stat()
+	if err != nil {
+		f.Close()
+		return nil, err
+	}
+	stat, ok := info.Sys().(*syscall.Stat_t)
+	if !ok {
+		f.Close()
+		return nil, diagnostic(api.Unsupported, "DirectoryIdentityUnavailable", "Native child directory identity is unavailable.")
+	}
+	var file [16]byte
+	binary.LittleEndian.PutUint64(file[:8], uint64(stat.Ino))
+	identity, err := api.NewDirectoryIdentity(api.DirectoryUnix, uint64(stat.Dev), file, directoryStamp(f, stat))
+	if err != nil {
+		f.Close()
+		return nil, err
+	}
+	return &nativeDirectory{file: f, expected: directoryObservation{path: filepath.Join(d.expected.path, name), identity: identity}}, nil
+}
+
+func regularIdentity(f *os.File) (string, uint32, error) {
+	info, err := f.Stat()
+	if err != nil {
+		return "", 0, err
+	}
+	stat, ok := info.Sys().(*syscall.Stat_t)
+	if !ok || !info.Mode().IsRegular() {
+		return "", 0, diagnostic(api.Unsupported, "FileIdentityUnavailable", "Native regular file identity is unavailable.")
+	}
+	return fmt.Sprintf("%d:%d:%s", uint64(stat.Dev), uint64(stat.Ino), directoryStamp(f, stat)), uint32(info.Mode().Perm()), nil
+}
+
+func (d *nativeDirectory) linkObservation(name string) (string, string, uint32, error) {
+	if err := nativeComponent(name); err != nil {
+		return "", "", 0, err
+	}
+	var before, after unix.Stat_t
+	if err := unix.Fstatat(int(d.file.Fd()), name, &before, unix.AT_SYMLINK_NOFOLLOW); err != nil {
+		return "", "", 0, err
+	}
+	if before.Mode&unix.S_IFMT != unix.S_IFLNK {
+		return "", "", 0, diagnostic(api.Unsupported, "UnsupportedFileKind", "The observed child is not a supported regular file or symbolic link.")
+	}
+	buffer := make([]byte, 32769)
+	n, err := unix.Readlinkat(int(d.file.Fd()), name, buffer)
+	if err != nil {
+		return "", "", 0, err
+	}
+	if n >= len(buffer) {
+		return "", "", 0, diagnostic(api.Unavailable, "LinkTargetLimit", "The symbolic-link target exceeds its observation bound.")
+	}
+	if err := unix.Fstatat(int(d.file.Fd()), name, &after, unix.AT_SYMLINK_NOFOLLOW); err != nil {
+		return "", "", 0, err
+	}
+	if before.Dev != after.Dev || before.Ino != after.Ino || before.Mode != after.Mode || before.Size != after.Size {
+		return "", "", 0, diagnostic(api.StaleObservation, "LinkChanged", "The symbolic-link object changed while being observed.")
+	}
+	return string(buffer[:n]), fmt.Sprintf("%d:%d", uint64(before.Dev), uint64(before.Ino)), uint32(before.Mode & 07777), nil
 }

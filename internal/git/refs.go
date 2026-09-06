@@ -27,11 +27,11 @@ func (s *readSession) refs(repo repository) (refsSnapshot, error) {
 	}
 	result.remotes = remoteBindings
 	result.diagnostics = diags
-	config := s.command(repo.common.path, "--git-dir="+repo.common.path, "config", "--null", "--list", "--show-origin", "--show-scope")
+	config := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "config", "--null", "--list", "--show-origin", "--show-scope")
 	if config.err != nil {
 		return result, config.err
 	}
-	q := s.command(repo.common.path, "--git-dir="+repo.common.path, "for-each-ref", "--sort=refname", "--format=%(refname)%00%(objectname)%00%(objecttype)%00%(*objectname)%00%(*objecttype)%00%(symref)%00", "--", "refs/heads/", "refs/tags/", "refs/remotes/")
+	q := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "for-each-ref", "--sort=refname", "--format=%(refname)%00%(objectname)%00%(objecttype)%00%(*objectname)%00%(*objecttype)%00%(symref)%00", "--", "refs/")
 	if q.err != nil {
 		return result, q.err
 	}
@@ -56,6 +56,9 @@ func (s *readSession) refs(repo repository) (refsSnapshot, error) {
 		name := string(fields[0])
 		locator, le := refLocator(repo.id, name, remoteBindings)
 		if le != nil {
+			if !strings.HasPrefix(name, "refs/heads/") && !strings.HasPrefix(name, "refs/tags/") && !strings.HasPrefix(name, "refs/remotes/") {
+				continue
+			}
 			result.diagnostics = append(result.diagnostics, safeError(le))
 			continue
 		}
@@ -135,7 +138,7 @@ func refLocator(repo domain.RepositoryID, name string, bindings []api.RemoteBind
 		return api.NewLocalBranchRef(api.LocalBranchRefData{Branch: branch})
 	case strings.HasPrefix(name, "refs/tags/"):
 		return api.NewLocalTagRef(api.LocalTagRefData{Repository: repo, Ref: name})
-	case strings.HasPrefix(name, "refs/remotes/"):
+	case strings.HasPrefix(name, "refs/"):
 		var matches []api.RemoteBinding
 		for _, binding := range bindings {
 			for _, mapping := range binding.Data().Refspecs {

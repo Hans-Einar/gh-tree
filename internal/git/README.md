@@ -49,7 +49,13 @@ views and keeps absent untracked views explicit. Native diff parsing preserves
 NUL-delimited renames and binary/count facts; file and byte caps constrain raw
 patch output without inserting UI text. Exact tree attributes are selected via
 Git's GIT_ATTR_SOURCE, independently of later worktree .gitattributes edits.
-General ReadDiff and ObserveStatus await the explicit status-cause correction #67.
+ObserveStatus now consumes reviewed Git1.1.0/#67. Separate native HEAD/index and
+index/worktree comparisons produce required cause-tagged rows with current native
+index stages/semantic flags and physically observed file facts. Full-content hashes
+detect same-size preserved-mtime changes. Missing/unproved current facts produce
+partial diagnostics; no absent file, zero Revision or clean status is fabricated.
+Upstream none/resolved/gone/unresolved/not-applicable and optional ahead/behind
+counts remain explicit. General ReadDiff is the remaining facts method.
 
 Private native-directory acquisition now validates supplied physical identity and
 opens/creates one literal child relative to the held directory. Unix uses

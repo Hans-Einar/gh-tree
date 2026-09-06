@@ -7,7 +7,7 @@ import (
 )
 
 func nativeComponent(name string) error {
-	if name == "" || name == "." || name == ".." || strings.ContainsAny(name, "/\\\x00") {
+	if name == "" || name == "." || name == ".." || strings.ContainsAny(name, "/\x00") {
 		return diagnostic(api.Invalid, "InvalidNativeComponent", "A native relative operation requires one exact path component.")
 	}
 	return nil

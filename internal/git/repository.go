@@ -72,7 +72,7 @@ func (s *readSession) observation(repo domain.RepositoryID, w api.Optional[domai
 func line(bytes []byte) string { return strings.TrimSuffix(string(bytes), "\n") }
 
 func directoryKey(d directoryObservation) string {
-	return fmt.Sprintf("%s\x00%d\x00%x", d.path, d.identity.Device(), d.identity.FileID())
+	return fmt.Sprintf("%s\x00%d\x00%x\x00%s", d.path, d.identity.Device(), d.identity.FileID(), d.identity.Stamp())
 }
 
 func (s *readSession) resolveRepository(locator string) (repository, error) {

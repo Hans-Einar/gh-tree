@@ -18,12 +18,12 @@ type configuredRemote struct {
 }
 
 func (s *readSession) remoteBindings(repo repository) ([]api.RemoteBinding, []api.Diagnostic, error) {
-	c := s.command(repo.common.path, "--git-dir="+repo.common.path, "config", "--null", "--list", "--show-origin", "--show-scope")
+	c := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "config", "--null", "--list", "--show-origin", "--show-scope")
 	if c.err != nil {
 		return nil, nil, c.err
 	}
 	configuration := sourceVersion("configuration", repo.id.Token(), s.a.lifetime, c.stdout)
-	q := s.command(repo.common.path, "--git-dir="+repo.common.path, "config", "--null", "--get-regexp", `^remote\..*\.(url|pushurl|fetch)$`)
+	q := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "config", "--null", "--get-regexp", `^remote\..*\.(url|pushurl|fetch)$`)
 	if q.err != nil {
 		if exit, _ := q.transport.Data().ExitCode.Value(); exit == 1 {
 			return nil, nil, nil
@@ -63,8 +63,8 @@ func (s *readSession) remoteBindings(repo repository) ([]api.RemoteBinding, []ap
 	var diagnostics []api.Diagnostic
 	for _, name := range names {
 		r := remoteByName[name]
-		fetch := s.command(repo.common.path, "--git-dir="+repo.common.path, "remote", "get-url", "--all", "--", name)
-		push := s.command(repo.common.path, "--git-dir="+repo.common.path, "remote", "get-url", "--push", "--all", "--", name)
+		fetch := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "remote", "get-url", "--all", "--", name)
+		push := s.command(repo.cwd(), "--git-dir="+repo.gitDir(), "remote", "get-url", "--push", "--all", "--", name)
 		if fetch.err != nil || push.err != nil {
 			diagnostics = append(diagnostics, diagnostic(api.Unavailable, "RemoteMappingUnavailable", "A configured remote's effective native transport mapping is unavailable."))
 			continue

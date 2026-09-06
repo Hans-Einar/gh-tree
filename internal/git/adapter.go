@@ -45,11 +45,26 @@ type Adapter struct {
 }
 
 type repository struct {
-	id      domain.RepositoryID
-	common  directoryObservation
-	format  domain.ObjectFormat
-	version string
-	backend api.RefBackend
+	id           domain.RepositoryID
+	common       directoryObservation
+	format       domain.ObjectFormat
+	version      string
+	backend      api.RefBackend
+	contextAdmin string
+	contextRoot  string
+}
+
+func (r repository) gitDir() string {
+	if r.contextAdmin != "" {
+		return r.contextAdmin
+	}
+	return r.common.path
+}
+func (r repository) cwd() string {
+	if r.contextRoot != "" {
+		return r.contextRoot
+	}
+	return r.common.path
 }
 
 type directoryObservation struct {
