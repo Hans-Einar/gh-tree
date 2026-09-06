@@ -23,3 +23,17 @@ add native reparse/symlink/adverse and legitimate controls, run actual local/Lin
 and configured native CI, freeze/push the candidate for a fresh independent review.
 Application/State/View/default persistence roundtrip and actual Runtime argv/cwd
 Start remain downstream integration gates. No Slice or baseline finding closes.
+
+Second partial milestone implements both exact ports, registered immutable
+constructor policy, nested partial scans, manager/version policy, fresh exact
+discovered/ordered/saved resolution, literal Invocation and native cwd observation.
+Ten local Windows test functions pass, including nested collision controls,
+partial malformed projects, exact whitespace/colon argv, manager/member drift,
+Make file precedence and semantic target order, saved overrides/unknown providers,
+candidate limits, cancellation and concurrent immutable copies. On ordinary
+case-insensitive Windows filesystems a physical Makefile also answers the earlier
+makefile lookup; the selected lookup is explicitly bound in argv and source.
+One test initially expected case-sensitive lookup there; corrected to the actual
+native Windows policy. Source changes remain incomplete pending additional bounded
+enumeration, native junction/root replacement, Linux execution/all12 builds and
+configured native CI. This is a durable partial checkpoint, not a review candidate.

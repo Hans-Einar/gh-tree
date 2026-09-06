@@ -13,6 +13,7 @@ import (
 )
 
 func nativeComponent(string) bool { return true }
+func nativeRedirect(e error) bool { return e == unix.ELOOP || e == unix.ENOTDIR }
 func nativeMissing(e error) bool  { return e == unix.ENOENT || os.IsNotExist(e) }
 func nativeRoot(path string) (*os.File, []*os.File, error) {
 	if !filepath.IsAbs(path) || filepath.Clean(path) != path {

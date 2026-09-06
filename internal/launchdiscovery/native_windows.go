@@ -14,6 +14,9 @@ import (
 func nativeComponent(s string) bool {
 	return !strings.ContainsRune(s, ':') && !strings.HasSuffix(s, ".") && !strings.HasSuffix(s, " ")
 }
+func nativeRedirect(e error) bool {
+	return e == windows.STATUS_REPARSE_POINT_ENCOUNTERED || e == windows.STATUS_NOT_A_DIRECTORY || e == windows.STATUS_FILE_IS_A_DIRECTORY
+}
 func nativeMissing(e error) bool {
 	return e == windows.STATUS_OBJECT_NAME_NOT_FOUND || e == windows.STATUS_OBJECT_PATH_NOT_FOUND || e == windows.ERROR_FILE_NOT_FOUND || e == windows.ERROR_PATH_NOT_FOUND || os.IsNotExist(e)
 }
