@@ -5,7 +5,7 @@
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
   "activeGate": "M3",
-  "executionState": "held_for_external_review_access",
+  "executionState": "active_independent_m3_git_review_blocked",
   "resumeRequiresExplicitUserInstruction": false,
   "checkpointTag": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
   "checkpointPurpose": "recovery_only_not_completion",
@@ -737,13 +737,17 @@
         "scope": "bounded confirmation only; full candidate not accepted"
       },
       "sourceHead": "699a69f2735106d1a06ea9c703a7f0eaa5ff930b",
-      "pendingCI": 34063842833
+      "latestVerification": {
+        "head": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
+        "run": 34063842833,
+        "result": "16 SUCCESS, 3 FAILURE (Windows amd64/ARM64 and native FreeBSD), helper skip; test-selection compilation failure resolved"
+      }
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "frozen_candidate_review_queued_on_hold",
+      "state": "independent_review",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -1963,7 +1967,9 @@
   ],
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-  "activeContributions": [],
+  "activeContributions": [
+    "IMPL64"
+  ],
   "pausedInitialContributions": [
     "IMPL61",
     "IMPL62",

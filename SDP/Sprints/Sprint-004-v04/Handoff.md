@@ -1,4 +1,4 @@
-# Program handoff — external review-access hold
+# Program handoff — independent M3 work; Git review blocked
 
 Sprint-004-v04 / I-03 / M3. The full Issue#21 v0.4 objective remains unchanged.
 Repo Hans-Einar/gh-tree; canonical worktree C:/Users/hanse/GIT/gh-tree-wt/refactor,
@@ -18,6 +18,20 @@ OpenAI guidance: https://learn.chatgpt.com/docs/cyber-safety . Use only the appr
 identity/workspace/model/surface; /feedback can report suspected false positives.
 Local default configuration observed gpt-6-astra; account provisioning and this
 run's effective entitlement could not be verified. No local model settings changed.
+
+## Current continuation
+
+The next goal turn verified the unchanged6b9f69e checkpoint/tag and terminal
+Persistence CI34063842833:16 success, Windows amd64/ARM64 and FreeBSD failures,
+plus helper skip. The test-selection compile defect is resolved; native gates
+remain. Previous turn was concrete progress, not completion.
+
+The blanket hold is narrowed to the blocked Git review and dependent serial
+integration. Already-authorized independent M3 work may continue. Launch Discovery
+review now uses its frozen2a18fdd/report8e2d2d1 candidate under#64. It reviews only
+that passive adapter and is not a retry, relabeling or substitute for the failed
+Git review. No model/permission change or withheld-output retrieval is authorized.
+The Git gate remains open; all original M3..M8 requirements remain.
 
 ## Durable state
 
@@ -62,7 +76,8 @@ ObjectID alone is demonstrably insufficient. Product adoption remains pending.
 No timestamp repair, original-ID mutation or identity-check waiver is approved.
 CI34063088464 at699a69f failed6 jobs: Windows regression plus accidental Unix
 selection of Windows tests. Mechanical6fc6c2c fixes only platform filenames, all12
-test binaries compile; latest CI34063842833 was in progress at capture. FreeBSD
+test binaries compile; CI34063842833 completed16 success/3 native failures
+(Windows amd64/ARM64 and FreeBSD), plus helper skip. FreeBSD
 system-EA EPERM, no-birth restart/source-name interval and full fault/resource/
 security/admission guarantees remain. Never treat unsupported metadata as absent.
 

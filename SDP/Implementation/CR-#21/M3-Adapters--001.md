@@ -235,3 +235,9 @@ profile is unresolved. Mechanical6fc6c2c only repairs native test file selection
 with all12 test binaries compiling; no native/full-matrix acceptance implied.
 Discovery2a18fdd/report8e2d2d1 is frozen with successful source CI, review pending.
 Current exact refs and next steps are in Handoff/CurrentIndex and worker reports.
+
+Continuation clarification: current goal instruction requires taking available safe
+work. The external hold remains on the failed Git review and its dependent serial
+integration; independent authorized M3 work can proceed. #64 review of the separate
+frozen passive Discovery adapter is dispatched without changing/retrying the Git
+audit or substituting for its required verdict. No model/access controls changed.
