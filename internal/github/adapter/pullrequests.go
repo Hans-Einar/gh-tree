@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -131,7 +130,7 @@ func (a *Adapter) ListPullRequests(ctx context.Context, request api.ListPullRequ
 	scope := "invalid/pulls"
 	if request.Valid() {
 		d := request.Data()
-		scope = d.Repository.Token() + "/pulls/created-asc/" + fmt.Sprint(d.Page.Data().Limit) + "/" + filterScope(d.Filter)
+		scope = d.Repository.Token() + "/pulls/created-asc/" + fmt.Sprint(d.Page.Data().Limit) + "/" + fingerprint(filterScope(d.Filter))
 	}
 	version := a.version(scope)
 	fail := func(d api.Diagnostic) (api.ListPullRequestsResult, error) {
@@ -367,5 +366,3 @@ func (a *Adapter) ObservePullRequest(ctx context.Context, request api.ObservePul
 	}
 	return must(api.NewObservePullRequestResult(result)), r.err
 }
-
-var _ = strings.Compare

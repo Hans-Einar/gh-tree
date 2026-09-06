@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -30,12 +31,15 @@ type wireResult struct {
 }
 type commandRunner func(context.Context, command) wireResult
 type boundedBuffer struct {
+	mu        sync.Mutex
 	buffer    bytes.Buffer
 	limit     int
 	truncated bool
 }
 
 func (b *boundedBuffer) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
 	n := len(p)
 	remaining := b.limit - b.buffer.Len()
 	if len(p) > remaining {
@@ -45,12 +49,17 @@ func (b *boundedBuffer) Write(p []byte) (int, error) {
 	_, _ = b.buffer.Write(p)
 	return n, nil
 }
+func (b *boundedBuffer) snapshot() ([]byte, bool) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	return append([]byte(nil), b.buffer.Bytes()...), b.truncated
+}
 
 func (a *Adapter) runCommand(ctx context.Context, request command) wireResult {
 	r := wireResult{started: time.Now().UTC(), transport: noTransport()}
-	defer func() {}()
 	if err := checkContext(ctx); err != nil {
 		r.err = err
+		r.transport = must(api.NewCommandTransportOutcome(api.CommandTransportOutcomeData{CleanupKnown: true, CancellationRequested: ctx != nil && ctx.Err() != nil}))
 		r.finished = time.Now().UTC()
 		return r
 	}
@@ -81,31 +90,70 @@ func (a *Adapter) runCommand(ctx context.Context, request command) wireResult {
 		return r
 	}
 	td := api.CommandTransportOutcomeData{Started: true}
-	if err = owner.started(cmd); err != nil {
+	if err = child.Err(); err == nil {
+		err = owner.started(cmd)
+	}
+	if err != nil {
 		_ = cmd.Process.Kill()
 	}
 	// One waiter owns root reaping and Go's stdout/stderr/stdin copy joins.
-	waited := make(chan error, 1)
-	go func() { waited <- cmd.Wait() }()
-	var waitErr error
-	if err != nil {
-		waitErr = <-waited
-	} else {
+	type waitResult struct {
+		err    error
+		reaped bool
+		exit   int
+	}
+	waited := make(chan waitResult, 1)
+	go func() {
+		e := cmd.Wait()
+		w := waitResult{err: e, reaped: cmd.ProcessState != nil}
+		if w.reaped {
+			w.exit = cmd.ProcessState.ExitCode()
+		}
+		waited <- w
+	}()
+	var waitedResult waitResult
+	joined := false
+	cleanupDeadline := time.Time{}
+	if err == nil {
 		select {
-		case waitErr = <-waited:
+		case waitedResult = <-waited:
+			joined = true
 		case <-child.Done():
 			owner.stop(cmd)
-			waitErr = <-waited
 		}
 	}
-	td.RootReaped = cmd.ProcessState != nil
-	td.CleanupKnown = owner.finish(cmd, a.config.DrainTimeout) && td.RootReaped && !errors.Is(waitErr, exec.ErrWaitDelay)
+	if !joined {
+		cleanupDeadline = time.Now().Add(a.config.DrainTimeout)
+		timer := time.NewTimer(a.config.DrainTimeout)
+		select {
+		case waitedResult = <-waited:
+			joined = true
+		case <-timer.C:
+		}
+		timer.Stop()
+	}
+	remaining := a.config.DrainTimeout
+	if !cleanupDeadline.IsZero() {
+		remaining = time.Until(cleanupDeadline)
+		if remaining < 0 {
+			remaining = 0
+		}
+	}
+	td.RootReaped = joined && waitedResult.reaped
+	td.CleanupKnown = owner.finish(cmd, remaining) && td.RootReaped
 	if td.RootReaped {
-		td.ExitCode = api.Some(cmd.ProcessState.ExitCode())
+		td.ExitCode = api.Some(waitedResult.exit)
+	}
+	waitErr := waitedResult.err
+	if !joined {
+		waitErr = errors.New("root waiter or pipe join exceeded cleanup budget")
+	}
+	if errors.Is(waitErr, exec.ErrWaitDelay) {
+		td.Diagnostics = append(td.Diagnostics, diagnostic(api.IOFailure, "forced-pipe-drain-incomplete"))
 	}
 	td.CancellationRequested = ctx.Err() != nil
-	td.StdoutTruncated = out.truncated
-	td.StderrTruncated = errout.truncated
+	r.stdout, td.StdoutTruncated = out.snapshot()
+	r.stderr, td.StderrTruncated = errout.snapshot()
 	if !td.CleanupKnown {
 		td.Diagnostics = append(td.Diagnostics, diagnostic(api.CleanupIncomplete, "command-cleanup-unproved"))
 	}
@@ -116,19 +164,17 @@ func (a *Adapter) runCommand(ctx context.Context, request command) wireResult {
 	} else if waitErr != nil {
 		r.err = errors.New("command failed")
 	}
-	if out.truncated {
+	if td.StdoutTruncated {
 		td.Diagnostics = append(td.Diagnostics, diagnostic(api.IOFailure, "machine-output-limit"))
 		r.err = errors.Join(r.err, errors.New("machine output truncated"))
 	}
-	if errout.truncated {
+	if td.StderrTruncated {
 		td.Diagnostics = append(td.Diagnostics, diagnostic(api.IOFailure, "diagnostic-output-limit"))
 	}
 	if !td.CleanupKnown {
 		r.err = errors.Join(r.err, errors.New("command cleanup unproved"))
 	}
 	r.transport = must(api.NewCommandTransportOutcome(td))
-	r.stdout = append([]byte(nil), out.buffer.Bytes()...)
-	r.stderr = append([]byte(nil), errout.buffer.Bytes()...)
 	r.finished = time.Now().UTC()
 	return r
 }

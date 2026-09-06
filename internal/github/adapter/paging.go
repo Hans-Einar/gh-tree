@@ -158,6 +158,7 @@ func nextPage(r response, path string, page, limit int, rawCount int) (bool, err
 func (r response) wireHost() string { return r.host }
 func fingerprint(v string) string   { sum := sha256.Sum256([]byte(v)); return hex.EncodeToString(sum[:]) }
 func seenFact(c *continuation, key, value string) (duplicate, conflict bool) {
+	key = fingerprint(key)
 	h := fingerprint(value)
 	if previous, ok := c.seen[key]; ok {
 		return previous == h, previous != h

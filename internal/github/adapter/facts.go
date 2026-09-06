@@ -18,6 +18,9 @@ func (a *Adapter) ResolveRepository(ctx context.Context, request api.ResolveRepo
 		return fail(diagnostic(api.Invalid, "invalid-repository-request"))
 	}
 	l := request.Data().Locator
+	if !providerLocator(l) {
+		return fail(diagnostic(api.Invalid, "unsupported-repository-components"))
+	}
 	if l.Data().Host != a.config.Host {
 		return fail(diagnostic(api.Unsupported, "foreign-authenticated-host"))
 	}
@@ -59,7 +62,7 @@ func (a *Adapter) ListBranches(ctx context.Context, request api.ListBranchesRequ
 		d := request.Data()
 		scope = d.Repository.Token() + "/branches/provider-default/" + fmt.Sprint(d.Page.Data().Limit)
 		if p, ok := d.Filter.(api.RemoteBranchPrefix); ok {
-			scope += "/prefix/" + p.Data().Prefix
+			scope += "/prefix-sha256/" + fingerprint(p.Data().Prefix)
 		}
 	}
 	version := a.version(scope)

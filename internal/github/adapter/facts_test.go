@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
+	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -167,6 +170,9 @@ func TestNativeCommandHelper(t *testing.T) {
 		return
 	}
 	mode := os.Getenv("GH_TREE_ADAPTER_HELPER")
+	if os.Args[len(os.Args)-1] == "owned-child" {
+		mode = "leased-child"
+	}
 	switch mode {
 	case "streams":
 		fmt.Print("[]")
@@ -175,10 +181,55 @@ func TestNativeCommandHelper(t *testing.T) {
 		fmt.Print(strings.Repeat("x", 8192))
 	case "wait":
 		time.Sleep(time.Minute)
+	case "leased-child":
+		// Unix deliberately promises only root/pipe ownership. Bound this owned
+		// adversarial fixture's lifetime without granting product PGID authority.
+		time.Sleep(1200 * time.Millisecond)
 	case "input":
 		_, _ = io.Copy(os.Stdout, os.Stdin)
+	case "descendant":
+		child := exec.Command(os.Args[0], "-test.run=^TestNativeCommandHelper$", "--", "owned-child")
+		child.Env = os.Environ()
+		child.Stdout = os.Stdout
+		child.Stderr = os.Stderr
+		hideFixture(child)
+		if e := child.Start(); e != nil {
+			os.Exit(2)
+		}
+		fmt.Print(child.Process.Pid)
 	}
 	os.Exit(0)
+}
+
+func TestNativeDescendantPipeJoinAndRepeatedResources(t *testing.T) {
+	before := runtime.NumGoroutine()
+	a := nativeAdapter(t, "descendant")
+	started := time.Now()
+	r := a.runCommand(context.Background(), command{args: []string{"-test.run=^TestNativeCommandHelper$"}})
+	if !r.transport.Data().RootReaped || time.Since(started) > 3*time.Second || r.err == nil {
+		t.Fatalf("root/drain facts %+v %v", r.transport.Data(), r.err)
+	}
+	pid, e := strconv.Atoi(string(r.stdout))
+	if e != nil {
+		t.Fatalf("child PID evidence %q", r.stdout)
+	}
+	verifyFixtureChildExited(t, pid)
+	if runtime.GOOS == "windows" && !r.transport.Data().CleanupKnown {
+		t.Fatal("Job did not prove active0", r.transport.Data())
+	}
+	if runtime.GOOS != "windows" && r.transport.Data().CleanupKnown {
+		t.Fatal("root-only profile erased known child residual")
+	}
+	for i := 0; i < 5; i++ {
+		a = nativeAdapter(t, "streams")
+		r = a.runCommand(context.Background(), command{args: []string{"-test.run=^TestNativeCommandHelper$"}})
+		if r.err != nil || !r.transport.Data().CleanupKnown {
+			t.Fatal(r.err)
+		}
+	}
+	if after := runtime.NumGoroutine(); after > before+2 {
+		t.Fatalf("unjoined goroutines %d -> %d", before, after)
+	}
 }
 func nativeAdapter(t *testing.T, mode string) *Adapter {
 	t.Helper()
@@ -191,6 +242,11 @@ func nativeAdapter(t *testing.T, mode string) *Adapter {
 }
 func TestNativeCommandStreamsLimitsAndCancel(t *testing.T) {
 	args := []string{"-test.run=^TestNativeCommandHelper$"}
+	literal := []byte("日本語 $(literal) & `backticks`\n@- --flag")
+	echo := nativeAdapter(t, "input").runCommand(context.Background(), command{args: args, input: literal, mutation: true})
+	if echo.err != nil || string(echo.stdout) != string(literal) {
+		t.Fatal("literal input altered", echo.err)
+	}
 	a := nativeAdapter(t, "streams")
 	r := a.runCommand(context.Background(), command{args: args})
 	if r.err != nil || string(r.stdout) != "[]" || string(r.stderr) != "private warning" || !r.transport.Data().RootReaped || !r.transport.Data().CleanupKnown {

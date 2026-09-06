@@ -150,6 +150,9 @@ func mapRepository(d repositoryDTO, host string) (api.RemoteRepository, error) {
 	if e != nil {
 		return api.RemoteRepository{}, e
 	}
+	if !providerLocator(l) {
+		return api.RemoteRepository{}, protocolError("unsupported repository components")
+	}
 	if !validURL(d.HTMLURL, l, 0) {
 		return api.RemoteRepository{}, protocolError("repository URL")
 	}
@@ -179,7 +182,11 @@ func validURL(s string, l api.RemoteRepositoryLocator, number uint64) bool {
 	if number != 0 {
 		path += "/pull/" + strconv.FormatUint(number, 10)
 	}
-	return strings.EqualFold(u.Host, d.Host) && strings.EqualFold(u.Path, path)
+	if number == 0 {
+		return strings.EqualFold(u.Host, d.Host) && strings.EqualFold(u.Path, path)
+	}
+	parts := strings.Split(u.Path, "/")
+	return strings.EqualFold(u.Host, d.Host) && len(parts) == 5 && strings.EqualFold(parts[1], d.Owner) && strings.EqualFold(parts[2], d.Name) && parts[3] == "pull" && parts[4] == strconv.FormatUint(number, 10)
 }
 
 type branchDTO struct {

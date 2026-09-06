@@ -1,16 +1,17 @@
 # M3 GitHub adapter — Issue #62
 
-State: PARTIAL CHECKPOINT; independent review and integration not requested yet.
+State: CANDIDATE; configured source CI and separate independent review pending.
 Worker branch: codereview-21/layer-github; base412f33e477cec03cb6eafe7b846c9bcdd02c0a25.
 Authority: #62/#21, resumed UserRunContract, M3-Adapters--001, frozen1.0.0
 Application--GitHub GH1..GH8 and shared BoundaryTypes. Product ownership is solely
 internal/github/adapter; legacy parent and all neighboring contracts are unchanged.
 
-First checkpoint supplies repository resolution/registered scope associations,
+Checkpoint0a45c563 supplies repository resolution/registered scope associations,
 bounded branch pages with immutable per-request intervals and cursor scope/cap,
 strict private JSON/HTTP parsing, and the native noninteractive gh command transport.
 Windows suspends before nonbreakaway Job assignment/resume and checks Job active0;
-Unix uses a dedicated short-command process group with conservative residuals.
+The final Unix profile uses root-only termination and a dedicated group solely
+for conservative residual observation; it never signals numeric PGIDs.
 This is not Runtime session ownership or remote rollback evidence.
 
 Evidence: `go test ./internal/github/adapter -count=1 -v`, native Windows/amd64,
@@ -22,7 +23,7 @@ the output control exposed an embedded bytes.Buffer ReadFrom bypass; both were
 corrected and the complete targeted command rerun successfully. No live PRs or
 local Git product mutations were used. Source/test references are in this commit.
 
-Second checkpoint adds all four RemoteFacts methods and CreatePullRequest:
+Checkpoint235b32a2 adds all four RemoteFacts methods and CreatePullRequest:
 private fork/base/head/unavailable endpoint mapping, exact expectation comparison,
 qualified literal POST payload, repeated preflight endpoint checks, all six closed
 creation alternatives and independently bounded post-create observation. Known
@@ -32,7 +33,24 @@ creation scenarios, deleted-fork expectation preservation and concurrent value-c
 controls pass in the same targeted native Windows command. These are raw transport
 fixtures, not live publication evidence.
 
-Remaining: broader adverse transport/cancellation controls, full configured platform CI,
-independent exact-source review and serial Master integration after accepted Git.
-No Slice or baseline finding is closed. This checkpoint is not an acceptance
-candidate and carries no completion tag.
+Final candidate strengthens bounded wait/drain, Windows opened-thread identity,
+pre-resume failed assignment and immediate descendant controls, actual literal stdin,
+101-row pagination, malformed/duplicate/foreign-link/provider-format/cancel/partial
+creation controls and bounded cursor digests. Local Windows/amd64 targeted and
+race commands pass. A full local test/vet/build/twelve-selection architecture pass
+also ran during hardening; final source is gated by the configured full CI matrix.
+An actual read-only gh observation passed for Hans-Einar/gh-tree (55 branches,
+31 PRs, Complete, plus exact ObservePullRequest). No live mutation was performed.
+
+| Clauses / checks | Actual source and proof |
+|---|---|
+| GH1/GH2/GH7; V-GH-01; V-COMP-03 | adapter.go/create.go conformance declarations, owned package imports; twelve-selection architecture check; unchanged legacy/shared files |
+| GH3/GH4; V-GH-01/02 | parsing.go/facts.go/paging.go/pullrequests.go; facts_test.go/adversity_test.go/create_test.go exact scopes, forks/nulls, full OIDs/provider profile, pages/intervals/copies and stale expectations |
+| GH5; V-GH-03 | create.go; TestCreateSixAlternativesAndFailurePreservation (nine paths), truncated/admission controls, qualified literal payload and actual native stdin preservation |
+| GH6; V-GH-02/03/SLC-12 | transport.go/command_windows.go/command_unix.go; TestNativeCommandStreamsLimitsAndCancel, TestNativeDescendantPipeJoinAndRepeatedResources, Windows invalid-assignment/opened-thread/ABI controls |
+| GH8 | complete local targeted/race proof and configured exact-source CI, followed by separate independent actual-source review; no author summary is acceptance evidence |
+
+Remaining: exact-source CI, independent review/corrections and serial Master
+integration after accepted Git. SLC-01/02/03/05/08/12/13 contributions do not close
+any Slice or baseline finding. Full Application/State/View/Composition and release
+proof remains later gates. No completion tag, product PR or integration is claimed.

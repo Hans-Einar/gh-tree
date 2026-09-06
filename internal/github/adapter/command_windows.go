@@ -53,21 +53,33 @@ func (o *commandOwner) started(cmd *exec.Cmd) error {
 		if entry.OwnerProcessID != uint32(cmd.Process.Pid) {
 			continue
 		}
-		thread, e := windows.OpenThread(windows.THREAD_SUSPEND_RESUME, false, entry.ThreadID)
+		thread, e := windows.OpenThread(windows.THREAD_SUSPEND_RESUME|windows.THREAD_QUERY_LIMITED_INFORMATION, false, entry.ThreadID)
 		if e != nil {
 			return e
 		}
 		defer windows.CloseHandle(thread)
-		previous, e := windows.ResumeThread(thread)
-		if e != nil {
-			return e
-		}
-		if previous != 1 {
-			return errors.New("unexpected initial suspend count")
-		}
-		return nil
+		return resumeRootThread(thread, uint32(cmd.Process.Pid))
 	}
 	return errors.New("initial thread unavailable")
+}
+
+var processIDOfThread = windows.NewLazySystemDLL("kernel32.dll").NewProc("GetProcessIdOfThread")
+
+func resumeRootThread(thread windows.Handle, root uint32) error {
+	// Enumeration is only a locator. Validate the opened handle before resuming:
+	// an exited/reused TID must never authorize another process's thread.
+	pid, _, _ := processIDOfThread.Call(uintptr(thread))
+	if pid == 0 || uint32(pid) != root {
+		return errors.New("opened thread does not belong to retained root")
+	}
+	previous, e := windows.ResumeThread(thread)
+	if e != nil {
+		return e
+	}
+	if previous != 1 {
+		return errors.New("unexpected initial suspend count")
+	}
+	return nil
 }
 func (o *commandOwner) stop(cmd *exec.Cmd) {
 	if o.assigned {

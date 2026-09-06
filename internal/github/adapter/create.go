@@ -186,7 +186,7 @@ func (a *Adapter) CreatePullRequest(ctx context.Context, request api.CreatePullR
 			result.Transport = mergeTransport(result.Transport, od.Transport)
 			result.Diagnostics = append(result.Diagnostics, od.Diagnostics...)
 			responseMatched := endpointMatches(created.Data().Base, d.Base) && endpointMatches(created.Data().Head, d.Head)
-			if actual, p := od.PullRequest.Value(); p {
+			if actual, p := od.PullRequest.Value(); p && responseMatched {
 				created = actual
 				result.Observation = od.Observation
 			}

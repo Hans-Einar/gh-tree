@@ -9,8 +9,9 @@ import (
 	"time"
 )
 
-// This short noninteractive gh transport owns its process group, not Runtime's
-// interactive session model. It makes no claim about explicitly escaped sessions.
+// This short noninteractive gh transport owns its root and pipes. A dedicated
+// group provides conservative residual observation only, never signal authority.
+// There is no Runtime/session containment or escaped-descendant cleanup claim.
 type commandOwner struct{}
 
 func prepareCommand(cmd *exec.Cmd) (*commandOwner, error) {
@@ -19,7 +20,8 @@ func prepareCommand(cmd *exec.Cmd) (*commandOwner, error) {
 }
 func (o *commandOwner) started(cmd *exec.Cmd) error { return nil }
 func (o *commandOwner) stop(cmd *exec.Cmd) {
-	_ = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
+	// Go owns root process identity (including its platform lifetime safeguards).
+	// A numeric PGID can be reused after Wait reaps the root: never signal it.
 	_ = cmd.Process.Kill()
 }
 func (o *commandOwner) finish(cmd *exec.Cmd, budget time.Duration) bool {
@@ -28,16 +30,6 @@ func (o *commandOwner) finish(cmd *exec.Cmd, budget time.Duration) bool {
 	if e := syscall.Kill(-cmd.Process.Pid, 0); errors.Is(e, syscall.ESRCH) {
 		return true
 	}
-	_ = syscall.Kill(-cmd.Process.Pid, syscall.SIGKILL)
-	deadline := time.Now().Add(budget)
-	for {
-		if e := syscall.Kill(-cmd.Process.Pid, 0); errors.Is(e, syscall.ESRCH) {
-			return true
-		}
-		if !time.Now().Before(deadline) {
-			return false
-		}
-		time.Sleep(time.Millisecond)
-	}
+	return false
 }
 func (o *commandOwner) close() {}

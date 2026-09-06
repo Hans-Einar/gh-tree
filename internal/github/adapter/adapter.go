@@ -98,7 +98,35 @@ func ParseLocator(host, input string) (api.RemoteRepositoryLocator, error) {
 	if len(p) == 2 {
 		owner, name = p[0], strings.TrimSuffix(p[1], ".git")
 	}
-	return api.NewRemoteRepositoryLocator(api.RemoteRepositoryLocatorData{Host: strings.ToLower(host), Owner: strings.ToLower(owner), Name: strings.ToLower(name)})
+	l, e := api.NewRemoteRepositoryLocator(api.RemoteRepositoryLocatorData{Host: strings.ToLower(host), Owner: strings.ToLower(owner), Name: strings.ToLower(name)})
+	if e == nil && !providerLocator(l) {
+		e = errors.New("unsupported repository component syntax")
+	}
+	if e != nil {
+		return api.RemoteRepositoryLocator{}, e
+	}
+	return l, nil
+}
+
+func providerLocator(l api.RemoteRepositoryLocator) bool {
+	if !l.Valid() {
+		return false
+	}
+	d := l.Data()
+	if len(d.Owner) > 39 || len(d.Name) > 100 || d.Name == "." || d.Name == ".." || strings.HasPrefix(d.Owner, "-") || strings.HasSuffix(d.Owner, "-") {
+		return false
+	}
+	for _, c := range d.Owner {
+		if !(c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '-') {
+			return false
+		}
+	}
+	for _, c := range d.Name {
+		if !(c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '-' || c == '_' || c == '.') {
+			return false
+		}
+	}
+	return true
 }
 
 func repositoryID(l api.RemoteRepositoryLocator) domain.RepositoryID {
