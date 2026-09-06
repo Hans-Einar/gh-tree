@@ -1,7 +1,8 @@
 # M3 Launch Discovery contribution (#64)
 
-Status: AUTHORING COMPLETE / FROZEN FOR INDEPENDENT REVIEW; integration not authorized.
-Technical candidate: 2a18fdd5b884568d832afeb7fab54bb4d4b50682.
+Status: M364-M01 CORRECTION COMPLETE / FROZEN FOR BOUNDED RE-REVIEW; integration not authorized.
+Technical candidate: 20bd8acf3576ca19f08b68205289f25cfe9dd3d9.
+Previously reviewed technical candidate: 2a18fdd5b884568d832afeb7fab54bb4d4b50682.
 Branch: codereview-21/layer-launchdiscovery.
 Worktree: C:/Users/hanse/GIT/gh-tree-wt/discovery-implementation.
 Role: implementation Worker, separate fresh Reviewer required.
@@ -12,7 +13,35 @@ frozen Discovery/Runtime/Persistence/BoundaryTypes1.0.0 and actual accepted API/
 No frozen contract, legacy product, module, workflow or Master metadata was edited.
 Master merged verified prerequisites at4bfcf7f; adapter source was unchanged then.
 
-## Implemented boundary and evidence map
+## Bounded M364-M01 correction (2026-09-07)
+
+Independent review591cb46 returned CHANGES_REQUIRED for inline Make comment prose
+being misclassified as dynamic rule syntax. This correction changes only
+providers.go and the new make_comments_test.go; the independent review is unchanged.
+Ordinary comment text is classified before rule expansion/pattern checks. Escapes
+before a comment marker remain unsupported. Actual backslash-newline logical lines
+are diagnosed and skipped in full, including comment/recipe continuation tails;
+no line joining, tool execution or Make interpreter was introduced.
+
+Two regression tests each exercise15 cases: ordinary/$/%/backslash comment prose,
+paired versus actual trailing continuation backslashes, escaped markers, actual
+dynamic/pattern rules, rule/comment/recipe continuation and chained CRLF tails.
+Parser controls retain an independent safe rule; Discover controls also retain an
+independent npm project. Saved resolution succeeds with literal -f GNUmakefile all
+for ordinary comments and refuses a previously valid saved target after unsupported
+source changes. A final comment backslash without newline is separately covered.
+
+At the correction bytes committed as20bd8ac, supplied Go1.25.0 Windows/amd64:
+`go test ./internal/launchdiscovery -count=1`, corresponding `-race`, `go vet`, and
+`git diff --check` all PASS (exit0). Product correction was committed/pushed with
+source CI enabled. Root watches the exact-source native CI; no current native CI
+success is inferred from local tests. The previous candidate's native CI34059784449
+is independently verified SUCCESS in the unchanged review report, superseding
+the historical pending status below. Exact next action is the same independent
+reviewer's bounded confirmation of20bd8ac and current CI, then Master's gated
+disposition. This author stops after the report checkpoint; no integration occurs.
+
+## Original candidate implementation and evidence (historical where SHA-specific)
 
 Constructor `launchdiscovery.New(Config{})` supplies both exact immutable ports.
 Private provider/native helpers are independently authored, with no concrete
