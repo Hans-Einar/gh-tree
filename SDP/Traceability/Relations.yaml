@@ -462,6 +462,12 @@
       "from": "IMPL61",
       "relation": "requires_status_correction",
       "to": "BC-CHANGE-67"
+    },
+    {
+      "from": "BC-CHANGE-67",
+      "relation": "revises",
+      "to": "BC--Application--Git",
+      "version": "1.1.0"
     }
   ],
   "errata": [

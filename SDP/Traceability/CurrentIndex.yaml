@@ -37,13 +37,15 @@
     },
     {
       "id": "BC--Application--Git",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "state": "FROZEN",
-      "issue": 55,
+      "issue": 67,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md",
-      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
-      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+      "freezeRecord": "SDP/Implementation/CR-#21/M3-Adapters--001.md#bc-change-67-independent-status-causes-frozen-110-67",
+      "originalFreezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "originalEffectiveMerge": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "proposalHead": "980513b2b126842ab1d50558931a84441c253172",
+      "freezeCommitLocator": "commit adding M3-Status-BC-Review--001 and Git1.1.0"
     },
     {
       "id": "BC--Application--GitHub",
@@ -631,15 +633,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "06cff09d7dc608ab4894953314f5d5cf0ee2e5ae",
+      "lastCheckpoint": "f51f4e6c8965030d75a1f85a78331777b385921d",
       "checkpointScope": "partial, not accepted/integrated",
-      "blockedScope": "ObserveStatus/dependent status work pending BC-CHANGE-67; independent reads continue"
+      "blockedScope": "ObserveStatus/dependent status work pending #67 reviewed API implementation; Git contract1.1.0 frozen"
     },
     {
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "independent_review",
+      "state": "correction_in_progress",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -668,7 +670,9 @@
       "sourceCI": {
         "run": 34054297560,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
-      }
+      },
+      "reviewHead": "9096fa564faf275499b80bda10e530a1fab5d580",
+      "reviewDisposition": "CHANGES_REQUIRED: M3GH-R01 malformed UTF8 sibling retention"
     },
     {
       "id": "IMPL63",
@@ -698,7 +702,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "19df0a110cfb91aa6ff7d6cda5b1dd20dc5ae0bb",
+      "lastCheckpoint": "4c5e5bed6b38860dc7a823780475e264605cbf26",
       "checkpointScope": "partial, not accepted/integrated"
     },
     {
@@ -768,14 +772,17 @@
       "id": "BC-CHANGE-67",
       "kind": "boundary_contract_change",
       "issue": 67,
-      "state": "draft_review_queued",
+      "state": "contract_frozen_api_queued",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "affects": [
         "IMPL61",
         "M4",
         "M5"
       ],
-      "scope": "Application--Git G3 independent status causes and bounded pure API correction"
+      "scope": "Application--Git G3 independent status causes and bounded pure API correction",
+      "version": "1.1.0",
+      "review": "SDP/Implementation/CR-#21/Application/M3-Status-BC-Review--001.md",
+      "proposalHead": "980513b2b126842ab1d50558931a84441c253172"
     }
   ],
   "productFindings": [

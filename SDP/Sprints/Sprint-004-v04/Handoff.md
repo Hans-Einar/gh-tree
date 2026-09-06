@@ -34,13 +34,15 @@ own only their adapter folder/tests/bounded report; no legacy, shared workflow/m
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
 
-Current pushed milestones: Git06cff09 (six read methods, no mutations),
-GitHub926b2b7 (frozen candidate, CI34054297560 passes18/explicit helper skip,
-independent review running), Persistence19df0a1 (codec/native Windows acquisition
-and locking, publication pending). None is accepted or integrated. Shared FreeBSD
-CI#66 is queued. BC-CHANGE-67 documents a concrete missing status-cause field;
-Git ObserveStatus/dependent work awaits reviewed/refrozen correction, independent
-reads continue. Proposal/interop conventions live in M3-Adapters--001.
+Current pushed milestones: Gitf51f4e6 (seven read methods, no mutations),
+GitHub926b2b7 (CI34054297560 passes18/explicit helper skip; review9096fa5 requests
+one UTF8 sibling-retention correction, author correcting), Persistence4c5e5be
+(codec/native Windows and actual unprivileged WSL/ext4 acquisition/locks;
+publication pending). None is accepted or integrated. Shared FreeBSD CI#66 queued.
+BC-CHANGE-67 independently accepted: Git G3 is now FROZEN1.1.0 for explicit status
+causes. A fresh worker must implement/review/integrate the bounded API correction
+before Git ObserveStatus/dependent work resumes; independent reads continue.
+Current authority/interop/review links are in M3-Adapters--001.
 
 No M3 product work existed at resume. Before the next substantial step ensure the
 previous milestone is verified, committed and pushed. A partial recovery checkpoint

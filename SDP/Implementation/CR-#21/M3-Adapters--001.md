@@ -128,48 +128,22 @@ Shared CI support is queued under#66 (Composition). Existing Linux/macOS/Windows
 ARM64 jobs and x/sys0.44.0 already support native milestones;#66 adds reviewed
 FreeBSD execution/evidence without changing adapter ownership or release behavior.
 
-## BC-CHANGE-67: independent status causes (DRAFT, #67)
+## BC-CHANGE-67: independent status causes (FROZEN 1.1.0, #67)
 
-Concrete evidence at API technical6e289c4/canonicalf91a1bb: G3/ChangeFactData has
-one Kind and no comparison/cause discriminator. Current index/worktree facts do
-not expose HEAD entries; opaque content versions cannot be compared with Git
-blob OIDs. SLC-07 and StatusFacts require separate causes; the accepted viewmodel
-already has independent IndexStatus/WorktreeStatus. Extra later ReadDiff calls
-cannot silently turn the promised status observation into a different protocol.
-Only ObserveStatus and dependent Git work are paused; independent reads continue.
+Concrete G3/API omission: one Kind without a cause cannot carry separate staged,
+unstaged/untracked/conflict changes from current index/filesystem facts. The full
+DRAFT and impact proposal is preserved at980513b2b126842ab1d50558931a84441c253172.
+Fresh independent [review](Application/M3-Status-BC-Review--001.md) ACCEPTS it,
+with no blocking findings and explicit legitimate-case/API/native/projection tests.
+Master freezes the corresponding [Git G3](../../LayerBoundaryContracts/BC--Application--Git.md)
+delta as1.1.0 in the commit adding this decision. Required cause-tagged rows retain
+per-cause kind/rename identity and consistent current facts; other contracts and
+all native mutation protocols remain1.0.0/unchanged. The original whole-set freeze
+history stays in BCFreeze--001; this bounded correction does not reopen that set.
 
-Proposed minimal 1.1.0 Git contract delta, awaiting independent review:
-- Add required ChangeCause to ChangeFact: Index, Worktree, Untracked, Conflict.
-  Zero/unknown values are invalid. Existing Kind describes that cause's change.
-- Index compares observed HEAD with index (unborn: empty tree); Worktree compares
-  index with filesystem. Each may use Added/Modified/Deleted/Renamed/Copied/
-  TypeChanged. Untracked requires Kind Untracked; Conflict requires Kind Unmerged.
-- One row per exact (Path,Cause), with row-local OldPath required only for
-  Renamed/Copied and different from Path. Same Path with different causes is
-  permitted and unordered. Staged deletion plus untracked replacement is valid.
-  No cause is inferred from row order, content-token decoding or absence from a
-  partial observation. Complete clean status has no rows, never a fabricated row.
-- All rows retain independently observed current IndexEntries and WorktreeState;
-  they are not HEAD entries. Index entries have unique stages; ordinary rows use
-  stage0 or absence, Untracked has no index entries, Conflict has nonempty unique
-  stages1..3 and no stage0. Do not manufacture entries for missing conflict sides.
-  Conflict excludes normal/untracked causes for the same exact Path. Consistency
-  of repeated current facts for one path is required; drift makes observation
-  incomplete/diagnostic rather than contradictory rows or a guessed clean state.
-- Per-cause rename/copy identities remain literal. Index rename plus worktree
-  modification retains two records; consumers can group without dropping either.
-  Public Application projection must preserve causes; viewmodel changes are not
-  authorized by this correction and full UI mapping remains an M4/M5 gate.
-
-Impact: only Application--Git G3/type reference and internal/application/api
-ChangeFact/StatusFacts admission plus affected tests/README. No port method,
-Domain identity, other adapter, mutation protocol or dependency direction change.
-Proposed proof cases: staged-only, unstaged-only, both, staged rename plus unstaged
-modification, staged deletion plus untracked replacement, every conflict stage
-combination, invalid/duplicate cause, conflicting same-path facts and copy isolation.
-
-#67 sequence: fresh proposal review, Master revise/refreeze Git1.1.0, fresh bounded
-API worker, separate exact-source review/appropriate tests and CI, integrate/push
-prerequisite then supply Git worker explicit commit. Frozen1.0.0 remains effective
-until that change is reviewed/frozen. This record is the existing M3 handoff surface;
-no separate governance system or completion claim is introduced.
+Pure API correction and independent exact-source review are next under#67;
+ObserveStatus/dependent Git work remains paused until that prerequisite is
+integrated and pushed. Independent Git reads continue. Impact remains only
+Application--Git G3, API value/consistency/tests/README; no port, Domain, adapter,
+viewmodel or legacy change. M4/M5 must preserve causes in public/presentation
+projection. The freeze is contract authority, not implementation acceptance.

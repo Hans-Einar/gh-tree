@@ -389,3 +389,9 @@ passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
 Resume: checkpoint3e25965/local-tag-origin/all16 worktrees verified unchanged. User
 policy now requires prompt coherent milestone pushes and concise reused evidence.
 Full M3..M8 remains; first Git/GitHub/Persistence dispatch follows this checkpoint.
+
+M3 #67: actual G3/API cause omission independently confirmed; focused proposal
+review ACCEPT at980513b2. Master freezes only Git status representation1.1.0;
+API correction/source review and native status proof remain pending. Existing
+M3 record/review carry details. GitHub review requests one bounded UTF8 retention
+fix; native controls/CI pass. Other adapter milestones remain partial and pushed.
