@@ -42,3 +42,11 @@ persistence-probe-go.mod.txt/persistence-probe-go.sum.txt, Persistence-proposed.
 persistence-proposal.md.txt). Windows/Linux result names carry the same prefix.
 All seven copies matched their recorded hashes. Cwd probe source hashes and native
 observations are in CwdAcquisition--001; these remain bounded mechanism experiments.
+
+windows-anchor/windows-startup/windows-broker preserve later native correction
+sources and captures. Each ArchiveManifest maps original name/hash to its archived
+name or marks a temporary compiled executable as not committed. All declared
+original hashes were checked before copying; no executable probe was added to the
+product. Three producer source snapshots intentionally retain final blank lines
+under narrowly scoped archive attributes so their recorded byte hashes remain
+valid. Product formatting requirements are unchanged.

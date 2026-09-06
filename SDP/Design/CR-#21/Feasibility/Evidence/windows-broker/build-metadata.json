@@ -1,0 +1,28 @@
+{
+  "payload/broker-amd64.exe": {
+    "bytes": 4125696,
+    "machine": "0x8664",
+    "sha256": "8e4ac278df353aaa965ac8dcb99e5b7609fd3352fbd53e6be0fb335cb89e7b44"
+  },
+  "broker-amd64-rebuild.exe": {
+    "bytes": 4125696,
+    "machine": "0x8664",
+    "sha256": "8e4ac278df353aaa965ac8dcb99e5b7609fd3352fbd53e6be0fb335cb89e7b44"
+  },
+  "broker-arm64.exe": {
+    "bytes": 3892224,
+    "machine": "0xaa64",
+    "sha256": "1653d7711cb5baf02ba60cb36207fe8e40949274c2e42aaed90cc7008324ed99"
+  },
+  "parent-386-embedded.exe": {
+    "bytes": 8082432,
+    "machine": "0x14c",
+    "sha256": "84cbdb27ee5492b6b39e67f920672eb946e475fdfb32d15343ef8825cf9dca60"
+  },
+  "nativeEnvironment": {
+    "windows": "10.0.26200",
+    "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+    "nativeArm64Executed": false
+  },
+  "amd64Reproducible": true
+}

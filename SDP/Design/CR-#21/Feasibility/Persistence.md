@@ -1,5 +1,12 @@
 # Persistence commit feasibility proposal (PERF-52)
 
+Superseding native-access refinement: the later windows-anchor evidence requires
+actual directory list/data-read access (tested as GENERIC_READ) for a sharing
+interlock. Metadata-only handles are insufficient. Converted-parent handle-relative
+calls refused STATUS_REPARSE_POINT_NOT_RESOLVED without writing outside. Storage--001
+selects this refinement; the original proposal bytes are separately preserved in
+Evidence/persistence-proposal.md.txt.
+
 Design-only contribution for #52/#21; inspected frozen design
 f1dec60cbd3892f068410f2d7f3caa7f855ba52e. This is a proposal to reconcile into
 REFDES/API/Verification, not an accepted BC or product implementation. Scope is

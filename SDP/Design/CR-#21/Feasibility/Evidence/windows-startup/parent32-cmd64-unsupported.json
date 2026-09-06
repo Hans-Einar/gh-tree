@@ -1,0 +1,6 @@
+{
+  "case": "parent32-cmd64-unsupported",
+  "returncode": 2,
+  "stdout": "",
+  "stderr": "panic: The request is not supported.\n\ngoroutine 1 [running]:\nmain.check(...)\n\tC:/Users/hanse/.codex/tmp/cr52-cwd-debug32-probe.go:21\nmain.main()\n\tC:/Users/hanse/.codex/tmp/cr52-cwd-debug32-probe.go:58 +0x191e\n"
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "case": "python64-reparse",
+    "returncode": 0,
+    "stdout": "{\n  \"kind\": \"debug-initial-breakpoint\",\n  \"mode\": \"python-reparse\",\n  \"events\": [\n    {\n      \"event\": 3,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 1,\n      \"cwdHandle\": \"0x54\",\n      \"exception\": \"0x80000003\",\n      \"outputBeforeBreakpoint\": false,\n      \"acquiredIdentity\": {\n        \"fileID\": \"2df043f60544f64a567d260000000d000000000000000000\"\n      },\n      \"junctionAfterAnchorRelease\": {\n        \"set\": true,\n        \"error\": 0\n      }\n    }\n  ],\n  \"expectedIdentity\": {\n    \"fileID\": \"2df043f60544f64a567d260000000d000000000000000000\"\n  },\n  \"beforeResumeCwdHandle\": \"0x0\",\n  \"child\": {\n    \"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug-bd4r4u5f\\\\target\",\n    \"debugged\": 0,\n    \"relativeError\": \"[Errno 22] Invalid argument: 'marker'\",\n    \"absoluteMarker\": \"outside\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "python64-immediate-chdir",
+    "returncode": 0,
+    "stdout": "{\n  \"kind\": \"debug-initial-breakpoint\",\n  \"mode\": \"python-chdir\",\n  \"events\": [\n    {\n      \"event\": 3,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 1,\n      \"cwdHandle\": \"0x54\",\n      \"exception\": \"0x80000003\",\n      \"outputBeforeBreakpoint\": false,\n      \"acquiredIdentity\": {\n        \"fileID\": \"2df043f60544f64a5a7d260000000c000000000000000000\"\n      }\n    }\n  ],\n  \"expectedIdentity\": {\n    \"fileID\": \"2df043f60544f64a5a7d260000000c000000000000000000\"\n  },\n  \"beforeResumeCwdHandle\": \"0x0\",\n  \"child\": {\n    \"before\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug-cf8blmzb\\\\target\",\n    \"debugged\": 0,\n    \"after\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug-cf8blmzb\\\\outside\",\n    \"marker\": \"outside\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "parent64-cmd32",
+    "returncode": 0,
+    "stdout": "{\n  \"kind\": \"debug-initial-breakpoint\",\n  \"mode\": \"cmd32\",\n  \"events\": [\n    {\n      \"event\": 3,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 1,\n      \"cwdHandle\": \"0x0\",\n      \"exception\": \"0x80000003\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x98\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x98\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x98\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x98\"\n    },\n    {\n      \"event\": 1,\n      \"cwdHandle\": \"0x98\",\n      \"exception\": \"0x4000001f\",\n      \"outputBeforeBreakpoint\": false,\n      \"acquiredIdentity\": {\n        \"fileID\": \"2df043f60544f64a5b7d260000000e000000000000000000\"\n      }\n    }\n  ],\n  \"expectedIdentity\": {\n    \"fileID\": \"2df043f60544f64a5b7d260000000e000000000000000000\"\n  },\n  \"beforeResumeCwdHandle\": \"0x0\",\n  \"child\": {\n    \"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug-d2vixsbs\\\\target\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "parent64-cmd64",
+    "returncode": 0,
+    "stdout": "{\n  \"kind\": \"debug-initial-breakpoint\",\n  \"mode\": \"cmd64\",\n  \"events\": [\n    {\n      \"event\": 3,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x0\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 6,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 2,\n      \"cwdHandle\": \"0x54\"\n    },\n    {\n      \"event\": 1,\n      \"cwdHandle\": \"0x54\",\n      \"exception\": \"0x80000003\",\n      \"outputBeforeBreakpoint\": false,\n      \"acquiredIdentity\": {\n        \"fileID\": \"2df043f60544f64a5c7d260000000f000000000000000000\"\n      }\n    }\n  ],\n  \"expectedIdentity\": {\n    \"fileID\": \"2df043f60544f64a5c7d260000000f000000000000000000\"\n  },\n  \"beforeResumeCwdHandle\": \"0x0\",\n  \"child\": {\n    \"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug-eine29g8\\\\target\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "parent32-cmd32",
+    "returncode": 0,
+    "stdout": "{\n  \"PEB\": \"30ad000\",\n  \"beforeResumeHandle\": 0,\n  \"controlWithoutDebug\": false,\n  \"events\": [\n    {\n      \"cwdHandle\": 0,\n      \"event\": 3\n    },\n    {\n      \"cwdHandle\": 0,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 2\n    },\n    {\n      \"acquiredIdentity\": \"2df043f60544f64a5e7d2600000010000000000000000000\",\n      \"cwdHandle\": 152,\n      \"event\": 1,\n      \"exception\": \"80000003\",\n      \"outputAbsent\": true\n    }\n  ],\n  \"expectedIdentity\": \"2df043f60544f64a5e7d2600000010000000000000000000\",\n  \"output\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug32-790736085\\\\target\\r\\n\",\n  \"parentArch\": \"386\",\n  \"target64\": false\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "parent32-cmd64-unsupported",
+    "returncode": 2,
+    "stdout": "",
+    "stderr": "panic: The request is not supported.\n\ngoroutine 1 [running]:\nmain.check(...)\n\tC:/Users/hanse/.codex/tmp/cr52-cwd-debug32-probe.go:21\nmain.main()\n\tC:/Users/hanse/.codex/tmp/cr52-cwd-debug32-probe.go:58 +0x191e\n"
+  },
+  {
+    "case": "parent32-cmd64-nondebug-control",
+    "returncode": 0,
+    "stdout": "{\n  \"PEB\": \"8d276d0000\",\n  \"beforeResumeHandle\": 0,\n  \"controlWithoutDebug\": true,\n  \"events\": null,\n  \"expectedIdentity\": \"2df043f60544f64a607d260000000d000000000000000000\",\n  \"output\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug32-2423038305\\\\target\\r\\n\",\n  \"parentArch\": \"386\",\n  \"target64\": true\n}\n",
+    "stderr": ""
+  },
+  {
+    "case": "inherited-true-negative",
+    "returncode": 0,
+    "stdout": "{\"suspendedPEB\": \"0xda40df2000\", \"processParameters\": \"0x2b1c5e70000\", \"currentDirectoryHandleBeforeResume\": \"0x0\"}\n{\"reparseAfterCreateBeforeResume\": true, \"reparseError\": 0, \"child\": {\"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-suspended-7hz3azbp\\\\target\", \"marker\": \"other-directory\"}}\n",
+    "stderr": ""
+  },
+  {
+    "case": "injected-raw-handle-negative",
+    "returncode": 0,
+    "stdout": "{\"suspendedPEB\": \"0xf1e8e85000\", \"processParameters\": \"0x22c78f00000\", \"currentDirectoryHandleBeforeResume\": \"0x0\"}\n{\"injectedCurrentDirectoryHandle\": \"0x4\"}\n{\"reparseAfterCreateBeforeResume\": true, \"reparseError\": 0, \"child\": {\"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-suspended-crpvtjfg\\\\target\", \"marker\": \"other-directory\"}}\n",
+    "stderr": ""
+  }
+]

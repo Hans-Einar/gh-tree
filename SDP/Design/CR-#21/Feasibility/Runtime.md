@@ -1,5 +1,12 @@
 # Runtime backend feasibility — CR-#21 / Issue #52
 
+Windows ownership/startup refinement: WindowsBroker--001 and CwdAcquisition--001
+now govern the selected Windows implementation. The initial direct-process
+mechanism below is historical feasibility evidence; it does not establish the
+later actual-cwd barrier, native-bitness broker or outer-Job final cleanup. The
+Unix RTF-02 addendum remains selected. New exact source/log evidence is archived
+under Evidence/windows-anchor, windows-startup and windows-broker.
+
 Status: design input; no product implementation or BC freeze. Date: 2026-09-06.
 Author: fresh bounded Runtime feasibility reviewer. Worktree: `codex/cr21-refactor-design` at starting governance HEAD `e0e716fd44421c221d00375fc0c0d0b8ea85bdff`; unchanged product baseline `f626077ca0e59fbe9ede7ba1116982bb94b2eb6b` / v0.3.14. Master owns final APIs, cross-report reconciliation and acceptance.
 

@@ -32,10 +32,12 @@ the exact release-ready external action; never label unpublished delivery tested
 
 ## Platforms and tooling
 
-Native minimum: Windows amd64 (Job + ConPTY), Linux amd64 (session/PTY), macOS on
+Native minimum: Windows amd64 and ARM64 (Job + ConPTY + actual-cwd startup), Linux amd64 (session/PTY), macOS on
 an available hosted native architecture, and FreeBSD amd64 for its selected census/
 signal mechanism. Use native Windows 386/WOW64 for handle/ABI contract tests where
-the implementation has architecture-sensitive native structures. All twelve
+the implementation has architecture-sensitive native structures. Exercise native
+ARM64 and x86/x64 emulation broker routing on the documented windows-11-arm runner;
+verify the actual runner/image/profile at execution. All twelve
 release targets cross-build from the exact source. No cross-build claims native
 Runtime parity. Additional architecture-specific syscall layouts require compile-
 time size/offset assertions plus native evidence where layout differs materially.
@@ -123,6 +125,7 @@ controlled clock or deliberately bounded real waits and retain diagnostic output
 | V-RUN-05 | Real PTY/ConPTY input/resize/close; blocked readers/writers and terminal close join, old blocking-close behavior; invalid/late resize/input after stopping; latest accepted geometry at restart; resource counts before/after repeated cycles. |
 | V-RUN-06 | 256KiB ring, byte/stream/offset order, overflow gap and truncation, coalesced hints recover via ReadOutput; slow/absent UI cannot block draining; copied bounded input; cleaned history evicts only cleaned records. |
 | V-RUN-07 | Concurrent Stop/Restart/Shutdown and consumer detach, complete aggregate residuals, bounded overall shutdown, no timer/subscription/goroutine leak; cleanup timeout never reported Cleaned and retained resource prevents replacement/eviction. |
+| V-RUN-08 | Full WindowsBroker/CwdAcquisition contract: actual data-read nonempty anchors versus metadata-only failure, in-place FSCTL reparse before/after CreateProcess and before Resume, target-specific breakpoint/PEB/FileIdInfo proof, pending-event detach and no user code/anchor/debugger before approved startup. Test386-to-native64 via embedded broker, native64-to-WOW64 and native ARM64/emulation profiles, static DLL/TLS/debug-heap and immediate-chdir compatibility, helper extraction tamper/identity/permissions, all partial failures, framed control/output ownership, inner quiescence -> Release -> broker exit -> outer Job0. No outer-membership1 circular wait or private handle-injection fallback. |
 
 ## State and View
 
@@ -173,7 +176,7 @@ input/resize/quit. A collection of isolated folder tests is not E2E evidence.
 
 | ID | Required proof |
 |---|---|
-| V-REL-01 | Before product PR, build/stage all twelve exact names from verified integration SHA; nonempty executable format/architecture, version/module/source metadata, hashes and complete manifest. Fail on omitted/extra/unsupported targets; no publication side effects. |
+| V-REL-01 | Before product PR, build/stage all twelve exact names from verified integration SHA; nonempty executable format/architecture, version/module/source metadata, hashes and complete manifest. Rebuild embedded Runtime helper source closure with canonical pinned toolchain; require exact image/compression/manifest hashes and native machines, normal clean-checkout go build without generation, and no helper download/compiler/extra asset at install or run. Fail on omitted/extra/unsupported targets; no publication side effects. |
 | V-REL-02 | Fresh exact product PR readiness review and green current HEAD, zero blocking threads/findings, then exact main release commit full CI; version/release notes in that tested commit. Tag v0.4.0 must point exactly there, never fabricated by default-branch release behavior. |
 | V-REL-03 | Draft release assets match approved manifest/hash/source/workflow SHA, no existing asset clobber; publish only after inspection. Read back published tag/release/assets and verify downloads correspond to staged bytes. |
 | V-REL-04 | Isolated GH_CONFIG_DIR/config/state environment, preserved user's installed extension: install delivered artifact with correct extension name/OS/arch, noninteractive --version/help, controlled upgrade from baseline binary/state and migrated app startup. Record any environment-limited live transport step exactly; never claim the user's installation was upgraded. |

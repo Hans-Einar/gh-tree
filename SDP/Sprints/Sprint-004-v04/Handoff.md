@@ -46,7 +46,19 @@ returned DES52-H03/H04/M01/M02 (2 HIGH/2 MEDIUM) despite all 18 CI checks passin
 DesignReview--002 records exact findings and proposed corrections. New Storage--001
 and CwdAcquisition--001 supply concrete native protocols; API adds PR/stash reads
 and downstream lifecycle reservations/ACK transfer. Raw bounded Persistence/cwd
-evidence is archived. All four corrections await frozen corrected-HEAD review.
+evidence is archived. Re-review of8c109b1e4308eb301d7c1418292044d714c2f33b
+accepted H03/M01/M02 at design level, but H04 remained HIGH after real in-place
+reparse and pre-Resume tests disproved the guard-only assumption. Its18 CI checks
+passed in runs34007362962/34007365156; CI did not override the finding.
+
+WindowsBroker--001 now proposes the complete native startup correction, including
+embedded host-native helpers to preserve386-to-native64, the actual cwd-handle
+breakpoint barrier, ConPTY and final outer-Job cleanup. Three followup archives
+preserve43 checked source/log/build-output hashes and37 committed-text candidates;
+temporary executable probes are not product implementation. DesignReview--003
+records failed assumptions and the proposed correction. The next permitted action
+is freeze/independently review the complete new draft and its helper build/ABI/
+cleanup contracts; H04 is not self-accepted. All143 product findings remain open.
 
 Fresh independent re-review at frozen exact SHA and green CI precede
 acceptance/merge. Then authorize BC review/freeze; no product implementation before

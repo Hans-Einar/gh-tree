@@ -1,0 +1,27 @@
+[
+  {
+    "path": "root",
+    "delete_handle_open_error": 32,
+    "reparse": {
+      "ok": false,
+      "error": 145
+    }
+  },
+  {
+    "path": "cwd",
+    "delete_handle_open_error": 32,
+    "reparse": {
+      "ok": false,
+      "error": 145
+    }
+  },
+  {
+    "case": "create-process-with-exclusive-anchor",
+    "child": {
+      "cwd": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-per52-chain-lod7tvjw\\root\\cwd",
+      "names": [
+        "exclusive-anchor"
+      ]
+    }
+  }
+]

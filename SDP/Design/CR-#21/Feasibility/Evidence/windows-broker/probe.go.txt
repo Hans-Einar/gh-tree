@@ -1,0 +1,136 @@
+//go:build windows
+
+// Bounded disposable native feasibility fixture; not product code.
+package main
+
+import (
+ "bufio"
+ "bytes"
+ "crypto/rand"
+ "crypto/sha256"
+ "encoding/binary"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "io"
+ "os"
+ "os/exec"
+ "path/filepath"
+ "runtime"
+ "strings"
+ "sync"
+ "time"
+ "unsafe"
+
+ "golang.org/x/sys/windows"
+)
+
+var k=windows.NewLazySystemDLL("kernel32.dll")
+func check(e error){if e!=nil{panic(e)}}
+func win(name string,args ...uintptr)uintptr{r,_,e:=k.NewProc(name).Call(args...);if r==0{panic(fmt.Sprintf("%s: %v",name,e))};return r}
+func wide(s string)*uint16{p,e:=windows.UTF16PtrFromString(s);check(e);return p}
+func closeh(h windows.Handle){if h!=0{check(windows.CloseHandle(h))}}
+func newjob()windows.Handle{h,e:=windows.CreateJobObject(nil,nil);check(e);var limits windows.JOBOBJECT_EXTENDED_LIMIT_INFORMATION;limits.BasicLimitInformation.LimitFlags=windows.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;_,e=windows.SetInformationJobObject(h,windows.JobObjectExtendedLimitInformation,uintptr(unsafe.Pointer(&limits)),uint32(unsafe.Sizeof(limits)));check(e);return h}
+type accounting struct{User,Kernel,PeriodUser,PeriodKernel int64;Faults,Total,Active,Terminated uint32}
+func active(h windows.Handle)uint32{var a accounting;check(windows.QueryInformationJobObject(h,windows.JobObjectBasicAccountingInformation,uintptr(unsafe.Pointer(&a)),uint32(unsafe.Sizeof(a)),nil));return a.Active}
+func members(h windows.Handle)[]string{var info struct{Assigned,Count uint32;Pids[32]uintptr};qe:=windows.QueryInformationJobObject(h,windows.JobObjectBasicProcessIdList,uintptr(unsafe.Pointer(&info)),uint32(unsafe.Sizeof(info)),nil);if qe!=nil{return []string{fmt.Sprintf("job query error %v",qe)}};var names []string;for _,id:=range info.Pids[:info.Count]{p,e:=windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION,false,uint32(id));if e!=nil{names=append(names,fmt.Sprintf("%d:openError=%v",id,e));continue};b:=make([]uint16,1024);n:=uint32(len(b));pe:=windows.QueryFullProcessImageName(p,0,&b[0],&n);closeh(p);if pe!=nil{names=append(names,fmt.Sprintf("%d:pathError=%v",id,pe));continue};names=append(names,fmt.Sprintf("%d:%s",id,windows.UTF16ToString(b[:n])))};return names}
+func until(d time.Duration,f func()bool){deadline:=time.Now().Add(d);for !f(){if time.Now().After(deadline){panic("bounded fixture wait expired")};time.Sleep(10*time.Millisecond)}}
+func waited(h windows.Handle){r,e:=windows.WaitForSingleObject(h,5000);check(e);if r!=windows.WAIT_OBJECT_0{panic("owned process wait timeout")}}
+func ticks(h windows.Handle)uint64{var times[4]windows.Filetime;check(windows.GetProcessTimes(h,&times[0],&times[1],&times[2],&times[3]));return uint64(times[3].HighDateTime)<<32|uint64(times[3].LowDateTime)}
+func open(path string,access,disp,flags uint32)windows.Handle{h,e:=windows.CreateFile(wide(path),access,3,nil,disp,flags,0);check(e);return h}
+func fileid(h windows.Handle)string{var b[24]byte;check(windows.GetFileInformationByHandleEx(h,18,&b[0],uint32(len(b))));return hex.EncodeToString(b[:])}
+type frame struct{Version int `json:"version"`;Nonce string `json:"nonce"`;Seq int `json:"seq"`;Op string `json:"op"`;Data map[string]any `json:"data,omitempty"`}
+func send(w io.Writer,f frame){b,e:=json.Marshal(f);check(e);if len(b)>65536{panic("oversize frame")};var h[4]byte;binary.LittleEndian.PutUint32(h[:],uint32(len(b)));_,e=w.Write(h[:]);check(e);_,e=w.Write(b);check(e)}
+func receive(r io.Reader)frame{var h[4]byte;_,e:=io.ReadFull(r,h[:]);check(e);size:=binary.LittleEndian.Uint32(h[:]);if size==0||size>65536{panic("invalid frame size")};b:=make([]byte,size);_,e=io.ReadFull(r,b);check(e);var f frame;d:=json.NewDecoder(bytes.NewReader(b));d.DisallowUnknownFields();check(d.Decode(&f));if f.Version!=1{panic("protocol version")};return f}
+func stringval(f frame,key string)string{v,ok:=f.Data[key].(string);if !ok{panic("missing string "+key)};return v}
+func response(req frame,op string,data map[string]any)frame{return frame{1,req.Nonce,req.Seq,op,data}}
+func validate(f frame,nonce string,seq int,op string){if f.Nonce!=nonce||f.Seq!=seq||f.Op!=op{panic("fixture protocol mismatch")}}
+
+type terminal struct{hpc windows.Handle;input,output *os.File;done chan struct{};mu sync.Mutex;buffer bytes.Buffer;closed bool}
+func newterminal()(*terminal,windows.Handle,windows.Handle){var inr,inw,outr,outw windows.Handle;check(windows.CreatePipe(&inr,&inw,nil,0));check(windows.CreatePipe(&outr,&outw,nil,0));t:=&terminal{input:os.NewFile(uintptr(inw),"conpty-input"),output:os.NewFile(uintptr(outr),"conpty-output"),done:make(chan struct{})};check(windows.CreatePseudoConsole(windows.Coord{X:80,Y:24},inr,outw,0,&t.hpc));go func(){defer close(t.done);b:=make([]byte,4096);for{n,e:=t.output.Read(b);if n>0{t.mu.Lock();if t.buffer.Len()+n<=65536{t.buffer.Write(b[:n])};t.mu.Unlock()};if e!=nil{return}}}();return t,inr,outw}
+func(t *terminal)text()string{t.mu.Lock();defer t.mu.Unlock();return t.buffer.String()}
+func(t *terminal)finish(){if t.closed{return};_ = t.input.Close();done:=make(chan struct{});go func(){windows.ClosePseudoConsole(t.hpc);close(done)}();select{case<-done:case<-time.After(5*time.Second):panic("ConPTY close timeout")};select{case<-t.done:case<-time.After(5*time.Second):_ = t.output.Close();panic("ConPTY output join timeout")};check(t.output.Close());t.closed=true}
+
+func readword(process windows.Handle,address uintptr)uintptr{var value uintptr;var got uintptr;check(windows.ReadProcessMemory(process,address,(*byte)(unsafe.Pointer(&value)),unsafe.Sizeof(value),&got));if got!=unsafe.Sizeof(value){panic("short remote pointer read")};return value}
+func cwdhandle(process windows.Handle)windows.Handle{var pbi windows.PROCESS_BASIC_INFORMATION;check(windows.NtQueryInformationProcess(process,windows.ProcessBasicInformation,unsafe.Pointer(&pbi),uint32(unsafe.Sizeof(pbi)),nil));var peb windows.PEB;var params windows.RTL_USER_PROCESS_PARAMETERS;paramAddr:=readword(process,uintptr(unsafe.Pointer(pbi.PebBaseAddress))+unsafe.Offsetof(peb.ProcessParameters));if paramAddr==0{return 0};return windows.Handle(readword(process,paramAddr+unsafe.Offsetof(params.CurrentDirectory)+unsafe.Offsetof(params.CurrentDirectory.Handle)))}
+
+func broker(){
+ runtime.LockOSThread();defer runtime.UnlockOSThread()
+ start:=receive(os.Stdin);if start.Op!="Start"||start.Seq!=1||len(start.Nonce)!=32{panic("bad start frame")}
+ target:=stringval(start,"target");expected:=stringval(start,"expectedFileId")
+ // Disposable directory is created by parent; broker independently acquires it.
+ guard:=open(target,windows.GENERIC_READ|windows.FILE_TRAVERSE,windows.OPEN_EXISTING,windows.FILE_FLAG_BACKUP_SEMANTICS|windows.FILE_FLAG_OPEN_REPARSE_POINT);defer func(){if guard!=0{closeh(guard)}}();if fileid(guard)!=expected{panic("broker cwd observation mismatch")}
+ anchor:=open(filepath.Join(target,"anchor"),windows.GENERIC_READ|windows.DELETE,windows.CREATE_NEW,windows.FILE_FLAG_DELETE_ON_CLOSE|windows.FILE_ATTRIBUTE_HIDDEN|windows.FILE_ATTRIBUTE_TEMPORARY);defer func(){if anchor!=0{closeh(anchor)}}()
+ inner:=newjob();defer closeh(inner);defer windows.TerminateJobObject(inner,91)
+ term,inr,outw:=newterminal();defer term.finish()
+ attrs,e:=windows.NewProcThreadAttributeList(1);check(e);defer attrs.Delete();check(attrs.Update(windows.PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE,unsafe.Pointer(term.hpc),unsafe.Sizeof(term.hpc)))
+ exe,e:=os.Executable();check(e);cmd:=windows.ComposeCommandLine([]string{exe,"user-root"})
+ si:=windows.StartupInfoEx{};si.Cb=uint32(unsafe.Sizeof(si));si.Flags=windows.STARTF_USESHOWWINDOW|windows.STARTF_USESTDHANDLES;si.ShowWindow=windows.SW_HIDE;si.ProcThreadAttributeList=attrs.List()
+ var pi windows.ProcessInformation
+ check(windows.CreateProcess(wide(exe),wide(cmd),nil,nil,false,windows.CREATE_SUSPENDED|windows.CREATE_UNICODE_ENVIRONMENT|windows.EXTENDED_STARTUPINFO_PRESENT|2,nil,wide(target),&si.StartupInfo,&pi));defer func(){if pi.Process!=0{closeh(pi.Process)}}();defer func(){if pi.Thread!=0{closeh(pi.Thread)}}();defer func(){if pi.Process!=0{_ = windows.TerminateProcess(pi.Process,91)}}()
+ closeh(inr);closeh(outw);check(windows.AssignProcessToJobObject(inner,pi.Process));beforeActive:=active(inner);beforeTicks:=ticks(pi.Process);if beforeActive!=1||beforeTicks!=0{panic("user containment before resume")}
+ // Inline event loop keeps the pending-event owner alive through detach.
+ barrier:=func()map[string]any{
+  debugging:=true;var pendingPID,pendingTID uint32
+  defer func(){if debugging{_ = windows.TerminateJobObject(inner,93);if pendingPID!=0{k.NewProc("ContinueDebugEvent").Call(uintptr(pendingPID),uintptr(pendingTID),0x10002)};k.NewProc("DebugActiveProcessStop").Call(uintptr(pi.ProcessId));waited(pi.Process)}}()
+  before:=cwdhandle(pi.Process);if before!=0{panic("fixture initial cwd handle nonzero")};previous,e:=windows.ResumeThread(pi.Thread);check(e);if previous!=1{panic("suspend count")}
+  events:=0;deadline:=time.Now().Add(8*time.Second)
+  for time.Now().Before(deadline){var ev[176]byte;r,_,err:=k.NewProc("WaitForDebugEventEx").Call(uintptr(unsafe.Pointer(&ev[0])),250);if r==0{if err==windows.ERROR_SEM_TIMEOUT{continue};panic(err)};code:=binary.LittleEndian.Uint32(ev[:4]);pid:=binary.LittleEndian.Uint32(ev[4:8]);tid:=binary.LittleEndian.Uint32(ev[8:12]);pendingPID,pendingTID=pid,tid;events++;if pid!=pi.ProcessId{panic("foreign event")}
+   if code==3||code==6{h:=windows.Handle(binary.LittleEndian.Uint64(ev[16:24]));if h!=0{closeh(h)}}
+   if code==1{exc:=binary.LittleEndian.Uint32(ev[16:20]);if exc!=0x80000003{panic(fmt.Sprintf("unexpected exception %x",exc))};remote:=cwdhandle(pi.Process);if remote==0{panic("no acquired cwd")};var dup windows.Handle;check(windows.DuplicateHandle(pi.Process,remote,windows.CurrentProcess(),&dup,0,false,windows.DUPLICATE_SAME_ACCESS));actual:=fileid(dup);closeh(dup);if actual!=expected{panic("wrong acquired cwd")};if strings.Contains(term.text(),"USER_READY"){panic("user code ran before barrier")};closeh(anchor);anchor=0;closeh(guard);guard=0;win("DebugActiveProcessStop",uintptr(pi.ProcessId));debugging=false;pendingPID,pendingTID=0,0;return map[string]any{"events":events,"beforeResumeCwdHandle":uint64(before),"acquiredCwdHandle":uint64(remote),"acquiredFileId":actual,"beforeResumeInnerActive":beforeActive,"beforeResumeUserCpuTicks":beforeTicks,"userOutputBeforeBarrier":false,"brokerArch":runtime.GOARCH}}
+   if code==5{panic("user exited before initial breakpoint")};win("ContinueDebugEvent",uintptr(pid),uintptr(tid),0x10002);pendingPID,pendingTID=0,0
+  };panic("debug deadline")
+ }()
+ closeh(pi.Thread);pi.Thread=0;send(os.Stdout,response(start,"Started",barrier))
+ exercise:=receive(os.Stdin);validate(exercise,start.Nonce,2,"Exercise")
+ until(5*time.Second,func()bool{return strings.Contains(term.text(),"USER_READY")})
+ check(windows.ResizePseudoConsole(term.hpc,windows.Coord{X:100,Y:30}));_,e=term.input.Write([]byte("probe-input\r"));check(e)
+ until(5*time.Second,func()bool{return strings.Contains(term.text(),"USER_INPUT probe-input")&&strings.Contains(term.text(),"SIZE 100 30")})
+ output:=term.text();if !strings.Contains(output,"debugged=false")||!strings.Contains(output,"anchor=false"){panic("detach/anchor fixture assertion")};if active(inner)<2{panic("user descendant not in inner job")}
+ send(os.Stdout,response(exercise,"Exercised",map[string]any{"inputOutputResize":true,"debuggerVisible":false,"anchorVisible":false,"innerActiveWithDescendant":active(inner),"output":output}))
+ stop:=receive(os.Stdin);validate(stop,start.Nonce,3,"Stop");check(windows.TerminateJobObject(inner,7));until(5*time.Second,func()bool{return active(inner)==0});waited(pi.Process);closeh(pi.Process);pi.Process=0;term.finish()
+ send(os.Stdout,response(stop,"Quiescent",map[string]any{"innerActive":active(inner),"rootWaited":true,"conptyCloseJoined":true,"outputReaderJoined":true,"inputClosed":true}))
+ release:=receive(os.Stdin);validate(release,start.Nonce,4,"Release");send(os.Stdout,response(release,"Released",map[string]any{"brokerExitsLast":true}))
+ runtime.KeepAlive(attrs)
+}
+
+func parent(helper string){
+ root,e:=os.MkdirTemp("","cr52-cwd-broker-");check(e);defer os.RemoveAll(root);target:=filepath.Join(root,"target");check(os.Mkdir(target,0700));g:=open(target,windows.GENERIC_READ,windows.OPEN_EXISTING,windows.FILE_FLAG_BACKUP_SEMANTICS|windows.FILE_FLAG_OPEN_REPARSE_POINT);expected:=fileid(g);closeh(g)
+ outer:=newjob();defer closeh(outer);defer windows.TerminateJobObject(outer,91)
+ var childRead,parentWrite,parentRead,childWrite windows.Handle;sa:=windows.SecurityAttributes{Length:uint32(unsafe.Sizeof(windows.SecurityAttributes{})),InheritHandle:1};check(windows.CreatePipe(&childRead,&parentWrite,&sa,0));check(windows.CreatePipe(&parentRead,&childWrite,&sa,0));check(windows.SetHandleInformation(parentWrite,windows.HANDLE_FLAG_INHERIT,0));check(windows.SetHandleInformation(parentRead,windows.HANDLE_FLAG_INHERIT,0))
+ controlRead:=os.NewFile(uintptr(parentRead),"broker-control-read");controlWrite:=os.NewFile(uintptr(parentWrite),"broker-control-write");defer controlRead.Close();defer controlWrite.Close()
+ attrs,e:=windows.NewProcThreadAttributeList(1);check(e);defer attrs.Delete();handles:=[]windows.Handle{childRead,childWrite};check(attrs.Update(windows.PROC_THREAD_ATTRIBUTE_HANDLE_LIST,unsafe.Pointer(&handles[0]),uintptr(len(handles))*unsafe.Sizeof(handles[0])))
+ si:=windows.StartupInfoEx{};si.Cb=uint32(unsafe.Sizeof(si));si.Flags=windows.STARTF_USESTDHANDLES|windows.STARTF_USESHOWWINDOW;si.ShowWindow=windows.SW_HIDE;si.StdInput=childRead;si.StdOutput=childWrite;si.StdErr=childWrite;si.ProcThreadAttributeList=attrs.List();var pi windows.ProcessInformation
+ check(windows.CreateProcess(wide(helper),wide(windows.ComposeCommandLine([]string{helper,"broker"})),nil,nil,true,windows.CREATE_SUSPENDED|windows.CREATE_NO_WINDOW|windows.CREATE_UNICODE_ENVIRONMENT|windows.EXTENDED_STARTUPINFO_PRESENT,nil,wide(root),&si.StartupInfo,&pi));defer closeh(pi.Process);defer closeh(pi.Thread);closeh(childRead);closeh(childWrite)
+ check(windows.AssignProcessToJobObject(outer,pi.Process));beforeActive:=active(outer);beforeTicks:=ticks(pi.Process);if beforeActive!=1||beforeTicks!=0{panic("broker containment before resume")};previous,e:=windows.ResumeThread(pi.Thread);check(e);if previous!=1{panic("broker suspend count")}
+ var random[16]byte;_,e=rand.Read(random[:]);check(e);nonce:=hex.EncodeToString(random[:]);send(controlWrite,frame{1,nonce,1,"Start",map[string]any{"target":target,"expectedFileId":expected}})
+ results:=map[string]any{"parentArch":runtime.GOARCH,"helper":helper,"beforeResumeOuterActive":beforeActive,"beforeResumeBrokerUserCpuTicks":beforeTicks}
+ got:=receive(controlRead);validate(got,nonce,1,"Started");results["started"]=got.Data
+ send(controlWrite,frame{1,nonce,2,"Exercise",nil});got=receive(controlRead);validate(got,nonce,2,"Exercised");results["exercised"]=got.Data
+ if os.Args[1]=="parent-abort"{results["outerActiveBeforeAbort"]=active(outer);check(windows.TerminateJobObject(outer,55));waited(pi.Process);until(5*time.Second,func()bool{return active(outer)==0});results["outerActiveFinal"]=active(outer);results["forcedOuterCleanup"]=true;var exit uint32;check(windows.GetExitCodeProcess(pi.Process,&exit));results["brokerExitCode"]=exit;if exit!=55{panic("forced broker exit code")};check(controlWrite.Close());check(controlRead.Close());data,e:=json.MarshalIndent(results,"","  ");check(e);fmt.Println(string(data));return}
+ send(controlWrite,frame{1,nonce,3,"Stop",nil});got=receive(controlRead);validate(got,nonce,3,"Quiescent");results["quiescent"]=got.Data;results["outerMembersAtUserQuiescence"]=members(outer);results["outerActiveAtUserQuiescence"]=active(outer)
+ send(controlWrite,frame{1,nonce,4,"Release",nil});got=receive(controlRead);validate(got,nonce,4,"Released");check(controlWrite.Close());waited(pi.Process);results["outerMembersAfterBrokerExit"]=members(outer);results["outerActiveAfterBrokerExit"]=active(outer);check(windows.TerminateJobObject(outer,7));until(5*time.Second,func()bool{return active(outer)==0});results["outerActiveFinal"]=active(outer);var exit uint32;check(windows.GetExitCodeProcess(pi.Process,&exit));results["brokerExitCode"]=exit;if exit!=0{panic("broker exit")};data,e:=json.MarshalIndent(results,"","  ");check(e);fmt.Println(string(data));runtime.KeepAlive(attrs);runtime.KeepAlive(handles)
+}
+
+func userroot(){
+ cwd,e:=os.Getwd();check(e);_,anchorErr:=os.Stat("anchor");debugged,_,_:=k.NewProc("IsDebuggerPresent").Call();exe,e:=os.Executable();check(e);leaf:=exec.Command(exe,"leaf");check(leaf.Start());defer func(){_ = leaf.Process.Kill();_ = leaf.Wait()}()
+ fmt.Printf("USER_READY debugged=%v anchor=%v cwd=%s\n",debugged!=0,anchorErr==nil,cwd)
+ line,e:=bufio.NewReader(os.Stdin).ReadString('\n');check(e);var info windows.ConsoleScreenBufferInfo;check(windows.GetConsoleScreenBufferInfo(windows.Handle(os.Stdout.Fd()),&info));fmt.Printf("USER_INPUT %s SIZE %d %d\n",strings.TrimSpace(line),info.Window.Right-info.Window.Left+1,info.Window.Bottom-info.Window.Top+1);time.Sleep(20*time.Second)
+}
+func embeddedparent(){
+ if len(embeddedHelper)==0{panic("no embedded helper in this fixture architecture")}
+ var random[16]byte;_,e:=rand.Read(random[:]);check(e)
+ dir:=filepath.Join(os.TempDir(),"cr52-embedded-helper-"+hex.EncodeToString(random[:]))
+ token:=windows.GetCurrentProcessToken();user,e:=token.GetTokenUser();check(e);sd,e:=windows.SecurityDescriptorFromString("D:P(A;;FA;;;SY)(A;;FA;;;"+user.User.Sid.String()+")");check(e)
+ sa:=windows.SecurityAttributes{Length:uint32(unsafe.Sizeof(windows.SecurityAttributes{})),SecurityDescriptor:sd}
+ check(windows.CreateDirectory(wide(dir),&sa));defer os.RemoveAll(dir)
+ directory:=open(dir,windows.GENERIC_READ,windows.OPEN_EXISTING,windows.FILE_FLAG_BACKUP_SEMANTICS|windows.FILE_FLAG_OPEN_REPARSE_POINT);defer closeh(directory)
+ path:=filepath.Join(dir,"broker.exe");writer:=open(path,windows.GENERIC_READ|windows.GENERIC_WRITE,windows.CREATE_NEW,windows.FILE_ATTRIBUTE_NORMAL);expectedID:=fileid(writer);file:=os.NewFile(uintptr(writer),"payload-write");_,e=file.Write(embeddedHelper);check(e);check(file.Sync());check(file.Close())
+ reader,e:=windows.CreateFile(wide(path),windows.GENERIC_READ,windows.FILE_SHARE_READ,nil,windows.OPEN_EXISTING,windows.FILE_FLAG_OPEN_REPARSE_POINT,0);check(e);readFile:=os.NewFile(uintptr(reader),"payload-read");defer readFile.Close();if fileid(reader)!=expectedID{panic("payload object changed")};actual,e:=io.ReadAll(readFile);check(e);want:=sha256.Sum256(embeddedHelper);have:=sha256.Sum256(actual);if have!=want{panic("embedded payload hash mismatch")}
+ fmt.Fprintf(os.Stderr,"embedded_helper bytes=%d sha256=%x privateDACL=true identityChecked=true readNoWriteNoDeleteGuard=true\n",len(embeddedHelper),have)
+ parent(path)
+}
+func main(){if len(os.Args)>1{switch os.Args[1]{case "broker":broker();return;case "user-root":userroot();return;case "leaf":time.Sleep(20*time.Second);return;case "parent-embedded":embeddedparent();return;case "parent","parent-abort":if len(os.Args)!=3{panic("parent requires native64 helper")};parent(os.Args[2]);return}};panic("fixture mode required")}
+
+
+

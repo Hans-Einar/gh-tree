@@ -214,7 +214,7 @@
     {
       "id": "REFDES52",
       "kind": "refactor_design",
-      "state": "corrections_awaiting_rereview",
+      "state": "windows_broker_correction_awaiting_rereview",
       "issue": 52,
       "doc": "SDP/Design/CR-#21/REFDES--001.md",
       "branch": "codex/cr21-refactor-design",
@@ -228,10 +228,12 @@
         "DES52-M01",
         "DES52-M02"
       ],
-      "designFindingDisposition": "H01/H02 mechanism directions independently accepted; H03/H04/M01/M02 proposed corrections await exact-HEAD rereview",
+      "designFindingDisposition": "H01/H02/H03/M01/M02 mechanism/API corrections independently accepted at design level; H04 native broker correction awaits exact-HEAD review",
       "pr": 54,
       "initialReviewHead": "f1dec60cbd3892f068410f2d7f3caa7f855ba52e",
-      "fullReview": "SDP/Design/CR-#21/DesignReview--002.md"
+      "fullReview": "SDP/Design/CR-#21/DesignReview--002.md",
+      "correctedReviewHead": "8c109b1e4308eb301d7c1418292044d714c2f33b",
+      "latestReview": "SDP/Design/CR-#21/DesignReview--003.md"
     },
     {
       "id": "G-07",
@@ -1276,6 +1278,8 @@
     "Verification--001.md",
     "FindingDisposition.yaml",
     "DesignReview--001.md",
-    "DesignReview--002.md"
+    "DesignReview--002.md",
+    "WindowsBroker--001.md",
+    "DesignReview--003.md"
   ]
 }

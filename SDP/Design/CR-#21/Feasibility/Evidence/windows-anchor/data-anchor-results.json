@@ -1,0 +1,342 @@
+[
+  {
+    "kind": "file",
+    "share": 0,
+    "access": "0x100080",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0x0",
+    "replacement_removed": {
+      "ok": true,
+      "error": 0
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 0,
+    "access": "0x100080",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 0,
+    "posix_disposition": "0x0",
+    "win32_delete": {
+      "ok": false,
+      "error": 2
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 0,
+    "access": "0x80000000",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0xc0000043",
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 0,
+    "access": "0x80000000",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 32,
+    "win32_delete": {
+      "ok": false,
+      "error": 32
+    },
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 3,
+    "access": "0x100080",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0x0",
+    "replacement_removed": {
+      "ok": true,
+      "error": 0
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 3,
+    "access": "0x100080",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 0,
+    "posix_disposition": "0x0",
+    "win32_delete": {
+      "ok": false,
+      "error": 2
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 3,
+    "access": "0x80000000",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0xc0000043",
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "file",
+    "share": 3,
+    "access": "0x80000000",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 32,
+    "win32_delete": {
+      "ok": false,
+      "error": 32
+    },
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 0,
+    "access": "0x100080",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0x0",
+    "replacement_removed": {
+      "ok": true,
+      "error": 0
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 0,
+    "access": "0x100080",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 0,
+    "posix_disposition": "0x0",
+    "win32_delete": {
+      "ok": false,
+      "error": 2
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 0,
+    "access": "0x80000000",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0xc0000043",
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 0,
+    "access": "0x80000000",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 32,
+    "win32_delete": {
+      "ok": false,
+      "error": 32
+    },
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 3,
+    "access": "0x100080",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0x0",
+    "replacement_removed": {
+      "ok": true,
+      "error": 0
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 3,
+    "access": "0x100080",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 0,
+    "posix_disposition": "0x0",
+    "win32_delete": {
+      "ok": false,
+      "error": 2
+    },
+    "reparse_after_attack": {
+      "ok": true,
+      "error": 0
+    },
+    "path_names": [
+      "marker"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 3,
+    "access": "0x80000000",
+    "attack": "rename",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "posix_replace": "0xc0000043",
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  },
+  {
+    "kind": "directory",
+    "share": 3,
+    "access": "0x80000000",
+    "attack": "delete",
+    "initial_reparse": {
+      "ok": false,
+      "error": 145
+    },
+    "attacker_delete_open_error": 32,
+    "win32_delete": {
+      "ok": false,
+      "error": 32
+    },
+    "reparse_after_attack": {
+      "ok": false,
+      "error": 145
+    },
+    "path_names": [
+      "anchor"
+    ]
+  }
+]

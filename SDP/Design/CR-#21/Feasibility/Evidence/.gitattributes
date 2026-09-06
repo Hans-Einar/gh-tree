@@ -1,1 +1,5 @@
 * -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# These exact archived producer bytes include final blank lines; preserve hashes.
+windows-broker/probe.go.txt whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+windows-startup/cr52-cwd-inherit-true-probe.py.txt whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+windows-startup/cr52-cwd-inject-handle-probe.py.txt whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

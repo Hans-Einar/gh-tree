@@ -142,3 +142,16 @@ through child acquisition, missing exact PR/stash reads and bounded reliable
 Runtime-to-App cleanup transfer. Separate Persistence feasibility source/logs and
 Root native Windows/Linux cwd experiments are archived. Corrected exact HEAD
 review/CI is next; no product finding closed, no BC frozen, no product code changed.
+
+Re-review of8c109b1e4308eb301d7c1418292044d714c2f33b accepted design H03/M01/M02
+but retained H04 HIGH. Native FSCTL reparse worked through metadata/share guards;
+CreateProcess returned before actual cwd acquisition. Strong data-read anchors
+and a target-specific initial-breakpoint/FileIdInfo barrier were then proved.
+Direct386-to-native64 debug creation fails50, so the complete proposed correction
+uses an embedded native Runtime broker, preserving capability and12 public assets.
+Actual386 -> extracted amd64 broker -> amd64 user/descendant with ConPTY, input/
+resize, normal/forced outer Job0 and deterministic helper rebuild passed bounded
+native probes. Native ARM64 implementation/emulation remains required, now with
+the documented windows-11-arm hosted CI route. Full source/log reports are archived;
+WindowsBroker--001 specifies the final topology/protocol/build contract. Fresh
+exact-HEAD review must accept this correction before any design/BC/product gate.

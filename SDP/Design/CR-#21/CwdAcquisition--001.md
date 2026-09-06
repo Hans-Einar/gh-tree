@@ -64,29 +64,27 @@ architectures. Native macOS/FreeBSD implementation tests still must execute it.
 
 ## Windows acquisition
 
-Resolve the selected physical root to a canonical volume path and acquire guards
-for every effective pathname component through the project directory. Open
-directory handles with FILE_TRAVERSE|FILE_READ_ATTRIBUTES|SYNCHRONIZE,
-FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OPEN_REPARSE_POINT, sharing READ|WRITE but
-not DELETE; inspect directory/file identities and reject reparse objects. Relative
-NtCreateFile operations with OBJ_DONT_REPARSE may implement the component walk.
-Retain ancestor guards too: guarding only the final directory does not establish
-the whole pathname chain. Unsupported volume/network/path profiles or sharing
-conflicts return explicit refusal, never weaker check-then-CreateProcess fallback.
+Select WindowsBroker--001 in full. Metadata-only no-delete handles and a return
+from CreateProcess are both rejected barriers by native evidence. A native-architecture
+Runtime broker holds actual directory list/read guards plus a real data-read child
+anchor to keep final cwd nonempty, blocking both native POSIX removal and in-place
+reparse conversion. It creates the user root debugged+suspended, assigns its user
+Job before Resume, then stops at the target ABI's initial runtime breakpoint.
+While that event remains pending, read and duplicate the actual child cwd handle
+and match FileIdInfo to the selected guard. Only then remove the exact anchor,
+release guards and detach, before user initialization proceeds. No additional
+path check, sleep, ordinary handle inheritance or handle injection substitutes.
 
-With guards held, independently revalidate the component chain and root/project
-observation. Resolve the executable explicitly under the copied cwd/environment
-policy and pass an absolute application name plus the guarded canonical cwd to
-CreateProcessW. Create the process suspended, assign its Job before ResumeThread,
-and keep guards until native creation establishes the child's own cwd reference.
-The selected object cannot be renamed/replaced through ordinary namespace operations
-in that interval because DELETE sharing is denied on the effective chain.
-ConPTY uses the same acquisition, not another cwd shortcut. Release every guard
-on success or failed-start cleanup; guards are noninheritable.
+The native broker preserves386-to-native64 launch and owns ConPTY locally; same-
+native sessions use the same protocol. The main registry retains final outer-Job
+cleanup authority. Embedded helper source/build/extraction and all architecture-
+specific breakpoint/PEB profiles are governed by WindowsBroker--001. Unknown
+profiles require implementation evidence, not removal of supported release targets.
 
-No guarantee covers privileged volume/mount changes or hostile same-UID process
-manipulation outside these OS access semantics. Directory movement after the child
-has its cwd reference does not retarget that child into a replacement project.
+The guarantee binds actual initial cwd, not future absolute-path operations or
+the program's own chdir. A cached cwd string can follow a later namespace change;
+do not promise a filesystem sandbox. Unsupported volume/identity/guard or startup
+behavior fails with owned cleanup instead of executing an unverified fallback.
 
 ## Bounded mechanism evidence and required proof
 
@@ -103,6 +101,10 @@ Windows `B1D5A511E99B63E1DC3605882023AA6C0B74A7196F68F9ADE2F0F8214F96F9B1`.
 Persistence's independent native Go probes additionally establish directory pin
 and reparse-object behavior, but Runtime implements and verifies its own guards.
 
+The original Windows rename-only probe is insufficient by itself; later in-place
+reparse and suspended-start failures are preserved in DesignReview--003. The
+windows-anchor/startup/broker archives establish the corrected complete mechanism,
+including actual386-to-native64 ConPTY and normal/forced outer-Job cleanup.
 These probes establish OS mechanisms, not the future full launch implementation.
 V-RUN-01/03/04 and V-LCH-02/03 must test replacement specifically after validation
 and before CreateProcess/user-root acquisition, all guard/descriptor failure

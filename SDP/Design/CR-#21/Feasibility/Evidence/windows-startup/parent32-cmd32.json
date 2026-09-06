@@ -1,0 +1,6 @@
+{
+  "case": "parent32-cmd32",
+  "returncode": 0,
+  "stdout": "{\n  \"PEB\": \"30ad000\",\n  \"beforeResumeHandle\": 0,\n  \"controlWithoutDebug\": false,\n  \"events\": [\n    {\n      \"cwdHandle\": 0,\n      \"event\": 3\n    },\n    {\n      \"cwdHandle\": 0,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 6\n    },\n    {\n      \"cwdHandle\": 152,\n      \"event\": 2\n    },\n    {\n      \"acquiredIdentity\": \"2df043f60544f64a5e7d2600000010000000000000000000\",\n      \"cwdHandle\": 152,\n      \"event\": 1,\n      \"exception\": \"80000003\",\n      \"outputAbsent\": true\n    }\n  ],\n  \"expectedIdentity\": \"2df043f60544f64a5e7d2600000010000000000000000000\",\n  \"output\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug32-790736085\\\\target\\r\\n\",\n  \"parentArch\": \"386\",\n  \"target64\": false\n}\n",
+  "stderr": ""
+}

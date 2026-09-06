@@ -1,0 +1,32 @@
+exec(open('probe.py',encoding='utf-8').read().split('rows=[]')[0])
+rows=[]
+with tempfile.TemporaryDirectory(prefix='gh-tree-per52-data-anchor-') as temp:
+    base=pathlib.Path(temp);outside=base/'outside';outside.mkdir();(outside/'marker').write_text('OUTSIDE')
+    for kind in ['file','directory']:
+      for share in [0,3]:
+       for access in [0x80|0x100000,0x80000000]:
+        for attack in ['rename','delete']:
+         target=base/f'{kind}-{share}-{access}-{attack}';target.mkdir();anchor=target/'anchor';replacement=base/(target.name+'-replacement')
+         if kind=='directory':anchor.mkdir();replacement.mkdir()
+         else:anchor.write_text('ORIGINAL');replacement.write_text('REPLACEMENT')
+         hs=[]
+         try:
+          parent,e=opened(target,0x80000000,3,directory=True);assert not e;hs.append(parent)
+          guard,e=opened(anchor,access,share,directory=kind=='directory');assert not e;hs.append(guard)
+          setter,e=opened(target,0x100,7,directory=True);assert not e;hs.append(setter)
+          row=dict(kind=kind,share=share,access=hex(access),attack=attack,initial_reparse=reparse(setter,outside))
+          if attack=='rename':
+           attacker,e=opened(replacement,0x10000,7,directory=kind=='directory');assert not e;hs.append(attacker)
+           st=nameinfo(attacker,parent,'anchor',3);row['posix_replace']=native_status(st)
+           if st==0:
+            k.CloseHandle(attacker);hs.remove(attacker)
+            ok=(k.RemoveDirectoryW if kind=='directory' else k.DeleteFileW)(str(anchor));row['replacement_removed']=dict(ok=bool(ok),error=0 if ok else ctypes.get_last_error())
+          else:
+           attacker,e=opened(anchor,0x10000,7,directory=kind=='directory');row['attacker_delete_open_error']=e
+           if not e:
+            row['posix_disposition']=native_status(disposition(attacker,0x1|0x2|0x10));k.CloseHandle(attacker)
+           ok=(k.RemoveDirectoryW if kind=='directory' else k.DeleteFileW)(str(anchor));row['win32_delete']=dict(ok=bool(ok),error=0 if ok else ctypes.get_last_error())
+          row['reparse_after_attack']=reparse(setter,outside);row['path_names']=os.listdir(target);rows.append(row)
+         finally:
+          for h in reversed(hs):k.CloseHandle(h)
+print(json.dumps(rows,indent=2))

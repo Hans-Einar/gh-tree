@@ -1,0 +1,90 @@
+package main
+
+import (
+ "encoding/binary"
+ "encoding/hex"
+ "encoding/json"
+ "fmt"
+ "os"
+ "path/filepath"
+ "runtime"
+ "syscall"
+ "time"
+ "unsafe"
+)
+
+var k = syscall.NewLazyDLL("kernel32.dll")
+var n = syscall.NewLazyDLL("ntdll.dll")
+func call(name string,args ...uintptr) uintptr { r,_,e:=k.NewProc(name).Call(args...);if r==0 {panic(fmt.Sprintf("%s: %v",name,e))};return r }
+func ptr(v *uint16) uintptr {return uintptr(unsafe.Pointer(v))}
+func wide(v string)*uint16 {p,e:=syscall.UTF16PtrFromString(v);if e!=nil{panic(e)};return p}
+func check(e error){if e!=nil{panic(e)}}
+func open(path string,access,share,disp,flags uint32) syscall.Handle {h,e:=syscall.CreateFile(wide(path),access,share,nil,disp,flags,0);check(e);return h}
+func identity(h syscall.Handle)string {var buf [24]byte;call("GetFileInformationByHandleEx",uintptr(h),18,uintptr(unsafe.Pointer(&buf[0])),24);return hex.EncodeToString(buf[:])}
+func currentHandle(process syscall.Handle,target64 bool)(uint64,uint64) {
+ if target64 {
+  var basic [48]byte;var used uint32
+  st,_,_:=n.NewProc("NtWow64QueryInformationProcess64").Call(uintptr(process),0,uintptr(unsafe.Pointer(&basic[0])),48,uintptr(unsafe.Pointer(&used)))
+  if uint32(st)!=0 {panic(fmt.Sprintf("NtWow64QueryInformationProcess64: %x",st))}
+  peb:=binary.LittleEndian.Uint64(basic[8:16])
+  read:=func(addr uint64)uint64 {var buf [8]byte;var got uint64;st,_,_:=n.NewProc("NtWow64ReadVirtualMemory64").Call(uintptr(process),uintptr(uint32(addr)),uintptr(uint32(addr>>32)),uintptr(unsafe.Pointer(&buf[0])),8,0,uintptr(unsafe.Pointer(&got)));if uint32(st)!=0||got!=8{panic(fmt.Sprintf("NtWow64ReadVirtualMemory64: %x got %d",st,got))};return binary.LittleEndian.Uint64(buf[:])}
+  params:=read(peb+0x20);if params==0{return peb,0};return peb,read(params+0x48)
+ }
+ var basic [24]byte;var used uint32
+ st,_,_:=n.NewProc("NtQueryInformationProcess").Call(uintptr(process),0,uintptr(unsafe.Pointer(&basic[0])),24,uintptr(unsafe.Pointer(&used)))
+ if uint32(st)!=0 {panic(fmt.Sprintf("NtQueryInformationProcess: %x",st))}
+ peb:=binary.LittleEndian.Uint32(basic[4:8])
+ read:=func(addr uint32)uint32{var buf [4]byte;var got uintptr;call("ReadProcessMemory",uintptr(process),uintptr(addr),uintptr(unsafe.Pointer(&buf[0])),4,uintptr(unsafe.Pointer(&got)));if got!=4{panic("short read")};return binary.LittleEndian.Uint32(buf[:])}
+ params:=read(peb+0x10);if params==0{return uint64(peb),0};return uint64(peb),uint64(read(params+0x2c))
+}
+func main(){
+ runtime.LockOSThread();defer runtime.UnlockOSThread()
+ if runtime.GOARCH!="386"{panic("probe must run as 386")}
+ target64:=len(os.Args)>1&&(os.Args[1]=="64"||os.Args[1]=="64-control")
+ control:=len(os.Args)>1&&os.Args[1]=="64-control"
+ root,e:=os.MkdirTemp("","cr52-cwd-debug32-");check(e);defer os.RemoveAll(root)
+ target:=filepath.Join(root,"target");check(os.Mkdir(target,0700));output:=filepath.Join(root,"result.txt")
+ guard:=open(target,0x80000000,3,3,0x02200000);defer syscall.CloseHandle(guard)
+ anchor:=open(filepath.Join(target,"anchor"),0x80010000,3,1,0x04000102);defer func(){if anchor!=0{syscall.CloseHandle(anchor)}}()
+ job:=syscall.Handle(call("CreateJobObjectW",0,0));defer syscall.CloseHandle(job)
+ // JOBOBJECT_EXTENDED_LIMIT_INFORMATION on 32-bit: basic limit flags offset16.
+ var limits [112]byte;binary.LittleEndian.PutUint32(limits[16:20],0x2000)
+ call("SetInformationJobObject",uintptr(job),9,uintptr(unsafe.Pointer(&limits[0])),112)
+ defer func(){k.NewProc("TerminateJobObject").Call(uintptr(job),91)}()
+ executable:=`C:\Windows\SysWOW64\cmd.exe`;if target64{executable=`C:\Windows\Sysnative\cmd.exe`}
+ command:=`"`+executable+`" /d /c cd > "`+output+`"`
+ var si syscall.StartupInfo;si.Cb=uint32(unsafe.Sizeof(si));var pi syscall.ProcessInformation
+ flags:=uint32(0x08000006);if control{flags=0x08000004}
+ check(syscall.CreateProcess(wide(executable),wide(command),nil,nil,false,flags,nil,wide(target),&si,&pi))
+ defer syscall.CloseHandle(pi.Process);defer syscall.CloseHandle(pi.Thread)
+ debugging:=!control;var pending [2]uint32
+ defer func(){if debugging{if pending[0]!=0{k.NewProc("ContinueDebugEvent").Call(uintptr(pending[0]),uintptr(pending[1]),0x10002)};k.NewProc("DebugActiveProcessStop").Call(uintptr(pi.ProcessId))};k.NewProc("TerminateJobObject").Call(uintptr(job),91);syscall.WaitForSingleObject(pi.Process,10000)}()
+ call("AssignProcessToJobObject",uintptr(job),uintptr(pi.Process))
+ peb,before:=currentHandle(pi.Process,target64)
+ r,_,err:=k.NewProc("ResumeThread").Call(uintptr(pi.Thread));if uint32(r)==0xffffffff{panic(err)}
+ results:=map[string]any{"parentArch":runtime.GOARCH,"target64":target64,"controlWithoutDebug":control,"beforeResumeHandle":before,"PEB":fmt.Sprintf("%x",peb),"expectedIdentity":identity(guard)}
+ var events []map[string]any
+ deadline:=time.Now().Add(15*time.Second)
+ for !control&&time.Now().Before(deadline){
+  var ev [96]byte;r,_,err:=k.NewProc("WaitForDebugEventEx").Call(uintptr(unsafe.Pointer(&ev[0])),500);if r==0{if err==syscall.Errno(121){continue};panic(err)}
+  code:=binary.LittleEndian.Uint32(ev[0:4]);pid:=binary.LittleEndian.Uint32(ev[4:8]);tid:=binary.LittleEndian.Uint32(ev[8:12]);pending=[2]uint32{pid,tid}
+  _,cwd:=currentHandle(pi.Process,target64);row:=map[string]any{"event":code,"cwdHandle":cwd};events=append(events,row)
+  if code==3||code==6{h:=binary.LittleEndian.Uint32(ev[12:16]);if h!=0{syscall.CloseHandle(syscall.Handle(h))}}
+  if code==1{exc:=binary.LittleEndian.Uint32(ev[12:16]);row["exception"]=fmt.Sprintf("%x",exc)
+   if (exc==0x80000003||exc==0x4000001f)&&cwd!=0 {
+    var dup syscall.Handle
+    call("DuplicateHandle",uintptr(pi.Process),uintptr(cwd),^uintptr(0),uintptr(unsafe.Pointer(&dup)),0,0,2)
+    acquired:=identity(dup);syscall.CloseHandle(dup);row["acquiredIdentity"]=acquired
+    if acquired!=results["expectedIdentity"]{panic("cwd identity mismatch")}
+    _,err:=os.Stat(output);row["outputAbsent"]=os.IsNotExist(err)
+    syscall.CloseHandle(anchor);anchor=0
+    call("DebugActiveProcessStop",uintptr(pi.ProcessId));debugging=false;pending=[2]uint32{};break
+   }
+  }
+  call("ContinueDebugEvent",uintptr(pid),uintptr(tid),0x10002);pending=[2]uint32{}
+ }
+ if debugging{panic("startup barrier timed out")}
+ w,e:=syscall.WaitForSingleObject(pi.Process,10000);check(e);if w!=0{panic("owned root wait timeout")}
+ bytes,e:=os.ReadFile(output);check(e);results["output"]=string(bytes);results["events"]=events
+ data,e:=json.MarshalIndent(results,"","  ");check(e);fmt.Println(string(data))
+}

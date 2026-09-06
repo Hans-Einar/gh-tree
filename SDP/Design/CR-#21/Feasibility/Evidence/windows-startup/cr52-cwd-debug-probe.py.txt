@@ -1,0 +1,115 @@
+import ctypes as c, ctypes.wintypes as w, pathlib, struct, subprocess, sys, tempfile, json, time
+k=c.WinDLL('kernel32',use_last_error=True); n=c.WinDLL('ntdll',use_last_error=True)
+def api(lib,name,args,result):
+ f=getattr(lib,name);f.argtypes=args;f.restype=result;return f
+class SI(c.Structure):
+ _fields_=[('cb',w.DWORD),('reserved',w.LPWSTR),('desktop',w.LPWSTR),('title',w.LPWSTR),('x',w.DWORD),('y',w.DWORD),('cx',w.DWORD),('cy',w.DWORD),('xc',w.DWORD),('yc',w.DWORD),('fill',w.DWORD),('flags',w.DWORD),('show',w.WORD),('cb2',w.WORD),('reserved2',c.c_void_p),('stdin',w.HANDLE),('stdout',w.HANDLE),('stderr',w.HANDLE)]
+class PI(c.Structure):_fields_=[('process',w.HANDLE),('thread',w.HANDLE),('pid',w.DWORD),('tid',w.DWORD)]
+create=api(k,'CreateProcessW',[w.LPCWSTR,w.LPWSTR,c.c_void_p,c.c_void_p,w.BOOL,w.DWORD,c.c_void_p,w.LPCWSTR,c.POINTER(SI),c.POINTER(PI)],w.BOOL)
+openfile=api(k,'CreateFileW',[w.LPCWSTR,w.DWORD,w.DWORD,c.c_void_p,w.DWORD,w.DWORD,w.HANDLE],w.HANDLE)
+close=api(k,'CloseHandle',[w.HANDLE],w.BOOL)
+resume=api(k,'ResumeThread',[w.HANDLE],w.DWORD)
+wait=api(k,'WaitForSingleObject',[w.HANDLE,w.DWORD],w.DWORD)
+terminate=api(k,'TerminateProcess',[w.HANDLE,w.UINT],w.BOOL)
+ioctl=api(k,'DeviceIoControl',[w.HANDLE,w.DWORD,c.c_void_p,w.DWORD,c.c_void_p,w.DWORD,c.POINTER(w.DWORD),c.c_void_p],w.BOOL)
+waitdebug=api(k,'WaitForDebugEventEx',[c.c_void_p,w.DWORD],w.BOOL)
+continuedebug=api(k,'ContinueDebugEvent',[w.DWORD,w.DWORD,w.DWORD],w.BOOL)
+detach=api(k,'DebugActiveProcessStop',[w.DWORD],w.BOOL)
+query=api(n,'NtQueryInformationProcess',[w.HANDLE,w.ULONG,c.c_void_p,w.ULONG,c.POINTER(w.ULONG)],w.LONG)
+read=api(k,'ReadProcessMemory',[w.HANDLE,c.c_void_p,c.c_void_p,c.c_size_t,c.POINTER(c.c_size_t)],w.BOOL)
+newjob=api(k,'CreateJobObjectW',[c.c_void_p,w.LPCWSTR],w.HANDLE)
+setjob=api(k,'SetInformationJobObject',[w.HANDLE,c.c_int,c.c_void_p,w.DWORD],w.BOOL)
+assign=api(k,'AssignProcessToJobObject',[w.HANDLE,w.HANDLE],w.BOOL)
+killjob=api(k,'TerminateJobObject',[w.HANDLE,w.UINT],w.BOOL)
+duplicate=api(k,'DuplicateHandle',[w.HANDLE,w.HANDLE,w.HANDLE,c.POINTER(w.HANDLE),w.DWORD,w.BOOL,w.DWORD],w.BOOL)
+current=api(k,'GetCurrentProcess',[],w.HANDLE)
+fileinfo=api(k,'GetFileInformationByHandleEx',[w.HANDLE,c.c_int,c.c_void_p,w.DWORD],w.BOOL)
+INVALID=c.c_void_p(-1).value
+def checked(ok):
+ if not ok:raise c.WinError(c.get_last_error())
+ return ok
+def memory(process,address,length):
+ buffer=c.create_string_buffer(length);got=c.c_size_t();checked(read(process,address,buffer,length,c.byref(got)));assert got.value==length;return buffer.raw
+def cwd_handle(process):
+ basic=c.create_string_buffer(48);used=w.ULONG();assert query(process,0,basic,48,c.byref(used))==0
+ wow=c.c_uint64();assert query(process,26,c.byref(wow),8,c.byref(used))==0
+ if wow.value:
+  params=struct.unpack('<I',memory(process,wow.value+0x10,4))[0]
+  return struct.unpack('<I',memory(process,params+0x2c,4))[0] if params else 0
+ peb=struct.unpack_from('<Q',basic.raw,8)[0];params=struct.unpack('<Q',memory(process,peb+0x20,8))[0]
+ return struct.unpack('<Q',memory(process,params+0x48,8))[0] if params else 0
+def identity(h):
+ buffer=c.create_string_buffer(24);checked(fileinfo(h,18,buffer,len(buffer)))
+ return {'fileID':buffer.raw.hex()}
+def junction(target,outside):
+ setter=openfile(str(target),0x100,7,None,3,0x02200000,None)
+ if setter==INVALID:return dict(openError=c.get_last_error())
+ try:
+  sub=('\\??\\'+str(outside)).encode('utf-16-le');pr=str(outside).encode('utf-16-le');names=sub+b'\0\0'+pr+b'\0\0'
+  data=struct.pack('<IHHHHHH',0xA0000003,8+len(names),0,0,len(sub),len(sub)+2,len(pr))+names;buf=c.create_string_buffer(data);used=w.DWORD()
+  ok=ioctl(setter,0x900a4,buf,len(data),None,0,c.byref(used),None)
+  return dict(set=bool(ok),error=0 if ok else c.get_last_error())
+ finally:close(setter)
+assert c.sizeof(c.c_void_p)==8
+mode=sys.argv[1] if len(sys.argv)>1 else 'python-reparse'
+result={'kind':'debug-initial-breakpoint','mode':mode,'events':[]}
+with tempfile.TemporaryDirectory(prefix='cr52-cwd-debug-') as temporary:
+ root=pathlib.Path(temporary);target=root/'target';target.mkdir();outside=root/'outside';outside.mkdir();(outside/'marker').write_text('outside');output=root/'result.json'
+ handles=[];anchor=None;pi=PI();debugging=False;pending=None;job=None
+ try:
+  for directory in [root,target]:
+   h=openfile(str(directory),0x80000000,3,None,3,0x02200000,None);assert h!=INVALID;handles.append(h)
+  result['expectedIdentity']=identity(handles[-1])
+  anchor=openfile(str(target/'anchor'),0x80000000|0x10000,3,None,1,0x04000102,None);assert anchor!=INVALID
+  job=checked(newjob(None,None));limit=c.create_string_buffer(144);struct.pack_into('<I',limit,16,0x2000);checked(setjob(job,9,limit,len(limit)))
+  code="import os,json,ctypes\nr={'cwd':os.getcwd(),'debugged':ctypes.windll.kernel32.IsDebuggerPresent()}\ntry:r['relativeMarker']=open('marker').read()\nexcept OSError as e:r['relativeError']=str(e)\ntry:r['absoluteMarker']=open(os.path.join(os.getcwd(),'marker')).read()\nexcept OSError as e:r['absoluteError']=str(e)\nopen("+repr(str(output))+",'w').write(json.dumps(r))"
+  executable=sys.executable
+  if mode=='python-chdir':
+   code="import os,json,ctypes\nr={'before':os.getcwd(),'debugged':ctypes.windll.kernel32.IsDebuggerPresent()}\nos.chdir("+repr(str(outside))+")\nr['after']=os.getcwd();r['marker']=open('marker').read();open("+repr(str(output))+",'w').write(json.dumps(r))"
+  argv=[executable,'-c',code]
+  if mode in ['cmd32','cmd64']:
+   executable='C:\\Windows\\'+('SysWOW64' if mode=='cmd32' else 'System32')+'\\cmd.exe'
+   argv=[executable,'/d','/c','cd > "'+str(output)+'"']
+  command=subprocess.list2cmdline(argv) if not mode.startswith('cmd') else '"'+executable+'" /d /c cd > "'+str(output)+'"'
+  cmd=c.create_unicode_buffer(command);si=SI();si.cb=c.sizeof(si)
+  checked(create(executable,cmd,None,None,False,0x08000006,None,str(target),c.byref(si),c.byref(pi)));debugging=True
+  result['beforeResumeCwdHandle']=hex(cwd_handle(pi.process));checked(assign(job,pi.process));assert resume(pi.thread)!=0xffffffff
+  deadline=time.monotonic()+15
+  while time.monotonic()<deadline:
+   event=c.create_string_buffer(176)
+   if not waitdebug(event,500):
+    if c.get_last_error()==121:continue
+    raise c.WinError(c.get_last_error())
+   ev,pid,tid=struct.unpack_from('<III',event.raw);pending=(pid,tid)
+   row={'event':ev}
+   if ev not in [5]:row['cwdHandle']=hex(cwd_handle(pi.process))
+   result['events'].append(row)
+   if ev in [3,6]:
+    hf=struct.unpack_from('<Q',event.raw,16)[0]
+    if hf:close(hf)
+   if ev==1:
+    exc=struct.unpack_from('<I',event.raw,16)[0];row['exception']=hex(exc)
+    if exc in [0x80000003,0x4000001f] and cwd_handle(pi.process):
+     row['outputBeforeBreakpoint']=output.exists()
+     remote=cwd_handle(pi.process);local=w.HANDLE();checked(duplicate(pi.process,remote,current(),c.byref(local),0,False,2))
+     try:row['acquiredIdentity']=identity(local.value)
+     finally:close(local.value)
+     assert row['acquiredIdentity']==result['expectedIdentity']
+     close(anchor);anchor=None
+     if mode=='python-reparse':row['junctionAfterAnchorRelease']=junction(target,outside)
+     # Detach while this debug event still suspends every thread.
+     checked(detach(pid));debugging=False;pending=None;break
+   checked(continuedebug(pid,tid,0x10002));pending=None
+   if ev==5:debugging=False;break
+  assert not debugging,'debug startup timeout'
+  if wait(pi.process,10000)!=0:raise AssertionError('owned child timeout')
+  result['child']=json.loads(output.read_text()) if not mode.startswith('cmd') else {'cwd':output.read_text().strip()}
+ finally:
+  if job:killjob(job,91)
+  if debugging:
+   if pending:continuedebug(*pending,0x10002)
+   detach(pi.pid)
+  if pi.process:wait(pi.process,10000)
+  for h in [pi.thread,pi.process,anchor,*reversed(handles),job]:
+   if h:close(h)
+print(json.dumps(result,indent=2))

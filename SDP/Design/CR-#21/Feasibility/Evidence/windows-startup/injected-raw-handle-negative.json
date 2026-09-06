@@ -1,0 +1,6 @@
+{
+  "case": "injected-raw-handle-negative",
+  "returncode": 0,
+  "stdout": "{\"suspendedPEB\": \"0xf1e8e85000\", \"processParameters\": \"0x22c78f00000\", \"currentDirectoryHandleBeforeResume\": \"0x0\"}\n{\"injectedCurrentDirectoryHandle\": \"0x4\"}\n{\"reparseAfterCreateBeforeResume\": true, \"reparseError\": 0, \"child\": {\"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-suspended-crpvtjfg\\\\target\", \"marker\": \"other-directory\"}}\n",
+  "stderr": ""
+}

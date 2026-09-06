@@ -148,3 +148,9 @@ returned two HIGH/two MEDIUM corrections, detailed in DesignReview--002. Propose
 Storage/cwd/native-evidence and API read/event-transfer corrections are complete;
 the corrected exact HEAD must be independently re-reviewed. The initial 18 CI
 checks passed, but G-07 remains incomplete until substantive acceptance and merge.
+
+Correction re-review at8c109b1 resolved H03/M01/M02 at design level; H04 remains
+pending a complete native startup correction. WindowsBroker--001 now supplies
+native-bitness helper delivery, actual cwd breakpoint/identity, ConPTY and final
+outer-Job barriers with bounded evidence. Review the new exact committed draft;
+do not infer acceptance from its author or earlier18 successful CI checks.

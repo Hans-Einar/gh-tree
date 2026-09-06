@@ -23,12 +23,14 @@
       "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
         "V-RUN-03",
-        "V-RUN-04"
+        "V-RUN-04",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -90,11 +92,13 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
-        "V-VIEW-02"
+        "V-VIEW-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -272,11 +276,13 @@
         "API--001.md#a2",
         "API--001.md#a6",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-07",
-        "V-COMP-02"
+        "V-COMP-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-12"
@@ -393,12 +399,14 @@
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-LCH-03",
         "V-RUN-01",
-        "V-COMP-03"
+        "V-COMP-03",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-09",
@@ -573,12 +581,14 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
         "V-RUN-03",
-        "V-RUN-04"
+        "V-RUN-04",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -605,11 +615,13 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
-        "V-RUN-07"
+        "V-RUN-07",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -636,11 +648,13 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
-        "V-RUN-05"
+        "V-RUN-05",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -668,11 +682,13 @@
         "API--001.md#a1",
         "API--001.md#a6",
         "REFDES--001.md#identity-and-observation-decisions",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-DOM-01",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -701,12 +717,14 @@
         "API--001.md#a5",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-APP-06",
         "V-RUN-01",
-        "V-RUN-02"
+        "V-RUN-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -738,11 +756,13 @@
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
         "REFDES--001.md#runtime-resource-model",
-        "CwdAcquisition--001.md#observation-and-authority"
+        "CwdAcquisition--001.md#observation-and-authority",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-01",
-        "V-APP-01"
+        "V-APP-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -773,12 +793,14 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-APP-02",
         "V-RUN-01",
-        "V-RUN-07"
+        "V-RUN-07",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -809,12 +831,14 @@
         "API--001.md#a2",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-APP-01",
         "V-RUN-02",
-        "V-RUN-06"
+        "V-RUN-06",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -843,11 +867,13 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-05",
-        "V-RUN-07"
+        "V-RUN-07",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-11",
@@ -875,11 +901,13 @@
         "API--001.md#a2",
         "API--001.md#a6",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-07",
-        "V-COMP-02"
+        "V-COMP-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-12"
@@ -909,12 +937,14 @@
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-LCH-03",
         "V-RUN-01",
-        "V-COMP-03"
+        "V-COMP-03",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-09",
@@ -945,11 +975,13 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-02",
-        "V-VIEW-02"
+        "V-VIEW-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -978,11 +1010,13 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-06",
-        "V-VIEW-02"
+        "V-VIEW-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -1010,11 +1044,13 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-01",
-        "V-RUN-06"
+        "V-RUN-06",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -1043,13 +1079,15 @@
         "REFDES--001.md#git-safety-and-mutation-mechanics",
         "REFDES--001.md#identity-and-observation-decisions",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-COMP-03",
         "V-GIT-09",
         "V-GH-02",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-01",
@@ -1317,11 +1355,13 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-STATE-01",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -1353,12 +1393,14 @@
         "API--001.md#a4",
         "REFDES--001.md#application-operation-and-event-model",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-APP-02",
         "V-STATE-02",
-        "V-RUN-07"
+        "V-RUN-07",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-01",
@@ -1744,12 +1786,14 @@
         "API--001.md#a5",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-APP-06",
         "V-RUN-01",
-        "V-RUN-02"
+        "V-RUN-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -2039,11 +2083,13 @@
         "API--001.md#a2",
         "API--001.md#a6",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-07",
-        "V-COMP-02"
+        "V-COMP-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-12"
@@ -2071,11 +2117,13 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-RUN-05",
-        "V-APP-06"
+        "V-APP-06",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -2890,11 +2938,13 @@
         "API--001.md#a1",
         "API--001.md#a6",
         "REFDES--001.md#identity-and-observation-decisions",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-DOM-01",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -3101,12 +3151,14 @@
         "API--001.md#a6",
         "REFDES--001.md#identity-and-observation-decisions",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-DOM-03",
         "V-LCH-02",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-09",
@@ -3315,11 +3367,13 @@
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
         "REFDES--001.md#runtime-resource-model",
-        "CwdAcquisition--001.md#observation-and-authority"
+        "CwdAcquisition--001.md#observation-and-authority",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-LCH-02",
-        "V-RUN-01"
+        "V-RUN-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-09",
@@ -3617,12 +3671,14 @@
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-LCH-03",
         "V-RUN-01",
-        "V-COMP-03"
+        "V-COMP-03",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-09",
@@ -4523,11 +4579,13 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-VIEW-03",
-        "V-RUN-05"
+        "V-RUN-05",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-11"
@@ -4660,12 +4718,14 @@
         "API--001.md#a6",
         "REFDES--001.md#migration-and-release-gate",
         "REFDES--001.md#runtime-resource-model",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-VIEW-02",
         "V-COMP-02",
-        "V-RUN-02"
+        "V-RUN-02",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-10",
@@ -4829,12 +4889,14 @@
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
         "REFDES--001.md#migration-and-release-gate",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "WindowsBroker--001.md#ownership-and-native-architecture"
       ],
       "verification": [
         "V-COMP-02",
         "V-RUN-07",
-        "V-APP-01"
+        "V-APP-01",
+        "V-RUN-08"
       ],
       "slices": [
         "SLC-12"

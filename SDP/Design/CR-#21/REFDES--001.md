@@ -17,7 +17,8 @@ The complete user authority is preserved in
 and safety ceiling. Review acceptance has resolved no product finding.
 
 The design consists of this decision record and the normative API, Storage,
-CwdAcquisition, migration, Slice, verification and finding-map appendices. Feasibility appendices record
+CwdAcquisition, WindowsBroker, migration, Slice, verification and finding-map
+appendices. Feasibility appendices record
 source/probe evidence and its limits; they are not production implementations.
 No worker may implement from a DRAFT design or freeze a BC from unaccepted inputs.
 Acceptance requires all appendices complete, one frozen exact HEAD, independent
@@ -290,11 +291,23 @@ at actual implementation SHA remains mandatory.
 
 Select the mechanism in Feasibility/Runtime.md: one registry, immutable start
 specifications, explicit capabilities and separate phase/exit/cleanup facts.
-Windows uses private native x/sys CreateProcess suspended, Job assignment before
-ResumeThread, retained thread/process handles and private ConPTY acquisition/
-rollback. Do not wrap Start-then-assign or retain the pinned wrapper leaks.
-Job kill request is followed by zero active Job membership, root wait, terminal
-close, pipe closure and joined readers/writers before terminal success.
+Windows additionally selects WindowsBroker--001: one Runtime-private native-
+architecture broker per session, an outer containment Job assigned before broker
+Resume and a nested user Job assigned before user Resume. Strong cwd anchors and
+the actual initial-breakpoint/FileIdInfo barrier precede detachment and Started.
+Broker owns ConPTY and native startup resources; main registry alone owns public
+session identity and final cleanup acceptance. Emulated clients use reproducibly
+built embedded native helpers; current-native clients may use the same executable's
+private mode. No extra public asset, runtime download or compiler is needed.
+
+Normal cleanup proves inner user Job0, root wait and terminal/I/O quiescence, then
+Release permits broker exit; main finally terminates residual outer members,
+proves outer Job0 and joins its transport owners before Cleaned. Waiting for
+outer membership==broker before Release is forbidden: native terminal auxiliaries
+made that a circular wait. Forced outer cleanup reports its actual path. Retain
+partial resources and errors; neither Job kill request nor broker Quiescent alone
+is terminal success. Native helper build/provenance and Windows ARM64/emulation
+tests are required, preserving all existing Windows release architectures.
 
 Unix uses a dedicated SID for launch and PTY roots, controlling tty for PTY and
 whole-session census across ordinary foreground/background job-control groups.
@@ -375,8 +388,8 @@ Project cwd is relative to the selected worktree; physically validate root/path
 and reject redirects outside it. Reject unproven child link/reparse paths in the
 initial implementation; linked root canonicalization remains the Git boundary.
 Runtime follows CwdAcquisition--001: acquire/validate the actual directory object,
-then Unix supervisor Fchdir/inherited cwd or Windows effective no-delete-share
-component guards through CreateProcess. A pathname recheck followed by an unguarded
+then Unix supervisor Fchdir/inherited cwd or WindowsBroker's strong nonempty
+guards and actual child-cwd startup barrier. A pathname recheck followed by an unguarded
 reopen is forbidden. Refuse stale/unsupported scope; fixed-object authority is
 distinct from continuous pathname ancestry when another actor moves a directory.
 There is no filesystem sandbox claim against later arbitrary project code.

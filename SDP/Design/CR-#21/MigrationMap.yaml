@@ -1538,5 +1538,23 @@
       "replacementEvidenceState": "pending_implementation",
       "replacementEvidence": []
     }
-  ]
+  ],
+  "plannedRuntimePrivateInputs": {
+    "state": "design_only",
+    "owner": "Runtime",
+    "sourcePackages": [
+      "internal/runtime/broker",
+      "internal/runtime/broker/cmd",
+      "internal/runtime/cmd/helpergen"
+    ],
+    "generatedInputs": [
+      "internal/runtime/brokerassets/broker-amd64.gz",
+      "internal/runtime/brokerassets/broker-arm64.gz",
+      "internal/runtime/brokerassets/manifest.json"
+    ],
+    "contract": "WindowsBroker--001.md",
+    "integrationGate": "M3 Runtime after independent source/image reproducibility and native review",
+    "ciInvocationOwner": "MC Composition",
+    "publicReleaseAssetCount": 12
+  }
 }

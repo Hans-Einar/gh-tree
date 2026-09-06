@@ -1,0 +1,5 @@
+//go:build windows && (runtimebroker || !386)
+
+package main
+
+var embeddedHelper []byte

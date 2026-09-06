@@ -10,8 +10,9 @@ bounded evidence and remaining product/native-platform proof. No BC is frozen.
 Persistence binds the authorized directory object and fixed document basename.
 Project run.json is one literal `.gh-tree` child below the selected Git-issued
 worktree root. Open it through retained root handles with no-follow/no-reparse
-checks; never follow a substituted child. Windows retains READ|WRITE/no-DELETE
-directory guards. Unix uses directory-relative Openat/Fstatat/Renameat operations
+checks; never follow a substituted child. Windows retains actual directory list/
+data-read guards with READ|WRITE/no-DELETE sharing, not metadata-only handles.
+Unix uses directory-relative Openat/Fstatat/Renameat operations
 on retained descriptors. Refuse observed identity/parent drift. Unix authority is
 the originally opened directory object, not a promise of continuous current-path
 ancestry after another actor moves that same object. This is a precise capability
