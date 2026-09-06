@@ -151,12 +151,18 @@ All full Slices and baseline program findings remain open under existing governa
 
 The three small independent Go overlays and final Windows/Linux logs are preserved
 in SDP/Verification/CR-#21/Evidence/M3-Persistence-Protocol--001 (byte-identical to
-the local originals); no binaries, source checkout, module cache or large archive
+the local originals before Git text normalization); source evidence uses .go.txt
+so it cannot become an unintended module package. No binaries, source checkout, module cache or large archive
 was copied. Recreate an overlay JSON mapping nonexistent
 internal/persistence/review_{protocol,linux,windows}_test.go paths in the chosen
-exact review checkout to those absolute evidence files, then use the commands
+exact review checkout to those absolute .go.txt evidence files, then use the commands
 above. Native platform suffixes select the matching test file.
 
 Author reports corrections atca758efafec7cdbfb5ca6d838b56772bf4cabae9. They are
 pending independent bounded confirmation; this report's original three findings
 and early-only scope remain unchanged. No full adapter acceptance is implied.
+
+Preservation check: the initial .go evidence suffix caused `go list ./...` to
+consider the SDP path a package and reject its # character. Renaming those three
+unchanged source artifacts to .go.txt restores package discovery; this is evidence
+packaging only, not a product or review-test correction.
