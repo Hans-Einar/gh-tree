@@ -274,6 +274,32 @@ enumeration succeeded. This is not adapter proof; the direct FreeBSD helper
 preserves that error. Ordinary-user supported-profile resolution remains with
 Master and future native adapter evidence, without weakening guards.
 
+## Milestone P3a — request preparation foundations
+
+Fresh request-protocol worker, exact source is the commit adding this subsection.
+Private preparation helpers now perform full-write length/cancel checks, native
+exclusive file/directory creation with initial per-user or inherited project
+access, native parent-policy inspection and retained-parent directory enumeration.
+Recovery namespace is fixed-size and agrees with the current native basename
+equivalence. Actual file sizes, incomplete/orphan matching artifacts and operation
+nonces consume admission; excessive enumeration refuses instead of allocating an
+unbounded list. Enumeration never deletes, replays or trusts manifest size claims.
+
+Windows amd64 full Persistence package/vet and diff checks PASS. Native Linux/ext4
+UID/GID65534 targeted preparation tests PASS through existing WSL, Go1.25.0 CGO0
+test binary, fixtures solely beneath owned `/tmp/gh-tree-persistence-p3a.doq7dO/tmp`.
+Controls cover short nil-error writes, cancellation before I/O, multi-chunk bytes,
+exclusive creation refusal, actual metadata inspection, actual byte/record limits
+including incomplete crash residue, and no inventory changes. This checkpoint
+does not publish a document or assemble the public commit/recovery protocol.
+
+The fallback directory change-stamp needs explicit retained-object own-effect
+transitions: lock/artifact creation changes ctime, while shared API observations
+require common document/store/root binding. Original Expected must remain intact;
+no binding rewriting or dropped incarnation checks is authorized. Master has the
+concrete issue; stable logical binding and live acquisition evidence are distinct.
+The ordinary FreeBSD system-EA EPERM profile remains unresolved without a waiver.
+
 ## Exact successor work
 
 Stop clean after this pushed milestone for the Master-requested fresh request-
