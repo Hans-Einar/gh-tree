@@ -71,3 +71,21 @@ supervisor and native macOS/FreeBSD execution remain separate required proof.
 
 Real supervisor/helper, Job/ConPTY, complete failure-unwind and all twelve
 Sessions methods remain required by #65 before M3 Runtime acceptance.
+
+`broker/signal_unix.go` now implements the actual session-local signal helper and
+its acquisition owner: inherited anonymous pipe direction/type and poller checks,
+setpgid before exec, own parent/SID/group validation, authenticated Joined/Commit,
+the sole permitted self-group `kill(0)` call, parked STOP helpers and exactly one
+retained waiter. No numeric census signal fallback exists. Native Linux fixture
+tests exercise foreign-SID rejection, cancellation/nonce failure before signaling,
+departure of the last original member after Joined, parked STOP and acquired KILL,
+all wait joins and final full SID census. Test failure teardown may kill only its
+own directly created fixture children and records that as a test failure; it is
+never product cleanup evidence.
+
+Unix census selections are Linux bounded `/proc` stat reads, Darwin bounded native
+sysctl with pinned x/sys KinfoProc layout plus Getsid and identity recheck, and the
+frozen FreeBSD bounded `/bin/ps` numeric profile with its exact observer waiter.
+These observations choose acquisition candidates and classify residuals. They do
+not authorize numeric PID/PGID signaling. Native Darwin/FreeBSD execution remains
+required; cross-compilation only verifies selected code/layout availability.

@@ -142,6 +142,62 @@ independent review/integration still remain in full scope.
 
 ## Next permitted work
 
+## Checkpoint 3: acquired-group native helpers and census
+
+Checkpoint2 is committed/pushed `46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864`.
+Master subsequently authorized parallel Windows implementation under #69,
+canonical `ddfc23f` / ledger78. That worker owns broker Windows files, broker/cmd,
+brokerassets and helpergen in its separate worktree. This worker retains Unix
+owners and parent registry/Sessions assembly. Shared protocol.go/start.go/common
+tests remain exactly at checkpoint2; no Windows helper source-closure input was
+changed by checkpoint3. No cross-branch merge bypasses separate review/Root gates.
+
+New Unix inherited-pipe checks validate FIFO kind and read/write direction, set
+nonblocking before os.NewFile so Go deadlines actually work, and mark descriptors
+close-on-exec. The signal helper validates actual parent/SID/group after the
+kernel's setpgid-before-exec setup, accepts only the closed TERM/STOP/KILL set,
+sends authenticated Joined, then requires bound Commit before its own `kill(0)`.
+It never changes group/session after exec or signals a census numeric target.
+STOP stays parked; KILL expects actual signal termination without a fabricated
+post-syscall response. The acquisition owner retains one exact waiter and partial
+endpoints; cancellation before Commit cannot signal and partial transport outcome
+cannot authorize replay. Unknown/foreign/replayed control refuses.
+
+Linux census strictly parses bounded /proc identities/state/session/group;
+Darwin selects bounded native sysctl using pinned x/sys KinfoProc and Getsid plus
+same-process identity/group recheck; FreeBSD retains the exact selected bounded
+/bin/ps profile and joins its own observer before excluding that observer's
+already-exited snapshot row. Reserved supervisor-group outsiders refuse. Darwin's
+bounded wrapper avoids x/sys table allocation-before-bound and unlimited ENOMEM
+retry by checking reported length first and allowing three attempts. Its MIB and
+state constants follow Apple's primary
+[sysctl.h](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/sysctl.h)
+and [proc.h](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/proc.h).
+Native macOS execution is still mandatory; source/layout evidence does not prove it.
+
+Actual Linux/amd64 execution as UID/GID65534 on the same WSL/ext4 fixture environment
+PASS: foreign group refusal with independent owned control still alive; EOF before
+Commit; wrong nonce with no member signal; last original group member exits after
+Joined while helper pins membership; STOP helper remains parked; a new KILL helper
+joins the stopped group and all member/helper waiters join; complete SID census
+contains only the owning supervisor fixture. Private entry without endpoints
+refuses. Tests create only their own fixture executables/processes/directories,
+with failure-only direct-child teardown that makes the test fail if needed.
+No user project script or unrelated process is affected. Final passing owned native
+directory: `/tmp/gh-tree-runtime-native.r2Ue02`; prior passing native helper run
+directory: `/tmp/gh-tree-runtime-native.p9LSq0`.
+
+All nine Unix broker test-binary cross-build selections PASS. The first bounded
+Darwin wrapper compilation revealed x/sys omits KERN_PROC/KERN_PROC_ALL names;
+the official header values were checked and both corrected Darwin architectures
+compile PASS. Linux native tests were rerun after fixture teardown hardening and
+PASS. macOS/FreeBSD native behavior, full supervision/Fchdir/PTY/root-exit lifecycle,
+escape/helper failure residual handling and all twelve Sessions methods remain
+uncompleted. Expected helper prerequisite failure remains; no native acceptance
+or completed Runtime/Slice claim.
+
+## Next permitted work
+
 Commit/push this coherent partial checkpoint before further substantial work.
 Then implement inherited-endpoint/parent validation, private Fchdir/SID supervisor
 and acquired-group helpers, plus Windows native broker/embedded-helper closure, with
