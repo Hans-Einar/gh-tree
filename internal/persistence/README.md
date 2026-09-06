@@ -2,7 +2,7 @@
 
 Issue #63 implements the FROZEN Application--Persistence 1.0.0 boundary in
 isolated milestones. Current milestones supply private schema/document/version
-primitives and Windows acquisition/read/lock helpers. The six-method Storage
+primitives and native Windows/Unix acquisition/read/lock helpers. The six-method Storage
 adapter is still pending;
 this package is not connected to the product entry point.
 
@@ -66,6 +66,23 @@ store lock exclusion, cancellation and killed-process kernel lock release.
 Empty directory conversion can succeed while its directory guard is held;
 relative operations then refuse, preserving the accepted storage limitation.
 Windows ARM64 currently has compile-only evidence for these helpers.
+
+Unix acquisition uses no-follow, close-on-exec, nonblocking Openat descriptors
+and native Fstat/statx or BSD birth observations; nonblocking opens let special
+objects such as FIFOs refuse without hanging before their type can be checked.
+Requests retain ancestor descriptors, distinguish the missing anchor/components,
+and can revalidate every named edge. Moved original descriptors remain bound to
+that original object; an observed substituted pathname refuses. Filesystem
+inspection excludes unknown/network/FUSE profiles. Recognition for acquisition
+does not certify a filesystem's later metadata/publication/durability profile.
+
+Unix locks combine a reference-counted, inode-keyed process mutex with flock,
+recheck the named lock object under ownership, and never unlink the permanent
+file. Context/timeout/error exits close resources before releasing local ownership.
+Native unprivileged WSL Linux/ext4 tests execute read/absence, noninheritance,
+FIFO/link refusal, moved-object/path distinction, concurrent handle/store locks,
+cancellation, mutex-map release and killed-process kernel lock release. All nine
+Unix architecture test binaries compile; macOS/FreeBSD execution remains pending.
 
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing

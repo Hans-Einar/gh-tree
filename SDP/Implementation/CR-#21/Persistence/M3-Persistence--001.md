@@ -1,6 +1,6 @@
 # M3 Persistence contribution — Issue #63
 
-State: IN PROGRESS; durable codec/version and Windows acquisition milestones,
+State: IN PROGRESS; durable codec/version and Windows/Unix acquisition milestones,
 not adapter acceptance.
 Branch: `codereview-21/layer-persistence`.
 Initial base: `412f33e477cec03cb6eafe7b846c9bcdd02c0a25`.
@@ -36,8 +36,8 @@ These are author tests, not independent review or native product verification.
 
 ## Milestone P2a — Windows acquired objects and permanent locks
 
-Source is the commit adding this subsection, separately reported by exact SHA
-after push. `acquire_windows.go` adds request-owned NtCreateFile ancestor guards
+Source: `19df0a110cfb91aa6ff7d6cda5b1dd20dc5ae0bb`, pushed/clean at P2a handoff.
+`acquire_windows.go` adds request-owned NtCreateFile ancestor guards
 with actual list/data-read/no-delete access, handle-relative no-reparse opens,
 aligned full FileIdInfo/native birth identity, local-NTFS detection, coherent
 bounded reads, missing-anchor observation without writes, and cancellable
@@ -59,6 +59,35 @@ bytes, FileID offset8 on tested amd64/386. Formatting/diff checks PASS. All
 filesystem/process fixtures are beneath test-owned temporary directories.
 No API Storage method/public constructor/publication/recovery profile is claimed
 implemented by these private primitives. P2a is a recoverable source checkpoint.
+
+## Milestone P2b — Unix descriptor acquisition and flock
+
+Source is the commit adding this subsection, exact SHA reported after push.
+`acquire_unix.go`, platform profile helpers and native tests implement no-follow
+Openat/Fstat/statx/BSD birth observations, no inherited descriptors, bounded
+double-read consistency, missing-anchor observation, explicit moved-object versus
+substituted-path revalidation, special-object refusal before blocking reads,
+reference-counted inode mutex plus stable flock, and request-owned cleanup.
+
+Native Linux execution PASS: Go1.25.0 crosscompiled CGO0 test binary, then actual
+WSL openSUSE-Leap-15.5 / Linux6.18.33.2-microsoft-standard-WSL2 x86_64,
+UID/GID65534 nobody, ext4 fixtures entirely beneath task-owned Linux `/tmp`.
+Complete package cases and fuzz seeds pass, including real child-process kill/
+flock release and directory rename followed by substituted symlink refusal.
+All nine Unix target test binaries compile; Windows P2a source is unchanged.
+Filesystem recognition is acquisition only, not native metadata/durability proof.
+
+Bounded local evidence: Windows temporary directory
+`C:/Users/hanse/AppData/Local/Temp/gh-tree-persistence-p2b-aa36504819f0492097fff66545082146`,
+Linux staging `/tmp/gh-tree-persistence-p2b.oF0eSB`. `persistence-linux.test` SHA256
+`b3b839e7dc56cd532f2e43650ea1e9cbf22867e7dc7288415f473466cd8d720c`;
+`native-linux.log` SHA256
+`19f9d6dc38c0254b43d2514ab49b274384a42fdd0a50017df464dc171ff4ead9`.
+Three harness-only attempts initially failed from WSL backslash/command-path/
+PowerShell dotted-argument transport, before tests ran. Final reproducible route:
+WSL `--exec /usr/sbin/runuser -u nobody -- /usr/bin/env TMPDIR=<owned>/tmp
+<owned>/persistence-linux.test -test.v=true -test.timeout=30s`, with literal quoted
+PowerShell test flags. No Linux toolchain installation/global change was made.
 
 ## Remaining native and acceptance work
 
@@ -84,6 +113,6 @@ was made here. Native evidence is distinct from architecture cross-builds.
 
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: commit/push P2a, then Unix acquisition/locking/read and complete constructor/
-port wiring plus metadata/publication/recovery milestones;
+NEXT: commit/push P2b; request existing platform CI execution for the new Unix
+tests, then complete constructor/port wiring and metadata/publication/recovery;
 freeze the complete adapter later for independent review and full native gates.
