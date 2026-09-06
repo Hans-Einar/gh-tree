@@ -1,6 +1,6 @@
 # Implementation plan — complete v0.4 refactor
 
-State: ACTIVE, I-03 / M3. Authority: #21 and adapter Issues #61..65; M1/M2 #57..60 complete.
+State: PAUSED by user before M3 dispatch. Authority: #21 and adapter Issues #61..65; M1/M2 #57..60 complete.
 M1 #57 is complete; its original contribution contract remains below as history.
 Integration branch: codereview-21/refactor.
 Integration base: 97cc0d8257603766dd741b49b7d8005857b421a9.

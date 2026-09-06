@@ -1,0 +1,4 @@
+* -text whitespace=cr-at-eol,-blank-at-eof
+pending-tracked.patch whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+preparation-drafts/Git-Issue-Draft.md whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+preparation-drafts/Git-Issue-Draft-v2.md whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol

@@ -1,0 +1,216 @@
+{
+  "purpose": "User-requested preservation and paused handoff, not implementation/release acceptance",
+  "files": [
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-21-paused.json",
+      "archive": "issues/issue-21-paused.json",
+      "sha256": "3307ee4a1ddc2d20320cba246ac3144343b2a140c75b7190f01e82a041384b12",
+      "length": 49366
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-61-paused.json",
+      "archive": "issues/issue-61-paused.json",
+      "sha256": "c45e5e2c3beb602c841a92c1c4adf8d9c7b59879e31d5c9b6f99dbd9ea5a74fd",
+      "length": 10247
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-62-paused.json",
+      "archive": "issues/issue-62-paused.json",
+      "sha256": "1d5f839733ddc525427ca4c16610a9da360ddb189eae5d85dd1554b91460c609",
+      "length": 8292
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-63-paused.json",
+      "archive": "issues/issue-63-paused.json",
+      "sha256": "4c103ee2f1fe4f91d979d21786282b5b53fc585cd0519effc7357e80a11f47ad",
+      "length": 10473
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-64-paused.json",
+      "archive": "issues/issue-64-paused.json",
+      "sha256": "012790b0b3e82945b1680d8ed2d63fe10046842f86dd6271aa662df8f7ba7b30",
+      "length": 8310
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\issue-65-paused.json",
+      "archive": "issues/issue-65-paused.json",
+      "sha256": "e9269c9ccb68838b5d0939847c2b8ea75e85cd468b16cbd715819f8b1253ddcd",
+      "length": 11382
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\workspace-before.json",
+      "archive": "workspace-before.json",
+      "sha256": "175e3c8f212ecdfd0e8f90df7a38dc7cc38ae5e963f1bf9a80e0c76d27634ba3",
+      "length": 46615
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-manifest.json",
+      "archive": "pending-files-manifest.json",
+      "sha256": "a8c951185324f6f7fac793dde6764386219d7daaf8319dcfce0f59e0b153b78b",
+      "length": 1996
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-tracked.patch",
+      "archive": "pending-tracked.patch",
+      "sha256": "0889442c57fcb3562b0907126b12931f9267558e7c3d44c6d2c37bad8178e133",
+      "length": 19733
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\local-only-roots.json",
+      "archive": "local-only-roots.json",
+      "sha256": "8ab8de2a5da94bd6cc0c91311d4da39842262f53447aa0c3d3ee977bdf6c3bb1",
+      "length": 10116
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\ci-34047530046.json",
+      "archive": "ci-34047530046.json",
+      "sha256": "66740408d346f5d3c5d92ea166db89fa32dd7e7100aebb4e3b771cff8426693d",
+      "length": 30421
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Implementation\\CR-#21\\M3-Adapters--001.md",
+      "archive": "pending-files-before/SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "sha256": "179a9a7ca42d5c319c71122e8e3f2319c6a1c299ec10f2d337481c5c4f10b030",
+      "length": 8135
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Implementation\\CR-#21\\M3-Assignments.json",
+      "archive": "pending-files-before/SDP/Implementation/CR-#21/M3-Assignments.json",
+      "sha256": "9f875b94c6ba44059eabc2de32301495ce5fbc3bc198f6d775dd5bb4e1134500",
+      "length": 3064
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Implementation\\CR-#21\\Plan--001.md",
+      "archive": "pending-files-before/SDP/Implementation/CR-#21/Plan--001.md",
+      "sha256": "2ee3480e92cfe6b70976052f37eaa6be90eb9090ead4905735e5e7aa6dfa832b",
+      "length": 5983
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Sprints\\Sprint-004-v04\\Handoff.md",
+      "archive": "pending-files-before/SDP/Sprints/Sprint-004-v04/Handoff.md",
+      "sha256": "24b5cb53774a50ac63331dbdc00ee693c44c7b1cdab8e636b02c1b53de151781",
+      "length": 7182
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Sprints\\Sprint-004-v04\\implementationNotes.md",
+      "archive": "pending-files-before/SDP/Sprints/Sprint-004-v04/implementationNotes.md",
+      "sha256": "edca77c9880deb8d71bdc70edd3fb39173d096e2143fc24f4dec997194ba9df8",
+      "length": 25439
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Sprints\\Sprint-004-v04\\ScrumIterations.md",
+      "archive": "pending-files-before/SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+      "sha256": "80445fb670006d573ad184ccc15191553685a1c2da9b52c35bbb032f90ad3127",
+      "length": 18764
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Sprints\\Sprint-004-v04\\Sprint-004-v04.md",
+      "archive": "pending-files-before/SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md",
+      "sha256": "e244d9bd373c210b23b575ebeb04fe8cb658756317fa34efba7243ad697d290b",
+      "length": 3038
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Traceability\\CurrentIndex.yaml",
+      "archive": "pending-files-before/SDP/Traceability/CurrentIndex.yaml",
+      "sha256": "eddabbb4158a148fea018625d32ad05c5496203517c27339be228e0b9d9a7497",
+      "length": 50823
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Traceability\\Ledger.ndjson",
+      "archive": "pending-files-before/SDP/Traceability/Ledger.ndjson",
+      "sha256": "4c8abdac8a96b98a18f903e2eeb2c989abdf366e73b3fb29de2e8c4ab9965f40",
+      "length": 31073
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\pending-files-before\\SDP\\Traceability\\Relations.yaml",
+      "archive": "pending-files-before/SDP/Traceability/Relations.yaml",
+      "sha256": "424e15fcddae19ab0680f7747f12ec6d52490fdbe792b9ba7af21abe8d6e0af7",
+      "length": 10638
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Discovery-Issue-Draft.md",
+      "archive": "preparation-drafts/Discovery-Issue-Draft.md",
+      "sha256": "e9cbfa1feb02c36f950a2495a6bf8d1109304b9ebc96e77fe4d44f1447157176",
+      "length": 5391
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Git-Issue-Draft-v2.md",
+      "archive": "preparation-drafts/Git-Issue-Draft-v2.md",
+      "sha256": "c3033eaa39f73b093cf26daba6d416b9b16d7769f2a65d27c477a3421100b96f",
+      "length": 7285
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Git-Issue-Draft.md",
+      "archive": "preparation-drafts/Git-Issue-Draft.md",
+      "sha256": "c6813c3505daeb2289ab0a59920eab2c701e76ba91e85ccdbc2ffbe2222544ca",
+      "length": 6500
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\GitHub-Issue-Draft.md",
+      "archive": "preparation-drafts/GitHub-Issue-Draft.md",
+      "sha256": "9de5e2ec28d9876d3d2835183e38e6a8fc0d15bbd53faa2e828c0349f8c24f82",
+      "length": 5389
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\issue21-current.json",
+      "archive": "preparation-drafts/issue21-current.json",
+      "sha256": "18d66b05f2fa3e4c5f4ba0ecb45f95a9d971efa84f5f63bf086543e358629b7d",
+      "length": 47855
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Persistence-Issue-Draft-v2.md",
+      "archive": "preparation-drafts/Persistence-Issue-Draft-v2.md",
+      "sha256": "ffae1e09b7456b98b696847f2b2aee98e63aa932c40df6f6e8e6e50b85baaec1",
+      "length": 7487
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Persistence-Issue-Draft.md",
+      "archive": "preparation-drafts/Persistence-Issue-Draft.md",
+      "sha256": "34032144bb9f7f247c29b05a4e459c04ebb71cb6dedafe150117a61f04caaaeb",
+      "length": 7050
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation\\Runtime-Issue-Draft.md",
+      "archive": "preparation-drafts/Runtime-Issue-Draft.md",
+      "sha256": "a3dd6c930b21052223b5ce646afc8f829402707f340f64dfd4bbe91b7167df4e",
+      "length": 8416
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c\\action.yml",
+      "archive": "freebsd-source/action.yml.txt",
+      "sha256": "a7f1605b1e9f2381ca4d0a7db2446e4af0f5f370d9fb5924045121dc902ccfae",
+      "length": 2836
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c\\conf-14.3.conf",
+      "archive": "freebsd-source/conf-14.3.conf.txt",
+      "sha256": "6920998eca8d7d081545ff17f088bace4f873801741ef9e1303f0544d9517795",
+      "length": 130
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c\\conf-15.0.conf",
+      "archive": "freebsd-source/conf-15.0.conf.txt",
+      "sha256": "bb121d85b72f8320d43d3bcbe9e9528a1fd1b2771ce32d38899345ef88c89bba",
+      "length": 131
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c\\index.js",
+      "archive": "freebsd-source/index.js.txt",
+      "sha256": "60701f22e77d41bcab87fde412cd9754f511a43c21b90482bf543e3a479e474e",
+      "length": 76110
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c\\package.json",
+      "archive": "freebsd-source/package.json.txt",
+      "sha256": "c11e8b6a6d9cdf8a80572940922f8c982365aadff06e256b631637d32b5ff8cf",
+      "length": 600
+    },
+    {
+      "source": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-checkpoint-20260906-1725Z\\freebsd-LICENSE",
+      "archive": "freebsd-source/LICENSE.txt",
+      "sha256": "df93e48cff786a5680c3c4832a6e35d61b71a932148a1dabfddbd745275495fb",
+      "length": 1071
+    }
+  ],
+  "excluded": "Generated test repositories, review clones, build outputs, temporary signing keys, downloaded tools and caches remain local and are inventoried in local-only-roots.json. Existing accepted source/evidence is already in Git; exact M3 drafts, Issue snapshots and pending pre-checkpoint files are included here."
+}

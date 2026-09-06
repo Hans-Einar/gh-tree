@@ -2,6 +2,13 @@
   "version": 1,
   "relations": [
     {
+      "from": "M3",
+      "relation": "paused_at_checkpoint",
+      "to": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
+      "state": "user_pause_before_dispatch",
+      "inventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260906-1725Z/workspace-before.json"
+    },
+    {
       "relation": "uses_target",
       "from": "BR21",
       "to": "APS22"

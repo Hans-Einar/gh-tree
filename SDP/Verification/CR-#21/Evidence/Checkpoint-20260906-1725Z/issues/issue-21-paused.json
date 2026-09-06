@@ -1,0 +1,399 @@
+{
+  "body": "Parent governance: #19 / merged PR #20.\nArchitecture target: #22 / merged PR #23 / `SDP/Architecture/AS-#22/APS--001.md`.\n\nReview target product baseline: `v0.3.14` / `f626077ca0e59fbe9ede7ba1116982bb94b2eb6b` (governance/architecture-documentation commits after this SHA are not product-code changes).\n\nRole: Broad Reviewer.\n\nRead completely before starting:\n- root `AGENTS.md`;\n- `developmentInstructions.md`;\n- this Issue #21;\n- `SDP/Architecture/AS-#22/APS--001.md`;\n- `SDP/Templates/BroadReview.md`.\n\nPurpose:\nReview the whole current repository at system/architecture level against the accepted Architecture Pre-study target hypothesis. Do NOT implement fixes. Do NOT spend the session doing deep line-by-line review of one horizontal layer; that belongs in later focused Layer Reviews.\n\nA central objective is to determine how current production code must be redistributed into explicit horizontal design layers with separate physical directories/packages and clear contracts between them. The Broad Review must not merely name conceptual layers while leaving vertically mixed implementation files in place.\n\nTarget architecture hypothesis from APS--001:\n- Domain\n- Application\n- Git\n- GitHub\n- Runtime\n- Launch Discovery\n- Persistence\n- TUI State\n- TUI View\n- Composition\n\nThe reviewer must challenge these names/boundaries with code evidence; they are a target hypothesis, not frozen refactor design.\n\nRequired Broad Review goals:\n- map current de-facto packages/files to the target logical layers;\n- identify production files/packages that mix responsibilities from multiple target layers;\n- identify which files should be split, moved, removed or replaced to achieve physical layer separation;\n- identify shared/legacy files that cannot safely be assigned to parallel workers and therefore need Master ownership during migration;\n- identify vertical Slice failures and map their likely horizontal/boundary causes;\n- identify duplicated/ambiguous state authority and async event ordering problems;\n- identify process/session/resource lifecycle ownership problems;\n- identify Git/worktree/domain-state boundaries and local-vs-upstream modeling problems;\n- identify TUI interaction-state versus rendering boundaries, including the stacked V310..V314 wrapper architecture;\n- identify launch-discovery versus process/runtime ownership leaks;\n- identify missing/incorrect interfaces and dependency direction between layers;\n- compare the APS candidate BC set with current implementation evidence and propose additions/revisions;\n- propose the set and order of focused per-layer reviews;\n- assess migration order so multiple layer workers can operate on disjoint physical folders/branches with minimal merge conflict;\n- recommend whether the refactor should use the current minor line or open a new architecture line. APS--001 preliminarily recommends `v0.4`; Broad Review must independently confirm or reject that recommendation.\n\nKnown symptoms to challenge independently, not accept as conclusions:\n- running launch scripts may not stop reliably, especially process trees on Windows;\n- async console-start/restart completion may steal focus after the user navigates away;\n- interactive shell process existence may be confused with active work;\n- local branch tip vs upstream/GitHub tip is not modeled/presented explicitly enough;\n- historical TUI wrapper layers may have overlapping state ownership.\n\nArchitecture-specific questions the review must address:\n- Which current `worktree`, `graph`, and `diff` responsibilities belong in Git versus Application?\n- Which current `app.Service` responsibilities are real orchestration versus concrete-adapter facade behavior?\n- How should the current `tui` package be split into TUI State and TUI View without carrying cross-layer orchestration into either?\n- How should `launch` split into Launch Discovery and Runtime/session ownership?\n- What Domain types can become pure and stable enough to be shared without leaking adapters upward?\n- What Application ports/interfaces are required so concrete adapters do not import/call each other?\n- Which dependency rules should eventually be enforced in CI?\n\nDeliverable:\n`SDP/Reviews/CR-#21/Broad/BR--001.md`\nusing `SDP/Templates/BroadReview.md`.\n\nThe report must end with:\n- finding IDs and severities;\n- current de-facto layer map;\n- current-to-target migration map;\n- explicit list of mixed-responsibility files/packages and proposed target owners;\n- required focused Layer Review issues in proposed execution order;\n- preliminary BC changes/candidates;\n- parallel-migration ownership/conflict-risk notes;\n- release-line recommendation;\n- exact next permitted action.\n\nNo refactor implementation begins from this Issue. After the Broad Review is accepted, create/execute the focused Layer Review issues first.",
+  "comments": [
+    {
+      "id": "IC_kwDOUMhlu88AAAABSv552g",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "BROAD REVIEW COMPLETE\n\nBranch: `codereview-21/broad-review`\nHEAD: `76dacca56fc003f244bf038ce9bbe3e95db3040e`\nReport: `SDP/Reviews/CR-#21/Broad/BR--001.md`\nDraft PR: #24\n\nFindings:\n- HIGH: 5\n- MEDIUM: 8\n- LOW: 2\n- Total: 15\n\nProposed focused Layer Reviews, in order:\n1. Runtime\n2. TUI State\n3. Application\n4. Git\n5. Domain\n6. Launch Discovery\n7. Persistence\n8. GitHub\n9. TUI View\n10. Composition\n\nRuntime and TUI State may be reviewed in parallel, but both should feed the accepted Application review.\n\nRelease-line recommendation: use a new `v0.4` architecture line and retain `v0.3.x` for bounded stabilization fixes.\n\nDisposition: `BROAD_REVIEW_COMPLETE / REFACTOR_NOT_AUTHORIZED`.\n\nExact next permitted action: SteeringGroup/Master reviews and accepts BR--001, then opens/authorizes the focused Layer Review Issues beginning with Runtime and TUI State. No refactor implementation, BC freeze, or layer implementation branch is permitted before the required Layer Reviews and subsequent Refactor Design are complete.",
+      "createdAt": "2026-09-05T16:23:53Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5553158618",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSwVihw",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "STEERINGGROUP ACCEPTANCE — BROAD REVIEW #21\n\nAccepted artifact: `SDP/Reviews/CR-#21/Broad/BR--001.md`\nReviewed artifact HEAD: `76dacca56fc003f244bf038ce9bbe3e95db3040e`\nMerged review PR: #24\nMerge commit: `488697f8ced27c60e5a906ad1c30a1d696c29957`\n\nDisposition: `BROAD_REVIEW_ACCEPTED`.\n\nAccepted conclusions for the next review stage:\n- target horizontal layer hypothesis remains Domain / Application / Git / GitHub / Runtime / Launch Discovery / Persistence / TUI State / TUI View / Composition;\n- physical separation into layer-owned production directories is a required refactor objective, not optional cleanup;\n- Runtime and TUI State are the first focused Layer Reviews and may run in parallel;\n- both must feed the later Application Layer Review;\n- `v0.4` is provisionally accepted as the architecture/refactor line, while `v0.3.x` remains available for bounded stabilization fixes; final release-line authority remains with the accepted Refactor Design;\n- no product refactor, BC freeze, or layer implementation is authorized yet.\n\nFocused review Issues opened:\n- #25 Runtime\n- #26 TUI State\n\nExact next permitted action: execute #25 and #26 as independent focused Layer Reviews. After both reports are accepted, SteeringGroup will authorize/open the Application Layer Review. Refactor implementation remains gated.",
+      "createdAt": "2026-09-05T17:41:01Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5553611399",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSw3exQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "## NEXT CHAT WORK INSTRUCTIONS — Broad Review acceptance / Layer Review kickoff\n\nAct as the next governance/review session for `Hans-Einar/gh-tree` Issue #21.\n\nBefore acting, read completely and treat as authority:\n\n1. repository `AGENTS.md`;\n2. repository `developmentInstructions.md`;\n3. GitHub Issue #21 in full, including all comments;\n4. `SDP/Architecture/AS-#22/APS--001.md`;\n5. `SDP/Reviews/CR-#21/Broad/BR--001.md` at exact Broad Review HEAD `76dacca56fc003f244bf038ce9bbe3e95db3040e`;\n6. draft PR #24 and its exact diff;\n7. any SDP/governance records explicitly referenced by those authorities.\n\nRole: SteeringGroup / Master governance gate for the transition from Broad Review to focused Layer Reviews. You are NOT implementing the refactor.\n\nYour task is to independently inspect the completed Broad Review and decide whether `BR--001` is sufficiently complete, internally consistent, grounded in the frozen product baseline `f626077ca0e59fbe9ede7ba1116982bb94b2eb6b`, and compliant with Issue #21 / `BroadReview.md` to be accepted as the Broad Review stage output.\n\nDo not treat the Broad Reviewer summary or Issue comment as evidence. Inspect the actual report, baseline code evidence where needed, and PR #24 contents.\n\nAt minimum verify:\n\n- report contains every deliverable required by Issue #21;\n- finding severities/counts are internally consistent;\n- current de-facto layer map and current-to-target migration map are evidence-backed;\n- mixed-responsibility package/file list is concrete enough to drive later focused Layer Reviews;\n- state authority, lifecycle/concurrency, missing Application ports, dependency direction and CI-forbidden import recommendations are coherent;\n- the proposed focused Layer Review set/order is justified and not prematurely designing the final refactor;\n- Master-owned migration surfaces and parallel conflict risks are explicit;\n- the `v0.4` release-line recommendation is justified;\n- exact next permitted action respects the staged governance process;\n- PR #24 contains only the Broad Review artifact / strictly necessary review metadata and no product changes.\n\nIf the Broad Review has substantive gaps, post `CHANGES_REQUIRED` with exact corrections needed. Do not implement those corrections unless Issue #21 explicitly authorizes you to become the correcting author.\n\nIf it is acceptable, post `ACCEPTED` and define the next governance action. The expected next stage is focused horizontal Layer Reviews, not refactor implementation and not BC freeze.\n\nWhen accepted, recommend the focused Layer Review issues to open next and their order. Broad Review currently proposes beginning with Runtime, then TUI State; challenge that order independently and adjust it if evidence requires.\n\nDo NOT:\n\n- modify product code;\n- merge PR #24;\n- close Issue #21 unless the Issue explicitly authorizes it;\n- freeze Layer Boundary Contracts;\n- create refactor/layer implementation branches;\n- implement any finding;\n- silently broaden the architecture beyond the accepted process.\n\n### Required final comment on Issue #21\n\nPost your final disposition as a new comment on **Issue #21 itself**. Include:\n\n- disposition: `ACCEPTED` or `CHANGES_REQUIRED`;\n- exact Broad Review branch and HEAD reviewed;\n- PR #24 status/scope assessment;\n- any blocking corrections, if applicable;\n- accepted finding counts by severity (or discrepancies found);\n- accepted/proposed focused Layer Review order;\n- release-line disposition (`v0.4` or alternative with rationale);\n- exact next permitted action.\n\nDo not leave the result only in chat. The durable handoff is the Issue #21 comment.",
+      "createdAt": "2026-09-05T19:14:51Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5554167493",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSx-b2A",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "PROGRAM RESUMPTION AUTHORITY — 2026-09-06\n\nPhase: reconstruct authority / Domain acceptance gate. Role: SteeringGroup / Master. Branch: main; exact current governance HEAD: 3531fd165ff2b35036928328685d45d84965e9ef. Product remains v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b; the complete baseline-to-main diff contains only governance/review records.\n\nThe user explicitly authorizes completion of the remaining Issue #21 architecture program through verified release-ready and, only if all release gates pass, published v0.4.0. This includes creating required Issues, governance/review/design PRs, accepted contract freeze, layer branches/worktrees, implementation/review/verification, final product PR integration, tagging and publication. This authorization supersedes earlier comments restricting this session to Broad Review. It does not waive any stage, safety, exact-SHA or CI gate. Issue #21 is reopened as the parent program and will remain open until the complete contract is satisfied.\n\nThe run permits sequential same-agent roles, with fresh artifact/source inspection at every role transition; independent fresh agents will be used where available under repository instructions. Implementation and implementation review remain separated. No author summary substitutes for review evidence.\n\nCurrent gate: independently inspect Domain report at ec482795a82371996370ec52e68c5c24b4e240b1 / PR #34 / Issue #33; scope exactly one artifact and CI green (Windows/Linux/macOS tests, Linux race, five release cross-builds). A fresh independent reviewer is inspecting the actual report and frozen baseline. No acceptance has yet been made in this run.\n\nRemaining sequence: Domain acceptance -> Launch Discovery -> Persistence -> GitHub -> TUI View -> Composition focused reviews, each dedicated Issue/draft PR and accepted merge; then REFDES--001 acceptance/merge; then cross-consistent reviewed/frozen required BCs; then layer-local vertical Slice implementation and independent review/serial integration; then full exact integrated-SHA verification, platform CI, final product PR, and release only when verified. All v0.3.14 capability must remain, with exact Revision authority, stable stash identity, state-bound confirmations, process-tree cleanup and stale-result focus protection.\n\nDurability: this repository currently has no active sprint/iteration or traceability ledger. Master will establish a minimal Issue #21 sprint/handoff/CurrentIndex/Relations/Ledger surface under SDP before broad new work, using developmentInstructions.md as the operative workflow. RefactorDesign/verification templates are absent; required contents come from that operative workflow and this program contract, without importing unrelated product rules.\n\nEditorial correction carried forward: Git LR headings APP29-H03 and APP29-H06 are transposed relative to Application LR finding IDs. Canonical reconciliation is APP29-H06; confirmation/precondition identity is APP29-H03. Conclusions are unchanged. This will be represented in durable traceability.\n\nUnresolved risk: all reviewed product safety findings remain unimplemented; no design or BC is frozen. Exact next action: finish Domain gate, record acceptance/merge SHA if acceptable, and authorize Launch Discovery. No product implementation is permitted yet.",
+      "createdAt": "2026-09-05T22:52:28Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555330008",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyAjvg",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "GATE G-01 COMPLETE — DOMAIN ACCEPTED AND MERGED\n\nRole: Master / Integrator. Issue #33 closed after its review contract passed. Review branch codereview-21/layer-domain-review; corrected reviewed HEAD 86d2a4c0cc0eb8f427d597617246e85473a6cf55; PR #34; exact merge SHA 5b1cf181fd3245a65337f1db28ee8f0fb95c200f; artifact SDP/Reviews/CR-#21/Layers/Domain/LR--001.md.\n\nA fresh independent reviewer required one P2 report correction for unborn HEAD representation; corrected actual artifact was independently re-reviewed and accepted. 4 HIGH / 8 MEDIUM / 2 LOW product findings remain implementation inputs. All nine CI checks passed at corrected HEAD: https://github.com/Hans-Einar/gh-tree/actions/runs/33997317388 . No product code changed. No BC is frozen.\n\nCarry forward exact Revision authority, stable stash OID identity, pure scoped values, and Runtime-only SessionID allocation. REFDES must explicitly handle unborn HEAD without fabricating a Revision. Exact next action: Launch Discovery focused review under its dedicated Issue/branch, while completing governance-only #35 checkpoint PR. Subsequent order remains Persistence, GitHub, TUI View, Composition, then design and BC freeze.",
+      "createdAt": "2026-09-05T22:59:42Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555364798",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyCQSQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "DURABLE EXECUTION SURFACE MERGED\n\nIssue #35 / PR #37 accepted by fresh independent reviewer. Branch codex/issue-35-program-governance, reviewed HEAD 8b5514e5e69ed6de603ed5f34e6e530a6a8b76f3; merge/main SHA 11cfef79009bb3956f0ba970470df14843e27e07. Artifacts: SDP/Sprints/Sprint-004-v04/{Sprint-004-v04,ScrumIterations,implementationNotes,Handoff,UserRunContract}.md and SDP/Traceability/{CurrentIndex.yaml,Relations.yaml,Ledger.ndjson,README.md}.\n\nStructure/provenance checked; original request preserved; green Windows/Linux/macOS/race/cross-build CI at exact reviewed HEAD. Accepted review reports explicitly remain distinct from unresolved product findings. No frozen BC/design or implementation Slice exists. Active Sprint-004-v04 / I-01 / G-02: Launch Discovery review #36, assigned to a fresh focused reviewer in its dedicated worktree. Next action: inspect the completed Launch Discovery artifact and exact PR scope/CI before acceptance; then Persistence.",
+      "createdAt": "2026-09-05T23:05:13Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555392585",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyDN-g",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "CHECKPOINT PREPARED — OPEN FINDING INDEX\n\nPhase: G-02 Launch Discovery report in progress. Role: Master. Main remains 11cfef79009bb3956f0ba970470df14843e27e07 with green main CI run 33997686711. No product changes.\n\nDedicated metadata branch codex/cr21-checkpoints @ 9f33ea31535612d6bd2d7d8d1af167db3d19585f records #35/#37 merge and indexes every finding ID from six accepted reports: 91 IDs (30 HIGH / 49 MEDIUM / 12 LOW), all OPEN. These include overlapping findings across reviews and are not 91 unique defects. JSON/YAML/NDJSON structure and exact count/unique IDs were checked. Minor historical wording from governance review is clarified. This metadata commit is published but not merged; it will receive review with the next checkpoint update.\n\nLaunch Discovery #36 is assigned to an independent focused reviewer/author at its dedicated branch/worktree. Master independently inspected discovery/config/provider code and relevant TUI/Application crossings. Await report HEAD/draft PR, then artifact acceptance and CI. No accepted REFDES/FROZEN BC or active implementation Slice exists. No external blocker.",
+      "createdAt": "2026-09-05T23:08:25Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555408378",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyEJcA",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "TRACEABILITY CHECKPOINT MERGED\n\nMaster integrated PR #38 at e0fa9c8743c0b68e936169b7997dd0c841e9dc98; source codex/cr21-checkpoints @ 9f33ea31535612d6bd2d7d8d1af167db3d19585f. Fresh independent metadata ACCEPT; exact-HEAD push/PR CI green. CurrentIndex now explicitly contains all 91 existing report finding IDs as open; ledger remains append-only. Five SDP metadata files only, no product/design/BC changes. Active G-02 / #36 unchanged; next action is Launch Discovery report acceptance.",
+      "createdAt": "2026-09-05T23:11:27Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555423600",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyFCQQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "RELEASE BASELINE OBSERVATION — CARRY TO COMPOSITION/REFDES\n\nRole: Master, read-only packaging inventory while G-02 review is in progress. Product still v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b. `gh release view v0.3.14` confirms a published non-prerelease with TWELVE assets, broader than the five CI cross-build targets:\n- darwin-amd64, darwin-arm64\n- freebsd-386, freebsd-amd64, freebsd-arm64\n- linux-386, linux-amd64, linux-arm, linux-arm64\n- windows-386.exe, windows-amd64.exe, windows-arm64.exe\n\nRelease URL: https://github.com/Hans-Einar/gh-tree/releases/tag/v0.3.14 . These existing release architectures must not be silently removed by the v0.4 refactor. Composition review/design/release verification must explicitly preserve and cross-build all twelve, in addition to required Windows/Linux/macOS runtime CI evidence. Five current CI builds alone do not prove release packaging parity.\n\nRead-only `gh extension list` reports the user's installed gh tree at v0.3.13. No installation/upgrade was performed; preserve this observation for controlled later install/upgrade verification. Source version constant is 0.3.14. This is baseline inventory, not release-ready verification.",
+      "createdAt": "2026-09-05T23:14:22Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555438145",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyH2dw",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-02 COMPLETE / G-03 AUTHORIZED\n\nRole: Master / Integrator. Launch Discovery #36 accepted and closed. PR #39, source codereview-21/layer-launch-discovery-review @ 859eab7af576b6b0eb689da6d7ed7c6d235d5853; exact merge SHA 3b8923e0fad29eec24a2d8fa1811dba24c2a626f; artifact SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md. Fresh independent ACCEPT plus separate Master actual source/hash/probe verification; all nine exact-HEAD CI checks green in run33998243250. No report correction required. 2H/9M/1L product findings remain open, no BC frozen.\n\nPersistence Issue #40 created with full work contract consuming all six accepted preceding reports. Fresh focused reviewer assigned dedicated codereview-21/layer-persistence-review worktree. Active Sprint-004-v04 / I-01 / G-03. Exact next action: complete Persistence report, independently inspect artifact/source/PR and gate acceptance/merge on CI, then GitHub review.\n\nMaster checkpoint branch codex/cr21-checkpoints @ 0339fd59170289ef39c247e559445789896464e4 updates sprint, handoff, notes, index, relations and append-only ledger before broad new work. Index now 103 open report finding IDs (32H/58M/13L, overlapping reports), includes all 12 release asset targets. Metadata review/PR follows; no product changes.",
+      "createdAt": "2026-09-05T23:24:02Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555484279",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyI0RQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-03 CHECKPOINT SURFACE MERGED\n\nMaster integrated metadata PR #41 at 7113e4111ff9e0e4de04f86cacc42a209c011727 after fresh independent ACCEPT and green exact-HEAD push/PR CI. Source codex/cr21-checkpoints @ 0339fd59170289ef39c247e559445789896464e4. Six SDP metadata files update active G-03/Persistence #40, 103 open finding IDs, Launch Discovery acceptance and all 12 release assets. No product/design/BC change. Next action remains Persistence report/source acceptance, followed by GitHub review.",
+      "createdAt": "2026-09-05T23:27:21Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555500101",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyMt2g",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-03 COMPLETE / G-04 AUTHORIZED\n\nMaster accepted Persistence #40 / PR #42 independently of its fresh report author, by reopening complete report/source, matching copied hashes and rerunning six probes. Source codereview-21/layer-persistence-review @ e13639926ca1b34e5021d1a038b83517cb7eec65; exact merge db07857550cdfd56c114eb42c045b896b229d747; artifact SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md. All nine CI checks PASS in run 33999062918; no report correction. #40 closed. 2H/6M/1L product findings remain open; no BC frozen.\n\nGitHub review Issue #43 opened, assigned fresh focused reviewer in codereview-21/layer-github-review dedicated worktree. Active Sprint-004-v04/I-01/G-04; next TUI View then Composition, followed by Refactor Design and BC freeze. Current metadata published before new broad work at codex/cr21-checkpoints @ d611e7df49877fb9865a5bd6614749ac1ff34d4e (sprint/handoff/notes/index/relations/ledger). 112 open report finding IDs (34H/64M/14L, overlapping reports). No product implementation.\n\nExact next action: complete and independently inspect GitHub report/PR at frozen SHA, pass CI gate, accept/merge and authorize TUI View.",
+      "createdAt": "2026-09-05T23:40:52Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555563994",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyNnDQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-04 CHECKPOINT SURFACE MERGED\n\nMaster integrated metadata PR #44 at a0ef95bae4ad27c23323b428b400c97f49b89d3a. Reviewed source codex/cr21-checkpoints @ d611e7df49877fb9865a5bd6614749ac1ff34d4e; fresh independent ACCEPT, no corrections, all push/PR CI green. Six SDP-only updates record Persistence acceptance and active GitHub #43; 112 finding IDs remain open. No product/design/BC change. Next action remains frozen GitHub report/source/CI acceptance, then TUI View.",
+      "createdAt": "2026-09-05T23:44:02Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555578637",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyR1Ew",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-04 COMPLETE / G-05 AUTHORIZED\n\nMaster accepted GitHub #43 / PR #45 independently of its fresh report author through actual report/source/native tagged CLI/probe inspection. Source codereview-21/layer-github-review @ ea52f8c5c50e178c6e415cbba2284296e2d9b910; exact merge e16650036c10f764c1b99c76d98d2bd37c3ffbb0; artifact SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md. All nine CI jobs PASS in run 33999849098; six probes independently rerun, no report correction. #43 closed. 1H/8M/1L product findings remain open; no BC frozen.\n\nTUI View Issue #46 opened and assigned a fresh focused reviewer in dedicated codereview-21/layer-tui-view-review worktree. Active Sprint-004-v04 / I-01 / G-05. Next Composition, then dedicated Refactor Design and BC freeze. Checkpoint metadata published before broad work at codex/cr21-checkpoints @ 9e7fcca9d98b3bcd9e10d03ca1051d5213c623fd; index contains 122 open report IDs (35H/72M/15L, overlapping reports).\n\nExact next action: finish TUI View artifact, independently inspect frozen report/source/render evidence/diff, accept and merge only green exact HEAD, then authorize Composition. No product implementation yet.",
+      "createdAt": "2026-09-05T23:59:24Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555647763",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyS0dw",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-05 CHECKPOINT SURFACE MERGED\n\nMaster integrated metadata PR #47 at 61224e88f3102ca3604df7067400f61f1d1c3dff. Reviewed source codex/cr21-checkpoints @ 9e7fcca9d98b3bcd9e10d03ca1051d5213c623fd; fresh independent ACCEPT and all push/PR CI green. Six SDP-only updates record GitHub acceptance and active TUI View #46; 122 report findings remain open. No product/design/BC change. Next action: TUI View report/source/render evidence acceptance, then Composition.",
+      "createdAt": "2026-09-06T00:02:46Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555663991",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyXb1g",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-05 COMPLETE / G-06 AUTHORIZED\n\nMaster accepted TUI View #46 / PR #48 independently of its fresh report author through complete actual artifact/source/hash/render-probe inspection. Source codereview-21/layer-tui-view-review @ 108a3bd0ceb782c6a29d980ce0abcce1eae7a284; exact merge 00584a57021dda767ead5e3996cc92477e0a2d3c; artifact SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md. All nine CI checks PASS in run 34000698430; all 61 copied source hashes matched and seven probes independently rerun; no correction. #46 closed. 0H/11M/1L product findings remain open.\n\nComposition Issue #49 opened and assigned fresh reviewer in dedicated codereview-21/layer-composition-review worktree. All nine preceding layer reviews accepted. Active Sprint-004-v04 / I-01 / G-06. Metadata updated/published before new work at codex/cr21-checkpoints @ 4d15a31e287f9b1757c8ae76716f477f56feaf1e; 134 open report IDs (35H/83M/16L, overlapping reports). No BC frozen/product implementation.\n\nExact next action: finish Composition artifact, independently inspect exact report/source/workflow evidence and PR/CI, accept/merge, then close focused-review iteration and open dedicated Refactor Design Issue. All twelve release architectures remain required.",
+      "createdAt": "2026-09-06T00:18:04Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555739606",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyZIfA",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-06 CHECKPOINT SURFACE MERGED\n\nMaster integrated metadata PR #50 at c9ae9851fdd789c13e8da4ebf4b34c603b724987. Source codex/cr21-checkpoints @ 4d15a31e287f9b1757c8ae76716f477f56feaf1e; fresh independent ACCEPT; actual verified CI runs 34000926362 (PR) and 34000895523 (push) both succeeded at that HEAD. Six SDP-only updates record TUI View acceptance and active Composition #49; 134 report finding IDs remain open. Initial run-reference typo in the PR acceptance comment was corrected transparently before merge; verified run metadata is the evidence.\n\nNo product/design/BC change. Next action: Composition artifact/source/workflow acceptance, then dedicated Refactor Design Issue. CI's main/codex-only push filter versus codereview-21 refs is a required design/bootstrap input, not an external blocker.",
+      "createdAt": "2026-09-06T00:23:46Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555767420",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSygcdg",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "ALL FOCUSED REVIEWS COMPLETE / REFACTOR DESIGN AUTHORIZED\n\nMaster accepted and merged Composition #49 / PR #51: source e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c; merge e0e716fd44421c221d00375fc0c0d0b8ea85bdff; artifact SDP/Reviews/CR-#21/Layers/Composition/LR--001.md. Independent actual source/action/build/bootstrap inspection, separate rebuilt bootstrap probes, no report correction; all nine CI checks PASS in run 34001756011. #49 closed.\n\nAll ten focused layers are accepted/merged. I-01 complete. Refactor Design Issue #52 now authorizes I-02/G-07 and branch codex/cr21-refactor-design. Full accepted reports will be read afresh; design must reconcile concrete APIs/ownership, all vertical Slices, every open finding, feasibility and full verification/release contract. No implementation or BC freeze before subsequent acceptance gates.\n\nCheckpoint metadata published at codex/cr21-checkpoints @ d62d112bd897f63dd14b186356335b3d65170b33: all 143 report IDs remain open (36H/89M/18L, overlapping reports). Handoff/sprint/index/relations/ledger synchronized before broad design work. Primary artifact to create: SDP/Design/CR-#21/REFDES--001.md with necessary appendices.\n\nNext action: resolve implementable design, including bounded source/temporary feasibility evidence where safety mechanisms need proof; freeze exact design HEAD for fresh independent review and corrections, then merge accepted design before required BC creation/review/freeze.",
+      "createdAt": "2026-09-06T00:48:43Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555887222",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABSyj6-A",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "I-02 DESIGN CHECKPOINT SURFACE MERGED\n\nMaster integrated PR #53 at 58f1cb9eda941db0941cbb8e04e6a0559a3ca896. Reviewed metadata source d62d112bd897f63dd14b186356335b3d65170b33; fresh independent ACCEPT and 18/18 verified successful checks, runs 34002140473, 34002264047. I-01 is complete, I-02/G-07 Refactor Design #52 active; all 143 report findings remain open. No product implementation or BC freeze.\n\nBounded Runtime and Git-safety feasibility reviews are active under #52 while Master reads accepted design inputs afresh and builds the coherent API/ownership/Slice/verification design. Temporary prototypes are design evidence only, outside product code. Exact next action: finish implementable REFDES and appendices, then frozen-HEAD independent design review.",
+      "createdAt": "2026-09-06T01:00:47Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5555944184",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS0rfnQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "G-07 / Refactor Design COMPLETE — Master, Sprint-004-v04 / I-02. Issue #52 / PR #54 accepted and merged.\n\nTechnical design independently accepted at 664f0c051344e3abdfd7d3c5698e4fbd3f584a83; final acceptance metadata independently accepted at e63547771d89f892ebe8e13f66a1ed8ef0807ba2. Final exact-head CI18/18 SUCCESS in runs34022968145/34022971176. Expected-head squash merge produced actual main SHA 4a42222f7bfedc1d80693effbb25a1a82fcff65e.\n\nAccepted package: SDP/Design/CR-#21/REFDES--001.md plus API, Storage, CwdAcquisition, WindowsBroker, complete MigrationMap/Slices/Verification/FindingDisposition and four review records. All ten horizontal layers and13 vertical capabilities retained; all70 baseline paths/90 test functions mapped; all twelve release assets preserved. Native Windows broker design retains386-to-native64 with embedded host-native helpers and explicit future native/reproducibility gates. Early/full review findings were corrected and independently re-reviewed; rejected experiments remain traceable.\n\nAll143 baseline product findings remain OPEN (36H/89M/18L, overlapping reports). Product code remains v0.3.14 f626077ca0e59fbe9ede7ba1116982bb94b2eb6b. No BC frozen, implementation Slice or product refactor branch yet. Mandatory implementation/native ABI/failure/Slice/release evidence is not claimed by design acceptance.\n\nExact next action: open the separate seven-BC author/review/freeze Issue, update I-02/G-08 and index/relations/append-only ledger, author concrete cross-contract types and protocols, independently review/freeze1.0.0 with exact SHA/CI. Only after that gate create codereview-21/refactor and issue-authorized layer implementation.",
+      "createdAt": "2026-09-06T08:55:21Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5558165405",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS1IHGA",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "Boundary gate #55 / PR56 is COMPLETE and merged at97cc0d8257603766dd741b49b7d8005857b421a9. Technical source independently accepted7685494e45c0ef44fbccf9b49a589a90a78026d0; final reviewed freeze HEAD3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc; all18 final CI checks SUCCESS in34027493442/34027495276. All seven BCs and shared BoundaryTypes--001 are effective FROZEN1.0.0. Actual review/correction/freeze history is in BCReview--002/BCFreeze--001 and append-only ledger; #55 is closed.\n\nM0 is complete. Full SLC-01..13 selection remains unchanged. Master created canonical codereview-21/refactor from that exact merge and is opening the first dedicated M1 Composition CI/bootstrap-safety Issue. Fresh workers implement and separate reviewers inspect actual exact SHAs before serial integration. Product implementation has not begun, all143 product findings remain open, and the full implementation/native verification/final PR/main/tag/twelve-asset/install-upgrade goal remains active.",
+      "createdAt": "2026-09-06T10:31:28Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5558634264",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS1mNdg",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "Implementation M1 #57 COMPLETE and closed. Accepted source/review/integration05982a4adb35e39d7b7ba371e0d16d83b2b3674c; fresh independent review resolved all six M1 findings. Source CI34031420582 and canonical integration push CI34031833446 each passed18 applicable jobs; Runtime M3 helper remains explicitly NOT RUN. New architecture guard, native Windows ARM64/twelve-build/canonical-branch CI and safe manual compilation staging are integrated on codereview-21/refactor.\n\nCompletion/M2 Domain kickoff checkpoint75a214200d1ab192f491e11c7165e1d5def4712d records exact evidence, archived independent probes, current65-check matrix and ledger40. Next dedicated Issue #58 authorizes only the pure Domain foundation on codereview-21/layer-domain, with fresh worker and separate reviewer. All13 Slices remain selected; all143 baseline findings remain open. The full M2..M8/new-stack/native verification/final PR/main/twelve-asset/install-upgrade goal continues; no product release claim.",
+      "createdAt": "2026-09-06T12:12:15Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5559127414",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS13efQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "M2 Domain #58 COMPLETE/CLOSED at accepted source/review/integration6113ca55b57cb628b016c483070dbb52cd5dd79a. Independent review has no findings; source CI34033181820 and canonical integration CI34033772732 each18 applicable SUCCESS/one explicit M3skip. Domain values and exact targets now exist; CLI remains on legacy behavior. All13 Slices and143 open baseline findings remain tracked.\n\nCheckpoint29a12cbd6f2a0e189439b9ca25889f9f566afd6c records archived independent proof and ledger42 before parallel M2 leaves: #59 complete Application API/ports, #60 independent State-owned viewmodel. Their bounded contracts/worktrees are ready; separate fresh workers/reviewers and serial API/ports-then-viewmodel integration apply. M2 is not complete until both surfaces and their integrated CI pass; full M3..M8/refactor/native/vertical/release goal remains active.",
+      "createdAt": "2026-09-06T13:05:44Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5559410301",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS2deJQ",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "Master/Verifier checkpoint 312b5343405f5e7a928e0f1d2f5e93aeb363972f preserves bounded native signing preparation in SDP/Verification/CR-#21/Tooling-Preparation--001.md and ledger46. Local Windows Git2.48.1 produced real SSH and OpenPGP signed commits in SHA-1/SHA-256 temporary repositories; four valid-signature checks passed and four modified-message controls were rejected. Three earlier fixture/environment attempts remain archived with exact hashes. The archive explicitly excludes temporary private keys and repository stores.\n\nThis proves local tool availability for meaningful future signing tests only: no gh-tree Git adapter or G8a transparent bridge has been verified, no M3 implementation is authorized before M2 completes, and no CurrentMatrix/Slice/baseline finding is closed. M2 #59 is correcting all eight independent M259 groups; accepted viewmodel #60 remains held for API-first integration. Canonical04eb90a CI34039754376 and previous5e3aa2e CI34039134247 each passed18 applicable jobs plus the explicit Runtime M3 helper skip. Current Handoff was consolidated to remove superseded status paragraphs; the append-only history remains intact.",
+      "createdAt": "2026-09-06T14:52:55Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5560032805",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS3L9uw",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "M2 dependency gate COMPLETE. Domain#58 accepted/integrated6113ca55b57cb628b016c483070dbb52cd5dd79a was followed by independent full API/ports ACCEPT at finald4c3bfdd2038bbc5921488fbcffad1b8736c7460 (technical6e289c4) and viewmodel ACCEPT atd279c3f2af59e48029e77d845f5a55271c7889cf. All M259-M01..M08 and M260-M01 implementation findings are resolved, with original rejected snapshots/controls preserved.\n\nSerial integration is verified: API at ecf12e91f5a1223c9d97b404db024e1ce05372df passed CI34046178481; then viewmodel at d60afe8fb763269964bcdc05958c8cdbc7849dea passed CI34046727344. Each exact run has18 applicable SUCCESS jobs and the sole explicit Runtime M3 helper SKIP. Product trees match independently reviewed sources; no unexpected shared/build changes or merge conflicts. Issues59/60 are CLOSED, verified on GitHub.\n\nM2-API-Review--003 preserves complete primary/bounded acceptance,99/77 verified raw source blobs and53 independent evidence files; M2-Viewmodel-Review--002 preserves its independent controls and exact source. Completion checkpoint3662ba25c395467b2b30c27d71a01c4d832b97dd updates sprint/iteration/plan/contracts/current index/relations/matrix and ledger52/53. Follow-up3cf264141764385eb6afe3f7e4e25a7504020690 removes the obsolete kickoff label from the completed contract header; canonical worktree is clean.\n\nNext: M3 adapter preparation under the complete frozen authority, then bounded implementation Issues/contracts/traceability before fresh workers and separate fresh reviewers. Serial order stays Git→GitHub→Persistence→Discovery→Runtime. No M3 product dispatch yet. All13 Slices,143 baseline program findings, native/workflow/State/View verification and M4..M8 product PR/main/twelve-asset/controlled install-upgrade/release gates remain intact. CLI still uses the legacy stack and the installed extension is unchanged.",
+      "createdAt": "2026-09-06T17:06:49Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5560794555",
+      "viewerDidAuthor": true
+    },
+    {
+      "id": "IC_kwDOUMhlu88AAAABS3X4HA",
+      "author": {
+        "login": "Hans-Einar"
+      },
+      "authorAssociation": "OWNER",
+      "body": "USER-REQUESTED PAUSE / DURABLE CHECKPOINT — no implementation dispatch.\n\nThe user explicitly requested stopping at the current safe boundary and preserving all work before any further implementation. M1/M2 remain complete; M3 Issues61..65 and their full contracts are preserved, but no M3 worker branch/worktree or implementation agent has been created/started. Do not begin implementation or merge anything from this checkpoint without an explicit user instruction to resume; automatic goal continuations are not resume authorization.\n\nThe dedicated codereview-21/refactor branch is being checkpointed with an annotated recovery tag in checkpoint/gh-tree-m3-preparation/20260906-1725Z. It is a recovery marker, not completion of M3, any Slice or v0.4.0. Existing SDP Handoff/CurrentIndex/Ledger and a source/evidence/worktree inventory will identify the exact recovery state and next permitted action. All13 Slices/143 baseline findings/full native and release gates remain intact.",
+      "createdAt": "2026-09-06T17:41:38Z",
+      "includesCreatedEdit": false,
+      "isMinimized": false,
+      "minimizedReason": "",
+      "reactionGroups": [],
+      "url": "https://github.com/Hans-Einar/gh-tree/issues/21#issuecomment-5560989724",
+      "viewerDidAuthor": true
+    }
+  ],
+  "number": 21,
+  "state": "OPEN",
+  "title": "Broad code review: architecture, state authority, lifecycle and layer boundaries after v0.3.14",
+  "url": "https://github.com/Hans-Einar/gh-tree/issues/21"
+}

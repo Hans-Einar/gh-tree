@@ -1,0 +1,6 @@
+{
+  "upstream": "https://github.com/vmactions/freebsd-vm/tree/f0552d3b69211736abd97f02ff3d4674c56b73b1",
+  "tagObserved": "v1.5.5",
+  "licenseBlob": "de88db890a4d7112cc71c019b09865b2c554acee",
+  "scope": "Read-only source preparation only; not executed, not a reviewed/accepted CI dependency. Original source byte hashes retained."
+}

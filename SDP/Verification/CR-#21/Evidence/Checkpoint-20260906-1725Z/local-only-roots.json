@@ -1,0 +1,204 @@
+{
+  "capturedUTC": "2026-09-06T17:39:02.301911+00:00",
+  "roots": [
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-bc55-commit-feasibility-6e504fa41d274b59a5507794a37e41fc",
+      "files": 2985,
+      "bytes": 2990972,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-composition-review-49",
+      "files": 20,
+      "bytes": 65720670,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-design-git-safety-52",
+      "files": 8884,
+      "bytes": 171568711,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-github-review-43",
+      "files": 9,
+      "bytes": 61381,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-launch-discovery-36",
+      "files": 9,
+      "bytes": 21380,
+      "reparseEntriesNotFollowed": 1,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-m3-preparation",
+      "files": 8,
+      "bytes": 95373,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-persistence-feasibility-52",
+      "files": 16,
+      "bytes": 65460,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-persistence-review-40",
+      "files": 11,
+      "bytes": 26506,
+      "reparseEntriesNotFollowed": 1,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-tuiview-review-46",
+      "files": 67,
+      "bytes": 370521,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-049cb4a1d3",
+      "files": 124,
+      "bytes": 148981,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-8e02d65764",
+      "files": 8,
+      "bytes": 8486,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\.codex\\tmp\\m3sign-d7a19f3887",
+      "files": 95,
+      "bytes": 112703,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88",
+      "files": 1680,
+      "bytes": 10301641,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c",
+      "files": 5,
+      "bytes": 79807,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-builds-ffdbd8708b0549c9a788cd2cac3f3ec1",
+      "files": 12,
+      "bytes": 73660159,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781",
+      "files": 843,
+      "bytes": 40401398,
+      "reparseEntriesNotFollowed": 2,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-api",
+      "files": 38,
+      "bytes": 164291,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-domain-b4c11b0005204fbebdaf6bd38c66e1e5",
+      "files": 21,
+      "bytes": 5116,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db",
+      "files": 54,
+      "bytes": 100171,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-viewmodel-4b7f2db236e94f9d9a592738a1b95a7d",
+      "files": 19,
+      "bytes": 5058,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-viewmodel-review-d279c3f",
+      "files": 79,
+      "bytes": 884999,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-viewmodel-review-dbb89ea",
+      "files": 71,
+      "bytes": 1108300,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m3-signing-baseline-2743fe0c711041919c98a90e645fbe85",
+      "files": 8,
+      "bytes": 8966,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    },
+    {
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence",
+      "files": 5489,
+      "bytes": 52364235,
+      "reparseEntriesNotFollowed": 0,
+      "readErrors": [],
+      "disposition": "Preserved locally; generated fixtures/clones/tool copies/cache, not all copied to Git. Required accepted evidence and M3 preparation are separately archived in SDP."
+    }
+  ],
+  "additionalInstalledTools": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64",
+    "C:/Program Files/Git",
+    "C:/WINDOWS/System32/OpenSSH"
+  ],
+  "originalRequest": "C:/Users/hanse/.codex/attachments/0abc1bac-4730-48cd-b3e2-0ee37799b488/pasted-text.txt",
+  "originalRequestRecovery": "SDP/Sprints/Sprint-004-v04/UserRunContract.md"
+}

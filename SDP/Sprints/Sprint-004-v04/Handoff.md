@@ -1,9 +1,82 @@
 # Program handoff
 
-State: ACTIVE - Sprint-004-v04 / I-03 / M3 adapter implementation.
+State: PAUSED BY USER - Sprint-004-v04 / I-03 / M3 before dispatch.
 Full long-running goal #21 remains open. M1/M2 Issues #57..60 are complete/closed.
 Canonical codereview-21/refactor worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor.
+
+## User-requested checkpoint
+
+Work is stopped. Resume requires an explicit instruction from the user. Do not
+start M3 implementation, create its worktrees/agents, or perform a merge as part
+of this checkpoint. The full original objective is unfinished and unchanged.
+
+Recovery tag: `checkpoint/gh-tree-m3-preparation/20260906-1725Z` (annotated).
+It is a recovery marker, not a claim that M3, a Slice or v0.4.0 is complete.
+The tag's peeled commit identifies the exact checkpoint HEAD. This record cannot
+embed its own commit hash; use Git metadata and the final Issue checkpoint comment.
+
+Repository: Hans-Einar/gh-tree, origin https://github.com/Hans-Einar/gh-tree.git.
+Worktree: C:/Users/hanse/GIT/gh-tree-wt/refactor.
+Dedicated branch: codereview-21/refactor; no new branch or switch was needed.
+Default worktree C:/Users/hanse/GIT/gh-tree remains clean main97cc0d8.
+Pre-checkpoint HEAD was3cf264141764385eb6afe3f7e4e25a7504020690, already pushed.
+The exact pending M3 preparation was first preserved without simplification in
+5cdd4367af786f0f2a18e500eb621c6867939f63. This following checkpoint preserves the
+pause status and recovery inventory. Both commits are included in the tag.
+
+All16 registered worktrees were inspected. Only this task worktree was dirty:
+8 unstaged SDP files and2 untracked M3 contract/assignment files, nothing staged
+and no product edits. Their original bytes/hashes and tracked patch are in
+SDP/Verification/CR-#21/Evidence/Checkpoint-20260906-1725Z. Its ArchiveManifest.json
+maps exact archived files. workspace-before.json records every worktree/ref/status,
+89 commits captured across refs since resumption and72 current ancestors since the
+product baseline. Git history retains the complete commits.
+
+The previously local-only older merge801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc was
+pushed on its existing codex/cr21-checkpoints branch. Its tree equals previously
+published historical main58f1cb9eda941db0941cbb8e04e6a0559a3ca896. No new merge was
+performed. That historical branch is separate from this tag's ancestry; recover
+it from origin by its recorded ref/SHA when needed, without merging it.
+
+Completed: ten focused reviews, accepted design, seven frozen BCs/shared types,
+M1 CI/architecture bootstrap, and independently reviewed/integrated M2 Domain,
+API/ports and viewmodel. Verified combined productd60afe8fb763269964bcdc05958c8cdbc7849dea
+passed integrationCI34046727344; API integrationecf12e9 passedCI34046178481.
+Latest pre-checkpoint metadata3cf2641 passedCI34047530046. Each run has18 applicable
+SUCCESS jobs and an explicit pre-Runtime M3 skip. Earlier M1/M259/M260 failures
+were corrected; original failures and deliberately failing mutation controls are
+preserved in their review archives. No new product tests are claimed for this
+documentation-only checkpoint; JSON/hash/scope checks verify preservation.
+
+Partial: M3 Issues61..65 and complete contracts exist and remain open, paused.
+No M3 branch, worktree or implementation agent was created. All prior agents
+were confirmed completed. Full Issue bodies/comments, all M3 drafts and read-only
+FreeBSD source/provenance/license are archived. The FreeBSD action was not run or
+accepted as infrastructure. Native signing experiments are tooling evidence only.
+
+Remaining: M3 adapters; M4 Application/State/View; M5 real new-stack harness;
+M6 host/cutover; M7 mapped retirement; M8 full native/platform verification,
+product PR/main/twelve assets/controlled install-upgrade/release. All13 Slices and
+143 baseline findings remain selected/open. CLI still uses legacy behavior.
+No technical external blocker is known; the current dependency is user resumption.
+
+Local state outside the tag remains intact: generated test repos/review clones,
+compiled binaries, temporary signing keys, downloaded tools, Go caches and local
+worktree registrations/reflogs. local-only-roots.json lists24 task-named roots,
+20555 files/about420MB and4 reparse entries that were not followed, with no read
+errors. Necessary accepted evidence is already in Git; this archive adds exact
+M3 preparation and original pending documents. Temporary keys/caches are not
+project source and are not published. Installed tools/credentials are external;
+no credentials were copied. There is no uncommitted local product work.
+
+If instructed to resume, first verify the tag/branch and read this Handoff,
+CurrentIndex, ledger55 and full Issues21/61..65 plus frozen authority. Update the
+pause/dispatch records, create the planned worktrees from the verified current
+checkpoint and record exact bases. Then start fresh Git/GitHub/Persistence workers
+with separate reviewers; Discovery/Runtime remain queued. Serial integration is
+Git -> GitHub -> Persistence -> Discovery -> Runtime. No implementation follows
+the checkpoint without that user instruction.
 
 ## Accepted source and gates
 
@@ -48,8 +121,8 @@ full#21, accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker/MigrationMap/
 Slices/Verification/FindingDisposition, relevant full frozen BCs/shared types and
 actual accepted Domain/API/ports. M3 Issues61/62/63/64/65 and Master contract
 SDP/Implementation/CR-#21/M3-Adapters--001.md are created. Index/relations/ledger54
-record scope before dispatch. Master next creates the five dedicated worktrees
-from this kickoff and records their actual base, then starts fresh Git/GitHub/
+record scope before dispatch. Only after explicit user resumption may Master
+create the worktrees, record their actual base and start fresh Git/GitHub/
 Persistence authors; Discovery/Runtime remain queued. Every worker owns only its
 one declared adapter folder/tests/report; separate fresh reviewers and Master
 serial integration remain required. No M3 product author has started yet at this
@@ -106,5 +179,5 @@ Inspect actual HEAD/dirty/unpublished state before each next action. No product
 PR/tag/release/install-upgrade has occurred; installed extension was observedv0.3.13
 and is unchanged. No external blocker is known. Use explicit UTF-8 for scripts and
 scoped byte-preserving attributes for native evidence. CurrentIndex/Relations/
-Ledger through54 and CurrentMatrix65 checks record M2 completion; no whole check
+Ledger through55 and CurrentMatrix65 checks record M2 completion; no whole check
 is manufactured complete from leaf-only proof.

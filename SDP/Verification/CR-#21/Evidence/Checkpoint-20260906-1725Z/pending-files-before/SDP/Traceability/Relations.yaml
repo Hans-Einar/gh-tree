@@ -1,0 +1,462 @@
+{
+  "version": 1,
+  "relations": [
+    {
+      "relation": "uses_target",
+      "from": "BR21",
+      "to": "APS22"
+    },
+    {
+      "relation": "depends_on",
+      "from": "LR33",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31"
+      ]
+    },
+    {
+      "relation": "accepts",
+      "from": "G-01",
+      "to": "LR33"
+    },
+    {
+      "relation": "records",
+      "from": "GOV35",
+      "to": "G-01"
+    },
+    {
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33"
+      ],
+      "relation": "depends_on",
+      "from": "LR36"
+    },
+    {
+      "to": "LR36",
+      "relation": "accepts",
+      "from": "G-02"
+    },
+    {
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36"
+      ],
+      "from": "LR40"
+    },
+    {
+      "relation": "accepts",
+      "to": "LR40",
+      "from": "G-03"
+    },
+    {
+      "from": "LR43",
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40"
+      ]
+    },
+    {
+      "from": "G-04",
+      "relation": "accepts",
+      "to": "LR43"
+    },
+    {
+      "from": "LR46",
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40",
+        "LR43"
+      ]
+    },
+    {
+      "from": "G-05",
+      "relation": "accepts",
+      "to": "LR46"
+    },
+    {
+      "from": "LR49",
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40",
+        "LR43",
+        "LR46"
+      ]
+    },
+    {
+      "from": "G-06",
+      "relation": "accepts",
+      "to": "LR49"
+    },
+    {
+      "from": "REFDES52",
+      "relation": "depends_on",
+      "to": [
+        "APS22",
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40",
+        "LR43",
+        "LR46",
+        "LR49"
+      ]
+    },
+    {
+      "from": "G-07",
+      "relation": "accepts",
+      "to": "REFDES52"
+    },
+    {
+      "from": "REFDES52",
+      "relation": "plans_disposition_of",
+      "to": "SDP/Design/CR-#21/FindingDisposition.yaml",
+      "state": "accepted_design_all_product_findings_open"
+    },
+    {
+      "from": "BC55",
+      "relation": "depends_on",
+      "to": "REFDES52"
+    },
+    {
+      "from": "G-08",
+      "relation": "accepts",
+      "to": "BC55"
+    },
+    {
+      "from": "BC55",
+      "relation": "reviewed_by",
+      "to": "SDP/LayerBoundaryContracts/BCReview--002.md",
+      "state": "historical_initial_changes_required",
+      "head": "c291606c2ecfaae15f1bef7b5155d82aa6966712"
+    },
+    {
+      "from": "BC55",
+      "relation": "reviewed_by",
+      "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "state": "technical_accept",
+      "head": "7685494e45c0ef44fbccf9b49a589a90a78026d0"
+    },
+    {
+      "relation": "frozen_by",
+      "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "state": "effective",
+      "from": "BC55",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "from": "M0",
+      "relation": "requires",
+      "to": [
+        "REFDES52",
+        "BC55"
+      ]
+    },
+    {
+      "from": "IMPL57",
+      "relation": "depends_on",
+      "to": "M0"
+    },
+    {
+      "from": "M1",
+      "relation": "accepts",
+      "to": "IMPL57"
+    },
+    {
+      "from": "IMPL57",
+      "relation": "build_prerequisite_for",
+      "to": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ]
+    },
+    {
+      "from": "SDP/Verification/CR-#21/CurrentMatrix.yaml",
+      "relation": "tracks_execution_of",
+      "to": [
+        "SDP/Design/CR-#21/Verification--001.md",
+        "SDP/Design/CR-#21/Slices--001.md",
+        "BC55"
+      ]
+    },
+    {
+      "from": "IMPL57",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M1-Review--001.md",
+      "head": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+      "state": "historical_changes_required"
+    },
+    {
+      "from": "IMPL57",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M1-Review--002.md",
+      "head": "b1f533e062c8ab94b81e9309aaffadee096a5c7d",
+      "state": "historical_changes_required"
+    },
+    {
+      "from": "IMPL57",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M1-Review--003.md",
+      "head": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "state": "accepted"
+    },
+    {
+      "from": "IMPL58",
+      "relation": "depends_on",
+      "to": "M1"
+    },
+    {
+      "from": "M2",
+      "relation": "accepts",
+      "to": "IMPL58"
+    },
+    {
+      "from": "IMPL58",
+      "relation": "foundation_for",
+      "to": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ]
+    },
+    {
+      "from": "IMPL58",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+      "head": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "state": "accepted"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "depends_on",
+      "to": "IMPL58"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "depends_on",
+      "to": "IMPL58"
+    },
+    {
+      "from": "M2",
+      "relation": "accepts",
+      "to": [
+        "IMPL59",
+        "IMPL60"
+      ]
+    },
+    {
+      "from": "IMPL59",
+      "relation": "inventoried_by",
+      "to": "SDP/Implementation/CR-#21/API-Inventory--001.md",
+      "state": "preparation_only"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
+      "head": "dbb89ea813a954bb8bbb276bea2bb46647826810",
+      "state": "historical_changes_required"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+      "head": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "state": "accepted_pending_predecessor_integration"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--001.md",
+      "head": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "state": "changes_required"
+    },
+    {
+      "from": "TOOL-M3-01",
+      "relation": "prepares_verification_of",
+      "to": "BC--Application--Git",
+      "state": "native_tools_only",
+      "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "correction_review_candidate",
+      "to": "4700ea72f080cae1f0a22cf21e80876d88617754",
+      "productHead": "c96ca9244a30e16808743a0cd3e0b557e75080d7",
+      "state": "independent_rereview",
+      "priorReview": "SDP/Verification/CR-#21/M2-API-Review--001.md"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--002.md",
+      "head": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "state": "changes_required"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "correction_review_candidate",
+      "to": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+      "priorReviewedHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "state": "independent_rereview"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--003.md",
+      "head": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+      "state": "accepted_pending_integration"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "integrated_at",
+      "to": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
+      "sourceHead": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "ciRun": "34046178481",
+      "state": "verified"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "integrated_at",
+      "to": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "sourceHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "ciRun": "34046727344",
+      "state": "verified"
+    },
+    {
+      "from": "M2",
+      "relation": "completed_at",
+      "to": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "state": "complete"
+    },
+    {
+      "from": "M3",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL61",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL62",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL62",
+      "relation": "integrates_after",
+      "to": "IMPL61"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "integrates_after",
+      "to": "IMPL62"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "integrates_after",
+      "to": "IMPL63"
+    },
+    {
+      "from": "IMPL65",
+      "relation": "depends_on",
+      "to": "M2"
+    },
+    {
+      "from": "IMPL65",
+      "relation": "integrates_after",
+      "to": "IMPL64"
+    },
+    {
+      "from": "M3",
+      "relation": "accepts",
+      "to": [
+        "IMPL61",
+        "IMPL62",
+        "IMPL63",
+        "IMPL64",
+        "IMPL65"
+      ]
+    }
+  ],
+  "errata": [
+    {
+      "scope": "Challenge of known findings",
+      "correction": "APP29-H03/H06 headings are transposed: reconciliation=APP29-H06, confirmation=APP29-H03; meanings unchanged.",
+      "artifact": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    }
+  ]
+}

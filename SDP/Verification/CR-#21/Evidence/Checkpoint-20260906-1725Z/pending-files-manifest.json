@@ -1,0 +1,62 @@
+[
+  {
+    "path": "SDP/Implementation/CR-#21/Plan--001.md",
+    "sha256": "2ee3480e92cfe6b70976052f37eaa6be90eb9090ead4905735e5e7aa6dfa832b",
+    "length": 5983,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Sprints/Sprint-004-v04/Handoff.md",
+    "sha256": "24b5cb53774a50ac63331dbdc00ee693c44c7b1cdab8e636b02c1b53de151781",
+    "length": 7182,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+    "sha256": "80445fb670006d573ad184ccc15191553685a1c2da9b52c35bbb032f90ad3127",
+    "length": 18764,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md",
+    "sha256": "e244d9bd373c210b23b575ebeb04fe8cb658756317fa34efba7243ad697d290b",
+    "length": 3038,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Sprints/Sprint-004-v04/implementationNotes.md",
+    "sha256": "edca77c9880deb8d71bdc70edd3fb39173d096e2143fc24f4dec997194ba9df8",
+    "length": 25439,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Traceability/CurrentIndex.yaml",
+    "sha256": "eddabbb4158a148fea018625d32ad05c5496203517c27339be228e0b9d9a7497",
+    "length": 50823,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Traceability/Ledger.ndjson",
+    "sha256": "4c8abdac8a96b98a18f903e2eeb2c989abdf366e73b3fb29de2e8c4ab9965f40",
+    "length": 31073,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Traceability/Relations.yaml",
+    "sha256": "424e15fcddae19ab0680f7747f12ec6d52490fdbe792b9ba7af21abe8d6e0af7",
+    "length": 10638,
+    "wasUntracked": false
+  },
+  {
+    "path": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+    "sha256": "179a9a7ca42d5c319c71122e8e3f2319c6a1c299ec10f2d337481c5c4f10b030",
+    "length": 8135,
+    "wasUntracked": true
+  },
+  {
+    "path": "SDP/Implementation/CR-#21/M3-Assignments.json",
+    "sha256": "9f875b94c6ba44059eabc2de32301495ce5fbc3bc198f6d775dd5bb4e1134500",
+    "length": 3064,
+    "wasUntracked": true
+  }
+]

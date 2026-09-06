@@ -1,6 +1,6 @@
 # Sprint 004 — gh-tree v0.4 architecture program
 
-State: ACTIVE
+State: PAUSED by user; explicit resume instruction required.
 Authority: Issues #21 and #35; [full user run contract](UserRunContract.md).
 Operative workflow: [developmentInstructions.md](../../../developmentInstructions.md).
 

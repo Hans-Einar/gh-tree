@@ -1,0 +1,406 @@
+diff --git a/SDP/Implementation/CR-#21/Plan--001.md b/SDP/Implementation/CR-#21/Plan--001.md
+index 1cd82b6..2ba4fe9 100644
+--- a/SDP/Implementation/CR-#21/Plan--001.md
++++ b/SDP/Implementation/CR-#21/Plan--001.md
+@@ -1,6 +1,6 @@
+ # Implementation plan — complete v0.4 refactor
+ 
+-State: ACTIVE, I-03 / M3 preparation. Authority: #21; M1/M2 contributions #57..60 complete.
++State: ACTIVE, I-03 / M3. Authority: #21 and adapter Issues #61..65; M1/M2 #57..60 complete.
+ M1 #57 is complete; its original contribution contract remains below as history.
+ Integration branch: codereview-21/refactor.
+ Integration base: 97cc0d8257603766dd741b49b7d8005857b421a9.
+@@ -76,3 +76,13 @@ M3 preparation now opens bounded adapter Issues under#21, records exact contract
+ traceability before fresh implementation, and uses separate reviewers. Accepted
+ serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+ M4..M8/full native/vertical/packaging/release gates remain intact.
++
++M3 adapter Issues61 Git,62 GitHub,63 Persistence,64 Launch Discovery and65 Runtime
++are authorized under#21 after complete M2. Contract M3-Adapters--001 and current
++index/relations/ledger54 precede fresh worker dispatch. First parallel authors:
++Git/GitHub/Persistence; Discovery/Runtime queued. Exact worker base is the Master
++kickoff commit, recorded in dispatch ledger/Issue comments after worktree creation.
++No product source is changed by this kickoff; serial integration order stays
++Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
++M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
++passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
+diff --git a/SDP/Sprints/Sprint-004-v04/Handoff.md b/SDP/Sprints/Sprint-004-v04/Handoff.md
+index 89bfa7a..bea2662 100644
+--- a/SDP/Sprints/Sprint-004-v04/Handoff.md
++++ b/SDP/Sprints/Sprint-004-v04/Handoff.md
+@@ -1,6 +1,6 @@
+ # Program handoff
+ 
+-State: ACTIVE - Sprint-004-v04 / I-03 / M3 preparation.
++State: ACTIVE - Sprint-004-v04 / I-03 / M3 adapter implementation.
+ Full long-running goal #21 remains open. M1/M2 Issues #57..60 are complete/closed.
+ Canonical codereview-21/refactor worktree:
+ C:/Users/hanse/GIT/gh-tree-wt/refactor.
+@@ -43,14 +43,17 @@ Product trees match accepted sources and no unexpected shared/build inputs chang
+ API#59 and viewmodel#60 are CLOSED, verified on GitHub. M1/M2 are complete; no
+ full Slice, baseline finding, coordinator/native behavior or release gate is closed.
+ 
+-Active stage: I-03 / M3 preparation. Read AGENTS/developmentInstructions, current
++Active stage: I-03 / M3 adapter implementation. Read AGENTS/developmentInstructions, current
+ full#21, accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker/MigrationMap/
+ Slices/Verification/FindingDisposition, relevant full frozen BCs/shared types and
+-actual accepted Domain/API/ports. Next create M3 implementation Issues and Master
+-slice/contribution contracts, update current index/relations/ledger before dispatch,
+-then use fresh worker contexts and separate independent reviewers. Workers own
+-one adapter folder only; Master owns shared integration/traceability. No M3
+-implementation Issue/dispatch exists yet at this checkpoint.
++actual accepted Domain/API/ports. M3 Issues61/62/63/64/65 and Master contract
++SDP/Implementation/CR-#21/M3-Adapters--001.md are created. Index/relations/ledger54
++record scope before dispatch. Master next creates the five dedicated worktrees
++from this kickoff and records their actual base, then starts fresh Git/GitHub/
++Persistence authors; Discovery/Runtime remain queued. Every worker owns only its
++one declared adapter folder/tests/report; separate fresh reviewers and Master
++serial integration remain required. No M3 product author has started yet at this
++kickoff; exact base/dispatch follow in the authoritative records.
+ 
+ M3 serial integration: Git → GitHub → Persistence → Launch Discovery → Runtime.
+ Then M4 Application → State → View; M5 full real new-stack headless Slices; M6
+@@ -103,5 +106,5 @@ Inspect actual HEAD/dirty/unpublished state before each next action. No product
+ PR/tag/release/install-upgrade has occurred; installed extension was observedv0.3.13
+ and is unchanged. No external blocker is known. Use explicit UTF-8 for scripts and
+ scoped byte-preserving attributes for native evidence. CurrentIndex/Relations/
+-Ledger through53 and CurrentMatrix65 checks record M2 completion; no whole check
++Ledger through54 and CurrentMatrix65 checks record M2 completion; no whole check
+ is manufactured complete from leaf-only proof.
+diff --git a/SDP/Sprints/Sprint-004-v04/ScrumIterations.md b/SDP/Sprints/Sprint-004-v04/ScrumIterations.md
+index 73aa198..d42fb81 100644
+--- a/SDP/Sprints/Sprint-004-v04/ScrumIterations.md
++++ b/SDP/Sprints/Sprint-004-v04/ScrumIterations.md
+@@ -3,7 +3,7 @@
+ State: ACTIVE
+ Sprint: Sprint-004-v04
+ Active iteration: I-03 - complete refactor implementation
+-Active gate: M3 preparation - bounded Git/GitHub/Persistence/Discovery/Runtime Issues
++Active gate: M3 - adapter implementation under Issues #61..65
+ All SLC-01..13 selected; M1/M2 dependencies are complete, full adapter implementation is next.
+ 
+ ## I-01 contract
+@@ -274,7 +274,7 @@ CI. M259-M01..M08 and M260-M01 are resolved; Issues58/59/60 are closed. Original
+ failed review rounds, probes, mutations and exact hashes remain in the M2 review
+ artifacts, implementationNotes and append-only ledger. They are not erased.
+ 
+-## I-03 / M3 preparation
++## I-03 / M3 active adapter contracts
+ 
+ Read current#21 and accepted REFDES/MigrationMap/Slices/Verification/frozen BCs,
+ then create bounded adapter Issues and Master contracts/traceability before fresh
+@@ -284,3 +284,13 @@ Git→GitHub→Persistence→Discovery→Runtime. No legacy retirement, host cut
+ frozen contract edits or shared workflow/module edits are delegated by default.
+ M1 Runtime helper check remains the exact accepted future interface. All13 Slices,
+ 143 baseline findings and full M3..M8/native/vertical/release proof remain required.
++
++M3 adapter Issues61 Git,62 GitHub,63 Persistence,64 Launch Discovery and65 Runtime
++are authorized under#21 after complete M2. Contract M3-Adapters--001 and current
++index/relations/ledger54 precede fresh worker dispatch. First parallel authors:
++Git/GitHub/Persistence; Discovery/Runtime queued. Exact worker base is the Master
++kickoff commit, recorded in dispatch ledger/Issue comments after worktree creation.
++No product source is changed by this kickoff; serial integration order stays
++Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
++M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
++passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
+diff --git a/SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md b/SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md
+index 23ddde9..1543d23 100644
+--- a/SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md
++++ b/SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md
+@@ -44,7 +44,7 @@ Acceptance of a review report does not mean its product findings are resolved.
+ 
+ I-01: remaining focused reviews and program checkpoint establishment.
+ I-02: reconciled Refactor Design and BC review/freeze.
+-I-03: complete selected refactor implementation; M1/M2 #57..60 complete, M3 adapter preparation active. Contract in
++I-03: complete selected refactor implementation; M1/M2 #57..60 complete, M3 adapter Issues #61..65 active. Contract in
+ SDP/Implementation/CR-#21/Plan--001.md follows accepted REFDES/Slices--001.
+ The later verification/release iteration executes the full M8 gate.
+ 
+diff --git a/SDP/Sprints/Sprint-004-v04/implementationNotes.md b/SDP/Sprints/Sprint-004-v04/implementationNotes.md
+index b84d9c5..bcf0bb7 100644
+--- a/SDP/Sprints/Sprint-004-v04/implementationNotes.md
++++ b/SDP/Sprints/Sprint-004-v04/implementationNotes.md
+@@ -360,3 +360,13 @@ M3 preparation now opens bounded adapter Issues under#21, records exact contract
+ traceability before fresh implementation, and uses separate reviewers. Accepted
+ serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+ M4..M8/full native/vertical/packaging/release gates remain intact.
++
++M3 adapter Issues61 Git,62 GitHub,63 Persistence,64 Launch Discovery and65 Runtime
++are authorized under#21 after complete M2. Contract M3-Adapters--001 and current
++index/relations/ledger54 precede fresh worker dispatch. First parallel authors:
++Git/GitHub/Persistence; Discovery/Runtime queued. Exact worker base is the Master
++kickoff commit, recorded in dispatch ledger/Issue comments after worktree creation.
++No product source is changed by this kickoff; serial integration order stays
++Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
++M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
++passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
+diff --git a/SDP/Traceability/CurrentIndex.yaml b/SDP/Traceability/CurrentIndex.yaml
+index 3d770d6..58728ed 100644
+--- a/SDP/Traceability/CurrentIndex.yaml
++++ b/SDP/Traceability/CurrentIndex.yaml
+@@ -4,7 +4,7 @@
+   "programIssue": 21,
+   "sprint": "Sprint-004-v04",
+   "activeIteration": "I-03",
+-  "activeGate": "M3-preparation",
++  "activeGate": "M3",
+   "implementationSlice": null,
+   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
+   "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
+@@ -574,9 +574,14 @@
+     {
+       "id": "M3",
+       "kind": "integration_gate",
+-      "state": "preparation",
++      "state": "active",
+       "requires": [
+-        "M2"
++        "M2",
++        "IMPL61",
++        "IMPL62",
++        "IMPL63",
++        "IMPL64",
++        "IMPL65"
+       ],
+       "order": [
+         "Git",
+@@ -585,7 +590,148 @@
+         "Launch Discovery",
+         "Runtime"
+       ],
+-      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md"
++    },
++    {
++      "id": "IMPL61",
++      "kind": "implementation_contribution",
++      "issue": 61,
++      "state": "authorized",
++      "layer": "Git",
++      "slices": [
++        "SLC-01",
++        "SLC-02",
++        "SLC-03",
++        "SLC-04",
++        "SLC-05",
++        "SLC-06",
++        "SLC-07",
++        "SLC-08",
++        "SLC-09",
++        "SLC-10",
++        "SLC-11",
++        "SLC-12",
++        "SLC-13"
++      ],
++      "branch": "codereview-21/layer-git",
++      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/git-implementation",
++      "ownedPath": "internal/git/",
++      "workerReport": "SDP/Implementation/CR-#21/Git/M3-Git--001.md",
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
++      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
++      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
++      "workerBase": null,
++      "requiredChecks": [
++        "V-GIT-01..10"
++      ],
++      "integrationHead": null
++    },
++    {
++      "id": "IMPL62",
++      "kind": "implementation_contribution",
++      "issue": 62,
++      "state": "authorized",
++      "layer": "GitHub",
++      "slices": [
++        "SLC-01",
++        "SLC-02",
++        "SLC-03",
++        "SLC-05",
++        "SLC-08",
++        "SLC-12",
++        "SLC-13"
++      ],
++      "branch": "codereview-21/layer-github",
++      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/github-implementation",
++      "ownedPath": "internal/github/adapter/",
++      "workerReport": "SDP/Implementation/CR-#21/GitHub/M3-GitHub--001.md",
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
++      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
++      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
++      "workerBase": null,
++      "requiredChecks": [
++        "V-GH-01..03"
++      ],
++      "integrationHead": null
++    },
++    {
++      "id": "IMPL63",
++      "kind": "implementation_contribution",
++      "issue": 63,
++      "state": "authorized",
++      "layer": "Persistence",
++      "slices": [
++        "SLC-01",
++        "SLC-04",
++        "SLC-05",
++        "SLC-09",
++        "SLC-10",
++        "SLC-12",
++        "SLC-13"
++      ],
++      "branch": "codereview-21/layer-persistence",
++      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/persistence-implementation",
++      "ownedPath": "internal/persistence/",
++      "workerReport": "SDP/Implementation/CR-#21/Persistence/M3-Persistence--001.md",
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
++      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
++      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
++      "workerBase": null,
++      "requiredChecks": [
++        "V-PER-01..04"
++      ],
++      "integrationHead": null
++    },
++    {
++      "id": "IMPL64",
++      "kind": "implementation_contribution",
++      "issue": 64,
++      "state": "authorized_queued",
++      "layer": "Launch Discovery",
++      "slices": [
++        "SLC-09",
++        "SLC-10",
++        "SLC-12",
++        "SLC-13"
++      ],
++      "branch": "codereview-21/layer-launchdiscovery",
++      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/discovery-implementation",
++      "ownedPath": "internal/launchdiscovery/",
++      "workerReport": "SDP/Implementation/CR-#21/Launch-Discovery/M3-Discovery--001.md",
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
++      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
++      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
++      "workerBase": null,
++      "requiredChecks": [
++        "V-LCH-01..03"
++      ],
++      "integrationHead": null
++    },
++    {
++      "id": "IMPL65",
++      "kind": "implementation_contribution",
++      "issue": 65,
++      "state": "authorized_queued",
++      "layer": "Runtime",
++      "slices": [
++        "SLC-09",
++        "SLC-10",
++        "SLC-11",
++        "SLC-12",
++        "SLC-13"
++      ],
++      "branch": "codereview-21/layer-runtime",
++      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation",
++      "ownedPath": "internal/runtime/",
++      "workerReport": "SDP/Implementation/CR-#21/Runtime/M3-Runtime--001.md",
++      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
++      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
++      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
++      "workerBase": null,
++      "requiredChecks": [
++        "V-RUN-01..08"
++      ],
++      "integrationHead": null
+     }
+   ],
+   "productFindings": [
+@@ -1659,7 +1805,11 @@
+     "SLC-12",
+     "SLC-13"
+   ],
+-  "activeContribution": "M3-PREPARATION",
++  "activeContribution": "M3-ADAPTERS",
+   "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+-  "activeContributions": []
++  "activeContributions": [
++    "IMPL61",
++    "IMPL62",
++    "IMPL63"
++  ]
+ }
+diff --git a/SDP/Traceability/Ledger.ndjson b/SDP/Traceability/Ledger.ndjson
+index 533d1b4..05630a2 100644
+--- a/SDP/Traceability/Ledger.ndjson
++++ b/SDP/Traceability/Ledger.ndjson
+@@ -51,3 +51,4 @@
+ {"eventId":"CR21-0051","ts":"2026-09-06T16:50:20.788625+00:00","role":"Master","sprint":"Sprint-004-v04","iteration":"I-03","slice":null,"action":"m2_api_integrated","status":"complete_contribution","links":{"issue":59,"sourceHead":"d4c3bfdd2038bbc5921488fbcffad1b8736c7460","technicalSource":"6e289c4b47a7816493f376c886c00bf0df4835e8","integrationHead":"ecf12e91f5a1223c9d97b404db024e1ce05372df","ciRun":"34046178481","review":"SDP/Verification/CR-#21/M2-API-Review--003.md"},"outcome":"Accepted API/ports serially integrated without conflicts/product changes; exact integration pushCI18/explicitM3skip passes. M259-M01..M08 resolved. API contribution complete; accepted viewmodel integration is next before M2 completion. All143 baseline findings/full13 Slice/native/release scope remain."}
+ {"eventId":"CR21-0052","ts":"2026-09-06T17:03:48.231999+00:00","role":"Master","sprint":"Sprint-004-v04","iteration":"I-03","slice":null,"action":"m2_viewmodel_integrated","status":"complete_contribution","links":{"issue":60,"sourceHead":"d279c3f2af59e48029e77d845f5a55271c7889cf","integrationHead":"d60afe8fb763269964bcdc05958c8cdbc7849dea","ciRun":"34046727344","review":"SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md"},"outcome":"Accepted viewmodel serially integrated after verified API; exact product tree unchanged and no other product/build input changed. Exact integrationCI18/explicitM3skip passed; Issues59/60 closure verified. M260-M01 resolved; no State/View/native/full Slice closure."}
+ {"eventId":"CR21-0053","ts":"2026-09-06T17:03:48.232011+00:00","role":"Master","sprint":"Sprint-004-v04","iteration":"I-03","slice":null,"action":"m2_complete_m3_preparation","status":"m2_complete","links":{"integrationHead":"d60afe8fb763269964bcdc05958c8cdbc7849dea","apiSource":"d4c3bfdd2038bbc5921488fbcffad1b8736c7460","apiIntegration":"ecf12e91f5a1223c9d97b404db024e1ce05372df","viewmodelSource":"d279c3f2af59e48029e77d845f5a55271c7889cf","domainSource":"6113ca55b57cb628b016c483070dbb52cd5dd79a"},"outcome":"M1/M2 dependency gate complete with independent Domain/API/ports/viewmodel acceptance and serial integrationCI. All13 Slices/all143 baseline findings and fullM3..M8 remain. Next read current authority/open bounded M3 Issues/update contracts+traceability, then fresh workers and separate reviewers; no M3 product dispatch yet."}
++{"eventId":"CR21-0054","ts":"2026-09-06T17:24:30.349586+00:00","role":"Master","sprint":"Sprint-004-v04","iteration":"I-03","slice":null,"action":"m3_adapter_contracts_authorized","status":"kickoff_before_dispatch","links":{"issues":[61,62,63,64,65],"contract":"SDP/Implementation/CR-#21/M3-Adapters--001.md","verifiedM2Base":"d60afe8fb763269964bcdc05958c8cdbc7849dea","preparationCheckpoint":"3cf264141764385eb6afe3f7e4e25a7504020690","ciRun":"34047530046"},"outcome":"Five full bounded adapter Issues created from complete frozen authority/current accepted M2. Initial Git/GitHub/Persistence authors may work independently; Discovery/Runtime queued. Master records actual kickoff base/worktrees before fresh dispatch; serial integration remains Git\u2192GitHub\u2192Persistence\u2192Discovery\u2192Runtime. All13 Slices/143 baseline findings/full native/M4..M8 remain."}
+diff --git a/SDP/Traceability/Relations.yaml b/SDP/Traceability/Relations.yaml
+index f24016e..be07ffe 100644
+--- a/SDP/Traceability/Relations.yaml
++++ b/SDP/Traceability/Relations.yaml
+@@ -394,6 +394,62 @@
+       "from": "M3",
+       "relation": "depends_on",
+       "to": "M2"
++    },
++    {
++      "from": "IMPL61",
++      "relation": "depends_on",
++      "to": "M2"
++    },
++    {
++      "from": "IMPL62",
++      "relation": "depends_on",
++      "to": "M2"
++    },
++    {
++      "from": "IMPL62",
++      "relation": "integrates_after",
++      "to": "IMPL61"
++    },
++    {
++      "from": "IMPL63",
++      "relation": "depends_on",
++      "to": "M2"
++    },
++    {
++      "from": "IMPL63",
++      "relation": "integrates_after",
++      "to": "IMPL62"
++    },
++    {
++      "from": "IMPL64",
++      "relation": "depends_on",
++      "to": "M2"
++    },
++    {
++      "from": "IMPL64",
++      "relation": "integrates_after",
++      "to": "IMPL63"
++    },
++    {
++      "from": "IMPL65",
++      "relation": "depends_on",
++      "to": "M2"
++    },
++    {
++      "from": "IMPL65",
++      "relation": "integrates_after",
++      "to": "IMPL64"
++    },
++    {
++      "from": "M3",
++      "relation": "accepts",
++      "to": [
++        "IMPL61",
++        "IMPL62",
++        "IMPL63",
++        "IMPL64",
++        "IMPL65"
++      ]
+     }
+   ],
+   "errata": [

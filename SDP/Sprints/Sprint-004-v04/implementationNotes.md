@@ -1,5 +1,20 @@
 # Implementation and verification notes
 
+Current checkpoint: PAUSED by user before M3 dispatch. M1/M2 are complete;
+all full native/vertical/release work remains. See Handoff and CurrentIndex.
+The exact pending preparation was committed as5cdd4367af786f0f2a18e500eb621c6867939f63
+before pause/status changes. All16 worktrees were inspected; only its10 SDP files
+were dirty/untracked, with no staged or product changes. Historical801280a was
+pushed on its existing branch without a new merge. Recovery tag
+checkpoint/gh-tree-m3-preparation/20260906-1725Z marks the following pause/inventory
+commit, not completion. Exact drafts, Issue snapshots, original pending bytes,
+source investigations and worktree/ref history use the existing SDP evidence
+archive. Local generated fixtures, temporary test keys, tools and caches remain
+untouched and are explicitly inventoried outside Git. No M3 branch, worktree or
+implementation agent was started. Resume requires an explicit user instruction.
+
+## Historical initial state and subsequent execution notes
+
 No product refactor has begun. No BC is frozen. No v0.4 verification is claimed.
 
 Reconstruction verified main 3531fd165ff2b35036928328685d45d84965e9ef against

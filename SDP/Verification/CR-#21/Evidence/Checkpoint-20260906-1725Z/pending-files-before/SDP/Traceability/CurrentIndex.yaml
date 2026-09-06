@@ -1,0 +1,1815 @@
+{
+  "version": 1,
+  "project": "gh-tree",
+  "programIssue": 21,
+  "sprint": "Sprint-004-v04",
+  "activeIteration": "I-03",
+  "activeGate": "M3",
+  "implementationSlice": null,
+  "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
+  "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
+  "designState": "accepted",
+  "boundaryContracts": [
+    {
+      "id": "BC--TUIState--TUIView",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--TUIState--Application",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--Application--Git",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--Application--GitHub",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--Application--Runtime",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--Application--LaunchDiscovery",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "BC--Application--Persistence",
+      "version": "1.0.0",
+      "state": "FROZEN",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    }
+  ],
+  "productFindingsState": "all_unresolved",
+  "items": [
+    {
+      "kind": "architecture",
+      "state": "accepted",
+      "issue": 22,
+      "id": "APS22",
+      "pr": 23,
+      "doc": "SDP/Architecture/AS-#22/APS--001.md"
+    },
+    {
+      "head": "76dacca56fc003f244bf038ce9bbe3e95db3040e",
+      "kind": "broad_review",
+      "merge": "488697f8ced27c60e5a906ad1c30a1d696c29957",
+      "id": "BR21",
+      "issue": 21,
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md",
+      "pr": 24,
+      "state": "accepted"
+    },
+    {
+      "state": "accepted",
+      "merge": "dd93a5f8ce0bb65e407a29fb98673d596019c2c9",
+      "layer": "Runtime",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md",
+      "head": "a2bd2e46cbe08273367a65ad9e254e0c5f6594d1",
+      "id": "LR25",
+      "issue": 25,
+      "kind": "layer_review",
+      "pr": 27
+    },
+    {
+      "state": "accepted",
+      "merge": "3a9588d91b8c5112ac1a83573588909c585dafd8",
+      "layer": "TUI State",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md",
+      "head": "7146a4379c8967bec366d816d43f23749ab0ff4f",
+      "id": "LR26",
+      "issue": 26,
+      "kind": "layer_review",
+      "pr": 28
+    },
+    {
+      "state": "accepted",
+      "merge": "f2e1bd05a8b123ce2234b0bce96672bbde9a6eba",
+      "layer": "Application",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md",
+      "head": "210e1b020af37f20cc653b566b367c44d5020405",
+      "id": "LR29",
+      "issue": 29,
+      "kind": "layer_review",
+      "pr": 30
+    },
+    {
+      "state": "accepted",
+      "merge": "3531fd165ff2b35036928328685d45d84965e9ef",
+      "layer": "Git",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md",
+      "head": "c9b703ce26f5809415ad56225f3fba2c2064a6f3",
+      "id": "LR31",
+      "issue": 31,
+      "kind": "layer_review",
+      "pr": 32
+    },
+    {
+      "head": "86d2a4c0cc0eb8f427d597617246e85473a6cf55",
+      "kind": "layer_review",
+      "id": "LR33",
+      "issue": 33,
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md",
+      "pr": 34,
+      "state": "accepted",
+      "layer": "Domain",
+      "originalHead": "ec482795a82371996370ec52e68c5c24b4e240b1",
+      "merge": "5b1cf181fd3245a65337f1db28ee8f0fb95c200f",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33997317388"
+    },
+    {
+      "id": "G-01",
+      "state": "complete",
+      "requires": [
+        "LR33"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+      "kind": "governance_gate"
+    },
+    {
+      "id": "GOV35",
+      "state": "accepted",
+      "issue": 35,
+      "doc": "SDP/Sprints/Sprint-004-v04/Sprint-004-v04.md",
+      "kind": "governance",
+      "pr": 37,
+      "head": "8b5514e5e69ed6de603ed5f34e6e530a6a8b76f3",
+      "merge": "11cfef79009bb3956f0ba970470df14843e27e07"
+    },
+    {
+      "id": "LR36",
+      "issue": 36,
+      "kind": "layer_review",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md",
+      "state": "accepted",
+      "layer": "Launch Discovery",
+      "pr": 39,
+      "head": "859eab7af576b6b0eb689da6d7ed7c6d235d5853",
+      "merge": "3b8923e0fad29eec24a2d8fa1811dba24c2a626f",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33998243250"
+    },
+    {
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md",
+      "state": "complete",
+      "kind": "governance_gate",
+      "id": "G-02",
+      "requires": [
+        "LR36"
+      ]
+    },
+    {
+      "id": "LR40",
+      "kind": "layer_review",
+      "layer": "Persistence",
+      "state": "accepted",
+      "issue": 40,
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
+      "pr": 42,
+      "head": "e13639926ca1b34e5021d1a038b83517cb7eec65",
+      "merge": "db07857550cdfd56c114eb42c045b896b229d747",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33999062918"
+    },
+    {
+      "id": "G-03",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "LR40"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "LR43",
+      "kind": "layer_review",
+      "layer": "GitHub",
+      "state": "accepted",
+      "issue": 43,
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md",
+      "pr": 45,
+      "head": "ea52f8c5c50e178c6e415cbba2284296e2d9b910",
+      "merge": "e16650036c10f764c1b99c76d98d2bd37c3ffbb0",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/33999849098"
+    },
+    {
+      "id": "G-04",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "LR43"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "LR46",
+      "kind": "layer_review",
+      "layer": "TUI View",
+      "state": "accepted",
+      "issue": 46,
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "pr": 48,
+      "head": "108a3bd0ceb782c6a29d980ce0abcce1eae7a284",
+      "merge": "00584a57021dda767ead5e3996cc92477e0a2d3c",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/34000698430"
+    },
+    {
+      "id": "G-05",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "LR46"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "LR49",
+      "kind": "layer_review",
+      "layer": "Composition",
+      "state": "accepted",
+      "issue": 49,
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md",
+      "pr": 51,
+      "head": "e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c",
+      "merge": "e0e716fd44421c221d00375fc0c0d0b8ea85bdff",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/34001756011"
+    },
+    {
+      "id": "G-06",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "LR49"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "REFDES52",
+      "kind": "refactor_design",
+      "state": "accepted",
+      "issue": 52,
+      "doc": "SDP/Design/CR-#21/REFDES--001.md",
+      "branch": "codex/cr21-refactor-design",
+      "base": "58f1cb9eda941db0941cbb8e04e6a0559a3ca896",
+      "earlyReview": "SDP/Design/CR-#21/DesignReview--001.md",
+      "designFindings": [
+        "DES52-H01",
+        "DES52-H02",
+        "DES52-H03",
+        "DES52-H04",
+        "DES52-M01",
+        "DES52-M02"
+      ],
+      "designFindingDisposition": "All DES52 findings resolved at design level by independent exact-HEAD review; all143 product findings remain open",
+      "pr": 54,
+      "initialReviewHead": "f1dec60cbd3892f068410f2d7f3caa7f855ba52e",
+      "fullReview": "SDP/Design/CR-#21/DesignReview--002.md",
+      "correctedReviewHead": "8c109b1e4308eb301d7c1418292044d714c2f33b",
+      "latestReview": "SDP/Design/CR-#21/DesignReview--004.md",
+      "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83",
+      "head": "e63547771d89f892ebe8e13f66a1ed8ef0807ba2",
+      "merge": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+      "ciRuns": [
+        "34022968145",
+        "34022971176"
+      ]
+    },
+    {
+      "id": "G-07",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "REFDES52"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "BC55",
+      "kind": "boundary_contract_gate",
+      "issue": 55,
+      "state": "frozen_accepted_merged",
+      "branch": "codex/cr21-boundary-contracts",
+      "base": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+      "doc": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "initialReviewedHead": "c291606c2ecfaae15f1bef7b5155d82aa6966712",
+      "reviewedHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "sharedTypes": "SDP/LayerBoundaryContracts/BoundaryTypes--001.md",
+      "acceptedTechnicalHead": "7685494e45c0ef44fbccf9b49a589a90a78026d0",
+      "ciRuns": [
+        "34027493442",
+        "34027495276"
+      ],
+      "head": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "freezeIntroducedHead": "a4d160fe0273f7cdfa75794169a679bbc9321929",
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "pr": 56,
+      "technicalCiRuns": [
+        "34027057276",
+        "34027058992"
+      ],
+      "mainCiRun": "34027623200"
+    },
+    {
+      "id": "G-08",
+      "kind": "governance_gate",
+      "state": "complete",
+      "requires": [
+        "REFDES52",
+        "BC55"
+      ]
+    },
+    {
+      "id": "M0",
+      "kind": "integration_gate",
+      "state": "complete",
+      "requires": [
+        "REFDES52",
+        "BC55"
+      ],
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "IMPL57",
+      "kind": "implementation_contribution",
+      "issue": 57,
+      "state": "accepted_integrated",
+      "layer": "Composition",
+      "slices": [
+        "SLC-13"
+      ],
+      "supportsAllSelectedSlices": true,
+      "branch": "codereview-21/layer-composition-bootstrap",
+      "base": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md",
+      "kickoffHead": "4c0cee9f6693c4f0ab58a16a7e98299a67a0f76b",
+      "reviewedHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M1-Review--003.md",
+      "ciRun": "34031420582",
+      "ciSummary": {
+        "success": 18,
+        "failure": 0,
+        "skippedM3": 1
+      },
+      "resolvedImplementationFindings": [
+        "M157-M01",
+        "M157-M02",
+        "M157-M03",
+        "M157-M04",
+        "M157-M05",
+        "M157-M06"
+      ],
+      "head": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "acceptedSourceHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "integrationHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "integrationCiRun": "34031833446"
+    },
+    {
+      "id": "M1",
+      "kind": "integration_gate",
+      "state": "complete",
+      "requires": [
+        "M0",
+        "IMPL57"
+      ],
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md",
+      "head": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "review": "SDP/Verification/CR-#21/M1-Review--003.md"
+    },
+    {
+      "id": "IMPL58",
+      "kind": "implementation_contribution",
+      "issue": 58,
+      "state": "accepted_integrated",
+      "layer": "Domain",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-domain",
+      "base": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "doc": "SDP/Implementation/CR-#21/M2-Domain--001.md",
+      "head": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "reviewedHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "integrationHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+      "sourceCiRun": "34033181820",
+      "integrationCiRun": "34033772732"
+    },
+    {
+      "id": "M2",
+      "kind": "integration_gate",
+      "state": "complete",
+      "requires": [
+        "M1",
+        "IMPL58",
+        "IMPL59",
+        "IMPL60"
+      ],
+      "remainingSurfaces": [],
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea"
+    },
+    {
+      "id": "IMPL59",
+      "kind": "implementation_contribution",
+      "issue": 59,
+      "state": "accepted_integrated",
+      "layer": "Application API/ports",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-application-api",
+      "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "head": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "productHead": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+      "sourceCiRun": "34044482946",
+      "reviewedHead": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M2-API-Review--003.md",
+      "sourceCiState": "passed18_explicitM3skip",
+      "reviewCandidate": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "resolvedImplementationFindings": [
+        "M259-M01",
+        "M259-M02",
+        "M259-M03",
+        "M259-M04",
+        "M259-M05",
+        "M259-M06",
+        "M259-M07",
+        "M259-M08"
+      ],
+      "finalCiRun": "34045071509",
+      "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
+      "integrationCiRun": "34046178481",
+      "integrationCiState": "passed18_explicitM3skip",
+      "issueState": "closed"
+    },
+    {
+      "id": "IMPL60",
+      "kind": "implementation_contribution",
+      "issue": 60,
+      "state": "accepted_integrated",
+      "layer": "TUI State viewmodel",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-tuistate-viewmodel",
+      "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "reviewedHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+      "sourceCiRun": "34038307701",
+      "head": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "resolvedImplementationFindings": [
+        "M260-M01"
+      ],
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "integrationCiRun": "34046727344",
+      "integrationCiState": "passed18_explicitM3skip",
+      "issueState": "closed"
+    },
+    {
+      "id": "M2-SURFACES",
+      "kind": "parallel_contribution_group",
+      "state": "complete",
+      "requires": [
+        "IMPL59",
+        "IMPL60"
+      ],
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea"
+    },
+    {
+      "id": "TOOL-M3-01",
+      "kind": "verification_preparation",
+      "state": "native_tools_only",
+      "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md",
+      "observedHead": "04eb90a54fed3acdc6f87614af7f919ffedb167e",
+      "productGateSatisfied": false
+    },
+    {
+      "id": "M3",
+      "kind": "integration_gate",
+      "state": "active",
+      "requires": [
+        "M2",
+        "IMPL61",
+        "IMPL62",
+        "IMPL63",
+        "IMPL64",
+        "IMPL65"
+      ],
+      "order": [
+        "Git",
+        "GitHub",
+        "Persistence",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md"
+    },
+    {
+      "id": "IMPL61",
+      "kind": "implementation_contribution",
+      "issue": 61,
+      "state": "authorized",
+      "layer": "Git",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-git",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/git-implementation",
+      "ownedPath": "internal/git/",
+      "workerReport": "SDP/Implementation/CR-#21/Git/M3-Git--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-GIT-01..10"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL62",
+      "kind": "implementation_contribution",
+      "issue": 62,
+      "state": "authorized",
+      "layer": "GitHub",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-05",
+        "SLC-08",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-github",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/github-implementation",
+      "ownedPath": "internal/github/adapter/",
+      "workerReport": "SDP/Implementation/CR-#21/GitHub/M3-GitHub--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-GH-01..03"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL63",
+      "kind": "implementation_contribution",
+      "issue": 63,
+      "state": "authorized",
+      "layer": "Persistence",
+      "slices": [
+        "SLC-01",
+        "SLC-04",
+        "SLC-05",
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-persistence",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/persistence-implementation",
+      "ownedPath": "internal/persistence/",
+      "workerReport": "SDP/Implementation/CR-#21/Persistence/M3-Persistence--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-PER-01..04"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL64",
+      "kind": "implementation_contribution",
+      "issue": 64,
+      "state": "authorized_queued",
+      "layer": "Launch Discovery",
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-launchdiscovery",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/discovery-implementation",
+      "ownedPath": "internal/launchdiscovery/",
+      "workerReport": "SDP/Implementation/CR-#21/Launch-Discovery/M3-Discovery--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-LCH-01..03"
+      ],
+      "integrationHead": null
+    },
+    {
+      "id": "IMPL65",
+      "kind": "implementation_contribution",
+      "issue": 65,
+      "state": "authorized_queued",
+      "layer": "Runtime",
+      "slices": [
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-runtime",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation",
+      "ownedPath": "internal/runtime/",
+      "workerReport": "SDP/Implementation/CR-#21/Runtime/M3-Runtime--001.md",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
+      "workerBase": null,
+      "requiredChecks": [
+        "V-RUN-01..08"
+      ],
+      "integrationHead": null
+    }
+  ],
+  "productFindings": [
+    {
+      "id": "BR21-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "BR21-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "BR21",
+      "doc": "SDP/Reviews/CR-#21/Broad/BR--001.md"
+    },
+    {
+      "id": "RT25-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "RT25-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR25",
+      "doc": "SDP/Reviews/CR-#21/Layers/Runtime/LR--001.md"
+    },
+    {
+      "id": "TS-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "TS-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR26",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-State/LR--001.md"
+    },
+    {
+      "id": "APP29-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-H06",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "APP29-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR29",
+      "doc": "SDP/Reviews/CR-#21/Layers/Application/LR--001.md"
+    },
+    {
+      "id": "GIT31-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H05",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-H06",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "GIT31-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR31",
+      "doc": "SDP/Reviews/CR-#21/Layers/Git/LR--001.md"
+    },
+    {
+      "id": "DOM33-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H03",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-H04",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "DOM33-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR33",
+      "doc": "SDP/Reviews/CR-#21/Layers/Domain/LR--001.md"
+    },
+    {
+      "id": "LD36-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "LD36-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR36",
+      "doc": "SDP/Reviews/CR-#21/Layers/Launch-Discovery/LR--001.md"
+    },
+    {
+      "id": "PS40-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-H02",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "PS40-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR40",
+      "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md"
+    },
+    {
+      "id": "GH43-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "GH43-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR43",
+      "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "TV46-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M10",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M11",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "CO49-H01",
+      "severity": "HIGH",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "CO49-L02",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR49",
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    }
+  ],
+  "releaseBaseline": {
+    "tag": "v0.3.14",
+    "url": "https://github.com/Hans-Einar/gh-tree/releases/tag/v0.3.14",
+    "assets": [
+      "darwin-amd64",
+      "darwin-arm64",
+      "freebsd-386",
+      "freebsd-amd64",
+      "freebsd-arm64",
+      "linux-386",
+      "linux-amd64",
+      "linux-arm",
+      "linux-arm64",
+      "windows-386.exe",
+      "windows-amd64.exe",
+      "windows-arm64.exe"
+    ],
+    "installedExtensionObserved": "v0.3.13",
+    "installationChanged": false,
+    "verificationState": "baseline_inventory_only"
+  },
+  "designAppendices": [
+    "API--001.md",
+    "Storage--001.md",
+    "CwdAcquisition--001.md",
+    "MigrationMap.yaml",
+    "Slices--001.md",
+    "Verification--001.md",
+    "FindingDisposition.yaml",
+    "DesignReview--001.md",
+    "DesignReview--002.md",
+    "WindowsBroker--001.md",
+    "DesignReview--003.md",
+    "DesignReview--004.md"
+  ],
+  "integrationBranch": "codereview-21/refactor",
+  "integrationBase": "97cc0d8257603766dd741b49b7d8005857b421a9",
+  "selectedSlices": [
+    "SLC-01",
+    "SLC-02",
+    "SLC-03",
+    "SLC-04",
+    "SLC-05",
+    "SLC-06",
+    "SLC-07",
+    "SLC-08",
+    "SLC-09",
+    "SLC-10",
+    "SLC-11",
+    "SLC-12",
+    "SLC-13"
+  ],
+  "verificationMatrix": "SDP/Verification/CR-#21/CurrentMatrix.yaml",
+  "implementationSlices": [
+    "SLC-01",
+    "SLC-02",
+    "SLC-03",
+    "SLC-04",
+    "SLC-05",
+    "SLC-06",
+    "SLC-07",
+    "SLC-08",
+    "SLC-09",
+    "SLC-10",
+    "SLC-11",
+    "SLC-12",
+    "SLC-13"
+  ],
+  "activeContribution": "M3-ADAPTERS",
+  "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+  "activeContributions": [
+    "IMPL61",
+    "IMPL62",
+    "IMPL63"
+  ]
+}
