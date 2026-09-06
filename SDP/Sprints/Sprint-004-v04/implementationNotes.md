@@ -1,6 +1,6 @@
 # Implementation and verification notes
 
-Current checkpoint: PAUSED by user before M3 dispatch. M1/M2 are complete;
+Historical pause checkpoint (subsequently explicitly resumed): M1/M2 complete;
 all full native/vertical/release work remains. See Handoff and CurrentIndex.
 The exact pending preparation was committed as5cdd4367af786f0f2a18e500eb621c6867939f63
 before pause/status changes. All16 worktrees were inspected; only its10 SDP files

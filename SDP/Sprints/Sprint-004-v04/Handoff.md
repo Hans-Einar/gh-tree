@@ -28,7 +28,8 @@ do not recopy them. M259/M260 implementation findings are resolved.
 M3 Issues61 Git,62 GitHub,63 Persistence,64 Discovery,65 Runtime remain the exact
 work contracts. Read M3-Adapters--001.md, M3-Assignments.json, the complete Issue/#21,
 frozen referenced authority and actual M2 code. First authors: Git/GitHub/Persistence;
-Discovery/Runtime queued. Worktrees/actual bases are recorded at dispatch. Workers
+Discovery/Runtime queued. All five worker branches/worktrees are created/pushed at
+base412f33e477cec03cb6eafe7b846c9bcdd02c0a25; exact paths are in M3-Assignments. Workers
 own only their adapter folder/tests/bounded report; no legacy, shared workflow/module
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
