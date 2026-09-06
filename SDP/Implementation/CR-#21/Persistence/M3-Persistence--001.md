@@ -548,7 +548,46 @@ This is package test compilation, not native execution, race execution, complete
 source CI or adapter acceptance. No product/identity/protocol behavior changed;
 Master's program hold remains in effect after this mechanical correction.
 
-## Current handoff and exact next permitted action
+## Milestone P3j — reviewed private Windows identity adoption
+
+Authority: independent M3-Identity-Review--001 and Master's decision69c4db2/
+ledger75, adopted without product changes atc515d31. This bounded author work
+proceeds separately from the blocked Git review; no review retry or substitution.
+
+The private artifact Stamp now carries `objectid-v1:` plus all64 opaque native
+ObjectID-buffer bytes, alongside full FileIdInfo volume/128-bit FileID. The
+four-field disk shape and old journal hashes remain unchanged. Exclusive owned
+FILE_CREATE initializes and pins the tuple before any data/journal write or flush.
+Reopens/hardlinks use GET-only recorded-profile validation; original identity is
+captured before preparation and carried through final target checks. Existing
+birth records still compare exact birth, including ID-bearing files. No public
+version/directory/lock/root/Expected/native publisher/security semantics changed.
+
+Native Windows amd64 targeted tuple/error/profile tests and the actual12-cycle
+public commit/reload regression PASS; complete Persistence package PASS2.780s and
+vet PASS before the additional targeted tests (which also pass). Every FileID byte,
+all64 ID bytes, volume, malformed lengths/zero/uppercase/unknown tags, exact errno2
+versus arbitrary/wrapped failures and untouched-original bytes/security are tested.
+The actual invalid-handle GET returns its distinct native error. New ID creation
+on a preexisting original/directory/lock is absent from the product call graph.
+
+The original total-process handle assertion first failed after completing all12
+cycles (cold runs grew12–65 total handles; an immediate repeated run passed).
+The corrected control directly snapshots the current process's native File-type
+handles, including directories/locks, with automatic GC disabled so finalizers
+cannot conceal leaks. A deliberate duplicate/close increments/decrements exactly1;
+each public request cycle returns to the exact baseline with no tolerance. Native
+snapshot layout follows [PHNT](https://github.com/winsiderss/phnt/blob/master/ntpsapi.h).
+This is a targeted file-resource check, not a claim all runtime resources are proved.
+
+This first coherent source checkpoint is partial. Next: expanded public fresh-
+store/process/tunneling/death/legacy-frame controls, amd64/386 and Linux regression,
+vet/race/all12 builds and exact source CI (ARM64/other native jobs via Master).
+Separate fresh implementation review remains required. FreeBSD metadata, no-birth
+association, source-name interval and the full adapter fault/resource gates remain
+unresolved; this fix cannot close the adapter, any Slice or baseline finding.
+
+## Historical P3i handoff (superseded by P3j above)
 
 This remains a partial, nonaccepted contribution with the deliberately failing
 Windows12-commit public resource regression preserved. Next: independently assess

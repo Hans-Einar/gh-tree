@@ -325,6 +325,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		return result, err
 	}
 	var original *nativeObject
+	var originalIdentity diskIdentity
 	var metadata nativeMetadata
 	if version.Present() {
 		original, err = nativeOpenOriginal(c.parent(), name)
@@ -332,6 +333,10 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			return result, err
 		}
 		owned = append(owned, original)
+		originalIdentity, err = nativeArtifactIdentity(original)
+		if err != nil {
+			return result, err
+		}
 		observed, err := nativeRead(ctx, original)
 		if err != nil {
 			return result, err
@@ -421,6 +426,19 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			return result, err
 		}
 		owned = append(owned, object)
+		if artifact.Kind == api.RetainedOriginal {
+			artifact.Identity = originalIdentity
+		} else if artifact.Name == m.publicationName() {
+			artifact.Identity = m.Artifacts[1].Identity
+		} else {
+			artifact.Identity, err = nativeArtifactIdentity(object)
+			if err != nil {
+				return result, err
+			}
+		}
+		if err := verifyArtifactIdentity(object, artifact.Identity); err != nil {
+			return result, err
+		}
 		if artifact.Name == m.artifactName(api.RetainedPayload) {
 			payload = object
 		}
@@ -462,8 +480,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 				return result, errors.Join(err, errors.New("prepared bytes differ"))
 			}
 		}
-		artifact.Identity, err = nativeArtifactIdentity(object)
-		if err != nil {
+		if err := verifyArtifactIdentity(object, artifact.Identity); err != nil {
 			return result, err
 		}
 		if err := s.checkpoint(ctx, stage+".journal"); err != nil {
@@ -483,8 +500,8 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		return result, err
 	}
 	owned = append(owned, publisher)
-	publicationIdentity, err := nativeArtifactIdentity(publisher)
-	if err != nil {
+	publicationIdentity := m.Artifacts[len(m.Artifacts)-1].Identity
+	if err := verifyArtifactIdentity(publisher, publicationIdentity); err != nil {
 		return result, err
 	}
 	payloadPolicy, err := nativeInspectMetadata(publisher)
@@ -530,17 +547,16 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if proposed.family == api.RunConfig && !nativeMatchesDirectory(c.guards[len(c.guards)-2], effectiveScope.Data().RootIdentity) {
 		return result, errBindingChanged
 	}
-	if err := verifyCurrent(ctx, c.parent(), name, original, []byte(current.raw), metadata); err != nil {
+	if err := verifyCurrent(ctx, c.parent(), name, original, originalIdentity, []byte(current.raw), metadata); err != nil {
 		return result, err
 	}
-	preparedID, err := nativeArtifactIdentity(publisher)
-	if err != nil || preparedID != publicationIdentity {
-		return result, errors.Join(err, errBindingChanged)
-	}
-	if err := verifyNativeEntry(c.parent(), m.publicationName(), publisher); err != nil {
+	if err := verifyArtifactIdentity(publisher, publicationIdentity); err != nil {
 		return result, err
 	}
-	if err := verifyNativeEntry(c.parent(), m.artifactName(api.RetainedPayload), publisher); err != nil {
+	if err := verifyNativeEntryIdentity(c.parent(), m.publicationName(), publicationIdentity); err != nil {
+		return result, err
+	}
+	if err := verifyNativeEntryIdentity(c.parent(), m.artifactName(api.RetainedPayload), publicationIdentity); err != nil {
 		return result, err
 	}
 	preparedRaw, err := nativeRead(ctx, publisher)
@@ -587,23 +603,20 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 }
 
 func verifyNativeEntry(parent *nativeObject, name string, expected *nativeObject) (resultErr error) {
+	expectedID, err := nativeArtifactIdentity(expected)
+	if err != nil {
+		return err
+	}
+	return verifyNativeEntryIdentity(parent, name, expectedID)
+}
+
+func verifyNativeEntryIdentity(parent *nativeObject, name string, recorded diskIdentity) (resultErr error) {
 	entry, err := nativeOpenDocument(parent, name)
 	if err != nil {
 		return errors.Join(err, errBindingChanged)
 	}
 	defer func() { resultErr = errors.Join(resultErr, entry.close()) }()
-	actualID, err := nativeArtifactIdentity(entry)
-	if err != nil {
-		return err
-	}
-	expectedID, err := nativeArtifactIdentity(expected)
-	if err != nil {
-		return err
-	}
-	if actualID != expectedID {
-		return errors.Join(errBindingChanged, errors.New("publication source entry no longer names the retained payload"))
-	}
-	return nil
+	return verifyArtifactIdentity(entry, recorded)
 }
 
 func verifyPermanentLock(parent *nativeObject, basename string, lock *nativeStoreLock) (resultErr error) {
@@ -625,7 +638,7 @@ func verifyPermanentLock(parent *nativeObject, basename string, lock *nativeStor
 	return nil
 }
 
-func verifyCurrent(ctx context.Context, parent *nativeObject, name string, original *nativeObject, raw []byte, metadata nativeMetadata) (resultErr error) {
+func verifyCurrent(ctx context.Context, parent *nativeObject, name string, original *nativeObject, recorded diskIdentity, raw []byte, metadata nativeMetadata) (resultErr error) {
 	current, err := nativeOpenDocument(parent, name)
 	if original == nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -640,16 +653,11 @@ func verifyCurrent(ctx context.Context, parent *nativeObject, name string, origi
 		return err
 	}
 	defer func() { resultErr = errors.Join(resultErr, current.close()) }()
-	originalID, err := nativeArtifactIdentity(original)
-	if err != nil {
+	if err := verifyArtifactIdentity(original, recorded); err != nil {
 		return err
 	}
-	currentID, err := nativeArtifactIdentity(current)
-	if err != nil {
+	if err := verifyArtifactIdentity(current, recorded); err != nil {
 		return err
-	}
-	if originalID != currentID {
-		return errBindingChanged
 	}
 	content, err := nativeRead(ctx, current)
 	if err != nil {

@@ -3,7 +3,6 @@ package persistence
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 	"unicode"
@@ -62,15 +61,6 @@ func nativeRetainOriginal(original, parent *nativeObject, target, name string) (
 	return winRetainOriginal(original, parent, name)
 }
 
-func nativeArtifactIdentity(object *nativeObject) (diskIdentity, error) {
-	v, err := winObserve(object.handle())
-	if err != nil {
-		return diskIdentity{}, err
-	}
-	birth := uint64(v.basic.CreationTime.HighDateTime)<<32 | uint64(v.basic.CreationTime.LowDateTime)
-	return diskIdentity{api.DirectoryWindows, v.id.Volume, v.id.File, fmt.Sprintf("birth-filetime:%d", birth)}, nil
-}
-
 func nativeNameKey(name string) string {
 	// Use the same equivalence relation as nativeSameName/EqualFold. Lowercase
 	// alone gives different namespace hashes for e.g. final and ordinary sigma.
@@ -110,9 +100,23 @@ func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, 
 	if metadata != nil {
 		security = metadata.sd
 	}
-	return winOpenWithSecurity(parent.handle(), name,
+	object, err := winOpenWithSecurity(parent.handle(), name,
 		windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.DELETE|windows.WRITE_DAC|windows.WRITE_OWNER,
 		winShareAll, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE, security)
+	if err != nil {
+		return nil, err
+	}
+	// This path exclusively created this owned regular artifact. Initialize its
+	// native identity before any bytes, journal/data flush, hardlink or publication.
+	id, err := winArtifactObjectID(object.handle(), windows.FSCTL_CREATE_OR_GET_OBJECT_ID)
+	if err != nil {
+		return nil, errors.Join(errors.New("exclusively created artifact remains without initialized identity: "+name), err, object.close())
+	}
+	object.createdArtifact, err = winSelectArtifactIdentity(object.observation, id, nil)
+	if err != nil {
+		return nil, errors.Join(err, object.close())
+	}
+	return object, nil
 }
 
 func nativeInspectMetadata(object *nativeObject) (nativeMetadata, error) {

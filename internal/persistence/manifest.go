@@ -30,6 +30,9 @@ func directoryRecord(v api.DirectoryIdentity) diskIdentity {
 	return diskIdentity{v.Platform(), v.Device(), v.FileID(), v.Stamp()}
 }
 func (v diskIdentity) directory() (api.DirectoryIdentity, error) {
+	if strings.HasPrefix(v.Stamp, winObjectIDStamp) {
+		return api.DirectoryIdentity{}, errors.New("artifact profile is not a directory identity")
+	}
 	return api.NewDirectoryIdentity(v.Platform, v.Device, v.File, v.Stamp)
 }
 func (v diskIdentity) valid() bool {
@@ -161,7 +164,7 @@ func (m recoveryManifest) validate(family api.StorageFamily, scope api.WorktreeS
 	seenIDs := map[string]bool{}
 	for _, artifact := range m.Artifacts {
 		validName := artifact.Name == m.artifactName(artifact.Kind) || artifact.Kind == api.RetainedPayload && artifact.Name == m.publicationName()
-		identityValid := artifact.Identity.valid() || m.Preparing && artifact.Identity == (diskIdentity{})
+		identityValid := artifact.Identity.artifactValid() || m.Preparing && artifact.Identity == (diskIdentity{})
 		if !artifact.Kind.Valid() || seenNames[artifact.Name] || seenIDs[artifact.ID] || !validName || !singleName(artifact.Name) || !identityValid {
 			return errors.New("recovery artifact name, identity or uniqueness mismatch")
 		}
@@ -295,13 +298,11 @@ func observeManifest(ctx context.Context, chain *nativeChain, name, basename, lo
 	if err := verifyManifestAnchor(chain, m, scope); err != nil {
 		return nil, err
 	}
-	manifestIdentity, err := nativeArtifactIdentity(object)
-	if err != nil {
-		return nil, err
-	}
 	for _, artifact := range m.Artifacts {
-		if artifact.Kind == api.Manifest && manifestIdentity != artifact.Identity {
-			return nil, errors.New("read manifest native identity differs from recorded self")
+		if artifact.Kind == api.Manifest {
+			if err := verifyArtifactIdentity(object, artifact.Identity); err != nil {
+				return nil, errors.Join(err, errors.New("read manifest native identity differs from recorded self"))
+			}
 		}
 	}
 	for _, artifact := range m.Artifacts {
@@ -318,10 +319,7 @@ func observeManifest(ctx context.Context, chain *nativeChain, name, basename, lo
 			}
 			continue
 		}
-		identity, err := nativeArtifactIdentity(observed)
-		if err == nil && identity != artifact.Identity {
-			err = errors.New("recovery artifact native identity changed")
-		}
+		err = verifyArtifactIdentity(observed, artifact.Identity)
 		if err == nil && (artifact.Kind == api.RawOriginal || artifact.Kind == api.RetainedPayload) {
 			content, readErr := nativeRead(ctx, observed)
 			err = readErr

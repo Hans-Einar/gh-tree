@@ -72,8 +72,9 @@ func (o winObservation) size() uint64 {
 }
 
 type winObject struct {
-	file        *os.File
-	observation winObservation
+	file            *os.File
+	observation     winObservation
+	createdArtifact diskIdentity // Set only by exclusive owned-artifact creation.
 }
 
 func (o *winObject) handle() windows.Handle { return windows.Handle(o.file.Fd()) }
@@ -114,7 +115,7 @@ func winOpenWithSecurity(parent windows.Handle, name string, access, share, disp
 	if file == nil {
 		return nil, errors.Join(errors.New("cannot own native file"), windows.CloseHandle(handle))
 	}
-	return &winObject{file, observation}, nil
+	return &winObject{file: file, observation: observation}, nil
 }
 func winOpenDirectory(parent windows.Handle, name string) (*winObject, error) {
 	// FILE_GENERIC_READ includes actual FILE_LIST_DIRECTORY/data-read access.

@@ -81,6 +81,10 @@ func nativeArtifactIdentity(object *nativeObject) (diskIdentity, error) {
 	return diskIdentity{api.DirectoryUnix, uint64(v.stat.Dev), id, v.stamp}, nil
 }
 
+func nativeArtifactIdentityAs(object *nativeObject, recorded diskIdentity) (diskIdentity, error) {
+	return nativeArtifactIdentity(object)
+}
+
 func nativeNameKey(name string) string { return name }
 func nativeObjectSize(object *nativeObject) (int64, error) {
 	v, err := unixObserve(object.fd())
