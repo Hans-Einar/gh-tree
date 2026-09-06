@@ -15,6 +15,7 @@ var (
 	errUnsupportedProfile = errors.New("unsupported native storage profile")
 	errBindingChanged     = errors.New("storage binding changed")
 	errInvalidRequest     = errors.New("invalid storage request")
+	errLockBusy           = errors.New("storage lock busy")
 )
 
 // Options contains explicit Composition-selected absolute locations and bounded
@@ -167,7 +168,7 @@ func (s *Store) load(ctx context.Context, family api.StorageFamily, scope api.Wo
 						if !manifestName(name) {
 							continue
 						}
-						recovery, recoveryErr := observeManifest(ctx, chain.parent(), name, basename, locator, family, scope)
+						recovery, recoveryErr := observeManifest(ctx, chain, name, basename, locator, family, scope)
 						o.Recovery = append(o.Recovery, recovery...)
 						err = errors.Join(err, recoveryErr)
 					}
@@ -256,6 +257,10 @@ func storageDiagnostic(stage string, cause error) api.Diagnostic {
 	code := api.IOFailure
 	if nativeUnsupported(cause) {
 		code = api.Unsupported
+	} else if errors.Is(cause, errLockBusy) || errors.Is(cause, errRecoveryCapacity) {
+		code = api.Busy
+	} else if errors.Is(cause, errIncompletePreparation) {
+		code = api.Unavailable
 	} else if errors.Is(cause, errInvalidRequest) {
 		code = api.Invalid
 	} else if errors.Is(cause, errBindingChanged) {

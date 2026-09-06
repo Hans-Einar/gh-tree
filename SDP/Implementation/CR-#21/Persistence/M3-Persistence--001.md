@@ -369,6 +369,29 @@ That path still requires explicit native controls and independent review.
 
 ## Exact successor work
 
+P3e native request/restart association and process-control checkpoint (this commit)
+checks a manifest's Expected anchor against the actual retained ancestor chain
+and exact remaining names. Run own-effect change-stamp transitions preserve the
+original request scope and require the independently pinned native birth identity.
+CurrentVersion is now independently reobserved under the held lock at every
+commit exit, including native failure and outcome-delivery cancellation, using
+a separate bounded cleanup observation context. Lock/admission exhaustion maps
+to Busy rather than a fabricated I/O or permission result.
+
+Windows amd64 full package/vet PASS. Native Linux/ext4 UID65534 complete public
+commit/control selection PASS in owned `/tmp/gh-tree-persistence-p3e.WJpg1L/tmp`.
+New actual process controls load one precondition in two independent processes,
+commit one and reject the stale other. Kill/join at8 native stages proves lock
+release, complete old/new target bytes and retained earlier facts. External
+replacement before final check refuses; replacement in the documented later gap
+demonstrates the expected-present limit while retaining only the observed old
+object; an absence competitor remains untouched and its current bytes survive
+the failed result. Separate postcommit replacement plus cancellation preserves
+known publication and a distinct independently observed CurrentVersion. Scope-
+conforming concurrent parent creation is adopted. Linux's explicit supplied-root
+change-profile control proves own .gh-tree creation rebinding, exact Expected
+manifest retention, stale-scope refusal and fresh-scope recovery association.
+
 P3d bounded manifest-journal correction (exact source is this commit) persists
 the operation's independent artifact IDs before further file preparation, then
 appends/flushed hash-chained full snapshots as native artifact facts complete.

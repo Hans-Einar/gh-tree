@@ -322,7 +322,7 @@ func unixLockMode(ctx context.Context, parent *unixObject, basename string, budg
 	entry = referenceUnixLock(key)
 	left := time.Until(deadline)
 	if left <= 0 {
-		return nil, errors.New("storage lock busy")
+		return nil, errLockBusy
 	}
 	timer := time.NewTimer(left)
 	select {
@@ -330,7 +330,7 @@ func unixLockMode(ctx context.Context, parent *unixObject, basename string, budg
 		timer.Stop()
 		return nil, ctx.Err()
 	case <-timer.C:
-		return nil, errors.New("storage lock busy")
+		return nil, errLockBusy
 	case <-entry.gate:
 		timer.Stop()
 		localOwned = true
@@ -340,7 +340,7 @@ func unixLockMode(ctx context.Context, parent *unixObject, basename string, budg
 			return nil, err
 		}
 		if time.Until(deadline) <= 0 {
-			return nil, fmt.Errorf("storage lock busy after %s", budget)
+			return nil, fmt.Errorf("%w after %s", errLockBusy, budget)
 		}
 		err := unix.Flock(object.fd(), unix.LOCK_EX|unix.LOCK_NB)
 		if err == nil {
@@ -364,7 +364,7 @@ func unixLockMode(ctx context.Context, parent *unixObject, basename string, budg
 			left = 10 * time.Millisecond
 		}
 		if left <= 0 {
-			return nil, errors.New("storage lock busy")
+			return nil, errLockBusy
 		}
 		timer := time.NewTimer(left)
 		select {

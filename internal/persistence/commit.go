@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"github.com/Hans-Einar/gh-tree/internal/application/ports"
@@ -136,7 +137,19 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	var lock *nativeStoreLock
 	var owned []*nativeObject
 	started := false
+	var name, locator string
+	effectiveScope := scope
 	defer func() {
+		if lock != nil && c != nil {
+			observationContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			_, observed, err := loadAcquired(observationContext, c, proposed.family, effectiveScope, name)
+			cancel()
+			r.CurrentVersion = observed.Version
+			if err != nil {
+				r.Diagnostics = append(r.Diagnostics, storageDiagnostic("current-observation", err))
+				resultErr = errors.Join(resultErr, err)
+			}
+		}
 		for i := len(owned) - 1; i >= 0; i-- {
 			resultErr = errors.Join(resultErr, owned[i].close())
 		}
@@ -188,7 +201,6 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err := s.checkpoint(ctx, stage); err != nil {
 		return result, err
 	}
-	var name, locator string
 	c, name, locator, err = s.acquireStore(ctx, proposed.family, scope)
 	if err != nil {
 		return result, err
@@ -228,7 +240,6 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			return result, err
 		}
 	}
-	effectiveScope := scope
 	if proposed.family == api.RunConfig {
 		v := scope.Data()
 		v.RootIdentity, err = nativeDirectoryIdentityAs(c.guards[len(c.guards)-2], v.RootIdentity)
@@ -295,7 +306,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		if !manifestName(entry) {
 			continue
 		}
-		retained, observeErr := observeManifest(ctx, c.parent(), entry, name, locator, proposed.family, effectiveScope)
+		retained, observeErr := observeManifest(ctx, c, entry, name, locator, proposed.family, effectiveScope)
 		r.Recovery = append(r.Recovery, retained...)
 		if observeErr != nil {
 			return result, observeErr
@@ -548,9 +559,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	}
 	// Outcome and current observation are independent. A later editor can make
 	// current differ from proposed without erasing this known publication.
-	_, after, observeErr := loadAcquired(context.WithoutCancel(ctx), c, proposed.family, effectiveScope, name)
-	r.CurrentVersion = after.Version
-	resultErr = errors.Join(lostReturnErr, barrierErr, observeErr)
+	resultErr = errors.Join(lostReturnErr, barrierErr)
 	stage = "outcome-delivery"
 	if s.hook != nil {
 		resultErr = errors.Join(resultErr, s.hook(stage))

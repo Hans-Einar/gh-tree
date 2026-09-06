@@ -144,7 +144,7 @@ func observedFixture(t testing.TB, root string, m recoveryManifest) ([]api.Stora
 			t.Error(err)
 		}
 	}()
-	return observeManifest(context.Background(), c.parent(), m.artifactName(api.Manifest), "config.json", root, api.UserConfig, api.WorktreeScope{})
+	return observeManifest(context.Background(), c, m.artifactName(api.Manifest), "config.json", root, api.UserConfig, api.WorktreeScope{})
 }
 
 func TestManifestRestartStableRecoveryIDsAndLateOriginalWrites(t *testing.T) {

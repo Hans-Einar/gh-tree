@@ -263,7 +263,11 @@ func (m recoveryManifest) recovery(artifact diskArtifact, scope api.WorktreeScop
 	return api.NewStorageRecovery(api.StorageRecoveryData{Record: record, Family: m.Family, Locator: locator, Kind: artifact.Kind, Identity: identity})
 }
 
-func observeManifest(ctx context.Context, parent *nativeObject, name, basename, locator string, family api.StorageFamily, scope api.WorktreeScope) (out []api.StorageRecovery, resultErr error) {
+func observeManifest(ctx context.Context, chain *nativeChain, name, basename, locator string, family api.StorageFamily, scope api.WorktreeScope) (out []api.StorageRecovery, resultErr error) {
+	parent := chain.parent()
+	if err := nativeRevalidate(ctx, chain); err != nil {
+		return nil, err
+	}
 	object, err := nativeOpenDocument(parent, name)
 	if err != nil {
 		return nil, err
@@ -287,6 +291,9 @@ func observeManifest(ctx context.Context, parent *nativeObject, name, basename, 
 	}
 	if err := m.validate(family, scope, basename, directoryRecord(parentID)); err != nil || name != m.artifactName(api.Manifest) {
 		return nil, errors.Join(err, errors.New("manifest native name/subject mismatch"))
+	}
+	if err := verifyManifestAnchor(chain, m, scope); err != nil {
+		return nil, err
 	}
 	manifestIdentity, err := nativeArtifactIdentity(object)
 	if err != nil {
@@ -334,7 +341,61 @@ func observeManifest(ctx context.Context, parent *nativeObject, name, basename, 
 		}
 		out = append(out, recovery)
 	}
-	return out, resultErr
+	return out, errors.Join(resultErr, nativeRevalidate(ctx, chain))
+}
+
+// Reconstructed Expected facts must correspond to an actual retained ancestor
+// and precisely the descendant sequence reaching this parent. A well-formed
+// foreign anchor token in a JSON object is not native association evidence.
+func verifyManifestAnchor(chain *nativeChain, m recoveryManifest, scope api.WorktreeScope) error {
+	matched := false
+	for i, guard := range chain.guards {
+		identity, err := nativeDirectoryIdentity(guard)
+		if err != nil {
+			return err
+		}
+		if directoryRecord(identity) != m.ExpectedAnchor || len(m.ExpectedRemaining) != len(chain.guards)-1-i {
+			continue
+		}
+		matched = true
+		for j, component := range m.ExpectedRemaining {
+			if !nativeSameName(component, chain.guards[i+1+j].file.Name()) {
+				matched = false
+				break
+			}
+		}
+		if matched {
+			break
+		}
+	}
+	if !matched {
+		return errors.Join(errBindingChanged, errors.New("manifest expected ancestor is not the acquired store ancestry"))
+	}
+	if m.Family != api.RunConfig {
+		if !m.ExpectedScope.matches(api.WorktreeScope{}) {
+			return errors.New("per-user manifest contains a worktree request")
+		}
+		return nil
+	}
+	if len(chain.guards) < 2 || !nativeMatchesDirectory(chain.guards[len(chain.guards)-2], scope.Data().RootIdentity) {
+		return errBindingChanged
+	}
+	if m.ExpectedScope.matches(scope) {
+		return nil
+	}
+	before, after := m.ExpectedScope, runScopeRecord(scope)
+	// The sole permitted changed root stamp is the explicitly retained original
+	// change-profile request followed by creation of its literal .gh-tree child.
+	// A native birth identity in ExpectedAnchor separately pins that incarnation.
+	if !bytes.Equal(before.RepositoryToken, after.RepositoryToken) || before.AdministrativeKey != after.AdministrativeKey ||
+		before.Root.Platform != after.Root.Platform || before.Root.Device != after.Root.Device || before.Root.File != after.Root.File ||
+		!strings.HasPrefix(before.Root.Stamp, "change:") || !strings.HasPrefix(after.Root.Stamp, "change:") ||
+		m.Expected.Present || len(m.ExpectedRemaining) != 1 || m.ExpectedRemaining[0] != ".gh-tree" ||
+		m.ExpectedAnchor.Platform != before.Root.Platform || m.ExpectedAnchor.Device != before.Root.Device || m.ExpectedAnchor.File != before.Root.File ||
+		!strings.HasPrefix(m.ExpectedAnchor.Stamp, "birth:") {
+		return errors.New("manifest cannot establish the original run-root transition")
+	}
+	return nil
 }
 
 func manifestName(name string) bool { return strings.HasSuffix(name, ".manifest") }

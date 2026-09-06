@@ -297,7 +297,7 @@ func winLockMode(ctx context.Context, parent *winObject, basename string, budget
 			return nil, err
 		}
 		if time.Until(deadline) <= 0 {
-			return nil, fmt.Errorf("storage lock busy after %s", budget)
+			return nil, fmt.Errorf("%w after %s", errLockBusy, budget)
 		}
 		err := windows.LockFileEx(object.handle(), windows.LOCKFILE_EXCLUSIVE_LOCK|windows.LOCKFILE_FAIL_IMMEDIATELY, 0, 1, 0, &windows.Overlapped{})
 		if err == nil {
@@ -308,7 +308,7 @@ func winLockMode(ctx context.Context, parent *winObject, basename string, budget
 		}
 		left := time.Until(deadline)
 		if left <= 0 {
-			return nil, fmt.Errorf("storage lock busy after %s", budget)
+			return nil, fmt.Errorf("%w after %s", errLockBusy, budget)
 		}
 		if left > 10*time.Millisecond {
 			left = 10 * time.Millisecond
