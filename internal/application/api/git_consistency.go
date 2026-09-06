@@ -42,7 +42,7 @@ func consistentStatusFacts(d StatusFactsData) error {
 	if err := upstreamScope(d.Upstream, w.Repository()); err != nil {
 		return err
 	}
-	return nil
+	return consistentStatusChanges(d.Changes)
 }
 func upstreamScope(v UpstreamFact, r domain.RepositoryID) error {
 	switch x := v.(type) {
