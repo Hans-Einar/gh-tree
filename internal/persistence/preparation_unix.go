@@ -24,6 +24,9 @@ func nativeExistingLock(ctx context.Context, parent *nativeObject, basename stri
 	return unixLockMode(ctx, parent, basename, wait, false)
 }
 func nativePublish(payload, parent *nativeObject, name, target string, present bool) error {
+	if err := verifyNativeEntry(parent, name, payload); err != nil {
+		return err
+	}
 	return unixPublish(parent, name, target, present)
 }
 func nativeDirectoryBarrier(parent *nativeObject) error  { return unix.Fsync(parent.fd()) }

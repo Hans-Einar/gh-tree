@@ -435,6 +435,14 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			if err := writeComplete(ctx, object.file, content); err != nil {
 				return result, err
 			}
+			// Writing can clear set-ID bits on Unix. Initial metadata protects
+			// preparation confidentiality; exact metadata is established again
+			// after all data writes and independently verified before flushing.
+			if original != nil {
+				if err := nativeApplyMetadata(object, metadata); err != nil {
+					return result, err
+				}
+			}
 			if _, err := nativeInspectMetadata(object); err != nil {
 				return result, err
 			}
@@ -524,6 +532,12 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err != nil || preparedID != publicationIdentity {
 		return result, errors.Join(err, errBindingChanged)
 	}
+	if err := verifyNativeEntry(c.parent(), m.publicationName(), publisher); err != nil {
+		return result, err
+	}
+	if err := verifyNativeEntry(c.parent(), m.artifactName(api.RetainedPayload), publisher); err != nil {
+		return result, err
+	}
 	preparedRaw, err := nativeRead(ctx, publisher)
 	if err != nil || !bytes.Equal(preparedRaw, raw) {
 		return result, errors.Join(err, errBindingChanged)
@@ -565,6 +579,26 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		resultErr = errors.Join(resultErr, s.hook(stage))
 	}
 	return result, resultErr
+}
+
+func verifyNativeEntry(parent *nativeObject, name string, expected *nativeObject) (resultErr error) {
+	entry, err := nativeOpenDocument(parent, name)
+	if err != nil {
+		return errors.Join(err, errBindingChanged)
+	}
+	defer func() { resultErr = errors.Join(resultErr, entry.close()) }()
+	actualID, err := nativeArtifactIdentity(entry)
+	if err != nil {
+		return err
+	}
+	expectedID, err := nativeArtifactIdentity(expected)
+	if err != nil {
+		return err
+	}
+	if actualID != expectedID {
+		return errors.Join(errBindingChanged, errors.New("publication source entry no longer names the retained payload"))
+	}
+	return nil
 }
 
 func verifyPermanentLock(parent *nativeObject, basename string, lock *nativeStoreLock) (resultErr error) {

@@ -181,7 +181,7 @@ func (s *Store) load(ctx context.Context, family api.StorageFamily, scope api.Wo
 		err = errors.Join(err, chain.close())
 	}
 	if err != nil {
-		if nativeUnsupported(err) {
+		if nativeUnsupported(err) && o.State == api.LoadUnavailable {
 			o.State = api.UnsupportedProfile
 		}
 		var codec *codecError

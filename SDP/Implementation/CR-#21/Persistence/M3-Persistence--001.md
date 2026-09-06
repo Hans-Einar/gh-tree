@@ -369,6 +369,25 @@ That path still requires explicit native controls and independent review.
 
 ## Exact successor work
 
+P3f early independent audit corrections (this commit) address three confirmed
+defects from the separate native Linux/ext4 UID65534 audit of5e8aaeb. A retained
+publisher descriptor alone did not establish that Unix's `.publication` pathname
+still named that object: final checks now reopen both staging/payload names
+no-follow and compare actual identities, and the native Unix invocation verifies
+the source entry again. Native absence/presence controls replace staging with
+both a symlink and another regular object before final checks; all refuse without
+changing the target. This is observed source-entry drift, not a waived target gap.
+
+Metadata is now re-established after complete data writes, then verified/flushed:
+Linux writing had cleared source set-ID bits after their initial confidentiality
+setup. Real04750/02750 and ordinary0750/0640 controls preserve exact final modes.
+Recovery-only Unsupported errors now preserve a successfully decoded document's
+load state; all3 native typed load controls insert an unsupported recovery symlink
+and retain valid document/version plus nonnil diagnostics, avoiding a zero invalid
+port result. Windows full package/vet and Linux targeted regressions PASS; owned
+Linux staging `/tmp/gh-tree-persistence-reviewfix.UbOmnU/tmp`. Independent re-review
+and final candidate gates remain required; this records author corrections only.
+
 P3e native request/restart association and process-control checkpoint (this commit)
 checks a manifest's Expected anchor against the actual retained ancestor chain
 and exact remaining names. Run own-effect change-stamp transitions preserve the
