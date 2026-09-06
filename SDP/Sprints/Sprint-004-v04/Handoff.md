@@ -1,41 +1,43 @@
 # Program handoff
 
-State: ACTIVE — focused review gates, no product implementation
+State: ACTIVE — Refactor Design; product implementation gated
 Repository: Hans-Einar/gh-tree
-Parent: #21, reopened under explicit user authority
-Sprint/iteration/gate: Sprint-004-v04 / I-01 / G-06
-Master owns coordination; Composition #49 is authorized.
+Parent: #21, open under full user run authority
+Sprint/iteration/gate: Sprint-004-v04 / I-02 / G-07
+Active authority: #52 (Refactor Design)
 
-## Exact current evidence
+## Exact evidence
 
-- Product: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-- Main governance: 00584a57021dda767ead5e3996cc92477e0a2d3c.
-- Domain #33 / PR #34 / codereview-21/layer-domain-review:
-  corrected HEAD 86d2a4c0cc0eb8f427d597617246e85473a6cf55, accepted and merged
-  at 5b1cf181fd3245a65337f1db28ee8f0fb95c200f; #33 closed.
-- Checkpoint Issue #35 / PR #37: accepted at 8b5514e5e69ed6de603ed5f34e6e530a6a8b76f3,
-  merged at 11cfef79009bb3956f0ba970470df14843e27e07; #35 closed.
-- No accepted REFDES or FROZEN BCs. All reported product safety findings remain open.
-- Launch Discovery #36 / PR #39 accepted at 859eab7af576b6b0eb689da6d7ed7c6d235d5853,
-  merged at 3b8923e0fad29eec24a2d8fa1811dba24c2a626f; #36 closed. 2H/9M/1L findings.
-- Release parity includes all 12 v0.3.14 assets, including FreeBSD, 32-bit and
-  Windows ARM64. See CurrentIndex.releaseBaseline and parent #21 packaging comment.
-- Persistence #40 / PR #42 accepted at e13639926ca1b34e5021d1a038b83517cb7eec65,
-  merged at db07857550cdfd56c114eb42c045b896b229d747; #40 closed. 2H/6M/1L findings.
-- GitHub #43 / PR #45 accepted at ea52f8c5c50e178c6e415cbba2284296e2d9b910,
-  merged at e16650036c10f764c1b99c76d98d2bd37c3ffbb0; #43 closed. 1H/8M/1L findings.
-- TUI View #46 / PR #48 accepted at 108a3bd0ceb782c6a29d980ce0abcce1eae7a284,
-  merged at 00584a57021dda767ead5e3996cc92477e0a2d3c; #46 closed. 0H/11M/1L findings.
+- Product baseline: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
+- Main observed: e0e716fd44421c221d00375fc0c0d0b8ea85bdff.
+- All ten focused layers accepted/merged: Runtime #25, TUI State #26,
+  Application #29, Git #31, corrected Domain #33, Launch Discovery #36,
+  Persistence #40, GitHub #43, TUI View #46, Composition #49.
+- Exact report/merge SHAs, CI and all 143 open finding IDs are in CurrentIndex.yaml
+  and append-only Ledger.ndjson; findings overlap across reports. Counts 36H/89M/18L.
+- Last report: Composition PR #51, reviewed e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c,
+  merged e0e716fd44421c221d00375fc0c0d0b8ea85bdff; nine CI checks passed.
+- No accepted REFDES, no FROZEN BC, no active implementation Slice, no v0.4
+  product changes. Review acceptance is not product-finding resolution.
+- Release parity requires all twelve v0.3.14 assets, including FreeBSD, 32-bit
+  and Windows ARM64; exact names in CurrentIndex.releaseBaseline. Installed
+  extension was observed at v0.3.13 and remains unchanged.
 
 ## Continue
 
-Read AGENTS.md, developmentInstructions.md, full #21 comments, the full
-UserRunContract.md and the current index/ledger before acting. Inspect exact
-remote refs and clean/dirty state; preserve any unpublished or user work.
-Nine focused reviews and #35 scaffolding are complete. Execute Composition review Issue #49
-in a dedicated review-only worktree/branch using LayerReview.md; consume all
-accepted earlier reviews. Follow the ordered gate sequence in ScrumIterations.md.
+Read AGENTS.md, developmentInstructions.md, full #21/#52, UserRunContract.md,
+index/relations/ledger and all accepted reports afresh as #52 requires. Inspect
+actual remote refs and dirty/unpublished work before acting. Preserve user work.
 
-No actual blocker is known. Go 1.25.0 setup and baseline Windows tests passed;
-the absolute bootstrap path is in implementationNotes.md.
-Never infer success from this handoff: actual files, Issues, SHAs and evidence win.
+Author design on codex/cr21-refactor-design: REFDES--001 plus necessary API,
+physical file ownership/migration and verification appendices. Resolve technical
+feasibility with bounded temporary evidence; no real-user-file mutations. Fresh
+independent review at frozen exact SHA, corrections/re-review and green CI precede
+acceptance/merge. Then authorize BC review/freeze; no product implementation before
+both gates. Master owns metadata/contracts/integration and delegates bounded
+product work to fresh workers with separate reviewers when implementation begins.
+
+No external blocker is known. Windows Go 1.25.0 is selected automatically through
+C:/Users/hanse/.codex/tmp/ponsse-r9-go1.23.12/go/bin/go.exe. Baseline tests/builds,
+probes and limitations are recorded in implementationNotes.md and actual reports.
+Do not infer future conformance from baseline evidence or this handoff.

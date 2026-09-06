@@ -121,6 +121,29 @@
       "from": "G-06",
       "relation": "accepts",
       "to": "LR49"
+    },
+    {
+      "from": "REFDES52",
+      "relation": "depends_on",
+      "to": [
+        "APS22",
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40",
+        "LR43",
+        "LR46",
+        "LR49"
+      ]
+    },
+    {
+      "from": "G-07",
+      "relation": "accepts",
+      "to": "REFDES52"
     }
   ],
   "errata": [

@@ -2,11 +2,13 @@
 
 State: ACTIVE
 Sprint: Sprint-004-v04
-Active iteration: I-01 — focused reviews
-Active gate: G-06 — Composition review (#49)
+Active iteration: I-02 — Refactor Design and contracts
+Active gate: G-07 — Refactor Design (#52)
 No implementation Slice is active before design and BC freeze.
 
 ## I-01 contract
+
+State: COMPLETE — all ten focused layer reports accepted and merged.
 
 Goal: complete the focused-review inputs required before designing v0.4.
 Kickoff state: Runtime, TUI State, Application and Git were accepted; Domain was
@@ -38,7 +40,8 @@ record review/merge SHAs and CI URL on Issue and in ledger/index/handoff.
   ea52f8c5c50e178c6e415cbba2284296e2d9b910; merge e16650036c10f764c1b99c76d98d2bd37c3ffbb0.
 - [x] G-05: TUI View #46 / PR #48 accepted at
   108a3bd0ceb782c6a29d980ce0abcce1eae7a284; merge 00584a57021dda767ead5e3996cc92477e0a2d3c.
-- [ ] G-06: accept Composition review, authorized by #49, consuming all preceding reviews.
+- [x] G-06: Composition #49 / PR #51 accepted at
+  e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c; merge e0e716fd44421c221d00375fc0c0d0b8ea85bdff.
 
 Carry forward: no product finding is resolved by review acceptance. The next
 iteration cannot start design acceptance before all ten reports are accepted.
@@ -99,7 +102,7 @@ Verification: actual source/report/render evidence and exact scope, requirement
 coverage and finding counts; accepted frozen HEAD must pass configured CI.
 Completion: Master acceptance/merge recorded; then Composition review.
 
-## G-06 active gate contract
+## G-06 completed gate contract
 
 Goal: settle CLI/root/host wiring, root lifecycle and cleanup errors, identity,
 dependency enforcement and release packaging after all nine preceding reviews.
@@ -112,3 +115,22 @@ Verification: actual source/report/workflow inspection, complete question and
 finding coverage, bounded probes/build evidence as needed, green exact-HEAD CI.
 Completion: Master acceptance/merge recorded; close I-01 only when all ten reports
 are accepted, then open dedicated Refactor Design Issue and begin I-02.
+
+## I-02 / G-07 active contract
+
+State: ACTIVE. Authority: #52 and full user run contract, stages 4-5 and all
+downstream capability/safety/verification/release requirements.
+Goal: reconcile the ten accepted reviews into implementable REFDES--001,
+complete API/ownership/vertical Slice and verification contracts. Read accepted
+reports afresh; resolve safety-critical technical feasibility using source or
+bounded temporary probes rather than unverified promises.
+Files: SDP/Design/CR-#21/REFDES--001.md plus necessary API/ownership/verification
+appendices; Master checkpoint metadata. Branch: codex/cr21-refactor-design.
+Inputs: APS22, BR21, all ten LR records, 143 open finding IDs (36H/89M/18L,
+overlapping reports). No product file change or BC freeze permitted by this gate.
+Verification: exact frozen design HEAD, fresh independent artifact review,
+cross-contract/API/ownership/compatibility/verification completeness and feasibility
+evidence, correction and re-review, design-only diff and green configured CI.
+Completion: explicit Master design acceptance/merge. Only then authorize required
+BC creation/review/freeze at G-08. Product implementation remains gated until
+design and required BCs are accepted/frozen; no implementation Slice is active.

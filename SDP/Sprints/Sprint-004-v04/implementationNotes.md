@@ -92,3 +92,23 @@ all 61 copied internal Go hashes matched; seven render probes rerun PASS. All
 nine CI checks passed in run 34000698430. No report correction; 0H/11M/1L
 product findings remain open. Total 134 report IDs (35H/83M/16L), overlapping
 reports. Composition #49 is next; all nine preceding layers accepted. No BC frozen.
+
+G-06 checkpoint PR #50 independently accepted at
+4d15a31e287f9b1757c8ae76716f477f56feaf1e; merged at
+c9ae9851fdd789c13e8da4ebf4b34c603b724987. Verified CI runs 34000926362 (PR) and
+34000895523 (push) succeeded; initial comment run-number references were corrected
+transparently before merge and are not verification evidence.
+
+Composition #49 / PR #51 independently accepted by Master at
+e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c; merge
+e0e716fd44421c221d00375fc0c0d0b8ea85bdff. Complete actual report/root/workflow
+source read; pinned action script Git blob verified, Bubble Tea shutdown source
+inspected, all twelve local build files/Windows metadata inspected. Master rebuilt
+bootstrap independently and reproduced all six native pre-UI probes. All nine CI
+checks passed in run 34001756011; no report correction. 1H/6M/2L product findings
+remain open. Total 143 report IDs (36H/89M/18L), overlapping reports.
+
+All ten focused reviews are accepted/merged; I-01 is complete. Refactor Design
+Issue #52 authorizes I-02/G-07. No product refactor or v0.4 verification has begun,
+and no BC is frozen. Required design resolves APIs, physical ownership, full Slice
+and compatibility plan, verification and safe twelve-target release gates.
