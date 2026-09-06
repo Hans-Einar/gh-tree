@@ -80,3 +80,15 @@ rerun PASS. Native gh 2.96.0 source matched tagged GitHub blob
 All nine CI checks passed in run 33999849098; no correction. 1H/8M/1L product
 findings remain open; total 122 report IDs (35H/72M/15L), overlapping reports.
 TUI View #46 is next. No product implementation or BC freeze.
+
+G-05 checkpoint PR #47 independently accepted at
+9e7fcca9d98b3bcd9e10d03ca1051d5213c623fd; merged at
+61224e88f3102ca3604df7067400f61f1d1c3dff with green push/PR CI.
+
+TUI View #46 / PR #48 independently accepted by Master at
+108a3bd0ceb782c6a29d980ce0abcce1eae7a284; merge
+00584a57021dda767ead5e3996cc92477e0a2d3c. Full report and source/probe code read;
+all 61 copied internal Go hashes matched; seven render probes rerun PASS. All
+nine CI checks passed in run 34000698430. No report correction; 0H/11M/1L
+product findings remain open. Total 134 report IDs (35H/83M/16L), overlapping
+reports. Composition #49 is next; all nine preceding layers accepted. No BC frozen.

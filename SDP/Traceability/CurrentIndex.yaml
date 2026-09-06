@@ -4,10 +4,10 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-01",
-  "activeGate": "G-05",
+  "activeGate": "G-06",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "e16650036c10f764c1b99c76d98d2bd37c3ffbb0",
+  "mainObserved": "00584a57021dda767ead5e3996cc92477e0a2d3c",
   "designState": "not_started",
   "boundaryContracts": [],
   "productFindingsState": "all_unresolved",
@@ -173,16 +173,37 @@
       "id": "LR46",
       "kind": "layer_review",
       "layer": "TUI View",
-      "state": "authorized",
+      "state": "accepted",
       "issue": 46,
-      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md",
+      "pr": 48,
+      "head": "108a3bd0ceb782c6a29d980ce0abcce1eae7a284",
+      "merge": "00584a57021dda767ead5e3996cc92477e0a2d3c",
+      "ci": "https://github.com/Hans-Einar/gh-tree/actions/runs/34000698430"
     },
     {
       "id": "G-05",
       "kind": "governance_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "LR46"
+      ],
+      "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "LR49",
+      "kind": "layer_review",
+      "layer": "Composition",
+      "state": "authorized",
+      "issue": 49,
+      "doc": "SDP/Reviews/CR-#21/Layers/Composition/LR--001.md"
+    },
+    {
+      "id": "G-06",
+      "kind": "governance_gate",
+      "state": "active",
+      "requires": [
+        "LR49"
       ],
       "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
     }
@@ -1041,6 +1062,90 @@
       "state": "open",
       "report": "LR43",
       "doc": "SDP/Reviews/CR-#21/Layers/GitHub/LR--001.md"
+    },
+    {
+      "id": "TV46-M01",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M02",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M03",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M04",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M05",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M06",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M07",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M08",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M09",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M10",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-M11",
+      "severity": "MEDIUM",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
+    },
+    {
+      "id": "TV46-L01",
+      "severity": "LOW",
+      "state": "open",
+      "report": "LR46",
+      "doc": "SDP/Reviews/CR-#21/Layers/TUI-View/LR--001.md"
     }
   ],
   "releaseBaseline": {
