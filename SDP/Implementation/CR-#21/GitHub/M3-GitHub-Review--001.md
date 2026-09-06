@@ -17,7 +17,7 @@ navigation only. This review does not close a vertical Slice or baseline finding
 
 ## M3GH-R01 — P2: malformed UTF-8 record drops independent valid siblings
 
-`internal/github/adapter/parsing.go:92`, `decodeList`, checks `utf8.Valid(raw)`
+`internal/github/adapter/parsing.go:73`, `decodeList`, checks `utf8.Valid(raw)`
 for the entire page before separating its `json.RawMessage` records. An invalid
 byte inside one branch name or PR title therefore rejects every record, including
 independently well-formed neighboring objects. Both public list methods return
