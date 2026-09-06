@@ -238,3 +238,12 @@ correcting root aliases, nested callbacks, private helper boundaries, Git clean
 semantics and trimpath toolchain identity. No product contribution is integrated.
 Re-review corrected exact source and current CI before M1 acceptance; all143
 baseline findings remain open and full Slice verification remains ahead.
+
+M1 corrected candidateb1f533e062c8ab94b81e9309aaffadee096a5c7d has green
+CI34030099746 (18 success/1 explicit M3 skip), including real Windows ARM64 and
+macOS test/vet/build, but independent re-review is CHANGES_REQUIRED. M01/M02/M05
+regressions pass; M03 private-decomposition wrapper traversal and M04 legacy crlf
+profile remain, and M06 external child-junction source ownership is new. Actual
+sources/results/CI/native evidence is in M1-Review--002 and its archive. Worker
+corrects these three before a new exact-source re-review/CI; no integration or
+baseline finding/Slice closure. All143 baseline findings remain open.

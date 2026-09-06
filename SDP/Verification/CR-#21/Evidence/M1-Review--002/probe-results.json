@@ -1,0 +1,62 @@
+[
+  {
+    "Name": "nested-callback-slice",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/application/api: Result: exported boundary exposes callback inside a value graph"
+  },
+  {
+    "Name": "nested-callback-map-result",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/application/api: Callbacks: exported boundary exposes callback inside a value graph"
+  },
+  {
+    "Name": "private-native-helper",
+    "Expected": "PASS",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "windows-arm-callback",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/arm64 (staged)\narchitecture: example.test/probe/internal/application/api: Result: exported boundary exposes callback inside a value graph"
+  },
+  {
+    "Name": "private-native-wrapper-escapes-git",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/git: Open: exported API exposes forbidden type os.File"
+  },
+  {
+    "Name": "private-callback-wrapper-escapes-git",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/git: Open: exported boundary exposes callback inside a value graph"
+  },
+  {
+    "Name": "private-native-wrapper-escapes-runtime",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "private-callback-wrapper-escapes-runtime",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "private-native-wrapper-escapes-application",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "pure-methods-and-private-value",
+    "Expected": "PASS",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  }
+]

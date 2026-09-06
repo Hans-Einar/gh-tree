@@ -297,15 +297,24 @@
           "ciRun": "34029160810",
           "result": "CHANGES_REQUIRED",
           "scope": "Architecture/CI prerequisite only; full clause and integrated/native/E2E proof not complete"
+        },
+        {
+          "kind": "M1_prerequisite_rereview_and_ci",
+          "sourceHead": "b1f533e062c8ab94b81e9309aaffadee096a5c7d",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M1-Review--002.md",
+          "ciRun": "34030099746",
+          "result": "CI18success_1M3skip_review_CHANGES_REQUIRED",
+          "scope": "M1 infrastructure prerequisite only; no integrated complete-clause/native Runtime/E2E acceptance"
         }
       ],
       "limits": [
-        "M157-M01..05 require correction/re-review and successful current CI; legacy still present and no M1 product contribution integrated."
+        "M157-M03/M04 remain and M06 is new; M01/M02/M05 regressions pass at b1f533e. No M1 contribution integrated; full accepted clause/legacy retirement/native/E2E proof still required."
       ]
     },
     {
       "id": "V-COMP-04",
-      "state": "rework_required",
+      "state": "partial",
       "evidence": [
         {
           "kind": "M1_prerequisite_review_and_ci",
@@ -315,10 +324,19 @@
           "ciRun": "34029160810",
           "result": "CHANGES_REQUIRED",
           "scope": "Architecture/CI prerequisite only; full clause and integrated/native/E2E proof not complete"
+        },
+        {
+          "kind": "M1_prerequisite_rereview_and_ci",
+          "sourceHead": "b1f533e062c8ab94b81e9309aaffadee096a5c7d",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M1-Review--002.md",
+          "ciRun": "34030099746",
+          "result": "CI18success_1M3skip_review_CHANGES_REQUIRED",
+          "scope": "M1 infrastructure prerequisite only; no integrated complete-clause/native Runtime/E2E acceptance"
         }
       ],
       "limits": [
-        "M157-M01..05 require correction/re-review and successful current CI; legacy still present and no M1 product contribution integrated."
+        "M157-M03/M04 remain and M06 is new; M01/M02/M05 regressions pass at b1f533e. No M1 contribution integrated; full accepted clause/legacy retirement/native/E2E proof still required."
       ]
     },
     {
