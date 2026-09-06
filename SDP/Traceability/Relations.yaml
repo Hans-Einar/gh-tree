@@ -375,6 +375,25 @@
       "sourceHead": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
       "ciRun": "34046178481",
       "state": "verified"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "integrated_at",
+      "to": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "sourceHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "ciRun": "34046727344",
+      "state": "verified"
+    },
+    {
+      "from": "M2",
+      "relation": "completed_at",
+      "to": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "state": "complete"
+    },
+    {
+      "from": "M3",
+      "relation": "depends_on",
+      "to": "M2"
     }
   ],
   "errata": [

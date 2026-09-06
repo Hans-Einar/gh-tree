@@ -348,3 +348,15 @@ integrationCI34046178481 passed18 applicable jobs/explicitM3skip. Master checked
 all product/shared build inputs equal the accepted source; no conflicts. Review003
 resolves all M259 groups. Accepted viewmodeld279c3f may now integrate serially;
 M2/full Slice/native/baseline/release closure is not implied by the API leaf.
+
+M2 COMPLETE atd60afe8fb763269964bcdc05958c8cdbc7849dea. Viewmodel#60 accepted
+sourced279c3f2af59e48029e77d845f5a55271c7889cf was integrated after verified API
+integrationecf12e9; its exact integrationCI34046727344 passed18/explicitM3skip.
+Only accepted viewmodel files were added, with no other product/build change or
+merge conflict. Issues59/60 are CLOSED, verified on GitHub. Domain6113ca5, API
+finald4c3bfd/technical6e289c4 and viewmodeld279c3f are complete M2 dependencies.
+All13 Slices/all143 baseline findings remain open; CLI still uses legacy stack.
+M3 preparation now opens bounded adapter Issues under#21, records exact contracts/
+traceability before fresh implementation, and uses separate reviewers. Accepted
+serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+M4..M8/full native/vertical/packaging/release gates remain intact.

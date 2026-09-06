@@ -4,7 +4,7 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
-  "activeGate": "M2",
+  "activeGate": "M3-preparation",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
   "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
@@ -454,18 +454,16 @@
     {
       "id": "M2",
       "kind": "integration_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "M1",
         "IMPL58",
         "IMPL59",
         "IMPL60"
       ],
-      "remainingSurfaces": [
-        "Application API/ports",
-        "State-owned viewmodel"
-      ],
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "remainingSurfaces": [],
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea"
     },
     {
       "id": "IMPL59",
@@ -513,13 +511,14 @@
       "finalCiRun": "34045071509",
       "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
       "integrationCiRun": "34046178481",
-      "integrationCiState": "passed18_explicitM3skip"
+      "integrationCiState": "passed18_explicitM3skip",
+      "issueState": "closed"
     },
     {
       "id": "IMPL60",
       "kind": "implementation_contribution",
       "issue": 60,
-      "state": "accepted_pending_predecessor_integration",
+      "state": "accepted_integrated",
       "layer": "TUI State viewmodel",
       "slices": [
         "SLC-01",
@@ -548,17 +547,21 @@
       "resolvedImplementationFindings": [
         "M260-M01"
       ],
-      "integrationHead": null
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+      "integrationCiRun": "34046727344",
+      "integrationCiState": "passed18_explicitM3skip",
+      "issueState": "closed"
     },
     {
       "id": "M2-SURFACES",
       "kind": "parallel_contribution_group",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "IMPL59",
         "IMPL60"
       ],
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea"
     },
     {
       "id": "TOOL-M3-01",
@@ -567,6 +570,22 @@
       "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md",
       "observedHead": "04eb90a54fed3acdc6f87614af7f919ffedb167e",
       "productGateSatisfied": false
+    },
+    {
+      "id": "M3",
+      "kind": "integration_gate",
+      "state": "preparation",
+      "requires": [
+        "M2"
+      ],
+      "order": [
+        "Git",
+        "GitHub",
+        "Persistence",
+        "Launch Discovery",
+        "Runtime"
+      ],
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
     }
   ],
   "productFindings": [
@@ -1640,9 +1659,7 @@
     "SLC-12",
     "SLC-13"
   ],
-  "activeContribution": "M2-SURFACES",
-  "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
-  "activeContributions": [
-    "IMPL60"
-  ]
+  "activeContribution": "M3-PREPARATION",
+  "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+  "activeContributions": []
 }

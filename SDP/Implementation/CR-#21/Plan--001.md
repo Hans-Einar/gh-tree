@@ -1,6 +1,6 @@
 # Implementation plan — complete v0.4 refactor
 
-State: ACTIVE, I-03 / M2. Authority: #21 and active API/ports #59 and State-viewmodel #60 contributions.
+State: ACTIVE, I-03 / M3 preparation. Authority: #21; M1/M2 contributions #57..60 complete.
 M1 #57 is complete; its original contribution contract remains below as history.
 Integration branch: codereview-21/refactor.
 Integration base: 97cc0d8257603766dd741b49b7d8005857b421a9.
@@ -62,5 +62,17 @@ M1 completion: independent ACCEPT/source/integration05982a4; source CI3403142058
 and canonical integration CI34031833446 passed18 applicable jobs each, with explicit
 M3 helper skip. All six M1 review findings resolved; all143 baseline findings open.
 M2 Domain #58 is accepted/integrated at6113ca5 with source/canonical CI18/1skip.
-Active parallel surface contract: [M2-Surfaces--001](M2-Surfaces--001.md), #59/#60.
+Completed surface contract: [M2-Surfaces--001](M2-Surfaces--001.md), #59/#60.
 API-Inventory--001 is the independent completeness aid; full frozen BCs govern.
+
+M2 COMPLETE atd60afe8fb763269964bcdc05958c8cdbc7849dea. Viewmodel#60 accepted
+sourced279c3f2af59e48029e77d845f5a55271c7889cf was integrated after verified API
+integrationecf12e9; its exact integrationCI34046727344 passed18/explicitM3skip.
+Only accepted viewmodel files were added, with no other product/build change or
+merge conflict. Issues59/60 are CLOSED, verified on GitHub. Domain6113ca5, API
+finald4c3bfd/technical6e289c4 and viewmodeld279c3f are complete M2 dependencies.
+All13 Slices/all143 baseline findings remain open; CLI still uses legacy stack.
+M3 preparation now opens bounded adapter Issues under#21, records exact contracts/
+traceability before fresh implementation, and uses separate reviewers. Accepted
+serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+M4..M8/full native/vertical/packaging/release gates remain intact.

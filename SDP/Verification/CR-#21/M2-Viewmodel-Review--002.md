@@ -42,3 +42,15 @@ Source acceptance/CI are complete, but #59 remains under review and must integra
 before this leaf. No viewmodel integration or #60 closure occurs from this record.
 Full State reducer/View render/layout/parser/native/E2E/Slice/release gates and
 all143 baseline findings remain open.
+
+M2 COMPLETE atd60afe8fb763269964bcdc05958c8cdbc7849dea. Viewmodel#60 accepted
+sourced279c3f2af59e48029e77d845f5a55271c7889cf was integrated after verified API
+integrationecf12e9; its exact integrationCI34046727344 passed18/explicitM3skip.
+Only accepted viewmodel files were added, with no other product/build change or
+merge conflict. Issues59/60 are CLOSED, verified on GitHub. Domain6113ca5, API
+finald4c3bfd/technical6e289c4 and viewmodeld279c3f are complete M2 dependencies.
+All13 Slices/all143 baseline findings remain open; CLI still uses legacy stack.
+M3 preparation now opens bounded adapter Issues under#21, records exact contracts/
+traceability before fresh implementation, and uses separate reviewers. Accepted
+serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+M4..M8/full native/vertical/packaging/release gates remain intact.

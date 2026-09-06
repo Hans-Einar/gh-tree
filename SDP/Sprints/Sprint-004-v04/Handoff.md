@@ -1,8 +1,8 @@
 # Program handoff
 
-State: ACTIVE - Sprint-004-v04 / I-03 / M2 serial integration.
-Full long-running goal #21 remains open. Current Issues #59 (API/ports) and
-#60 (State-owned viewmodel). Canonical codereview-21/refactor worktree:
+State: ACTIVE - Sprint-004-v04 / I-03 / M3 preparation.
+Full long-running goal #21 remains open. M1/M2 Issues #57..60 are complete/closed.
+Canonical codereview-21/refactor worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor.
 
 ## Accepted source and gates
@@ -27,99 +27,81 @@ API A1 Domain identity are implemented; constructors/accessors are in its README
 The CLI still uses the legacy stack. All13 Slices selected; all143 baseline
 findings remain open. Full native/vertical/release proof is not supplied by leaves.
 
-## Current contracts and dispatch
+## Current stage and exact next action
 
-Read AGENTS, full developmentInstructions, #21/#59/#60 and their prerequisites,
-UserRunContract, accepted REFDES/API/MigrationMap/Slices/Verification and all seven
-frozen BCs/BoundaryTypes. Current contract:
-SDP/Implementation/CR-#21/M2-Surfaces--001.md. API-Inventory--001 is a read-only
-independent completeness review, not new authority. It found no material signature
-or ownership contradiction:5 Client methods,28 commands,13 queries,6 events and
-7 port interfaces/48 exact methods. Actual frozen signatures/fields control.
+M2 is COMPLETE. API/ports#59 finald4c3bfdd2038bbc5921488fbcffad1b8736c7460
+(technical6e289c4) is independently ACCEPTED in M2-API-Review--003. All eight M259
+groups resolved;99 primary/77 bounded raw blobs and53 archived evidence files
+verified. SourceCI34044482946/finalCI34045071509 each18/explicitM3skip. Actual API
+integrationecf12e91f5a1223c9d97b404db024e1ce05372df passed integrationCI34046178481.
 
-Master dispatches fresh independent workers from this kickoff commit:
-- #59 branch codereview-21/layer-application-api, worktree application-api-ports:
-  only new internal/application/api and ports plus tests/README and bounded
-  SDP/Implementation/CR-#21/Application/M2-API--001.md report.
-- #60 branch codereview-21/layer-tuistate-viewmodel, worktree state-viewmodel:
-  only new internal/tuistate/viewmodel plus tests/README and bounded
-  SDP/Implementation/CR-#21/TUI-State/M2-Viewmodel--001.md report.
+Viewmodel#60 sourced279c3f2af59e48029e77d845f5a55271c7889cf is independently
+ACCEPTED in M2-Viewmodel-Review--002; M260-M01 resolved. SourceCI34038307701 was
+rechecked18/skip. After API passed, viewmodel integrated at
+**d60afe8fb763269964bcdc05958c8cdbc7849dea**, integrationCI34046727344 passed18/skip.
+Product trees match accepted sources and no unexpected shared/build inputs changed.
+API#59 and viewmodel#60 are CLOSED, verified on GitHub. M1/M2 are complete; no
+full Slice, baseline finding, coordinator/native behavior or release gate is closed.
 
-Both worktrees are under C:/Users/hanse/GIT/gh-tree-wt. Viewmodel imports Domain
-and pure values, never API/ports or parent State, so work can overlap. No other
-layer, legacy, module/workflow, frozen contract/design or program metadata edits
-are delegated. Master coordinates and does not implement product code.
+Active stage: I-03 / M3 preparation. Read AGENTS/developmentInstructions, current
+full#21, accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker/MigrationMap/
+Slices/Verification/FindingDisposition, relevant full frozen BCs/shared types and
+actual accepted Domain/API/ports. Next create M3 implementation Issues and Master
+slice/contribution contracts, update current index/relations/ledger before dispatch,
+then use fresh worker contexts and separate independent reviewers. Workers own
+one adapter folder only; Master owns shared integration/traceability. No M3
+implementation Issue/dispatch exists yet at this checkpoint.
 
-Each worker implements its complete frozen surface with validated closed values,
-immutable copies and meaningful tests, then freezes/pushes exact source. A separate
-fresh reviewer reads actual source/tests/contracts, not author summaries. Correct/
-re-review and require applicable current branch CI. Master serially integrates
-API/ports then viewmodel and records integrated CI before declaring M2 complete.
-No adapter work before required M2 surfaces; a faulty BC triggers BC-CHANGE.
+M3 serial integration: Git → GitHub → Persistence → Launch Discovery → Runtime.
+Then M4 Application → State → View; M5 full real new-stack headless Slices; M6
+host/entry cutover; M7 mapped retirement/strict empty-allowance tree; M8 full
+verification/product PR/main/tag/twelve assets/controlled extension install-upgrade.
+All13 Slices and143 baseline findings remain selected/open. No scope reduction.
 
-## Traceability and remaining scope
+Draft work descriptions (proposals only, not implementation authority) are in
+C:/Users/hanse/.codex/tmp/gh-tree-m3-preparation: Git-Issue-Draft-v2.md,
+GitHub-Issue-Draft.md, Persistence-Issue-Draft-v2.md, Discovery-Issue-Draft.md and
+Runtime-Issue-Draft.md. Git draft received independent planning ACCEPT with G7
+scope locking, capability-specific2.43/2.48 handling and contribution-versus-full-
+stack evidence clarifications. Actual frozen contracts and current M2 source win.
 
-CurrentIndex/Relations/Ledger through51 record accepted predecessors, M2
-correction/acceptance states and bounded native tool preparation. CurrentMatrix has65 accepted checks; M1 and Domain
-contributions are partial evidence for full clauses. It does not close a Slice,
-Runtime allocator/exhaustion or native Git identity requirement. Original failed
-assumptions/probes remain in verification archives; use exact source/hash evidence.
+## Native preparation and required limits
 
-M3 integrates Git -> GitHub -> Persistence -> Discovery -> Runtime; M4 Application
--> State -> View; M5 complete real new-stack headless Slices; M6 host/entry cutover;
-M7 mapped retirement/strict tree; M8 full verification/product PR/main/tag/twelve
-assets/controlled install-upgrade. No scope reduction or premature release claim.
+Tooling-Preparation--001 records bounded local Windows Git2.48.1 real SSH/OpenPGP
+signatures and tamper rejection in SHA-1/SHA-256;4 profiles pass. It is tool setup
+evidence only, not actual Git adapter/G8a bridge/native publication proof. All
+failed environment/header fixture attempts are preserved; keys remain outside repo.
+Missing-parent Storage interpretation: original Expected anchor stays in native
+manifest, while shared recovery Original may describe guarded absence after actual
+parent establishment. Unknown standalone Push recovery is retained without asserting
+association; known request/summary/returned bindings reject conflicting facts.
+These are existing-contract interpretations, not BC changes or native acceptance.
 
-Accepted Runtime helper hook from M1: go run ./internal/runtime/cmd/helpergen -check
-on native Windows/amd64 Go1.25.0, with real source-closure/image/compression/manifest
-verification. Required committed brokerassets/broker-amd64.gz, broker-arm64.gz,
-manifest.json plus broker/broker-cmd/helpergen Go sources. First Runtime source/image
-makes missing inputs fail; until then conformance is explicitly NOT RUN. Pass this
-actual interface to the M3 Runtime worker; no runtime compiler/download/extra asset.
+Accepted M1 Runtime hook: go run ./internal/runtime/cmd/helpergen -check on native
+Windows/amd64 Go1.25.0. Required brokerassets/broker-amd64.gz, broker-arm64.gz,
+manifest.json plus broker/broker-cmd/helpergen source closure; real independent
+rebuild/PE/hash/compression/source verification, no checkout rewrite. First Runtime
+source/image makes missing inputs fail; until then the job is explicitly skipped.
+No runtime compiler/download/extra public release asset is authorized.
 
-## Workspace and limits
+Read-only FreeBSD CI preparation inspected vmactions/freebsd-vm v1.5.5 at
+f0552d3b69211736abd97f02ff3d4674c56b73b1, with15.0/14.3 configs using AnyVM0.6.5/
+builder2.2.6. Local source snapshot:
+C:/Users/hanse/AppData/Local/Temp/gh-tree-freebsd-ci-source-b72818e2fe6f48bfb37b757e9735968c.
+No guest was executed and no source/runtime/image dependency is accepted merely
+from this read. Future native CI must be reviewed/pinned and record actual guest
+OS/arch/toolchain/source/tests/artifacts, not cross-build claims or full env dumps.
 
-Root C:/Users/hanse/GIT/gh-tree remains main97cc0d8. Current implementation is the
-canonical worktree above. M1 composition-bootstrap preserves accepted05982a4;
-Domain worktree domain-implementation preserves clean accepted6113ca5. Older
-review/design worktrees remain; program-checkpoints retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc.
-Inspect actual HEAD/dirty/unpublished state before integration; never discard it.
-Use explicit UTF-8 in scripts; exact native evidence has scoped byte-preserving
-attributes. No external blocker is known. Go1.25/native tools are available as
-recorded in implementationNotes. Installed extension was observed at v0.3.13 and
-is unchanged. No main product PR, tag, publication or install-upgrade occurred.
+## Workspace and continuity
 
-## Latest M2 state and exact next action
-
-API/ports #59: independent ACCEPT at finald4c3bfdd2038bbc5921488fbcffad1b8736c7460,
-technical6e289c4b47a7816493f376c886c00bf0df4835e8. All M259-M01..M08 resolved.
-M2-API-Review--003 preserves actual complete primary/bounded source/test/control/
-report evidence; Master verified99/77 raw source blobs and manifests. SourceCI
-34044482946 and finalCI34045071509 each passed18/explicitM3skip. Final report is
-the sole change from6e; product tree2d98bb2d3ae142f363db6caf7117c99b62c764a3 is
-identical, worker tree clean and origin exactlyd4. Authoring stopped. Master acceptance
-checkpointa106b9397d7c6a38c81167844030ad06d33a6a88 precedes actual pushed integration
-ecf12e91f5a1223c9d97b404db024e1ce05372df. Product/shared build inputs matchd4 exactly.
-IntegrationCI34046178481 passed18 applicable jobs/explicitM3skip. API contribution
-is complete; #59 closure is now permitted. Next integrate accepted viewmodeld279c3f
-and verify its exact integratedCI. No acceptance uses author summary alone.
-
-Viewmodel #60: independent ACCEPT atd279c3f2af59e48029e77d845f5a55271c7889cf;
-M260-M01 resolved, CI34038307701 passed18/explicitM3skip. Complete independent
-controls and original failure history are in M2-Viewmodel-Review--001/002. Preserve
-this frozen source until accepted API/ports integrates first. API is completely integrated/verified; viewmodel remains unintegrated and #60 stays
-open until its integration gate passes. Master serially integrates accepted API,
-then viewmodel, verifying the actual integrated SHA/CI and recording both gates.
-Only then may M2 complete and M3 adapter implementation Issues be dispatched.
-
-Tooling-Preparation--001 supplies only a local native signing baseline: Git2.48.1,
-real SSH/OpenPGP signatures and tamper rejection in SHA-1/SHA-256 temporary repos.
-All4 final profiles pass; original agent-home/header probe failures are retained.
-This does not verify the actual Git adapter or G8a transparent bridge. Archive
-contains scripts/logs/results/hashes only, no private keys. No CurrentMatrix check
-or baseline finding is closed. Canonical04eb90a CI34039754376 and prior5e3aa2e
-CI34039134247 each passed18 applicable jobs plus the explicit Runtime M3 skip.
-
-All13 Slices/all143 baseline findings remain open. M3..M8/full native verification,
-final product PR, main CI, release assets and isolated extension install/upgrade
-remain required. No external blocker is known and no scope reduction is authorized.
+Canonical worktree C:/Users/hanse/GIT/gh-tree-wt/refactor now contains both accepted
+leaves and latest verified product integrationd60afe8. Main remains97cc0d8 and CLI
+still uses the legacy stack. API worker preserves cleand4c3bfd; viewmodel worker
+preserves cleand279c3f; Domain6113ca5 and M1 composition05982a4 are unchanged.
+Older worktrees remain; program-checkpoints retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc.
+Inspect actual HEAD/dirty/unpublished state before each next action. No product
+PR/tag/release/install-upgrade has occurred; installed extension was observedv0.3.13
+and is unchanged. No external blocker is known. Use explicit UTF-8 for scripts and
+scoped byte-preserving attributes for native evidence. CurrentIndex/Relations/
+Ledger through53 and CurrentMatrix65 checks record M2 completion; no whole check
+is manufactured complete from leaf-only proof.

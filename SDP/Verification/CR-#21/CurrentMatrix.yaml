@@ -302,10 +302,18 @@
           "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
           "ciRun": "34038307701",
           "result": "ACCEPT_M260-M01_resolved"
+        },
+        {
+          "kind": "viewmodel_serial_integration",
+          "sourceHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+          "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+          "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+          "ciRun": "34046727344",
+          "result": "PASS18_explicitM3skip"
         }
       ],
       "limits": [
-        "Source leaf accepted; API/ports integration prerequisite and full State/View/layout/native/E2E proof remain."
+        "Accepted immutable viewmodel integrated after verified API/ports. State reducer, View rendering/layout/output parser, native viewport/session and full Slice proof remain required."
       ]
     },
     {

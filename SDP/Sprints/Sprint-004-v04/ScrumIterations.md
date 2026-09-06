@@ -3,8 +3,8 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-03 - complete refactor implementation
-Active gate: M2 - API/ports (#59) and State-owned viewmodel (#60)
-All SLC-01..13 selected; active parallel leaves supply API/ports and presentation values.
+Active gate: M3 preparation - bounded Git/GitHub/Persistence/Discovery/Runtime Issues
+All SLC-01..13 selected; M1/M2 dependencies are complete, full adapter implementation is next.
 
 ## I-01 contract
 
@@ -254,50 +254,33 @@ M1 COMPLETE at accepted source/review/integration
 all six corrections. Source CI34031420582 and integration CI34031833446 each
 passed18 applicable jobs, with explicit M3 helper skip. No baseline finding closed.
 
-Active #58, full contract SDP/Implementation/CR-#21/M2-Domain--001.md. Fresh worker
+Historical #58 kickoff (now complete), full contract SDP/Implementation/CR-#21/M2-Domain--001.md. Fresh worker
 on codereview-21/layer-domain owns only new internal/domain values/tests/README
 and bounded Domain/M2--001.md report. All13 Slices selected; Domain is a shared
 foundation and completes no Slice. Separate fresh exact-source review and current
 CI precede Master serial integration, then separate API/ports and viewmodel Issues.
 No legacy/other-layer/module/frozen-contract/program metadata edit by the worker.
 
-## I-03 / M2 active parallel leaves
+## I-03 / M2 complete
 
-Domain #58 COMPLETE: independent ACCEPT at6113ca55b57cb628b016c483070dbb52cd5dd79a,
-source CI34033181820 and canonical integration CI34033772732 passed18 applicable
-jobs each plus explicit M3skip. All13 Slices and143 open baseline findings retained.
-Current contract SDP/Implementation/CR-#21/M2-Surfaces--001.md; full Issues59/60.
+Domain#58 accepted/integrated6113ca55b57cb628b016c483070dbb52cd5dd79a,
+sourceCI34033181820/integrationCI34033772732 passed18/explicitM3skip.
+API#59 accepted finald4c3bfdd2038bbc5921488fbcffad1b8736c7460, technical6e289c4,
+integratedecf12e91f5a1223c9d97b404db024e1ce05372df with CI34046178481 green18/skip.
+Viewmodel#60 accepted sourced279c3f2af59e48029e77d845f5a55271c7889cf,
+integratedd60afe8fb763269964bcdc05958c8cdbc7849dea with CI34046727344 green18/skip.
+All three contributions received independent source review and actual integrated
+CI. M259-M01..M08 and M260-M01 are resolved; Issues58/59/60 are closed. Original
+failed review rounds, probes, mutations and exact hashes remain in the M2 review
+artifacts, implementationNotes and append-only ledger. They are not erased.
 
-Fresh Application worker owns new api/ports only on layer-application-api; fresh
-State-viewmodel worker owns only tuistate/viewmodel on layer-tuistate-viewmodel.
-Both start from the Master kickoff after Domain integration. Shared Domain values
-are the only product dependency of viewmodel; it cannot import API or State parent.
-Each source freezes for separate fresh review/current CI; Master integrates API/
-ports then viewmodel serially and verifies integrated CI before declaring M2 done.
-No workflow/reducer/renderer/adapter/legacy/module/frozen-contract edits delegated.
+## I-03 / M3 preparation
 
-Current M2 leaves: API/ports#59 final7e3dd0a3545cc259af6dfe67885b20c8ddc57749
-(product3e45f31) is under independent review/current CI34038064464. Viewmodel#60
-atdbb89ea received M260-M01 MEDIUM despite CI34037022233 green18/M3skip: disjoint
-modes reject retained simultaneous Navigator/Branch cockpit. Independent copies,
-identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
-adds no scope. Actual report/test/control/raw/hash evidence is archived in
-M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
-new exact re-review/CI required. No M2 integration or baseline finding closure.
-
-Viewmodel#60 source d279c3f2af59e48029e77d845f5a55271c7889cf independently
-ACCEPTED; M260-M01 resolved, source CI34038307701 green18/explicitM3skip. Full
-correction/review/control/raw/hash evidence is in M2-Viewmodel-Review--002. This
-leaf waits for accepted API/ports#59 before serial integration; do not integrate
-or close60 yet. API#59 current7e3dd0a is still independently reviewed, with a
-separate Runtime/Storage sub-review consolidating semantic findings. No M2/full
-Slice/baseline finding closure; all143 baseline findings remain open.
-
-API/ports#59 independent complete review at7e3dd0a3545cc259af6dfe67885b20c8ddc57749
-is CHANGES_REQUIRED for eight MEDIUM groups M259-M01..M08 (26 invalid admissions).
-Separate Runtime/Storage reviewer confirms six cases in M06/M07; positive/race/
-copy tests pass, but cross-field semantics do not. Actual full reports/probes/logs/
-source hashes are in M2-API-Review--001 and its archive. Source/final CI passed18/
-explicitM3skip; this does not override findings. Worker corrects all groups before
-new frozen review/current CI. Viewmodeld279c3f is accepted and waits unintegrated
-for API/ports. All143 baseline findings/full13 Slices remain; no M2 completion.
+Read current#21 and accepted REFDES/MigrationMap/Slices/Verification/frozen BCs,
+then create bounded adapter Issues and Master contracts/traceability before fresh
+worker dispatch. Every worker owns one accepted physical adapter folder plus
+its bounded tests/report, with a separate fresh reviewer. Serial integration is
+Git→GitHub→Persistence→Discovery→Runtime. No legacy retirement, host cutover,
+frozen contract edits or shared workflow/module edits are delegated by default.
+M1 Runtime helper check remains the exact accepted future interface. All13 Slices,
+143 baseline findings and full M3..M8/native/vertical/release proof remain required.
