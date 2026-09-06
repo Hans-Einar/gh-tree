@@ -1,0 +1,27 @@
+=== RUN   TestPinnedDirectoryAndRelativeRename
+=== RUN   TestPinnedDirectoryAndRelativeRename/1
+    probe_windows_test.go:101: rename under directory share=1 result=A file cannot be opened because the share access flags are incompatible.
+=== RUN   TestPinnedDirectoryAndRelativeRename/3
+    probe_windows_test.go:101: rename under directory share=3 result=<nil>
+--- PASS: TestPinnedDirectoryAndRelativeRename (0.01s)
+    --- PASS: TestPinnedDirectoryAndRelativeRename/1 (0.00s)
+    --- PASS: TestPinnedDirectoryAndRelativeRename/3 (0.00s)
+=== RUN   TestRejectJunctionAndExclusiveCreate
+    probe_windows_test.go:126: opened reparse itself; attributes require rejection
+--- PASS: TestRejectJunctionAndExclusiveCreate (0.14s)
+=== RUN   TestNativeReplaceVisibilityRetainedObjectAndDACL
+    probe_windows_test.go:192: complete observations=3361
+    probe_windows_test.go:211: late old-handle write retained; target is complete new document; DACL owner/group preserved
+    probe_windows_test.go:212: directory FlushFileBuffers(traverse/read-attributes handle): Access is denied.
+--- PASS: TestNativeReplaceVisibilityRetainedObjectAndDACL (0.20s)
+=== RUN   TestNoReplaceAndSharingFailurePreserveNames
+    probe_windows_test.go:233: existing DELETE handle itself blocks non-sharing reader: The process cannot access the file because it is being used by another process.
+--- PASS: TestNoReplaceAndSharingFailurePreserveNames (0.00s)
+=== RUN   TestCrossProcessLockReleasedAfterExit
+    probe_windows_test.go:276: cross-process exclusion and kernel cleanup on ungraceful os.Exit established
+--- PASS: TestCrossProcessLockReleasedAfterExit (0.18s)
+=== RUN   TestSecurityLabelQueryAndCopy
+    probe_windows_test.go:315: READ_CONTROL query for label/resource/CAP and nonprivileged label copy: S:AI(ML;;NW;;;LW)
+--- PASS: TestSecurityLabelQueryAndCopy (0.00s)
+PASS
+ok  	persistencefeasibility52	0.877s

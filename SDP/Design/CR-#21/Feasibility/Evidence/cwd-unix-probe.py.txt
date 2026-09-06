@@ -1,0 +1,32 @@
+import os,sys,tempfile,subprocess,json,shutil
+# Native Linux design mechanism only. Creates and removes only its own temp tree.
+root=tempfile.mkdtemp(prefix='cr52-cwd-object-')
+try:
+    project=os.path.join(root,'project'); os.mkdir(project)
+    with open(os.path.join(project,'marker'),'w') as f:f.write('selected-original')
+    fd=os.open(project,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    expected=os.fstat(fd)
+    moved=os.path.join(root,'moved-original'); os.rename(project,moved)
+    os.mkdir(project)
+    with open(os.path.join(project,'marker'),'w') as f:f.write('replacement-wrong-project')
+    # Model Runtime's private supervisor: inherited directory descriptor, fchdir
+    # before any user child, then child inherits cwd without path resolution.
+    supervisor='''import os,sys,subprocess,json
+fd=int(sys.argv[1]); before=os.fstat(fd); os.fchdir(fd); os.close(fd)
+p=subprocess.run([sys.executable,"-c","import os,json; print(json.dumps(dict(marker=open('marker').read(),cwd=os.getcwd(),dev=os.stat('.').st_dev,ino=os.stat('.').st_ino)))"],stdout=subprocess.PIPE,check=True,universal_newlines=True)
+print(p.stdout.strip())
+'''
+    proc=subprocess.run([sys.executable,'-c',supervisor,str(fd)],pass_fds=(fd,),stdout=subprocess.PIPE,check=True,universal_newlines=True)
+    result=json.loads(proc.stdout); os.close(fd)
+    assert result['marker']=='selected-original' and result['dev']==expected.st_dev and result['ino']==expected.st_ino
+    assert open(os.path.join(project,'marker')).read()=='replacement-wrong-project'
+    link=os.path.join(root,'redirect'); os.symlink(project,link)
+    try:
+        bad=os.open(link,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+    except OSError: rejected=True
+    else:
+        os.close(bad); rejected=False
+    assert rejected
+    print(json.dumps(dict(platform=sys.platform,uid=os.getuid(),replacement_after_validation='child inherited selected directory object',replacement_marker_untouched=True,no_follow_link_refused=True,current_path_may_move=True,result='PASS')))
+finally:
+    shutil.rmtree(root)

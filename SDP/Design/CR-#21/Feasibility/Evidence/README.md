@@ -33,3 +33,12 @@ Git result records retain their original temporary absolute fixture locators as
 provenance. Reproduction naturally creates different paths/OIDs/PIDs and result
 hashes. The eighteen followup results and source are preserved here so a future
 reviewer can inspect the evidence without relying on ephemeral chat or temp files.
+
+The correction pass adds Persistence sources/modules/logs and its original proposal.
+`persistence-source-hashes.json` retains original names; corresponding archive names
+are prefixed `persistence-` (probe_windows_test.go -> persistence-windows-probe.go.txt,
+probe_linux.py -> persistence-linux-probe.py.txt, go.mod/go.sum ->
+persistence-probe-go.mod.txt/persistence-probe-go.sum.txt, Persistence-proposed.md ->
+persistence-proposal.md.txt). Windows/Linux result names carry the same prefix.
+All seven copies matched their recorded hashes. Cwd probe source hashes and native
+observations are in CwdAcquisition--001; these remain bounded mechanism experiments.

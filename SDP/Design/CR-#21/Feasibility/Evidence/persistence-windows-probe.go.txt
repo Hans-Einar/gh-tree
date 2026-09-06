@@ -1,0 +1,316 @@
+package persistencefeasibility52
+
+import (
+	"bytes"
+	"fmt"
+	"golang.org/x/sys/windows"
+	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"unsafe"
+)
+
+const shareAll = windows.FILE_SHARE_READ | windows.FILE_SHARE_WRITE | windows.FILE_SHARE_DELETE
+
+func openDir(t *testing.T, p string, share uint32) windows.Handle {
+	t.Helper()
+	h, e := windows.CreateFile(windows.StringToUTF16Ptr(p), windows.FILE_TRAVERSE|windows.FILE_READ_ATTRIBUTES|windows.SYNCHRONIZE, share, nil, windows.OPEN_EXISTING, windows.FILE_FLAG_BACKUP_SEMANTICS|windows.FILE_FLAG_OPEN_REPARSE_POINT, 0)
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() { windows.CloseHandle(h) })
+	return h
+}
+func relative(parent windows.Handle, name string, access, share, disposition, options uint32) (windows.Handle, error) {
+	u, e := windows.NewNTUnicodeString(name)
+	if e != nil {
+		return 0, e
+	}
+	a := windows.OBJECT_ATTRIBUTES{RootDirectory: parent, ObjectName: u, Attributes: windows.OBJ_DONT_REPARSE}
+	a.Length = uint32(unsafe.Sizeof(a))
+	var h windows.Handle
+	e = windows.NtCreateFile(&h, access|windows.SYNCHRONIZE, &a, &windows.IO_STATUS_BLOCK{}, nil, windows.FILE_ATTRIBUTE_NORMAL, share, disposition, options|windows.FILE_SYNCHRONOUS_IO_NONALERT|windows.FILE_OPEN_REPARSE_POINT, nilptr(), 0)
+	return h, e
+}
+func nilptr() uintptr { return 0 }
+func rename(h, parent windows.Handle, name string, flags uint32) error {
+	return nameInformation(h, parent, name, flags, 65)
+}
+func nameInformation(h, parent windows.Handle, name string, flags, class uint32) error {
+	u := windows.StringToUTF16(name)
+	u = u[:len(u)-1]
+	type layout struct {
+		Flags  uint32
+		Root   windows.Handle
+		Length uint32
+		Name   [1]uint16
+	}
+	n := int(unsafe.Offsetof(layout{}.Name)) + len(u)*2
+	b := make([]byte, n+8)
+	p := (*layout)(unsafe.Pointer(&b[0]))
+	p.Flags = flags
+	p.Root = parent
+	p.Length = uint32(len(u) * 2)
+	copy(unsafe.Slice((*uint16)(unsafe.Pointer(&p.Name[0])), len(u)), u)
+	return windows.NtSetInformationFile(h, &windows.IO_STATUS_BLOCK{}, &b[0], uint32(n), class)
+}
+func newPayload(t *testing.T, p windows.Handle, name string, data []byte) windows.Handle {
+	t.Helper()
+	h, e := relative(p, name, windows.GENERIC_READ|windows.GENERIC_WRITE|windows.DELETE|windows.WRITE_DAC|windows.WRITE_OWNER, shareAll, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE)
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Cleanup(func() { windows.CloseHandle(h) })
+	var n uint32
+	if e = windows.WriteFile(h, data, &n, nil); e != nil || n != uint32(len(data)) {
+		t.Fatalf("write %d %v", n, e)
+	}
+	if e = windows.FlushFileBuffers(h); e != nil {
+		t.Fatal(e)
+	}
+	return h
+}
+func readNative(p string) ([]byte, error) {
+	h, e := windows.CreateFile(windows.StringToUTF16Ptr(p), windows.GENERIC_READ, shareAll, nil, windows.OPEN_EXISTING, 0, 0)
+	if e != nil {
+		return nil, e
+	}
+	f := os.NewFile(uintptr(h), p)
+	defer f.Close()
+	return io.ReadAll(f)
+}
+func TestPinnedDirectoryAndRelativeRename(t *testing.T) {
+	for _, share := range []uint32{windows.FILE_SHARE_READ, windows.FILE_SHARE_READ | windows.FILE_SHARE_WRITE} {
+		t.Run(fmt.Sprint(share), func(t *testing.T) {
+			d := t.TempDir()
+			child := filepath.Join(d, ".gh-tree")
+			os.Mkdir(child, 0700)
+			h := openDir(t, child, share)
+			if e := os.Rename(child, filepath.Join(d, "moved")); e == nil {
+				t.Fatal("directory moved despite pin")
+			}
+			if e := os.Rename(d, d+"-moved"); e == nil {
+				t.Fatal("ancestor moved despite pin")
+			}
+			f := newPayload(t, h, "temporary", []byte("complete"))
+			e := rename(f, h, "run.json", 0)
+			t.Logf("rename under directory share=%d result=%v", share, e)
+			if share == 3 && e != nil {
+				t.Fatal(e)
+			}
+		})
+	}
+}
+func TestRejectJunctionAndExclusiveCreate(t *testing.T) {
+	d := t.TempDir()
+	out := filepath.Join(d, "outside")
+	os.Mkdir(out, 0700)
+	link := filepath.Join(d, ".gh-tree")
+	cmd := exec.Command("powershell.exe", "-NoProfile", "-Command", "New-Item -ItemType Junction -Path '"+link+"' -Target '"+out+"' | Out-Null")
+	if b, e := cmd.CombinedOutput(); e != nil {
+		t.Fatalf("%v %s", e, b)
+	}
+	root := openDir(t, d, shareAll)
+	h, e := relative(root, ".gh-tree", windows.FILE_TRAVERSE|windows.FILE_READ_ATTRIBUTES|windows.SYNCHRONIZE, 3, windows.FILE_OPEN, windows.FILE_DIRECTORY_FILE)
+	if e == nil {
+		var info windows.ByHandleFileInformation
+		windows.GetFileInformationByHandle(h, &info)
+		windows.CloseHandle(h)
+		if info.FileAttributes&windows.FILE_ATTRIBUTE_REPARSE_POINT == 0 {
+			t.Fatal("followed reparse")
+		}
+		t.Log("opened reparse itself; attributes require rejection")
+	} else {
+		t.Logf("reparse refused: %v", e)
+	}
+	newPayload(t, root, "exclusive", []byte("old"))
+	h, e = relative(root, "exclusive", windows.GENERIC_WRITE|windows.SYNCHRONIZE, shareAll, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE)
+	if e == nil {
+		windows.CloseHandle(h)
+		t.Fatal("exclusive create overwrote")
+	}
+}
+func TestNativeReplaceVisibilityRetainedObjectAndDACL(t *testing.T) {
+	d := t.TempDir()
+	parent := openDir(t, d, 3)
+	old := newPayload(t, parent, "run.json", bytes.Repeat([]byte("A"), 8192))
+	sd, e := windows.SecurityDescriptorFromString("D:P(A;;FA;;;SY)(A;;FA;;;OW)")
+	if e != nil {
+		t.Fatal(e)
+	}
+	dacl, _, e := sd.DACL()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = windows.SetSecurityInfo(old, windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION|windows.PROTECTED_DACL_SECURITY_INFORMATION, nil, nil, dacl, nil); e != nil {
+		t.Fatal(e)
+	}
+	want, e := windows.GetSecurityInfo(old, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.GROUP_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = nameInformation(old, parent, "retained-original", 0, 11); e != nil {
+		t.Fatal(e)
+	}
+	var stopped atomic.Bool
+	var failures atomic.Int64
+	var observations atomic.Int64
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for !stopped.Load() {
+			b, e := readNative(filepath.Join(d, "run.json"))
+			observations.Add(1)
+			if e != nil || len(b) != 8192 || (!bytes.Equal(b, bytes.Repeat([]byte("A"), 8192)) && !bytes.Equal(b, bytes.Repeat([]byte("B"), 8192))) {
+				failures.Add(1)
+			}
+		}
+	}()
+	for i := 0; i < 100; i++ {
+		payload := newPayload(t, parent, fmt.Sprintf("payload-%d", i), bytes.Repeat([]byte("B"), 8192))
+		acl, _, _ := want.DACL()
+		owner, _, _ := want.Owner()
+		group, _, _ := want.Group()
+		e = windows.SetSecurityInfo(payload, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.GROUP_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION|windows.PROTECTED_DACL_SECURITY_INFORMATION, owner, group, acl, nil)
+		if e != nil {
+			t.Fatal(e)
+		}
+		if e = rename(payload, parent, "run.json", windows.FILE_RENAME_REPLACE_IF_EXISTS|windows.FILE_RENAME_POSIX_SEMANTICS); e != nil {
+			t.Fatal(e)
+		}
+	}
+	stopped.Store(true)
+	wg.Wait()
+	if failures.Load() != 0 {
+		t.Fatalf("reader failures: %d", failures.Load())
+	}
+	t.Logf("complete observations=%d", observations.Load())
+	h, e := relative(parent, "run.json", windows.READ_CONTROL|windows.SYNCHRONIZE, shareAll, windows.FILE_OPEN, windows.FILE_NON_DIRECTORY_FILE)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer windows.CloseHandle(h)
+	got, e := windows.GetSecurityInfo(h, windows.SE_FILE_OBJECT, windows.OWNER_SECURITY_INFORMATION|windows.GROUP_SECURITY_INFORMATION|windows.DACL_SECURITY_INFORMATION)
+	if e != nil || got.String() != want.String() {
+		t.Fatalf("ACL differs: %s / %s / %v", got.String(), want.String(), e)
+	}
+	windows.SetFilePointer(old, 0, nil, windows.FILE_BEGIN)
+	var n uint32
+	if e = windows.WriteFile(old, []byte("late"), &n, nil); e != nil {
+		t.Fatal(e)
+	}
+	b, e := readNative(filepath.Join(d, "retained-original"))
+	if e != nil || string(b[:4]) != "late" {
+		t.Fatal("old object lost", e)
+	}
+	t.Log("late old-handle write retained; target is complete new document; DACL owner/group preserved")
+	t.Logf("directory FlushFileBuffers(traverse/read-attributes handle): %v", windows.FlushFileBuffers(parent))
+}
+func TestNoReplaceAndSharingFailurePreserveNames(t *testing.T) {
+	d := t.TempDir()
+	parent := openDir(t, d, 3)
+	newPayload(t, parent, "run.json", []byte("old"))
+	payload := newPayload(t, parent, "temporary", []byte("new"))
+	if e := rename(payload, parent, "run.json", 0); e == nil {
+		t.Fatal("no replace overwrote")
+	}
+	b, e := readNative(filepath.Join(d, "run.json"))
+	if e != nil || string(b) != "old" {
+		t.Fatal("changed", e)
+	}
+	h, e := windows.CreateFile(windows.StringToUTF16Ptr(filepath.Join(d, "run.json")), windows.GENERIC_READ, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, nil, windows.OPEN_EXISTING, 0, 0)
+	if e == nil {
+		defer windows.CloseHandle(h)
+		if e = rename(payload, parent, "run.json", 3); e == nil {
+			t.Fatal("denied-delete file was overwritten")
+		}
+	} else {
+		t.Logf("existing DELETE handle itself blocks non-sharing reader: %v", e)
+	}
+}
+func TestCrossProcessLockReleasedAfterExit(t *testing.T) {
+	if p := os.Getenv("PERSISTENCE52_LOCK_CHILD"); p != "" {
+		f, e := os.OpenFile(p, os.O_RDWR, 0600)
+		if e != nil {
+			os.Exit(40)
+		}
+		e = windows.LockFileEx(windows.Handle(f.Fd()), windows.LOCKFILE_EXCLUSIVE_LOCK|windows.LOCKFILE_FAIL_IMMEDIATELY, 0, 1, 0, &windows.Overlapped{})
+		if e != nil {
+			os.Exit(41)
+		}
+		os.Exit(0)
+	}
+	d := t.TempDir()
+	p := filepath.Join(d, "run.json.lock")
+	f, e := os.OpenFile(p, os.O_CREATE|os.O_RDWR, 0600)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer f.Close()
+	if e = windows.LockFileEx(windows.Handle(f.Fd()), 3, 0, 1, 0, &windows.Overlapped{}); e != nil {
+		t.Fatal(e)
+	}
+	child := func() error {
+		c := exec.Command(os.Args[0], "-test.run=^TestCrossProcessLockReleasedAfterExit$")
+		c.Env = append(os.Environ(), "PERSISTENCE52_LOCK_CHILD="+p)
+		return c.Run()
+	}
+	if e = child(); e == nil {
+		t.Fatal("child bypassed lock")
+	}
+	if e = windows.UnlockFileEx(windows.Handle(f.Fd()), 0, 1, 0, &windows.Overlapped{}); e != nil {
+		t.Fatal(e)
+	}
+	if e = child(); e != nil {
+		t.Fatal("child could not lock", e)
+	}
+	if e = windows.LockFileEx(windows.Handle(f.Fd()), 3, 0, 1, 0, &windows.Overlapped{}); e != nil {
+		t.Fatal("lock stale after child exit", e)
+	}
+	windows.UnlockFileEx(windows.Handle(f.Fd()), 0, 1, 0, &windows.Overlapped{})
+	t.Log("cross-process exclusion and kernel cleanup on ungraceful os.Exit established")
+}
+
+func TestSecurityLabelQueryAndCopy(t *testing.T) {
+	d := t.TempDir()
+	parent := openDir(t, d, 3)
+	original := newPayload(t, parent, "label-original", []byte("old"))
+	payload := newPayload(t, parent, "label-payload", []byte("new"))
+	sd, e := windows.SecurityDescriptorFromString("S:(ML;;NW;;;LW)")
+	if e != nil {
+		t.Fatal(e)
+	}
+	sacl, _, e := sd.SACL()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = windows.SetSecurityInfo(original, windows.SE_FILE_OBJECT, windows.LABEL_SECURITY_INFORMATION, nil, nil, nil, sacl); e != nil {
+		t.Fatal(e)
+	}
+	info := windows.SECURITY_INFORMATION(windows.LABEL_SECURITY_INFORMATION | windows.ATTRIBUTE_SECURITY_INFORMATION | windows.SCOPE_SECURITY_INFORMATION)
+	wanted, e := windows.GetSecurityInfo(original, windows.SE_FILE_OBJECT, info)
+	if e != nil {
+		t.Fatal(e)
+	}
+	labelAndAttributes, e := windows.GetSecurityInfo(original, windows.SE_FILE_OBJECT, windows.LABEL_SECURITY_INFORMATION|windows.ATTRIBUTE_SECURITY_INFORMATION)
+	if e != nil {
+		t.Fatal(e)
+	}
+	sacl, _, e = labelAndAttributes.SACL()
+	if e != nil {
+		t.Fatal(e)
+	}
+	if e = windows.SetSecurityInfo(payload, windows.SE_FILE_OBJECT, windows.LABEL_SECURITY_INFORMATION|windows.ATTRIBUTE_SECURITY_INFORMATION, nil, nil, nil, sacl); e != nil {
+		t.Fatal(e)
+	}
+	got, e := windows.GetSecurityInfo(payload, windows.SE_FILE_OBJECT, info)
+	if e != nil || got.String() != wanted.String() {
+		t.Fatalf("security mismatch: %s %s %v", wanted.String(), got.String(), e)
+	}
+	t.Logf("READ_CONTROL query for label/resource/CAP and nonprivileged label copy: %s", got.String())
+}

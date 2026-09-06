@@ -238,7 +238,8 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-04",
@@ -472,7 +473,8 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-04",
@@ -735,7 +737,8 @@
         "API--001.md#a2",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "CwdAcquisition--001.md#observation-and-authority"
       ],
       "verification": [
         "V-RUN-01",
@@ -1428,7 +1431,8 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-04",
@@ -1777,7 +1781,8 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-04",
@@ -1923,7 +1928,8 @@
         "API--001.md#a5",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-06",
@@ -3016,7 +3022,8 @@
         "API--001.md#a1",
         "REFDES--001.md#git-safety-and-mutation-mechanics",
         "REFDES--001.md#identity-and-observation-decisions",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-DOM-01",
@@ -3307,7 +3314,8 @@
         "API--001.md#a5",
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#runtime-resource-model"
+        "REFDES--001.md#runtime-resource-model",
+        "CwdAcquisition--001.md#observation-and-authority"
       ],
       "verification": [
         "V-LCH-02",
@@ -3377,7 +3385,8 @@
         "API--001.md#a3",
         "API--001.md#a6",
         "REFDES--001.md#identity-and-observation-decisions",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-DOM-01",
@@ -3503,7 +3512,8 @@
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "CwdAcquisition--001.md#observation-and-authority"
       ],
       "verification": [
         "V-LCH-03",
@@ -3644,7 +3654,8 @@
         "API--001.md#a3",
         "API--001.md#a5",
         "API--001.md#a6",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-02",
@@ -3702,7 +3713,8 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-01",
@@ -3733,7 +3745,8 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-04"
@@ -3764,7 +3777,8 @@
         "API--001.md#a4",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-APP-04",
@@ -3797,7 +3811,8 @@
       "designClauses": [
         "API--001.md#a4",
         "API--001.md#a6",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-02",
@@ -3830,7 +3845,8 @@
         "API--001.md#a1",
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-03",
@@ -3862,7 +3878,8 @@
       "doc": "SDP/Reviews/CR-#21/Layers/Persistence/LR--001.md",
       "designClauses": [
         "API--001.md#a6",
-        "REFDES--001.md#launch-discovery-and-persistence"
+        "REFDES--001.md#launch-discovery-and-persistence",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-01"
@@ -3896,7 +3913,8 @@
         "API--001.md#a6",
         "REFDES--001.md#git-safety-and-mutation-mechanics",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#migration-and-release-gate"
+        "REFDES--001.md#migration-and-release-gate",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-03",
@@ -3934,7 +3952,8 @@
         "API--001.md#a6",
         "REFDES--001.md#application-operation-and-event-model",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#migration-and-release-gate"
+        "REFDES--001.md#migration-and-release-gate",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-04",
@@ -3974,7 +3993,8 @@
         "API--001.md#a3",
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#tui-state-view-and-restricted-host"
+        "REFDES--001.md#tui-state-view-and-restricted-host",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-PER-01",
@@ -4044,7 +4064,8 @@
         "API--001.md#a5",
         "REFDES--001.md#identity-and-observation-decisions",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#migration-and-release-gate"
+        "REFDES--001.md#migration-and-release-gate",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-GH-01",
@@ -4916,7 +4937,8 @@
       "designClauses": [
         "API--001.md#a6",
         "REFDES--001.md#launch-discovery-and-persistence",
-        "REFDES--001.md#migration-and-release-gate"
+        "REFDES--001.md#migration-and-release-gate",
+        "Storage--001.md#store-scope-and-supported-publication"
       ],
       "verification": [
         "V-COMP-01",

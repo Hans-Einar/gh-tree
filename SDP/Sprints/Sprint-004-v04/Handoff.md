@@ -41,7 +41,14 @@ Feasibility/Evidence; complete implementation/platform/crash proof remains futur
 work. Freeze the complete design HEAD and review it independently. These are design
 findings, not resolved product findings.
 
-Fresh independent review at frozen exact SHA, corrections/re-review and green CI precede
+Initial full review at f1dec60cbd3892f068410f2d7f3caa7f855ba52e / PR #54
+returned DES52-H03/H04/M01/M02 (2 HIGH/2 MEDIUM) despite all 18 CI checks passing.
+DesignReview--002 records exact findings and proposed corrections. New Storage--001
+and CwdAcquisition--001 supply concrete native protocols; API adds PR/stash reads
+and downstream lifecycle reservations/ACK transfer. Raw bounded Persistence/cwd
+evidence is archived. All four corrections await frozen corrected-HEAD review.
+
+Fresh independent re-review at frozen exact SHA and green CI precede
 acceptance/merge. Then authorize BC review/freeze; no product implementation before
 both gates. Master owns metadata/contracts/integration and delegates bounded
 product work to fresh workers with separate reviewers when implementation begins.

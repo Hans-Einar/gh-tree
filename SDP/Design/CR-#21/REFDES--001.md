@@ -16,8 +16,8 @@ The complete user authority is preserved in
 ../../Sprints/Sprint-004-v04/UserRunContract.md. That contract remains the scope
 and safety ceiling. Review acceptance has resolved no product finding.
 
-The design consists of this decision record and the normative API, migration,
-Slice, verification and finding-map appendices. Feasibility appendices record
+The design consists of this decision record and the normative API, Storage,
+CwdAcquisition, migration, Slice, verification and finding-map appendices. Feasibility appendices record
 source/probe evidence and its limits; they are not production implementations.
 No worker may implement from a DRAFT design or freeze a BC from unaccepted inputs.
 Acceptance requires all appendices complete, one frozen exact HEAD, independent
@@ -374,8 +374,12 @@ Runtime Start; changed sources return stale selection, not another invocation.
 Project cwd is relative to the selected worktree; physically validate root/path
 and reject redirects outside it. Reject unproven child link/reparse paths in the
 initial implementation; linked root canonicalization remains the Git boundary.
-Runtime rechecks accepted cwd identity at actual Start. There is no filesystem
-sandbox claim against later arbitrary project code.
+Runtime follows CwdAcquisition--001: acquire/validate the actual directory object,
+then Unix supervisor Fchdir/inherited cwd or Windows effective no-delete-share
+component guards through CreateProcess. A pathname recheck followed by an unguarded
+reopen is forbidden. Refuse stale/unsupported scope; fixed-object authority is
+distinct from continuous pathname ancestry when another actor moves a directory.
+There is no filesystem sandbox claim against later arbitrary project code.
 
 Persistence owns user config, navigation/active preferences and worktree run.json
 bytes/schema; Discovery interprets provider intent through Application. Retain
@@ -385,14 +389,27 @@ rewrite a forward schema as empty defaults. Retain originals on migration and
 report ambiguous case/host/clone mappings without choosing a destructive winner.
 No automatic corruption repair or global user configuration changes.
 
-Writes use whole-document content versions, cooperating cross-process locks,
-exclusive same-directory temporary files, complete write/flush and a reviewed
-platform replacement. Atomic visibility, process-crash recovery and power-loss
-durability are separate result properties. Windows replacement/permissions and
-Unix rename/directory flush need native tests. An external editor need not honor
-the lock; version recheck does not claim universal CAS. Context publishes only
-the actual commit outcome; alias/default commit together. Explicit --state/
---config locations are not constrained to a worktree; project storage is.
+Select Storage--001 and Feasibility/Persistence.md: whole-document versions and
+stable never-unlinked LockFileEx/flock sibling locks; exclusive flushed same-dir
+payload/manifest/raw backup plus retained observed original hardlink. Windows
+local NTFS uses handle-relative NtSetInformationFile class65 replacement, class11
+hardlinks, supported verified security metadata and no-delete-share directory
+guards. Unix uses no-follow directory-relative handles, Renameat or no-replace
+Linkat, supported metadata and file/parent fsync. Unsupported semantics refuse;
+no truncate, unsafe fallback or automatic original purge. Native publication is
+the commit point, and Windows namespace durability remains explicitly uncertain.
+
+Storage--001 fixes version1 schemas, legacy retention/unknown fields, duplicate/
+corrupt/forward-version refusal and unambiguous Application-owned migration.
+Six native Windows and six unprivileged Linux mechanism cases support feasibility;
+full exact-product native metadata/crash/recovery proof remains required. Atomic
+visibility, process-crash recovery and power-loss durability are distinct. External
+writers that ignore locks remain outside cooperative CAS; detected drift refuses,
+and the design explicitly does not claim every unobserved external replacement
+is captured. Unix scope is the pinned authorized directory object, not continuous
+pathname ancestry after another actor moves it. Context publishes actual commit
+outcome; alias/default commit together. Explicit --state/--config locations retain
+user-selected scope; project storage never follows a substituted child object.
 
 ## TUI State, View and restricted host
 
