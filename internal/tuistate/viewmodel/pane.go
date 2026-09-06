@@ -1,0 +1,671 @@
+package viewmodel
+
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+
+// TargetDetailSpec is a copied constructor/accessor record.
+type TargetDetailSpec struct {
+	Target       Optional[domain.ExactTarget]
+	Worktree     Optional[domain.WorktreeID]
+	ExpectedHead Optional[domain.Head]
+	Subjects     []ElementID
+	Stashes      []domain.StashID
+	Paths        []string
+	Fields       []DetailField
+}
+type TargetDetail struct {
+	data  TargetDetailSpec
+	valid bool
+}
+
+func NewTargetDetail(s TargetDetailSpec) (TargetDetail, error) {
+	if !validTargetDetail(s) {
+		return TargetDetail{}, invalid("TargetDetail")
+	}
+	return TargetDetail{cloneTargetDetail(s), true}, nil
+}
+func validTargetDetail(s TargetDetailSpec) bool {
+	return optionalValid(s.Target) && optionalValid(s.Worktree) && optionalValid(s.ExpectedHead) && (!s.ExpectedHead.present || s.Worktree.present && s.ExpectedHead.value.MatchesWorktree(s.Worktree.value)) && allValid(s.Subjects) && allValid(s.Stashes) && targetStashScopes(s) && nonemptyStrings(s.Paths) && allValid(s.Fields)
+}
+func cloneTargetDetail(s TargetDetailSpec) TargetDetailSpec {
+	s.Subjects = copySlice(s.Subjects)
+	s.Stashes = copySlice(s.Stashes)
+	s.Paths = copySlice(s.Paths)
+	s.Fields = copyValues(s.Fields)
+	return s
+}
+func (v TargetDetail) Valid() bool              { return v.valid && validTargetDetail(v.data) }
+func (v TargetDetail) Fields() TargetDetailSpec { return cloneTargetDetail(v.data) }
+func (v TargetDetail) Clone() TargetDetail      { return TargetDetail{cloneTargetDetail(v.data), v.valid} }
+
+// ConfiguredTargetRowSpec is a copied constructor/accessor record.
+type ConfiguredTargetRowSpec struct {
+	ID           ElementID
+	Label        string
+	Path         string
+	Branch       Optional[domain.BranchID]
+	Availability Availability
+	Meta         RowMeta
+}
+type ConfiguredTargetRow struct {
+	data  ConfiguredTargetRowSpec
+	valid bool
+}
+
+func NewConfiguredTargetRow(s ConfiguredTargetRowSpec) (ConfiguredTargetRow, error) {
+	if !validConfiguredTargetRow(s) {
+		return ConfiguredTargetRow{}, invalid("ConfiguredTargetRow")
+	}
+	return ConfiguredTargetRow{cloneConfiguredTargetRow(s), true}, nil
+}
+func validConfiguredTargetRow(s ConfiguredTargetRowSpec) bool {
+	return s.ID.Valid() && s.ID.kind == NamespaceElement && s.Label != "" && s.Path != "" && optionalValid(s.Branch) && s.Availability.Valid() && s.Meta.Valid()
+}
+func cloneConfiguredTargetRow(s ConfiguredTargetRowSpec) ConfiguredTargetRowSpec {
+	s.Meta = s.Meta.Clone()
+	return s
+}
+func (v ConfiguredTargetRow) Valid() bool { return v.valid && validConfiguredTargetRow(v.data) }
+func (v ConfiguredTargetRow) Fields() ConfiguredTargetRowSpec {
+	return cloneConfiguredTargetRow(v.data)
+}
+func (v ConfiguredTargetRow) Clone() ConfiguredTargetRow {
+	return ConfiguredTargetRow{cloneConfiguredTargetRow(v.data), v.valid}
+}
+
+// NavigatorModelSpec is a copied constructor/accessor record.
+type NavigatorModelSpec struct {
+	Content      NavigatorContent
+	Rows         []NamespaceRow
+	Branches     []BranchRow
+	PullRequests []PRRow
+	List         ListState
+	Folder       []ElementID
+}
+type NavigatorModel struct {
+	data  NavigatorModelSpec
+	valid bool
+}
+
+func NewNavigatorModel(s NavigatorModelSpec) (NavigatorModel, error) {
+	if !validNavigatorModel(s) {
+		return NavigatorModel{}, invalid("NavigatorModel")
+	}
+	return NavigatorModel{cloneNavigatorModel(s), true}, nil
+}
+func validNavigatorModel(s NavigatorModelSpec) bool {
+	return s.Content.Valid() && allValid(s.Rows) && allValid(s.Branches) && allValid(s.PullRequests) && s.List.Valid() && allValid(s.Folder) && navigatorSelection(s.List)
+}
+func cloneNavigatorModel(s NavigatorModelSpec) NavigatorModelSpec {
+	s.Rows = copyValues(s.Rows)
+	s.Branches = copyValues(s.Branches)
+	s.PullRequests = copyValues(s.PullRequests)
+	s.List = s.List.Clone()
+	s.Folder = copySlice(s.Folder)
+	return s
+}
+func (v NavigatorModel) Valid() bool                { return v.valid && validNavigatorModel(v.data) }
+func (v NavigatorModel) Fields() NavigatorModelSpec { return cloneNavigatorModel(v.data) }
+func (v NavigatorModel) Clone() NavigatorModel {
+	return NavigatorModel{cloneNavigatorModel(v.data), v.valid}
+}
+
+// WorktreesModelSpec is a copied constructor/accessor record.
+type WorktreesModelSpec struct {
+	Rows []WorktreeRow
+	List ListState
+}
+type WorktreesModel struct {
+	data  WorktreesModelSpec
+	valid bool
+}
+
+func NewWorktreesModel(s WorktreesModelSpec) (WorktreesModel, error) {
+	if !validWorktreesModel(s) {
+		return WorktreesModel{}, invalid("WorktreesModel")
+	}
+	return WorktreesModel{cloneWorktreesModel(s), true}, nil
+}
+func validWorktreesModel(s WorktreesModelSpec) bool {
+	return allValid(s.Rows) && s.List.Valid() && selectedKind(s.List, WorktreeElement)
+}
+func cloneWorktreesModel(s WorktreesModelSpec) WorktreesModelSpec {
+	s.Rows = copyValues(s.Rows)
+	s.List = s.List.Clone()
+	return s
+}
+func (v WorktreesModel) Valid() bool                { return v.valid && validWorktreesModel(v.data) }
+func (v WorktreesModel) Fields() WorktreesModelSpec { return cloneWorktreesModel(v.data) }
+func (v WorktreesModel) Clone() WorktreesModel {
+	return WorktreesModel{cloneWorktreesModel(v.data), v.valid}
+}
+
+// ActiveModelSpec is a copied constructor/accessor record.
+type ActiveModelSpec struct {
+	Worktree     Optional[WorktreeRow]
+	Changes      ListState
+	DetailScroll Scroll
+}
+type ActiveModel struct {
+	data  ActiveModelSpec
+	valid bool
+}
+
+func NewActiveModel(s ActiveModelSpec) (ActiveModel, error) {
+	if !validActiveModel(s) {
+		return ActiveModel{}, invalid("ActiveModel")
+	}
+	return ActiveModel{cloneActiveModel(s), true}, nil
+}
+func validActiveModel(s ActiveModelSpec) bool {
+	return optionalValid(s.Worktree) && s.Changes.Valid() && selectedKind(s.Changes, NamespaceElement) && s.DetailScroll.Valid()
+}
+func cloneActiveModel(s ActiveModelSpec) ActiveModelSpec {
+	s.Worktree = copyOptional(s.Worktree)
+	s.Changes = s.Changes.Clone()
+	return s
+}
+func (v ActiveModel) Valid() bool             { return v.valid && validActiveModel(v.data) }
+func (v ActiveModel) Fields() ActiveModelSpec { return cloneActiveModel(v.data) }
+func (v ActiveModel) Clone() ActiveModel      { return ActiveModel{cloneActiveModel(v.data), v.valid} }
+
+// BranchModelSpec is a copied constructor/accessor record.
+type BranchModelSpec struct {
+	Branch        BranchRow
+	Commits       []CommitRow
+	List          ListState
+	DetailScroll  Scroll
+	MessageScroll Scroll
+}
+type BranchModel struct {
+	data  BranchModelSpec
+	valid bool
+}
+
+func NewBranchModel(s BranchModelSpec) (BranchModel, error) {
+	if !validBranchModel(s) {
+		return BranchModel{}, invalid("BranchModel")
+	}
+	return BranchModel{cloneBranchModel(s), true}, nil
+}
+func validBranchModel(s BranchModelSpec) bool {
+	return s.Branch.Valid() && allValid(s.Commits) && s.List.Valid() && selectedKind(s.List, RevisionElement) && s.DetailScroll.Valid() && s.MessageScroll.Valid()
+}
+func cloneBranchModel(s BranchModelSpec) BranchModelSpec {
+	s.Branch = s.Branch.Clone()
+	s.Commits = copyValues(s.Commits)
+	s.List = s.List.Clone()
+	return s
+}
+func (v BranchModel) Valid() bool             { return v.valid && validBranchModel(v.data) }
+func (v BranchModel) Fields() BranchModelSpec { return cloneBranchModel(v.data) }
+func (v BranchModel) Clone() BranchModel      { return BranchModel{cloneBranchModel(v.data), v.valid} }
+
+// HistoryModelSpec is a copied constructor/accessor record.
+type HistoryModelSpec struct {
+	Source       ElementID
+	Target       Optional[domain.ExactTarget]
+	Commits      []CommitRow
+	List         ListState
+	DetailScroll Scroll
+}
+type HistoryModel struct {
+	data  HistoryModelSpec
+	valid bool
+}
+
+func NewHistoryModel(s HistoryModelSpec) (HistoryModel, error) {
+	if !validHistoryModel(s) {
+		return HistoryModel{}, invalid("HistoryModel")
+	}
+	return HistoryModel{cloneHistoryModel(s), true}, nil
+}
+func validHistoryModel(s HistoryModelSpec) bool {
+	return s.Source.Valid() && optionalValid(s.Target) && allValid(s.Commits) && s.List.Valid() && selectedKind(s.List, RevisionElement) && s.DetailScroll.Valid()
+}
+func cloneHistoryModel(s HistoryModelSpec) HistoryModelSpec {
+	s.Commits = copyValues(s.Commits)
+	s.List = s.List.Clone()
+	return s
+}
+func (v HistoryModel) Valid() bool              { return v.valid && validHistoryModel(v.data) }
+func (v HistoryModel) Fields() HistoryModelSpec { return cloneHistoryModel(v.data) }
+func (v HistoryModel) Clone() HistoryModel      { return HistoryModel{cloneHistoryModel(v.data), v.valid} }
+
+// LaunchModelSpec is a copied constructor/accessor record.
+type LaunchModelSpec struct {
+	Worktree domain.WorktreeID
+	Rows     []LaunchRow
+	List     ListState
+}
+type LaunchModel struct {
+	data  LaunchModelSpec
+	valid bool
+}
+
+func NewLaunchModel(s LaunchModelSpec) (LaunchModel, error) {
+	if !validLaunchModel(s) {
+		return LaunchModel{}, invalid("LaunchModel")
+	}
+	return LaunchModel{cloneLaunchModel(s), true}, nil
+}
+func validLaunchModel(s LaunchModelSpec) bool {
+	return s.Worktree.Valid() && allValid(s.Rows) && launchRowsScope(s.Rows, s.Worktree) && s.List.Valid() && selectedKind(s.List, LaunchElement) && (!s.List.data.Selected.present || s.List.data.Selected.value.launch.Worktree() == s.Worktree)
+}
+func cloneLaunchModel(s LaunchModelSpec) LaunchModelSpec {
+	s.Rows = copyValues(s.Rows)
+	s.List = s.List.Clone()
+	return s
+}
+func (v LaunchModel) Valid() bool             { return v.valid && validLaunchModel(v.data) }
+func (v LaunchModel) Fields() LaunchModelSpec { return cloneLaunchModel(v.data) }
+func (v LaunchModel) Clone() LaunchModel      { return LaunchModel{cloneLaunchModel(v.data), v.valid} }
+
+// StashesModelSpec is a copied constructor/accessor record.
+type StashesModelSpec struct {
+	Repository domain.RepositoryID
+	Rows       []StashRow
+	List       ListState
+}
+type StashesModel struct {
+	data  StashesModelSpec
+	valid bool
+}
+
+func NewStashesModel(s StashesModelSpec) (StashesModel, error) {
+	if !validStashesModel(s) {
+		return StashesModel{}, invalid("StashesModel")
+	}
+	return StashesModel{cloneStashesModel(s), true}, nil
+}
+func validStashesModel(s StashesModelSpec) bool {
+	return s.Repository.Valid() && s.Repository.Scope() == domain.LocalCommon && allValid(s.Rows) && stashRowsScope(s.Rows, s.Repository) && s.List.Valid() && selectedKind(s.List, StashElement) && (!s.List.data.Selected.present || s.List.data.Selected.value.stash.Repository() == s.Repository)
+}
+func cloneStashesModel(s StashesModelSpec) StashesModelSpec {
+	s.Rows = copyValues(s.Rows)
+	s.List = s.List.Clone()
+	return s
+}
+func (v StashesModel) Valid() bool              { return v.valid && validStashesModel(v.data) }
+func (v StashesModel) Fields() StashesModelSpec { return cloneStashesModel(v.data) }
+func (v StashesModel) Clone() StashesModel      { return StashesModel{cloneStashesModel(v.data), v.valid} }
+
+// ConsolesModelSpec is a copied constructor/accessor record.
+type ConsolesModelSpec struct {
+	Rows []ConsoleModel
+	List ListState
+}
+type ConsolesModel struct {
+	data  ConsolesModelSpec
+	valid bool
+}
+
+func NewConsolesModel(s ConsolesModelSpec) (ConsolesModel, error) {
+	if !validConsolesModel(s) {
+		return ConsolesModel{}, invalid("ConsolesModel")
+	}
+	return ConsolesModel{cloneConsolesModel(s), true}, nil
+}
+func validConsolesModel(s ConsolesModelSpec) bool {
+	return allValid(s.Rows) && uniqueConsoles(s.Rows) && s.List.Valid() && selectedKind(s.List, SessionElement) && consoleSelection(s)
+}
+func cloneConsolesModel(s ConsolesModelSpec) ConsolesModelSpec {
+	s.Rows = copyValues(s.Rows)
+	s.List = s.List.Clone()
+	return s
+}
+func (v ConsolesModel) Valid() bool               { return v.valid && validConsolesModel(v.data) }
+func (v ConsolesModel) Fields() ConsolesModelSpec { return cloneConsolesModel(v.data) }
+func (v ConsolesModel) Clone() ConsolesModel {
+	return ConsolesModel{cloneConsolesModel(v.data), v.valid}
+}
+
+// PaneHeaderSpec is a copied constructor/accessor record.
+type PaneHeaderSpec struct {
+	Title             string
+	Availability      Availability
+	Completeness      Completeness
+	ContentGeneration ContentGeneration
+	Sources           []SourceStatus
+	Notices           []StatusNotice
+}
+type PaneHeader struct {
+	data  PaneHeaderSpec
+	valid bool
+}
+
+func NewPaneHeader(s PaneHeaderSpec) (PaneHeader, error) {
+	if !validPaneHeader(s) {
+		return PaneHeader{}, invalid("PaneHeader")
+	}
+	return PaneHeader{clonePaneHeader(s), true}, nil
+}
+func validPaneHeader(s PaneHeaderSpec) bool {
+	return s.Title != "" && s.Availability.Valid() && s.Completeness.Valid() && s.ContentGeneration.Valid() && allValid(s.Sources) && allValid(s.Notices)
+}
+func clonePaneHeader(s PaneHeaderSpec) PaneHeaderSpec {
+	s.Sources = copyValues(s.Sources)
+	s.Notices = copyValues(s.Notices)
+	return s
+}
+func (v PaneHeader) Valid() bool            { return v.valid && validPaneHeader(v.data) }
+func (v PaneHeader) Fields() PaneHeaderSpec { return clonePaneHeader(v.data) }
+func (v PaneHeader) Clone() PaneHeader      { return PaneHeader{clonePaneHeader(v.data), v.valid} }
+
+func targetStashScopes(s TargetDetailSpec) bool {
+	for _, st := range s.Stashes {
+		if s.Worktree.present && st.Repository() != s.Worktree.value.Repository() {
+			return false
+		}
+	}
+	return true
+}
+func nonemptyStrings(ss []string) bool {
+	for _, s := range ss {
+		if s == "" {
+			return false
+		}
+	}
+	return true
+}
+func navigatorSelection(l ListState) bool {
+	if !l.data.Selected.present {
+		return true
+	}
+	k := l.data.Selected.value.kind
+	return k == NamespaceElement || k == RepositoryElement || k == PRElement || k == BranchElement
+}
+func launchRowsScope(rows []LaunchRow, wt domain.WorktreeID) bool {
+	seen := map[ElementID]bool{}
+	for _, r := range rows {
+		if r.data.ID.Worktree() != wt {
+			return false
+		}
+		id, _ := NewLaunchElement(r.data.ID, r.data.SavedAlias)
+		if seen[id] {
+			return false
+		}
+		seen[id] = true
+	}
+	return true
+}
+func stashRowsScope(rows []StashRow, repo domain.RepositoryID) bool {
+	for _, r := range rows {
+		if r.data.ID.Repository() != repo {
+			return false
+		}
+	}
+	return true
+}
+func uniqueConsoles(rows []ConsoleModel) bool {
+	ids := map[domain.SessionID]bool{}
+	for _, r := range rows {
+		if ids[r.data.SessionID] {
+			return false
+		}
+		ids[r.data.SessionID] = true
+	}
+	return true
+}
+func consoleSelection(s ConsolesModelSpec) bool {
+	for _, r := range s.Rows {
+		if r.data.InputFocused && (!s.List.data.Selected.present || s.List.data.Selected.value.session != r.data.SessionID) {
+			return false
+		}
+	}
+	return true
+}
+
+// PaneModel is a closed typed pane family with one common availability header.
+type PaneModel struct {
+	kind      Pane
+	header    PaneHeader
+	navigator NavigatorModel
+	worktrees WorktreesModel
+	active    ActiveModel
+	branch    BranchModel
+	launch    LaunchModel
+	stashes   StashesModel
+	console   ConsolesModel
+	history   HistoryModel
+	graph     GraphModel
+	diff      DiffModel
+}
+
+func NewNavigatorPane(h PaneHeader, v NavigatorModel) (PaneModel, error) {
+	p := PaneModel{kind: NavigatorPane, header: h, navigator: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Navigator pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Navigator() (NavigatorModel, bool) {
+	if p.kind != NavigatorPane || !p.Valid() {
+		return NavigatorModel{}, false
+	}
+	return p.navigator.Clone(), true
+}
+func NewWorktreesPane(h PaneHeader, v WorktreesModel) (PaneModel, error) {
+	p := PaneModel{kind: WorktreesPane, header: h, worktrees: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Worktrees pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Worktrees() (WorktreesModel, bool) {
+	if p.kind != WorktreesPane || !p.Valid() {
+		return WorktreesModel{}, false
+	}
+	return p.worktrees.Clone(), true
+}
+func NewActivePane(h PaneHeader, v ActiveModel) (PaneModel, error) {
+	p := PaneModel{kind: ActivePane, header: h, active: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Active pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Active() (ActiveModel, bool) {
+	if p.kind != ActivePane || !p.Valid() {
+		return ActiveModel{}, false
+	}
+	return p.active.Clone(), true
+}
+func NewBranchPane(h PaneHeader, v BranchModel) (PaneModel, error) {
+	p := PaneModel{kind: BranchPane, header: h, branch: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Branch pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Branch() (BranchModel, bool) {
+	if p.kind != BranchPane || !p.Valid() {
+		return BranchModel{}, false
+	}
+	return p.branch.Clone(), true
+}
+func NewLaunchPane(h PaneHeader, v LaunchModel) (PaneModel, error) {
+	p := PaneModel{kind: LaunchPane, header: h, launch: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Launch pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Launch() (LaunchModel, bool) {
+	if p.kind != LaunchPane || !p.Valid() {
+		return LaunchModel{}, false
+	}
+	return p.launch.Clone(), true
+}
+func NewStashesPane(h PaneHeader, v StashesModel) (PaneModel, error) {
+	p := PaneModel{kind: StashesPane, header: h, stashes: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Stashes pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Stashes() (StashesModel, bool) {
+	if p.kind != StashesPane || !p.Valid() {
+		return StashesModel{}, false
+	}
+	return p.stashes.Clone(), true
+}
+func NewConsolePane(h PaneHeader, v ConsolesModel) (PaneModel, error) {
+	p := PaneModel{kind: ConsolePane, header: h, console: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Console pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Console() (ConsolesModel, bool) {
+	if p.kind != ConsolePane || !p.Valid() {
+		return ConsolesModel{}, false
+	}
+	return p.console.Clone(), true
+}
+func NewHistoryPane(h PaneHeader, v HistoryModel) (PaneModel, error) {
+	p := PaneModel{kind: HistoryPane, header: h, history: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("History pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) History() (HistoryModel, bool) {
+	if p.kind != HistoryPane || !p.Valid() {
+		return HistoryModel{}, false
+	}
+	return p.history.Clone(), true
+}
+func NewGraphPane(h PaneHeader, v GraphModel) (PaneModel, error) {
+	p := PaneModel{kind: GraphPane, header: h, graph: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Graph pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Graph() (GraphModel, bool) {
+	if p.kind != GraphPane || !p.Valid() {
+		return GraphModel{}, false
+	}
+	return p.graph.Clone(), true
+}
+func NewDiffPane(h PaneHeader, v DiffModel) (PaneModel, error) {
+	p := PaneModel{kind: DiffPane, header: h, diff: v}
+	if !p.Valid() {
+		return PaneModel{}, invalid("Diff pane")
+	}
+	return p.Clone(), nil
+}
+func (p PaneModel) Diff() (DiffModel, bool) {
+	if p.kind != DiffPane || !p.Valid() {
+		return DiffModel{}, false
+	}
+	return p.diff.Clone(), true
+}
+func (p PaneModel) Kind() Pane         { return p.kind }
+func (p PaneModel) Header() PaneHeader { return p.header.Clone() }
+func (p PaneModel) Valid() bool {
+	if !p.header.Valid() {
+		return false
+	}
+	count := 0
+	if p.navigator.valid {
+		count++
+		if p.kind != NavigatorPane || !p.navigator.Valid() {
+			return false
+		}
+	}
+	if p.worktrees.valid {
+		count++
+		if p.kind != WorktreesPane || !p.worktrees.Valid() {
+			return false
+		}
+	}
+	if p.active.valid {
+		count++
+		if p.kind != ActivePane || !p.active.Valid() {
+			return false
+		}
+	}
+	if p.branch.valid {
+		count++
+		if p.kind != BranchPane || !p.branch.Valid() {
+			return false
+		}
+	}
+	if p.launch.valid {
+		count++
+		if p.kind != LaunchPane || !p.launch.Valid() {
+			return false
+		}
+	}
+	if p.stashes.valid {
+		count++
+		if p.kind != StashesPane || !p.stashes.Valid() {
+			return false
+		}
+	}
+	if p.console.valid {
+		count++
+		if p.kind != ConsolePane || !p.console.Valid() {
+			return false
+		}
+	}
+	if p.history.valid {
+		count++
+		if p.kind != HistoryPane || !p.history.Valid() {
+			return false
+		}
+	}
+	if p.graph.valid {
+		count++
+		if p.kind != GraphPane || !p.graph.Valid() {
+			return false
+		}
+	}
+	if p.diff.valid {
+		count++
+		if p.kind != DiffPane || !p.diff.Valid() {
+			return false
+		}
+	}
+	return count == 1
+}
+func (p PaneModel) Clone() PaneModel {
+	p.header = p.header.Clone()
+	p.navigator = p.navigator.Clone()
+	p.worktrees = p.worktrees.Clone()
+	p.active = p.active.Clone()
+	p.branch = p.branch.Clone()
+	p.launch = p.launch.Clone()
+	p.stashes = p.stashes.Clone()
+	p.console = p.console.Clone()
+	p.history = p.history.Clone()
+	p.graph = p.graph.Clone()
+	p.diff = p.diff.Clone()
+	return p
+}
+func (p PaneModel) Selection() Optional[ElementID] {
+	switch p.kind {
+	case NavigatorPane:
+		return p.navigator.data.List.data.Selected
+	case WorktreesPane:
+		return p.worktrees.data.List.data.Selected
+	case ActivePane:
+		return p.active.data.Changes.data.Selected
+	case BranchPane:
+		return p.branch.data.List.data.Selected
+	case LaunchPane:
+		return p.launch.data.List.data.Selected
+	case StashesPane:
+		return p.stashes.data.List.data.Selected
+	case ConsolePane:
+		return p.console.data.List.data.Selected
+	case HistoryPane:
+		return p.history.data.List.data.Selected
+	case GraphPane:
+		return p.graph.data.List.data.Selected
+	case DiffPane:
+		return p.diff.data.List.data.Selected
+	}
+	return None[ElementID]()
+}
