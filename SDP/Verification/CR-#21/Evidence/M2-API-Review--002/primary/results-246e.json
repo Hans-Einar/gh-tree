@@ -1,0 +1,54 @@
+{
+  "candidate": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+  "toolchain": "go1.25.0 windows/amd64",
+  "checks": [
+    {
+      "exitCode": 0,
+      "log": "candidate-unit.log",
+      "command": "go test ./internal/application/... -count=1",
+      "source": "4700ea72f080cae1f0a22cf21e80876d88617754"
+    },
+    {
+      "exitCode": 0,
+      "log": "independent-original-replay.log",
+      "command": "go test ./internal/application/api -run TestIndependentReplay -count=1 -v",
+      "source": "4700ea72f080cae1f0a22cf21e80876d88617754"
+    },
+    {
+      "note": "Other subsequently authored reviewer probes were run separately; candidate tracked product is unchanged",
+      "exitCode": 0,
+      "log": "full-246e.log",
+      "command": "go test ./... -skip TestIndependent(ExactRequestResults|RepoOnlyMutationRecovery) -count=1",
+      "source": "246e2a6b02e6812cc7579770e5aac973e19b3073"
+    },
+    {
+      "exitCode": 0,
+      "log": "race-246e-positive.log",
+      "command": "go test -race ./internal/application/... -run Test(IndependentReplay|Review|M259|PrivatePlan|Continuation|StorageWrappers|Identity|ExactScope|OpaqueJSON|StorageRecovery|Runtime|Discovery|GitKnown) -count=1"
+    },
+    {
+      "exitCode": 0,
+      "log": "vet-246e.log",
+      "command": "go vet ./internal/application/..."
+    },
+    {
+      "actual": "4 contradictory values admitted;2 positive controls passed",
+      "exitCode": 1,
+      "log": "independent-246e-remaining.log",
+      "expected": "reject mismatches",
+      "command": "go test ./internal/application/api -run TestIndependent(ExactRequestResults|RepoOnlyMutationRecovery) -count=1 -v"
+    },
+    {
+      "actual": "1 invalid choice admitted;positive passed",
+      "exitCode": 1,
+      "log": "independent-246e-plan-choice.log",
+      "command": "go test ./internal/application/api -run TestIndependentPlanChoiceKind -count=1 -v"
+    },
+    {
+      "actual": "2 contradictory effect states admitted;positive passed",
+      "exitCode": 1,
+      "log": "independent-246e-outcome-effect.log",
+      "command": "go test ./internal/application/api -run TestIndependentKnownOutcomeEffect -count=1 -v"
+    }
+  ]
+}

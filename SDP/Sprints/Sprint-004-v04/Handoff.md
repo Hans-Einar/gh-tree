@@ -59,7 +59,7 @@ No adapter work before required M2 surfaces; a faulty BC triggers BC-CHANGE.
 
 ## Traceability and remaining scope
 
-CurrentIndex/Relations/Ledger through47 record accepted predecessors, M2
+CurrentIndex/Relations/Ledger through48 record accepted predecessors, M2
 correction/acceptance states and bounded native tool preparation. CurrentMatrix has65 accepted checks; M1 and Domain
 contributions are partial evidence for full clauses. It does not close a Slice,
 Runtime allocator/exhaustion or native Git identity requirement. Original failed
@@ -91,16 +91,16 @@ is unchanged. No main product PR, tag, publication or install-upgrade occurred.
 
 ## Latest M2 state and exact next action
 
-API/ports #59: CHANGES_REQUIRED at7e3dd0a3545cc259af6dfe67885b20c8ddc57749,
-product3e45f313d3e953f3293b9d42405f6843264656e0. Independent primary/bounded reviews
-record eight MEDIUM groups M259-M01..M08 and26 invalid admissions, with passing
-copy/positive controls. Evidence: M2-API-Review--001. Product/source final CI18/
-explicitM3skip does not override findings. Corrected productc96ca9244a30e16808743a0cd3e0b557e75080d7
-and Master312b534 merge are frozen at4700ea72f080cae1f0a22cf21e80876d88617754,
-clean at dispatch. Both independent reviewers are re-reviewing immutable source;
-worker is completing the bounded report/current CI34041668920. Any product change
-requires new exact review. All eight findings remain unresolved pending disposition;
-author-reported passing local gates do not establish acceptance.
+API/ports #59: second independent review at246e2a6b02e6812cc7579770e5aac973e19b3073
+is CHANGES_REQUIRED. Original26 malformed cases/226 copy controls pass; M259-M01/
+M07/M08 resolved. M02/M03/M04/M05/M06 retain9 invalid admissions and1 false refusal.
+Full primary/bounded evidence and verified88/66 exact blobs are in M2-API-Review--002.
+SourceCI34041943143 at246e and34041668920 at prior4700 each passed18/M3skip; findings
+still block acceptance. Worker is correcting existing groups in its own worktree,
+which may be dirty/newer than this rejected snapshot. Require a new frozen source,
+independent review, product-identical report checkpoint and currentCI before merge.
+Preserve valid no-op/compound/partial outcomes and complementary recovery subjects;
+missing-parent Expected-anchor interpretation is explicitly not a finding.
 
 Viewmodel #60: independent ACCEPT atd279c3f2af59e48029e77d845f5a55271c7889cf;
 M260-M01 resolved, CI34038307701 passed18/explicitM3skip. Complete independent

@@ -310,3 +310,14 @@ report were pending at dispatch. Primary and separate Runtime/Storage reviewers
 reopen immutable source, all26 original cases, positive partial/compound controls
 and related new semantics. M259-M01..M08 remain unresolved until actual acceptance;
 viewmodeld279c3f remains held for API-first integration. No M2/Slice/native closure.
+
+Second API/ports review at246e2a6b02e6812cc7579770e5aac973e19b3073 remains
+CHANGES_REQUIRED for M259-M02/M03/M04/M05/M06:9 additional invalid admissions and
+one legitimate recovery false refusal. All26 original cases and226 copy controls
+pass; M01/M07/M08 resolved. Master verified primary88/bounded66 exact source blobs
+and archived complete raw reports/tests/logs/manifests in M2-API-Review--002.
+SourceCI34041943143 and prior4700 CI34041668920 each18/explicitM3skip. Worker
+corrects existing groups with no-op/compound/complementary-subject controls before
+new frozen re-review/currentCI. Missing-parent anchor interpretation is no finding;
+original Expected remains in native manifest, guarded Original may use actual parent.
+No API/VM integration or M2/full Slice/baseline/native/release closure.

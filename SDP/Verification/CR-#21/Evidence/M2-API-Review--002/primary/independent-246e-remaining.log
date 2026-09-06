@@ -1,0 +1,23 @@
+=== RUN   TestIndependentExactRequestResults
+=== RUN   TestIndependentExactRequestResults/positive_diff_comparison
+=== RUN   TestIndependentExactRequestResults/reject_changed_diff_endpoint
+    independent_comparison_test.go:12: different exact diff endpoint accepted
+=== RUN   TestIndependentExactRequestResults/reject_changed_requested_PR_base
+    independent_comparison_test.go:16: different requested PR base accepted
+=== RUN   TestIndependentExactRequestResults/reject_changed_graph_roots
+    independent_comparison_test.go:18: different exact graph roots accepted
+--- FAIL: TestIndependentExactRequestResults (0.00s)
+    --- PASS: TestIndependentExactRequestResults/positive_diff_comparison (0.00s)
+    --- FAIL: TestIndependentExactRequestResults/reject_changed_diff_endpoint (0.00s)
+    --- FAIL: TestIndependentExactRequestResults/reject_changed_requested_PR_base (0.00s)
+    --- FAIL: TestIndependentExactRequestResults/reject_changed_graph_roots (0.00s)
+=== RUN   TestIndependentRepoOnlyMutationRecovery
+=== RUN   TestIndependentRepoOnlyMutationRecovery/positive_same_repository
+=== RUN   TestIndependentRepoOnlyMutationRecovery/reject_foreign_repository_recovery
+    independent_repo_recovery_test.go:10: known repository-A mutation retained repository-B recovery
+--- FAIL: TestIndependentRepoOnlyMutationRecovery (0.00s)
+    --- PASS: TestIndependentRepoOnlyMutationRecovery/positive_same_repository (0.00s)
+    --- FAIL: TestIndependentRepoOnlyMutationRecovery/reject_foreign_repository_recovery (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.643s
+FAIL

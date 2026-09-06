@@ -1,0 +1,4 @@
+* -text whitespace=cr-at-eol
+*.tar -diff
+*.go.txt whitespace=cr-at-eol,-blank-at-eof
+primary/review-246e.md whitespace=cr-at-eol,-blank-at-eof

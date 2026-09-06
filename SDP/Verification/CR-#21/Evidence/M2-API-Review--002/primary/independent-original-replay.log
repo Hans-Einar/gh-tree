@@ -1,0 +1,528 @@
+=== RUN   TestIndependentReplayCloneAllContainers
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectionSources.Git
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectionSources.Remote
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectionSources.Storage
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectionSources.Discovery
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectionSources.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ActiveContext.CommitDiagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/PRRelation.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/BranchRelationship.RemoteEndpoints
+=== RUN   TestIndependentReplayCloneAllContainers/BranchRelationship.PullRequests
+=== RUN   TestIndependentReplayCloneAllContainers/BranchRelationship.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/BranchRelationship.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/NavigationIntent.Namespace
+=== RUN   TestIndependentReplayCloneAllContainers/FetchCommand.RefScope
+=== RUN   TestIndependentReplayCloneAllContainers/StagePathsCommand.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/UnstagePathsCommand.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/RestoreTrackedCommand.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/WriteInputCommand.Bytes
+=== RUN   TestIndependentReplayCloneAllContainers/OutcomeEnvelope.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/OutcomeEnvelope.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/DeployResult.Steps
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorQuery.Namespace
+=== RUN   TestIndependentReplayCloneAllContainers/GraphQuery.Roots
+=== RUN   TestIndependentReplayCloneAllContainers/DiffQuery.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/PullRequestDiffQuery.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/StashPatchQuery.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/GraphAnnotation.Branches
+=== RUN   TestIndependentReplayCloneAllContainers/GraphAnnotation.PullRequests
+=== RUN   TestIndependentReplayCloneAllContainers/GraphAnnotation.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/EffectivePreferences.StripPrefixes
+=== RUN   TestIndependentReplayCloneAllContainers/EffectivePreferences.ConfiguredTargets
+=== RUN   TestIndependentReplayCloneAllContainers/EffectivePreferences.MigrationDiagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Namespace
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.PullRequests
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Branches
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Capabilities
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Activations
+=== RUN   TestIndependentReplayCloneAllContainers/NavigatorResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/BranchContextResult.Commits
+=== RUN   TestIndependentReplayCloneAllContainers/BranchContextResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/CommitsResult.Commits
+=== RUN   TestIndependentReplayCloneAllContainers/CommitsResult.Relationships
+=== RUN   TestIndependentReplayCloneAllContainers/CommitsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Roots
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Commits
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Edges
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Annotations
+=== RUN   TestIndependentReplayCloneAllContainers/GraphResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/DiffResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/PullRequestDiffResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/WorktreeStatusResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/StashesResult.Stashes
+=== RUN   TestIndependentReplayCloneAllContainers/StashesResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/StashPatchResult.Parents
+=== RUN   TestIndependentReplayCloneAllContainers/StashPatchResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/LaunchPointsResult.Definitions
+=== RUN   TestIndependentReplayCloneAllContainers/LaunchPointsResult.Saved
+=== RUN   TestIndependentReplayCloneAllContainers/LaunchPointsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionOutputProjection.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/PreferencesResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ConfirmationRequested.Choices
+=== RUN   TestIndependentReplayCloneAllContainers/OperationTerminal.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/OperationTerminal.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/OperationResidual.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/OperationResidual.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ShutdownResult.Operations
+=== RUN   TestIndependentReplayCloneAllContainers/ShutdownResult.PendingAcknowledgments
+=== RUN   TestIndependentReplayCloneAllContainers/ShutdownResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/ShutdownResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryObservation.ProviderProfiles
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryObservation.Sources
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectInputObservation.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ProjectSource.Inputs
+=== RUN   TestIndependentReplayCloneAllContainers/LaunchDefinition.ProjectComponents
+=== RUN   TestIndependentReplayCloneAllContainers/LaunchDefinition.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/OrderedMakeLaunch.Members
+=== RUN   TestIndependentReplayCloneAllContainers/SavedLaunchObservation.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.Selected
+=== RUN   TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.ProjectComponents
+=== RUN   TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.SourceVersions
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryRequest.Saved
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryResult.Definitions
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryResult.Saved
+=== RUN   TestIndependentReplayCloneAllContainers/DiscoveryResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ResolveLaunchRequest.Saved
+=== RUN   TestIndependentReplayCloneAllContainers/ResolveLaunchResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/GitCapabilityFact.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/GitCapabilities.Capabilities
+=== RUN   TestIndependentReplayCloneAllContainers/WorktreeFacts.Occupancy
+=== RUN   TestIndependentReplayCloneAllContainers/BranchOccupancy.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/LocalRepositoryFacts.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/LocalRepositoryFacts.Remotes
+=== RUN   TestIndependentReplayCloneAllContainers/IndexEntryFact.SemanticFlags
+=== RUN   TestIndependentReplayCloneAllContainers/ChangeFact.IndexEntries
+=== RUN   TestIndependentReplayCloneAllContainers/StatusFacts.Changes
+=== RUN   TestIndependentReplayCloneAllContainers/FetchGeneration.RefScope
+=== RUN   TestIndependentReplayCloneAllContainers/FetchFreshness.RefScope
+=== RUN   TestIndependentReplayCloneAllContainers/StashFact.Parents
+=== RUN   TestIndependentReplayCloneAllContainers/CommitFact.Parents
+=== RUN   TestIndependentReplayCloneAllContainers/AllGraph.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/ReachableFromRoots.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/PatchFacts.Bytes
+=== RUN   TestIndependentReplayCloneAllContainers/PatchFacts.Files
+=== RUN   TestIndependentReplayCloneAllContainers/AmbiguousMergeBase.Candidates
+=== RUN   TestIndependentReplayCloneAllContainers/ResolveLocalResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ListWorktreesResult.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/ListWorktreesResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ObserveStatusResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ResolveExactResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ListRefsRequest.Kinds
+=== RUN   TestIndependentReplayCloneAllContainers/ListRefsResult.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/ListRefsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ListStashesResult.Stashes
+=== RUN   TestIndependentReplayCloneAllContainers/ListStashesResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReadCommitsResult.Commits
+=== RUN   TestIndependentReplayCloneAllContainers/ReadCommitsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReadGraphRequest.Roots
+=== RUN   TestIndependentReplayCloneAllContainers/ReadGraphResult.Commits
+=== RUN   TestIndependentReplayCloneAllContainers/ReadGraphResult.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/ReadGraphResult.Heads
+=== RUN   TestIndependentReplayCloneAllContainers/ReadGraphResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/MergeBaseResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReadDiffRequest.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/ReadDiffResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReadStashPatchRequest.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/ReadStashPatchResult.Parents
+=== RUN   TestIndependentReplayCloneAllContainers/ReadStashPatchResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ExactPaths.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/PrepareRestoreRequest.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/MutationPlanSummary.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/MutationPlanSummary.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/MutationPlanSummary.Choices
+=== RUN   TestIndependentReplayCloneAllContainers/MutationPlanSummary.RequiredCapabilities
+=== RUN   TestIndependentReplayCloneAllContainers/MutationPlanSummary.OwnStepVersions
+=== RUN   TestIndependentReplayCloneAllContainers/GitPreparationResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/GitPreparationResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/CommitCandidateFacts.FinalIndexObjects
+=== RUN   TestIndependentReplayCloneAllContainers/TrackedRestored.Paths
+=== RUN   TestIndependentReplayCloneAllContainers/TrackedRestored.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/StashCreatedCleanupRefused.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/AppliedWithConflicts.ConflictPaths
+=== RUN   TestIndependentReplayCloneAllContainers/AppliedWithConflicts.IndexEntries
+=== RUN   TestIndependentReplayCloneAllContainers/AppliedWithConflicts.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/StashDropped.Survivors
+=== RUN   TestIndependentReplayCloneAllContainers/GitPostFacts.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/GitPostFacts.Status
+=== RUN   TestIndependentReplayCloneAllContainers/GitPostFacts.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/GitPostFacts.Stashes
+=== RUN   TestIndependentReplayCloneAllContainers/GitPostFacts.Configuration
+=== RUN   TestIndependentReplayCloneAllContainers/PartialMutation.FailedSteps
+=== RUN   TestIndependentReplayCloneAllContainers/PartialMutation.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/MutationIndeterminate.UnclassifiedSteps
+=== RUN   TestIndependentReplayCloneAllContainers/MutationIndeterminate.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/GitMutationResult.Steps
+=== RUN   TestIndependentReplayCloneAllContainers/GitMutationResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/GitMutationResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/FetchRequest.RefScope
+=== RUN   TestIndependentReplayCloneAllContainers/FetchResult.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/FetchResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/FetchResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileRequest.Targets
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileRequest.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileRequest.Facets
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Objects
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Refs
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Statuses
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Stashes
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Configuration
+=== RUN   TestIndependentReplayCloneAllContainers/ReconciledFacet.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileResult.Facets
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ReconcileResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/RemoteCapabilities.SupportedObjectFormats
+=== RUN   TestIndependentReplayCloneAllContainers/RemoteCapabilities.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/PullRequestFact.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ResolveRepositoryResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ListBranchesResult.Branches
+=== RUN   TestIndependentReplayCloneAllContainers/ListBranchesResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ListPullRequestsResult.PullRequests
+=== RUN   TestIndependentReplayCloneAllContainers/ListPullRequestsResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ObservePullRequestResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/ExistingCandidate.Candidates
+=== RUN   TestIndependentReplayCloneAllContainers/CreatePullRequestResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/CreatePullRequestResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionCleanup.Residuals
+=== RUN   TestIndependentReplayCloneAllContainers/AcquiredCwd.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionList.Sessions
+=== RUN   TestIndependentReplayCloneAllContainers/SessionWriteRequest.Bytes
+=== RUN   TestIndependentReplayCloneAllContainers/SessionStartResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionControlResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionWriteResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionStopResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionRestartResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Sessions
+=== RUN   TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Residuals
+=== RUN   TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/SessionOutputChunk.Bytes
+=== RUN   TestIndependentReplayCloneAllContainers/SessionOutputResult.Chunks
+=== RUN   TestIndependentReplayCloneAllContainers/UserConfigDocument.StripPrefixes
+=== RUN   TestIndependentReplayCloneAllContainers/UserConfigDocument.LegacyRepos
+=== RUN   TestIndependentReplayCloneAllContainers/UserConfigDocument.ScopedRepos
+=== RUN   TestIndependentReplayCloneAllContainers/ConfiguredRepository.Worktrees
+=== RUN   TestIndependentReplayCloneAllContainers/PreferencesDocument.LegacyFolders
+=== RUN   TestIndependentReplayCloneAllContainers/PreferencesDocument.LegacyWorktrees
+=== RUN   TestIndependentReplayCloneAllContainers/PreferencesDocument.ScopedPreferences
+=== RUN   TestIndependentReplayCloneAllContainers/RunConfigDocument.Launch
+=== RUN   TestIndependentReplayCloneAllContainers/SavedLaunchDefinition.Targets
+=== RUN   TestIndependentReplayCloneAllContainers/StorageLoadObservation.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/StorageLoadObservation.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/StorageCommitResult.Recovery
+=== RUN   TestIndependentReplayCloneAllContainers/StorageCommitResult.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/CwdObservation.ProjectComponents
+=== RUN   TestIndependentReplayCloneAllContainers/RemoteBinding.FetchURLs
+=== RUN   TestIndependentReplayCloneAllContainers/RemoteBinding.PushURLs
+=== RUN   TestIndependentReplayCloneAllContainers/RemoteBinding.Refspecs
+=== RUN   TestIndependentReplayCloneAllContainers/EnvironmentPolicy.Set
+=== RUN   TestIndependentReplayCloneAllContainers/EnvironmentPolicy.Remove
+=== RUN   TestIndependentReplayCloneAllContainers/ArgvExecution.Arguments
+=== RUN   TestIndependentReplayCloneAllContainers/InvocationSummary.ArgumentDisplay
+=== RUN   TestIndependentReplayCloneAllContainers/IdentityDiagnosticDetail.RecoveryIDs
+=== RUN   TestIndependentReplayCloneAllContainers/CommandTransportOutcome.Diagnostics
+=== RUN   TestIndependentReplayCloneAllContainers/FacetEffect.RecoveryIDs
+=== RUN   TestIndependentReplayCloneAllContainers/EffectReport.Facets
+--- PASS: TestIndependentReplayCloneAllContainers (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectionSources.Git (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectionSources.Remote (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectionSources.Storage (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectionSources.Discovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectionSources.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ActiveContext.CommitDiagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PRRelation.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchRelationship.RemoteEndpoints (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchRelationship.PullRequests (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchRelationship.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchRelationship.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigationIntent.Namespace (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchCommand.RefScope (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StagePathsCommand.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/UnstagePathsCommand.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RestoreTrackedCommand.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/WriteInputCommand.Bytes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OutcomeEnvelope.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OutcomeEnvelope.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DeployResult.Steps (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorQuery.Namespace (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphQuery.Roots (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiffQuery.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PullRequestDiffQuery.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashPatchQuery.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphAnnotation.Branches (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphAnnotation.PullRequests (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphAnnotation.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EffectivePreferences.StripPrefixes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EffectivePreferences.ConfiguredTargets (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EffectivePreferences.MigrationDiagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Namespace (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.PullRequests (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Branches (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Capabilities (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Activations (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/NavigatorResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchContextResult.Commits (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchContextResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommitsResult.Commits (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommitsResult.Relationships (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommitsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Roots (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Commits (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Edges (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Annotations (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GraphResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiffResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PullRequestDiffResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/WorktreeStatusResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashesResult.Stashes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashesResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashPatchResult.Parents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashPatchResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LaunchPointsResult.Definitions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LaunchPointsResult.Saved (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LaunchPointsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionOutputProjection.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PreferencesResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ConfirmationRequested.Choices (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OperationTerminal.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OperationTerminal.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OperationResidual.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OperationResidual.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ShutdownResult.Operations (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ShutdownResult.PendingAcknowledgments (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ShutdownResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ShutdownResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryObservation.ProviderProfiles (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryObservation.Sources (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectInputObservation.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ProjectSource.Inputs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LaunchDefinition.ProjectComponents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LaunchDefinition.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/OrderedMakeLaunch.Members (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SavedLaunchObservation.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.Selected (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.ProjectComponents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolvedLaunchDefinition.SourceVersions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryRequest.Saved (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryResult.Definitions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryResult.Saved (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/DiscoveryResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolveLaunchRequest.Saved (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolveLaunchResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitCapabilityFact.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitCapabilities.Capabilities (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/WorktreeFacts.Occupancy (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/BranchOccupancy.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LocalRepositoryFacts.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/LocalRepositoryFacts.Remotes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/IndexEntryFact.SemanticFlags (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ChangeFact.IndexEntries (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StatusFacts.Changes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchGeneration.RefScope (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchFreshness.RefScope (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashFact.Parents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommitFact.Parents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AllGraph.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReachableFromRoots.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PatchFacts.Bytes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PatchFacts.Files (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AmbiguousMergeBase.Candidates (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolveLocalResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListWorktreesResult.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListWorktreesResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ObserveStatusResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolveExactResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListRefsRequest.Kinds (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListRefsResult.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListRefsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListStashesResult.Stashes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListStashesResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadCommitsResult.Commits (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadCommitsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadGraphRequest.Roots (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadGraphResult.Commits (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadGraphResult.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadGraphResult.Heads (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadGraphResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MergeBaseResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadDiffRequest.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadDiffResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadStashPatchRequest.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadStashPatchResult.Parents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReadStashPatchResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ExactPaths.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PrepareRestoreRequest.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationPlanSummary.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationPlanSummary.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationPlanSummary.Choices (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationPlanSummary.RequiredCapabilities (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationPlanSummary.OwnStepVersions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPreparationResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPreparationResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommitCandidateFacts.FinalIndexObjects (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/TrackedRestored.Paths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/TrackedRestored.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashCreatedCleanupRefused.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AppliedWithConflicts.ConflictPaths (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AppliedWithConflicts.IndexEntries (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AppliedWithConflicts.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StashDropped.Survivors (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPostFacts.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPostFacts.Status (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPostFacts.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPostFacts.Stashes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitPostFacts.Configuration (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PartialMutation.FailedSteps (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PartialMutation.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationIndeterminate.UnclassifiedSteps (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/MutationIndeterminate.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitMutationResult.Steps (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitMutationResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/GitMutationResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchRequest.RefScope (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchResult.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FetchResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileRequest.Targets (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileRequest.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileRequest.Facets (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Objects (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Refs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Statuses (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Stashes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Configuration (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconciledFacet.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileResult.Facets (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ReconcileResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RemoteCapabilities.SupportedObjectFormats (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RemoteCapabilities.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PullRequestFact.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ResolveRepositoryResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListBranchesResult.Branches (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListBranchesResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListPullRequestsResult.PullRequests (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ListPullRequestsResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ObservePullRequestResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ExistingCandidate.Candidates (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CreatePullRequestResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CreatePullRequestResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionCleanup.Residuals (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/AcquiredCwd.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionList.Sessions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionWriteRequest.Bytes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionStartResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionControlResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionWriteResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionStopResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionRestartResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Sessions (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Residuals (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RuntimeShutdownResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionOutputChunk.Bytes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SessionOutputResult.Chunks (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/UserConfigDocument.StripPrefixes (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/UserConfigDocument.LegacyRepos (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/UserConfigDocument.ScopedRepos (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ConfiguredRepository.Worktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PreferencesDocument.LegacyFolders (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PreferencesDocument.LegacyWorktrees (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/PreferencesDocument.ScopedPreferences (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RunConfigDocument.Launch (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/SavedLaunchDefinition.Targets (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StorageLoadObservation.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StorageLoadObservation.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StorageCommitResult.Recovery (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/StorageCommitResult.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CwdObservation.ProjectComponents (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RemoteBinding.FetchURLs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RemoteBinding.PushURLs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/RemoteBinding.Refspecs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EnvironmentPolicy.Set (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EnvironmentPolicy.Remove (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/ArgvExecution.Arguments (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/InvocationSummary.ArgumentDisplay (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/IdentityDiagnosticDetail.RecoveryIDs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/CommandTransportOutcome.Diagnostics (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/FacetEffect.RecoveryIDs (0.00s)
+    --- PASS: TestIndependentReplayCloneAllContainers/EffectReport.Facets (0.00s)
+=== RUN   TestIndependentReplayGitCrossFieldScope
+=== RUN   TestIndependentReplayGitCrossFieldScope/positive_ref
+=== RUN   TestIndependentReplayGitCrossFieldScope/foreign_ref_revision
+=== RUN   TestIndependentReplayGitCrossFieldScope/same_repo_wrong_status_worktree
+=== RUN   TestIndependentReplayGitCrossFieldScope/created_worktree_different_target_repo
+=== RUN   TestIndependentReplayGitCrossFieldScope/created_worktree_no_head_or_scope
+=== RUN   TestIndependentReplayGitCrossFieldScope/stash_applied_other_repository
+--- PASS: TestIndependentReplayGitCrossFieldScope (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/positive_ref (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/foreign_ref_revision (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/same_repo_wrong_status_worktree (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/created_worktree_different_target_repo (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/created_worktree_no_head_or_scope (0.00s)
+    --- PASS: TestIndependentReplayGitCrossFieldScope/stash_applied_other_repository (0.00s)
+=== RUN   TestIndependentReplayRequestVersionBindings
+=== RUN   TestIndependentReplayRequestVersionBindings/positive_saved
+=== RUN   TestIndependentReplayRequestVersionBindings/saved_selection_foreign_run_version
+=== RUN   TestIndependentReplayRequestVersionBindings/discovery_foreign_version
+=== RUN   TestIndependentReplayRequestVersionBindings/resolve_foreign_version
+=== RUN   TestIndependentReplayRequestVersionBindings/save_foreign_version
+=== RUN   TestIndependentReplayRequestVersionBindings/default_foreign_version
+=== RUN   TestIndependentReplayRequestVersionBindings/retarget_exact_target_foreign_local_repository
+--- PASS: TestIndependentReplayRequestVersionBindings (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/positive_saved (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/saved_selection_foreign_run_version (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/discovery_foreign_version (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/resolve_foreign_version (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/save_foreign_version (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/default_foreign_version (0.00s)
+    --- PASS: TestIndependentReplayRequestVersionBindings/retarget_exact_target_foreign_local_repository (0.00s)
+=== RUN   TestIndependentReplayPublicResultSemantics
+=== RUN   TestIndependentReplayPublicResultSemantics/worktree_status_foreign_subject
+=== RUN   TestIndependentReplayPublicResultSemantics/PR_result_accepts_commit_target
+=== RUN   TestIndependentReplayPublicResultSemantics/deploy_resolution_replaces_exact_target
+=== RUN   TestIndependentReplayPublicResultSemantics/completed_pop_wraps_refused_pushes
+=== RUN   TestIndependentReplayPublicResultSemantics/retarget_confirmation_omits_exact_target_and_worktree
+--- PASS: TestIndependentReplayPublicResultSemantics (0.00s)
+    --- PASS: TestIndependentReplayPublicResultSemantics/worktree_status_foreign_subject (0.00s)
+    --- PASS: TestIndependentReplayPublicResultSemantics/PR_result_accepts_commit_target (0.00s)
+    --- PASS: TestIndependentReplayPublicResultSemantics/deploy_resolution_replaces_exact_target (0.00s)
+    --- PASS: TestIndependentReplayPublicResultSemantics/completed_pop_wraps_refused_pushes (0.00s)
+    --- PASS: TestIndependentReplayPublicResultSemantics/retarget_confirmation_omits_exact_target_and_worktree (0.00s)
+=== RUN   TestIndependentReplayEffectNormalization
+=== RUN   TestIndependentReplayEffectNormalization/positive_stage
+=== RUN   TestIndependentReplayEffectNormalization/command_envelope_discards_known_effect
+=== RUN   TestIndependentReplayEffectNormalization/terminal_says_no_change_after_applied_index
+--- PASS: TestIndependentReplayEffectNormalization (0.00s)
+    --- PASS: TestIndependentReplayEffectNormalization/positive_stage (0.00s)
+    --- PASS: TestIndependentReplayEffectNormalization/command_envelope_discards_known_effect (0.00s)
+    --- PASS: TestIndependentReplayEffectNormalization/terminal_says_no_change_after_applied_index (0.00s)
+=== RUN   TestIndependentReplayStorageRecoveryScope
+=== RUN   TestIndependentReplayStorageRecoveryScope/artifact_subject_and_version_different_worktree
+--- PASS: TestIndependentReplayStorageRecoveryScope (0.00s)
+    --- PASS: TestIndependentReplayStorageRecoveryScope/artifact_subject_and_version_different_worktree (0.00s)
+=== RUN   TestIndependentReplayRemoteEndpointIdentity
+=== RUN   TestIndependentReplayRemoteEndpointIdentity/unavailable_base_retains_foreign_branch
+=== RUN   TestIndependentReplayRemoteEndpointIdentity/positive_qualified_PR
+=== RUN   TestIndependentReplayRemoteEndpointIdentity/PR_URL_does_not_match_known_repository_or_number
+--- PASS: TestIndependentReplayRemoteEndpointIdentity (0.00s)
+    --- PASS: TestIndependentReplayRemoteEndpointIdentity/unavailable_base_retains_foreign_branch (0.00s)
+    --- PASS: TestIndependentReplayRemoteEndpointIdentity/positive_qualified_PR (0.00s)
+    --- PASS: TestIndependentReplayRemoteEndpointIdentity/PR_URL_does_not_match_known_repository_or_number (0.00s)
+=== RUN   TestIndependentReplayRuntimeConsistency
+=== RUN   TestIndependentReplayRuntimeConsistency/unadmitted_start_reports_applied_resources
+=== RUN   TestIndependentReplayRuntimeConsistency/running_session_reports_never_established
+=== RUN   TestIndependentReplayRuntimeConsistency/restart_changes_worktree_and_cwd
+--- PASS: TestIndependentReplayRuntimeConsistency (0.00s)
+    --- PASS: TestIndependentReplayRuntimeConsistency/unadmitted_start_reports_applied_resources (0.00s)
+    --- PASS: TestIndependentReplayRuntimeConsistency/running_session_reports_never_established (0.00s)
+    --- PASS: TestIndependentReplayRuntimeConsistency/restart_changes_worktree_and_cwd (0.00s)
+=== RUN   TestIndependentReplayCopiesAndBounds
+--- PASS: TestIndependentReplayCopiesAndBounds (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/application/api	0.512s

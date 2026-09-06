@@ -1,0 +1,13 @@
+=== RUN   TestIndependentKnownOutcomeEffect
+=== RUN   TestIndependentKnownOutcomeEffect/positive_known_creation
+=== RUN   TestIndependentKnownOutcomeEffect/reject_not_started_creation
+    independent_outcome_effect_test.go:6: created branch paired with explicit unchanged/unstarted local-ref effect
+=== RUN   TestIndependentKnownOutcomeEffect/reject_unchanged_creation
+    independent_outcome_effect_test.go:6: created branch paired with explicit unchanged/unstarted local-ref effect
+--- FAIL: TestIndependentKnownOutcomeEffect (0.00s)
+    --- PASS: TestIndependentKnownOutcomeEffect/positive_known_creation (0.00s)
+    --- FAIL: TestIndependentKnownOutcomeEffect/reject_not_started_creation (0.00s)
+    --- FAIL: TestIndependentKnownOutcomeEffect/reject_unchanged_creation (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.541s
+FAIL

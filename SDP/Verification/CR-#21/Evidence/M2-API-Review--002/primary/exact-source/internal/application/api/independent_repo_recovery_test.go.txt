@@ -1,0 +1,12 @@
+package api_test
+import ("testing";a "github.com/Hans-Einar/gh-tree/internal/application/api";d "github.com/Hans-Einar/gh-tree/internal/domain")
+func iRecoveryFor(repo d.RepositoryID) a.RecoveryRecord {
+ return irvMust(a.NewRecoveryRecord(a.RecoveryRecordData{RecoveryID:irvMust(a.NewRecoveryID("recovery")),Kind:a.RecoveryObjects,Layer:a.LayerGit,Subject:irvMust(a.NewRecoverySubject(a.RecoverySubjectData{Repository:a.Some(repo)})),Locator:"owned/recovery",NextAction:"inspect"}))
+}
+func TestIndependentRepoOnlyMutationRecovery(t *testing.T){
+ repo:=irvRepo("A"); other:=irvRepo("B");branch:=irvMust(d.NewBranchID(repo,d.Local,"new"));out:=irvMust(a.NewBranchCreated(a.BranchCreatedData{Branch:branch,Revision:irvRev(repo,"1")}))
+ data:=a.GitMutationResultData{Operation:irvMust(a.NewOperationID(1)),Kind:a.BranchMutation,PlanVersion:irvSource("plan"),Outcome:out,Transport:irvTransport(),Effects:irvEffects(),Recovery:[]a.RecoveryRecord{iRecoveryFor(repo)}}
+ t.Run("positive_same_repository",func(t *testing.T){if _,e:=a.NewGitMutationResult(data);e!=nil{t.Fatal(e)}})
+ t.Run("reject_foreign_repository_recovery",func(t *testing.T){data.Recovery=[]a.RecoveryRecord{iRecoveryFor(other)};if _,e:=a.NewGitMutationResult(data);e==nil{t.Fatal("known repository-A mutation retained repository-B recovery")}})
+}
+

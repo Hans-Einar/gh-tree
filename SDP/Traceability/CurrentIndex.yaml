@@ -471,7 +471,7 @@
       "id": "IMPL59",
       "kind": "implementation_contribution",
       "issue": 59,
-      "state": "independent_rereview",
+      "state": "correction_in_progress",
       "layer": "Application API/ports",
       "slices": [
         "SLC-01",
@@ -491,24 +491,26 @@
       "branch": "codereview-21/layer-application-api",
       "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
       "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
-      "head": "4700ea72f080cae1f0a22cf21e80876d88617754",
-      "productHead": "c96ca9244a30e16808743a0cd3e0b557e75080d7",
-      "sourceCiRun": "34041668920",
-      "reviewedHead": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "head": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "productHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "sourceCiRun": "34041943143",
+      "reviewedHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
       "disposition": "CHANGES_REQUIRED",
       "findings": [
-        "M259-M01",
         "M259-M02",
         "M259-M03",
         "M259-M04",
         "M259-M05",
-        "M259-M06",
+        "M259-M06"
+      ],
+      "review": "SDP/Verification/CR-#21/M2-API-Review--002.md",
+      "sourceCiState": "passed18_explicitM3skip",
+      "reviewCandidate": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "resolvedImplementationFindings": [
+        "M259-M01",
         "M259-M07",
         "M259-M08"
-      ],
-      "review": "SDP/Verification/CR-#21/M2-API-Review--001.md",
-      "sourceCiState": "in_progress_at_dispatch",
-      "reviewCandidate": "4700ea72f080cae1f0a22cf21e80876d88617754"
+      ]
     },
     {
       "id": "IMPL60",

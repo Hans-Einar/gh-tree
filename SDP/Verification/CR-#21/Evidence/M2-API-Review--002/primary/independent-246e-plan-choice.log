@@ -1,0 +1,10 @@
+=== RUN   TestIndependentPlanChoiceKind
+=== RUN   TestIndependentPlanChoiceKind/positive_stage_choices
+=== RUN   TestIndependentPlanChoiceKind/reject_stash_then_deploy_for_stage
+    independent_plan_choice_test.go:7: Stage summary advertises a StashThenDeploy continuation
+--- FAIL: TestIndependentPlanChoiceKind (0.00s)
+    --- PASS: TestIndependentPlanChoiceKind/positive_stage_choices (0.00s)
+    --- FAIL: TestIndependentPlanChoiceKind/reject_stash_then_deploy_for_stage (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.535s
+FAIL

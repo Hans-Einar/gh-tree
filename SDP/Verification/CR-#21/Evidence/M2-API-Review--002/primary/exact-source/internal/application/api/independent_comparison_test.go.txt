@@ -1,0 +1,20 @@
+package api_test
+import ("testing"; a "github.com/Hans-Einar/gh-tree/internal/application/api";d "github.com/Hans-Einar/gh-tree/internal/domain")
+func icorr() a.Correlation { return irvMust(a.NewCorrelation(a.CorrelationData{Query:a.Some(irvMust(a.NewQueryCorrelation(a.QueryCorrelationData{Slot:irvMust(a.NewQuerySlot("comparison")),Generation:irvMust(a.NewQueryGeneration(1))})))})) }
+func iterm(c a.Correlation,r a.Result) a.OperationTerminal {return irvMust(a.NewOperationTerminal(a.OperationTerminalData{OperationID:irvMust(a.NewOperationID(9)),Correlation:c,Disposition:a.Failed,Result:a.Some[a.Result](r),Effects:irvEffects()}))}
+func TestIndependentExactRequestResults(t *testing.T){
+ repo:=irvRepo("comparison");one,two,three:=irvRev(repo,"1"),irvRev(repo,"2"),irvRev(repo,"3");corr:=icorr();sources:=irvMust(a.NewProjectionSources(a.ProjectionSourcesData{}))
+ first:=irvMust(a.NewCommitPairComparison(a.CommitPairComparisonData{From:one,To:two}));different:=irvMust(a.NewCommitPairComparison(a.CommitPairComparisonData{From:one,To:three}))
+ limits:=irvMust(a.NewPatchLimits(a.PatchLimitsData{MaxBytes:32,MaxFiles:1}))
+ request:=irvMust(a.NewQueryRequest(irvMust(a.NewDiffQuery(a.DiffQueryData{Comparison:first,Limits:limits})),corr))
+ correct:=irvMust(a.NewDiffResult(a.DiffResultData{Comparison:first,Sources:sources}))
+ t.Run("positive_diff_comparison",func(t *testing.T){if e:=a.ValidateTerminalFor(request,iterm(corr,correct));e!=nil{t.Fatal(e)}})
+ t.Run("reject_changed_diff_endpoint",func(t *testing.T){result:=irvMust(a.NewDiffResult(a.DiffResultData{Comparison:different,Sources:sources}));if e:=a.ValidateTerminalFor(request,iterm(corr,result));e==nil{t.Fatal("different exact diff endpoint accepted")}})
+ remote:=irvMust(d.NewRepositoryID(d.Remote,"remote"));pr:=irvMust(d.NewPRID(remote,1));target:=irvMust(d.NewPullRequestTarget(pr,irvRev(remote,"1")))
+ baseA:=irvMust(a.NewExactPRBase(a.ExactPRBaseData{Revision:irvRev(remote,"2")}));baseB:=irvMust(a.NewExactPRBase(a.ExactPRBaseData{Revision:irvRev(remote,"3")}))
+ preq:=irvMust(a.NewQueryRequest(irvMust(a.NewPullRequestDiffQuery(a.PullRequestDiffQueryData{Target:target,Base:baseA,Local:repo,Limits:limits})),corr))
+ t.Run("reject_changed_requested_PR_base",func(t *testing.T){r:=irvMust(a.NewPullRequestDiffResult(a.PullRequestDiffResultData{Target:target,RequestedBase:baseB,Sources:sources}));if e:=a.ValidateTerminalFor(preq,iterm(corr,r));e==nil{t.Fatal("different requested PR base accepted")}})
+ page:=irvMust(a.NewPageRequest(a.PageRequestData{Limit:10,Continuation:irvMust(a.NewInitialPage(a.InitialPageData{}))}));filter:=irvMust(a.NewAllGraph(a.AllGraphData{}));greq:=irvMust(a.NewQueryRequest(irvMust(a.NewGraphQuery(a.GraphQueryData{Repository:repo,Roots:[]d.Revision{one},Filter:filter,Page:page})),corr))
+ t.Run("reject_changed_graph_roots",func(t *testing.T){r:=irvMust(a.NewGraphResult(a.GraphResultData{Repository:repo,Roots:[]d.Revision{three},Sources:sources,Page:irvMust(a.NewPageInfo(a.PageInfoData{Completeness:a.Unknown,Source:irvSource("graph")}))}));if e:=a.ValidateTerminalFor(greq,iterm(corr,r));e==nil{t.Fatal("different exact graph roots accepted")}})
+}
+

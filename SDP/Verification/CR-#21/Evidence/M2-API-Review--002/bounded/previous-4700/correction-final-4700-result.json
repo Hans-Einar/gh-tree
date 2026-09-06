@@ -1,0 +1,5 @@
+{
+  "exitCode": 1,
+  "source": "4700ea72f080cae1f0a22cf21e80876d88617754",
+  "command": "go test ./internal/application/api -run ^(TestRS|TestRC) -count=1 -v"
+}

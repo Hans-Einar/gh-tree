@@ -1,0 +1,6 @@
+{
+  "exitCode": 1,
+  "source": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+  "command": "go test ./internal/application/api -run ^TestRCStartExplicitNoEffect$ -count=1 -v",
+  "toolchain": "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe"
+}

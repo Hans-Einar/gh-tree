@@ -1,0 +1,9 @@
+=== RUN   TestRCStartExplicitNoEffect
+    review_start_effect_test.go:11: Running established=true explicit RuntimeResources state=1 error=<nil> valid=true
+    review_start_effect_test.go:12: established running resources contradict explicit no resource effect
+    review_start_effect_test.go:11: Running established=true explicit RuntimeResources state=2 error=<nil> valid=true
+    review_start_effect_test.go:12: established running resources contradict explicit no resource effect
+--- FAIL: TestRCStartExplicitNoEffect (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.535s
+FAIL

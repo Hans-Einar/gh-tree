@@ -345,6 +345,13 @@
       "productHead": "c96ca9244a30e16808743a0cd3e0b557e75080d7",
       "state": "independent_rereview",
       "priorReview": "SDP/Verification/CR-#21/M2-API-Review--001.md"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--002.md",
+      "head": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "state": "changes_required"
     }
   ],
   "errata": [

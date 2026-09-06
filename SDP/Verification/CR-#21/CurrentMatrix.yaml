@@ -107,10 +107,18 @@
           "review": "SDP/Verification/CR-#21/M2-API-Review--001.md",
           "ciRun": "34038064464",
           "result": "CHANGES_REQUIRED_M259-M01_through_M08"
+        },
+        {
+          "kind": "API_ports_leaf_correction_review",
+          "sourceHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-API-Review--002.md",
+          "ciRun": "34041943143",
+          "result": "CHANGES_REQUIRED_M259-M02_M03_M04_M05_M06"
         }
       ],
       "limits": [
-        "26 invalid semantic admissions require correction;226 copy probes pass, but no workflow/native/Slice or leaf integration acceptance."
+        "Original26 malformed cases now refuse; remaining nine invalid admissions and one false refusal require correction. API/ports and viewmodel not integrated; no workflow/native/Slice acceptance."
       ]
     },
     {

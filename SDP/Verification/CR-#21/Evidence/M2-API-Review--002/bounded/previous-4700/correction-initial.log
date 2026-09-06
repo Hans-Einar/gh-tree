@@ -1,0 +1,4 @@
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api [build failed]
+# github.com/Hans-Einar/gh-tree/internal/application/api_test [github.com/Hans-Einar/gh-tree/internal/application/api.test]
+internal\application\api\review_correction_coverage_test.go:111:66: undefined: CommitIndeterminate
+FAIL

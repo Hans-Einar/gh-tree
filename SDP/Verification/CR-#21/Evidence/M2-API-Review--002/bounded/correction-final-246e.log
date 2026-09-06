@@ -1,0 +1,119 @@
+=== RUN   TestRCCorrectionStorageBindings
+=== RUN   TestRCCorrectionStorageBindings/worktree
+=== RUN   TestRCCorrectionStorageBindings/root
+=== RUN   TestRCCorrectionStorageBindings/store
+=== RUN   TestRCCorrectionStorageBindings/family
+=== RUN   TestRCCorrectionStorageBindings/same-binding-content-and-presence
+=== RUN   TestRCCorrectionStorageBindings/source-version-not-document-version
+=== RUN   TestRCCorrectionStorageBindings/distinct-artifacts-same-binding
+=== RUN   TestRCCorrectionStorageBindings/documentless-foreign-root
+=== RUN   TestRCCorrectionStorageBindings/documentless-foreign-worktree
+=== RUN   TestRCCorrectionStorageBindings/documentless-unknown-root
+=== RUN   TestRCCorrectionStorageBindings/versionless-mixed-recovery-store
+=== RUN   TestRCCorrectionStorageBindings/known-publication-unavailable-current
+=== RUN   TestRCCorrectionStorageBindings/unavailable-all-versions
+--- PASS: TestRCCorrectionStorageBindings (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/worktree (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/root (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/store (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/family (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/same-binding-content-and-presence (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/source-version-not-document-version (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/distinct-artifacts-same-binding (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/documentless-foreign-root (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/documentless-foreign-worktree (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/documentless-unknown-root (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/versionless-mixed-recovery-store (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/known-publication-unavailable-current (0.00s)
+    --- PASS: TestRCCorrectionStorageBindings/unavailable-all-versions (0.00s)
+=== RUN   TestRCCorrectionRuntimeStates
+=== RUN   TestRCCorrectionRuntimeStates/no-identity-effect
+=== RUN   TestRCCorrectionRuntimeStates/no-identity-effect#01
+=== RUN   TestRCCorrectionRuntimeStates/no-identity-effect#02
+=== RUN   TestRCCorrectionRuntimeStates/refused-no-effect
+=== RUN   TestRCCorrectionRuntimeStates/refused-no-effect#01
+=== RUN   TestRCCorrectionRuntimeStates/admitted-not-established
+=== RUN   TestRCCorrectionRuntimeStates/admitted-not-established#01
+=== RUN   TestRCCorrectionRuntimeStates/admitted-not-established#02
+=== RUN   TestRCCorrectionRuntimeStates/admitted-not-established#03
+=== RUN   TestRCCorrectionRuntimeStates/known-established-now-cleaned
+--- PASS: TestRCCorrectionRuntimeStates (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/no-identity-effect (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/no-identity-effect#01 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/no-identity-effect#02 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/refused-no-effect (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/refused-no-effect#01 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/admitted-not-established (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/admitted-not-established#01 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/admitted-not-established#02 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/admitted-not-established#03 (0.00s)
+    --- PASS: TestRCCorrectionRuntimeStates/known-established-now-cleaned (0.00s)
+=== RUN   TestRCCorrectionRestartContinuity
+=== RUN   TestRCCorrectionRestartContinuity/geometry-and-fresh-sources
+=== RUN   TestRCCorrectionRestartContinuity/argv
+=== RUN   TestRCCorrectionRestartContinuity/executable
+=== RUN   TestRCCorrectionRestartContinuity/terminal-mode
+=== RUN   TestRCCorrectionRestartContinuity/project-components
+=== RUN   TestRCCorrectionRestartContinuity/same-worktree-replaced-root
+=== RUN   TestRCCorrectionRestartContinuity/failed-new-acquisition
+=== RUN   TestRCCorrectionRestartContinuity/snapshot-acquired-project-subject
+--- PASS: TestRCCorrectionRestartContinuity (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/geometry-and-fresh-sources (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/argv (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/executable (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/terminal-mode (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/project-components (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/same-worktree-replaced-root (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/failed-new-acquisition (0.00s)
+    --- PASS: TestRCCorrectionRestartContinuity/snapshot-acquired-project-subject (0.00s)
+=== RUN   TestRCStorageEquivalentSubjectObservation
+    review_correction_coverage_test.go:259: same store/worktree, optional consistent repository additionally present: invalid boundary value: storage recovery subject association
+    review_correction_coverage_test.go:260: legitimate value refused: invalid boundary value: storage recovery subject association
+--- FAIL: TestRCStorageEquivalentSubjectObservation (0.00s)
+=== RUN   TestRCExpectedAbsenceAnchorTransition
+    review_correction_coverage_test.go:268: known original absence below anchor and known proposed version under newly established parent: invalid boundary value: recovery document subject
+--- PASS: TestRCExpectedAbsenceAnchorTransition (0.00s)
+=== RUN   TestRCCorrectionRestartAdmission
+=== RUN   TestRCCorrectionRestartAdmission/old-or-equal-identity
+=== RUN   TestRCCorrectionRestartAdmission/old-or-equal-identity#01
+    review_correction_coverage_test.go:295: identity contradiction rejected in snapshot: invalid boundary value: restart self
+=== RUN   TestRCCorrectionRestartAdmission/cancel-before-admission
+=== RUN   TestRCCorrectionRestartAdmission/admitted-failure-new-id
+=== RUN   TestRCCorrectionRestartAdmission/failed-old-cleanup-no-new-id
+--- PASS: TestRCCorrectionRestartAdmission (0.00s)
+    --- PASS: TestRCCorrectionRestartAdmission/old-or-equal-identity (0.00s)
+    --- PASS: TestRCCorrectionRestartAdmission/old-or-equal-identity#01 (0.00s)
+    --- PASS: TestRCCorrectionRestartAdmission/cancel-before-admission (0.00s)
+    --- PASS: TestRCCorrectionRestartAdmission/admitted-failure-new-id (0.00s)
+    --- PASS: TestRCCorrectionRestartAdmission/failed-old-cleanup-no-new-id (0.00s)
+=== RUN   TestRSPositiveControls
+--- PASS: TestRSPositiveControls (0.00s)
+=== RUN   TestRSStartIdentityAndEstablishment
+=== RUN   TestRSStartIdentityAndEstablishment/absent-session-applied-resources
+    review_runtime_storage_test.go:103: error=invalid boundary value: unadmitted start effect valid=false sessionPresent=false
+=== RUN   TestRSStartIdentityAndEstablishment/running-but-unestablished
+    review_runtime_storage_test.go:110: error=invalid boundary value: running without establishment valid=false established=false
+--- PASS: TestRSStartIdentityAndEstablishment (0.00s)
+    --- PASS: TestRSStartIdentityAndEstablishment/absent-session-applied-resources (0.00s)
+    --- PASS: TestRSStartIdentityAndEstablishment/running-but-unestablished (0.00s)
+=== RUN   TestRSRestartScopeBinding
+    review_runtime_storage_test.go:124: error=invalid boundary value: restart original specification valid=false old-worktree=a replacement-worktree=b
+--- PASS: TestRSRestartScopeBinding (0.00s)
+=== RUN   TestRSStorageWorktreeRecoveryBinding
+    review_runtime_storage_test.go:141: same original malformed subject/version now rejected earlier: invalid boundary value: recovery document worktree
+--- PASS: TestRSStorageWorktreeRecoveryBinding (0.00s)
+=== RUN   TestRSStorageCommitVersionWorktreeBinding
+    review_runtime_storage_test.go:156: error=invalid boundary value: storage version binding valid=false
+--- PASS: TestRSStorageCommitVersionWorktreeBinding (0.00s)
+=== RUN   TestRSStorageRecoveryLoadBinding
+    review_runtime_storage_test.go:168: same original malformed load now rejected earlier: invalid boundary value: storage recovery store association
+--- PASS: TestRSStorageRecoveryLoadBinding (0.00s)
+=== RUN   TestRSOutputAndCopyControls
+--- PASS: TestRSOutputAndCopyControls (0.00s)
+=== RUN   TestRSStorageJSONAndCopyControls
+--- PASS: TestRSStorageJSONAndCopyControls (0.00s)
+=== RUN   TestRSStorageErrorAndNormalizationControls
+--- PASS: TestRSStorageErrorAndNormalizationControls (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.572s
+FAIL
