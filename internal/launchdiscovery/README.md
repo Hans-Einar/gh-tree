@@ -29,7 +29,7 @@ not choose a manager. Source versions bind their observed regularity/object
 identity, manifest identity/content, exact project/worktree and executable policy.
 
 Make selects GNUmakefile, makefile, Makefile in order and binds the selected lookup
-with `-f`. On ordinary Windows filesystems a physical Makefile also answers the
+with `-f`. On case-insensitive filesystems a physical Makefile also answers the
 earlier case-insensitive makefile lookup. Only simple textual targets comprising
 ASCII letters/digits/underscore/dash/dot are supported; leading dot/dash, assignment,
 slash, macros, patterns and control syntax refuse. Recipes are not evaluated.

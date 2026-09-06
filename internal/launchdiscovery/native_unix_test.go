@@ -89,7 +89,7 @@ func TestUnixPermissionAndRedirectedLocks(t *testing.T) {
 func TestUnixSuppliedChangeProfileDoesNotUpgrade(t *testing.T) {
 	root := t.TempDir()
 	scope := fixtureScope(t, root)
-	f, chain, e := nativeRoot(root)
+	f, chain, e := nativeRoot(scope.Data().RootLocator)
 	if e != nil {
 		t.Fatal(e)
 	}

@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -221,7 +220,7 @@ func TestSavedOverridesUnknownAndOrderedBinding(t *testing.T) {
 			t.Fatal(exec)
 		}
 		manifest := "Makefile"
-		if runtime.GOOS == "windows" {
+		if _, err := os.Stat(filepath.Join(root, "makefile")); err == nil {
 			manifest = "makefile"
 		}
 		if i == 1 && !reflect.DeepEqual(exec.Arguments, []string{"-f", manifest, "clean", "all"}) {
