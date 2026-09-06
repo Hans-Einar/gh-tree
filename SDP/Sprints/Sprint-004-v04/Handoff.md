@@ -42,11 +42,14 @@ CI34055865289 at0630ded passes18/helper skip. Public Storage/Unix metadata/recov
 remain in progress. #66 FreeBSD worker branch codex/cr21-freebsd-ci is ready at
 base22217f9, worktree C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci.
 
-#67 API correction technical675dfff/review0bb8f28 independently ACCEPTED and source
-CI34055882003 passes18/helper skip. It is being integrated into canonical with
-this status record; exact integrated CI must pass before the clean Git branch
-receives that prerequisite. Git status contract1.1.0 froze at10f687e. No M3 adapter
-is integrated and no full Slice closed. Authority/interop links: M3-Adapters--001.
+#67 API correction technical675dfff/review0bb8f28 is independently ACCEPTED,
+integrated/pushed4d1b5486a029eeabcd874306d7a7ece4ae629ff3. Source CI34055882003 and
+integrated CI34056365373 pass18/helper skip; exact local integration race/vet/arch
+pass. Git may adopt that exact prerequisite at a clean boundary and resume status.
+Git contract1.1.0 froze at10f687e; #67 is complete as a bounded prerequisite.
+#68 queues a small ports PlanSummaryDigest accessor needed by already-frozen
+approval semantics; it does not change the contract. #66 CI author is running.
+No M3 adapter is integrated and no full Slice closed. Authority: M3-Adapters--001.
 
 Local-only test residue: Persistence report atc146bb5 records the owned Windows
 metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's

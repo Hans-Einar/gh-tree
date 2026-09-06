@@ -406,3 +406,8 @@ uses codex/cr21-status-api from frozen contract10f687e. No adapter integrated.
 skip. Serial prerequisite integration includes only pure API/tests/reports and
 current status; integrated CI remains before Git consumption. #66 branch22217f9
 is ready for fresh CI worker. No adapter/full Slice acceptance is implied.
+
+#67 exact integration4d1b548 passes local Application race/vet/windows architecture
+and CI34056365373 (18/helper skip); prerequisite complete, native Git adoption next.
+#68 records missing readable issued-plan digest (existing frozen approval semantics,
+no contract change); bounded ports worker/reviewer queued. #66 CI author active.

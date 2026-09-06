@@ -635,7 +635,7 @@
       "worktreeCreated": true,
       "lastCheckpoint": "de9b2c898e0c14ce2301fd7d9bdf9725c74ba848",
       "checkpointScope": "partial, not accepted/integrated",
-      "blockedScope": "ObserveStatus/dependent status work pending #67 reviewed API implementation; Git contract1.1.0 frozen"
+      "blockedScope": "Native status/general diff can resume after clean-branch adoption of integrated #67; #68 plan-digest accessor queued for approvals"
     },
     {
       "id": "IMPL62",
@@ -769,7 +769,7 @@
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "implementation_dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
@@ -783,7 +783,7 @@
       "id": "BC-CHANGE-67",
       "kind": "boundary_contract_change",
       "issue": 67,
-      "state": "integrated_ci_pending",
+      "state": "complete",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "affects": [
         "IMPL61",
@@ -804,7 +804,22 @@
       "sourceCI": {
         "run": 34055882003,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
-      }
+      },
+      "integrationHead": "4d1b5486a029eeabcd874306d7a7ece4ae629ff3",
+      "integrationCI": {
+        "run": 34056365373,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "localIntegrationChecks": "Application race/vet, windowsamd64 architecture and exact accepted API tree match PASS"
+    },
+    {
+      "id": "IMPL68",
+      "kind": "implementation_prerequisite",
+      "issue": 68,
+      "state": "authorized_queued",
+      "layer": "Application ports",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "scope": "read-only issued PlanSummaryDigest accessor and bounded validation/approval tests; no frozen semantics change"
     }
   ],
   "productFindings": [
@@ -1879,11 +1894,11 @@
     "SLC-13"
   ],
   "activeContribution": "M3-ADAPTERS",
-  "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+  "integrationHead": "4d1b5486a029eeabcd874306d7a7ece4ae629ff3",
   "activeContributions": [
     "IMPL61",
-    "IMPL62",
-    "IMPL63"
+    "IMPL63",
+    "IMPL66"
   ],
   "pausedInitialContributions": [
     "IMPL61",
