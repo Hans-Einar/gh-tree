@@ -89,11 +89,62 @@ Separate fresh independent review remains required at the final exact source,
 with actual generated assets and native evidence. Author summaries are not review
 evidence. Master alone determines contribution/Slice completion and integration.
 
+## Checkpoint 2: private framing and native Unix cwd acquisition
+
+Preceding checkpoint source `14cba902364977967756cca89a2c3b41105624f8` is committed
+and pushed. The first source push correctly activates the mandatory helper gate;
+it does not create acceptance eligibility while helper prerequisites are missing.
+
+Added broker/protocol.go and start.go: 64 KiB capped length-prefixed binary frames,
+fixed protocol/version/role/opcode/session/nonce/sequence binding, exact copied
+native startup payloads, one decoder per direction, complete serialized writes,
+and poisoned connections after malformed/replayed/foreign frames or partial I/O
+failure. Native endpoint/parent validation remains the future owner requirement.
+Original SourceVersion/Invocation remain in the sole parent registry; native wire
+records carry exact object/argv/environment facts without decoding opaque source
+tokens or modifying the shared API. The broker dependency never imports parent
+registry or embedded assets.
+
+Added broker/cwd_unix.go and native stamp selections: independent retained
+Openat/O_DIRECTORY/O_NOFOLLOW/O_CLOEXEC root/project chain, actual Fstat identity,
+full no-follow Fstatat parent-entry recensus, original object authority and observed
+relocation refusal. Partial acquisition returns the retained cleanup owner. No
+main-process cwd change, path-check/reopen or fd-pathname substitution occurs.
+Directory identity follows the current M3 convention: little-endian inode in the
+16-byte ID, device, proved birth stamp when available, otherwise explicit change
+profile; matching an existing supplied profile never silently chooses another.
+
+Local `go test ./internal/runtime/... -count=1` and matching `-race` PASS on
+Windows/amd64 Go1.25.0. All twelve broker test-binary cross-compiles with CGO0 PASS;
+new native Unix code is selected on all nine Unix targets. Native execution of
+the actual Linux/amd64 broker test binary under existing openSUSE-Leap-15.5 WSL2,
+kernel6.18.33.2-microsoft-standard-WSL2, UID/GID65534 PASS. The full broker suite
+includes acquired-original marker reads after replacement, stale identity,
+symlink/root-redirect refusal, replacement at root/project acquisition barriers,
+partial-close ownership, unknown stamp rejection, protocol truncation/unknown/
+trailing fields, nonce/role/session/replay rejection, concurrent short frame writes
+and failed-transport replay refusal. No native user process or project script is
+launched. No native macOS/FreeBSD execution or Fchdir/PTY/process cleanup proof is
+claimed. Artifacts remain in the existing local build directory and native owned
+`/tmp/gh-tree-runtime-native.XfyRYc` (test-created child directories cleaned).
+
+One initial inline WSL harness command failed during copy with `/broker.test`
+permission denied before tests executed; Windows argument transport did not retain
+the intended shell variable. A plain UTF-8 file-backed harness corrected argument
+transport and produced the passing ordinary-user run. No elevated retry, global
+tooling/config change or product-policy change occurred. These are disclosed
+harness outcomes, not native product failure/acceptance.
+
+Windows native broker/entry/helpergen/images/manifest remain absent, so the helper
+gate remains FAIL. The complete twelve Sessions methods, native Unix supervisor/
+helpers, Windows startup/debug/Jobs/ConPTY/extraction, native platforms and final
+independent review/integration still remain in full scope.
+
 ## Next permitted work
 
 Commit/push this coherent partial checkpoint before further substantial work.
-Then implement authenticated bounded private transport, platform cwd acquisition,
-Unix supervisor/helpers and Windows native broker/embedded-helper closure, with
+Then implement inherited-endpoint/parent validation, private Fchdir/SID supervisor
+and acquired-group helpers, plus Windows native broker/embedded-helper closure, with
 explicit partial checkpoints and native fixture verification. Assemble all twelve
 Sessions methods around actual resource owners; no shortened replacement scope.
 Request Master coordination before any shared-interface/workflow/private-host
