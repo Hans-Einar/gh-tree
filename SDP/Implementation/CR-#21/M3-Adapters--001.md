@@ -147,3 +147,25 @@ integrated and pushed. Independent Git reads continue. Impact remains only
 Application--Git G3, API value/consistency/tests/README; no port, Domain, adapter,
 viewmodel or legacy change. M4/M5 must preserve causes in public/presentation
 projection. The freeze is contract authority, not implementation acceptance.
+
+## Windows storage security profile interpretation (#63)
+
+Master read frozen Persistence404..412 with accepted Feasibility/Persistence148..155:
+its bounded profile excludes audit-SACL/security-policy replication and requires
+an explicitly supported profile for custom audit-preservation requirements.
+The BC's explicit refusal/profile evidence obligation does not claim that limited
+READ_CONTROL queries prove full audit-SACL absence. Ordinary profile preserves/
+verifies owner/group/ordered DACL/protection/inheritance and supported label/
+resource security; unsupported or unreadable access-affecting policy still refuses.
+Never infer absent audit data, full descriptor equality or an unsupported security
+policy from those limited observations. No automatic privilege changes or new
+public configuration/API authority are introduced. Any access-affecting SACL class
+that cannot be detected must be raised before the affected publication proceeds.
+
+[Microsoft's query-rights table](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-information)
+and [GetSecurityInfo](https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-getsecurityinfo)
+confirm READ_CONTROL for owner/group/DACL/label/resource/CAP queries versus
+ACCESS_SYSTEM_SECURITY for audit-SACL. Adapter code/report/native tests must state
+the selected profile and its limits, and the critical independent review must
+check both preservation and refusal. This is an interpretation of existing
+bounded authority, not native proof, a contract relaxation or adapter acceptance.
