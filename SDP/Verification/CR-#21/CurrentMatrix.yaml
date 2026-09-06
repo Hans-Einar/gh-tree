@@ -124,10 +124,19 @@
           "review": "SDP/Verification/CR-#21/M2-API-Review--003.md",
           "ciRun": "34045071509",
           "result": "ACCEPT_all_M259_findings_resolved"
+        },
+        {
+          "kind": "API_ports_serial_integration",
+          "sourceHead": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+          "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+          "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
+          "review": "SDP/Verification/CR-#21/M2-API-Review--003.md",
+          "ciRun": "34046178481",
+          "result": "PASS18_explicitM3skip"
         }
       ],
       "limits": [
-        "Accepted pure API/ports values/interfaces only, pending serial integration. Full coordinator/use-case sequencing, native adapters and end-to-end Slice checks remain required."
+        "Accepted and integrated pure API/ports values/interfaces only. Full coordinator/use-case sequencing, native adapters and end-to-end Slice checks remain required."
       ]
     },
     {

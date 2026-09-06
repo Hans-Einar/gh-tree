@@ -471,7 +471,7 @@
       "id": "IMPL59",
       "kind": "implementation_contribution",
       "issue": 59,
-      "state": "accepted_pending_integration",
+      "state": "accepted_integrated",
       "layer": "Application API/ports",
       "slices": [
         "SLC-01",
@@ -511,7 +511,9 @@
         "M259-M08"
       ],
       "finalCiRun": "34045071509",
-      "integrationHead": null
+      "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
+      "integrationCiRun": "34046178481",
+      "integrationCiState": "passed18_explicitM3skip"
     },
     {
       "id": "IMPL60",
@@ -1639,9 +1641,8 @@
     "SLC-13"
   ],
   "activeContribution": "M2-SURFACES",
-  "integrationHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+  "integrationHead": "ecf12e91f5a1223c9d97b404db024e1ce05372df",
   "activeContributions": [
-    "IMPL59",
     "IMPL60"
   ]
 }

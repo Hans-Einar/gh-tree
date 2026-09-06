@@ -1,6 +1,6 @@
 # Program handoff
 
-State: ACTIVE - Sprint-004-v04 / I-03 / M2 parallel contract leaves.
+State: ACTIVE - Sprint-004-v04 / I-03 / M2 serial integration.
 Full long-running goal #21 remains open. Current Issues #59 (API/ports) and
 #60 (State-owned viewmodel). Canonical codereview-21/refactor worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor.
@@ -59,7 +59,7 @@ No adapter work before required M2 surfaces; a faulty BC triggers BC-CHANGE.
 
 ## Traceability and remaining scope
 
-CurrentIndex/Relations/Ledger through50 record accepted predecessors, M2
+CurrentIndex/Relations/Ledger through51 record accepted predecessors, M2
 correction/acceptance states and bounded native tool preparation. CurrentMatrix has65 accepted checks; M1 and Domain
 contributions are partial evidence for full clauses. It does not close a Slice,
 Runtime allocator/exhaustion or native Git identity requirement. Original failed
@@ -97,15 +97,18 @@ M2-API-Review--003 preserves actual complete primary/bounded source/test/control
 report evidence; Master verified99/77 raw source blobs and manifests. SourceCI
 34044482946 and finalCI34045071509 each passed18/explicitM3skip. Final report is
 the sole change from6e; product tree2d98bb2d3ae142f363db6caf7117c99b62c764a3 is
-identical, worker tree clean and origin exactlyd4. Authoring stopped. Exact next
-action is controlled serial integration ofd4 and actual integratedCI, then the
-accepted viewmodel. No acceptance is based on worker summary or greenCI alone.
+identical, worker tree clean and origin exactlyd4. Authoring stopped. Master acceptance
+checkpointa106b9397d7c6a38c81167844030ad06d33a6a88 precedes actual pushed integration
+ecf12e91f5a1223c9d97b404db024e1ce05372df. Product/shared build inputs matchd4 exactly.
+IntegrationCI34046178481 passed18 applicable jobs/explicitM3skip. API contribution
+is complete; #59 closure is now permitted. Next integrate accepted viewmodeld279c3f
+and verify its exact integratedCI. No acceptance uses author summary alone.
 
 Viewmodel #60: independent ACCEPT atd279c3f2af59e48029e77d845f5a55271c7889cf;
 M260-M01 resolved, CI34038307701 passed18/explicitM3skip. Complete independent
 controls and original failure history are in M2-Viewmodel-Review--001/002. Preserve
-this frozen source until accepted API/ports integrates first. Neither leaf is
-integrated and neither Issue is closed. Master serially integrates accepted API,
+this frozen source until accepted API/ports integrates first. API is completely integrated/verified; viewmodel remains unintegrated and #60 stays
+open until its integration gate passes. Master serially integrates accepted API,
 then viewmodel, verifying the actual integrated SHA/CI and recording both gates.
 Only then may M2 complete and M3 adapter implementation Issues be dispatched.
 
