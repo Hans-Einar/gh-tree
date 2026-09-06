@@ -3,13 +3,13 @@
 State: ACTIVE — focused review gates, no product implementation
 Repository: Hans-Einar/gh-tree
 Parent: #21, reopened under explicit user authority
-Sprint/iteration/gate: Sprint-004-v04 / I-01 / G-05
-Master owns coordination; TUI View #46 is authorized.
+Sprint/iteration/gate: Sprint-004-v04 / I-01 / G-06
+Master owns coordination; Composition #49 is authorized.
 
 ## Exact current evidence
 
 - Product: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-- Main governance: e16650036c10f764c1b99c76d98d2bd37c3ffbb0.
+- Main governance: 00584a57021dda767ead5e3996cc92477e0a2d3c.
 - Domain #33 / PR #34 / codereview-21/layer-domain-review:
   corrected HEAD 86d2a4c0cc0eb8f427d597617246e85473a6cf55, accepted and merged
   at 5b1cf181fd3245a65337f1db28ee8f0fb95c200f; #33 closed.
@@ -24,13 +24,15 @@ Master owns coordination; TUI View #46 is authorized.
   merged at db07857550cdfd56c114eb42c045b896b229d747; #40 closed. 2H/6M/1L findings.
 - GitHub #43 / PR #45 accepted at ea52f8c5c50e178c6e415cbba2284296e2d9b910,
   merged at e16650036c10f764c1b99c76d98d2bd37c3ffbb0; #43 closed. 1H/8M/1L findings.
+- TUI View #46 / PR #48 accepted at 108a3bd0ceb782c6a29d980ce0abcce1eae7a284,
+  merged at 00584a57021dda767ead5e3996cc92477e0a2d3c; #46 closed. 0H/11M/1L findings.
 
 ## Continue
 
 Read AGENTS.md, developmentInstructions.md, full #21 comments, the full
 UserRunContract.md and the current index/ledger before acting. Inspect exact
 remote refs and clean/dirty state; preserve any unpublished or user work.
-Eight focused reviews and #35 scaffolding are complete. Execute TUI View review Issue #46
+Nine focused reviews and #35 scaffolding are complete. Execute Composition review Issue #49
 in a dedicated review-only worktree/branch using LayerReview.md; consume all
 accepted earlier reviews. Follow the ordered gate sequence in ScrumIterations.md.
 

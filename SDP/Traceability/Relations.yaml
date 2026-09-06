@@ -100,6 +100,27 @@
       "from": "G-05",
       "relation": "accepts",
       "to": "LR46"
+    },
+    {
+      "from": "LR49",
+      "relation": "depends_on",
+      "to": [
+        "BR21",
+        "LR25",
+        "LR26",
+        "LR29",
+        "LR31",
+        "LR33",
+        "LR36",
+        "LR40",
+        "LR43",
+        "LR46"
+      ]
+    },
+    {
+      "from": "G-06",
+      "relation": "accepts",
+      "to": "LR49"
     }
   ],
   "errata": [
