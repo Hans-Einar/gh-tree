@@ -1,0 +1,44 @@
+[
+  {
+    "Name": "nested-callback-slice",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "nested-callback-map-result",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "nested-any-control",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/application/api: Result: exported boundary exposes untyped any/interface{} payload"
+  },
+  {
+    "Name": "private-native-helper",
+    "Expected": "PASS",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/git/native: OpenLock: exported API exposes forbidden type os.File"
+  },
+  {
+    "Name": "exposed-native-boundary-control",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: example.test/probe/internal/git: Lock: exported API exposes forbidden type os.File"
+  },
+  {
+    "Name": "windows-arm-callback",
+    "Expected": "REJECT",
+    "Exit": 0,
+    "Output": "architecture: windows/arm64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  },
+  {
+    "Name": "private-broker-native",
+    "Expected": "PASS",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  }
+]

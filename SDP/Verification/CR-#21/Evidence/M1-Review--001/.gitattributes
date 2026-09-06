@@ -1,0 +1,2 @@
+# Preserve exact native review bytes, including CRLF in the three result captures.
+* -text whitespace=cr-at-eol

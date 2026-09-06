@@ -287,15 +287,39 @@
     },
     {
       "id": "V-COMP-03",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "rework_required",
+      "evidence": [
+        {
+          "kind": "M1_prerequisite_review_and_ci",
+          "sourceHead": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M1-Review--001.md",
+          "ciRun": "34029160810",
+          "result": "CHANGES_REQUIRED",
+          "scope": "Architecture/CI prerequisite only; full clause and integrated/native/E2E proof not complete"
+        }
+      ],
+      "limits": [
+        "M157-M01..05 require correction/re-review and successful current CI; legacy still present and no M1 product contribution integrated."
+      ]
     },
     {
       "id": "V-COMP-04",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "rework_required",
+      "evidence": [
+        {
+          "kind": "M1_prerequisite_review_and_ci",
+          "sourceHead": "6685b4f76ca071be0125289925e7c9aa466dc10a",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M1-Review--001.md",
+          "ciRun": "34029160810",
+          "result": "CHANGES_REQUIRED",
+          "scope": "Architecture/CI prerequisite only; full clause and integrated/native/E2E proof not complete"
+        }
+      ],
+      "limits": [
+        "M157-M01..05 require correction/re-review and successful current CI; legacy still present and no M1 product contribution integrated."
+      ]
     },
     {
       "id": "V-REL-01",
