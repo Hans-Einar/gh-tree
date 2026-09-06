@@ -428,3 +428,9 @@ jobs/helper bytes remain unchanged; new ordinary-user FreeBSD job is native
 infrastructure, not adapter proof. Exact integrated CI next, then coordinated
 adoption by active adapter branches. Mutable VM dependencies/system-EA EPERM
 and trusted runner/controller boundary remain explicit in independent report.
+
+Shared CI exact integrationd5eeaac CI34058149301 passes19/helper skip; #66 complete.
+Clean Gitd539a73/Persistence8a8a987/Discovery4bfcf7f adoptions preserve owned source
+and pass compile compatibility. #68 now adopted by Git. Corrected Git and macOS
+metadata CI pass; FreeBSD/no-birth protocol issues remain. Recovery checkpoint
+m3-shared-prerequisites/20260906-2046Z marks current state, not M3/Slice completion.

@@ -124,9 +124,9 @@ Windows device42/FileID000102030405060708090a0b0c0d0e0f uses the same16 native b
 and stamp birth-filetime:116444736000000000. These are layout vectors, not native
 proof. Native observation, nofollow acquisition and process/resource gates remain.
 
-Shared CI support is queued under#66 (Composition). Existing Linux/macOS/Windows/
-ARM64 jobs and x/sys0.44.0 already support native milestones;#66 adds reviewed
-FreeBSD execution/evidence without changing adapter ownership or release behavior.
+Shared CI #66 (Composition) is accepted/integrated atd5eeaac, CI34058149301
+passes19/helper skip. Native FreeBSD supplements existing Linux/macOS/Windows/
+ARM64 and all12 architecture/build jobs; no adapter proof from absent sources.
 
 ## BC-CHANGE-67: independent status causes (FROZEN 1.1.0, #67)
 
@@ -188,5 +188,15 @@ Current dispatch: Discovery#64 starts on its already-pushed planned base412f33e
 and owned branch/worktree from M3-Assignments; unchanged Discovery/Runtime/shared
 contracts and current native identity conventions apply. Persistence successor
 starts from pushed87506ee, three public loads present; three commits/recovery
-protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED with native CI19PASS,
-awaiting canonical integration. No adapter integration or complete Slice claim.
+protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED and integrated atd5eeaac with
+source/integrated CI19PASS. Active Git/Persistence/Discovery branches adopted it
+at clean boundaries, preserving their owned source. No adapter integration or
+complete Slice claim.
+
+Recovery identity interpretation: frozen Persistence392..395 does not require a
+manifest to embed its own final ctime. Stable persisted RecoveryID is distinct
+from mutable artifact observation SourceVersion (468..480); DirectoryIdentity
+is short-lived (BoundaryTypes103..105). Reobserve current facts and preserve
+proven store/artifact association without equating changed observations or
+waiving replacement checks. No-birth profiles still need actual restart proof;
+unknown association cannot become authority to adopt/replay/delete an artifact.

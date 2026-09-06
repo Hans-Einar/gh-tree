@@ -34,30 +34,29 @@ own only their adapter folder/tests/bounded report; no legacy, shared workflow/m
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
 
-Git adopted #67 at775121d (source tree unchanged on adoption). Native branch
-CI34056687102 FAILED Linux race positive-transport timeout and both Windows ACL
-assertions; correctionee42b1b is pushed and CI34057368746 pending. Author continues
-status/general diff. Nine
-read methods/native foundations existed before status; mutations remain pending.
-GitHub technical7382617/reviewccbc843 remains ACCEPTED, held for Git-first.
-Persistence87506ee includes native primitives/metadata and three public loads.
-Fresh successor must complete three commits/manifests/recovery. macOS failure
-34056596058 has a kernel-semantics-based correction awaiting exact new native CI.
-FreeBSD#66 ordinary-user probe confirms system namespace EPERM, never empty.
+Shared prerequisites are COMPLETE: #67 Git status contract/API (Git1.1.0 freeze
+10f687e, source675dfff/review0bb8f28, integration4d1b548 CI34056365373); #68 digest
+getter (source70d1719/review736129a, integration396a629 CI34057368177); #66 native
+FreeBSD infrastructure (source489a731/reviewbe94b44, integrationd5eeaac4acb11894bbb2209aa7e04104ee634f1d
+CI34058149301, 19PASS/helper skip). Earlier prerequisite gates each18PASS/helper
+skip. Local source matches/targeted verification pass. These are not full Slices.
 
-#66 source489a731 CI34056731199 passes19/helper skip, including actual FreeBSD15
-amd64 Go1.25 uid1001 guest-native tests and expected failure propagation. Only M2
-leaves exist at that source, all absent adapters explicitly NOT RUN. Independent
-reviewbe94b44 ACCEPTS infrastructure only; integrated by this record commit.
-Exact canonical CI must pass before adapter branches consume the new job.
+Active adapter branches adopted d5eeaac at clean boundaries, owned source unchanged:
+Gitd539a73 (ten facts methods/native foundations; general diff/all mutations remain),
+Persistence8a8a987 (three loads/private native/preparation/manifest helpers; public
+commits/recovery assembly and no-birth profile proof remain), Discovery4bfcf7f
+(both methods present; native/limits/cross-target hardening remains). Compile-only
+compatibility checks pass; newly combined branch CI is pending. Runtime stays queued.
+Git ee42b1b CI34057368746 resolved prior race/Windows ACL failures,18PASS/helper
+skip. Persistence8775a80 CI34058262124 and87506ee CI34057603393 pass18/helper skip,
+including corrected macOS ACL detection. FreeBSD system-EA EPERM remains a real
+ordinary-user write-profile issue; it is never treated as empty metadata.
+GitHub7382617/reviewccbc843 remains accepted and held for Git-first integration.
+No M3 adapter has entered canonical; all13 Slices/all143 baseline findings remain.
 
-#67 complete: contract10f687e, API675dfff/review0bb8f28, integrated4d1b548;
-source/integration CI34055882003/34056365373 pass18/helper skip. #68 mechanical
-ports accessor70d1719/review736129a independently ACCEPTED, source CI34057016256
-passes18/helper skip. Exact integration396a629 CI34057368177 passes18/helper skip and local ports
-race/vet/windows architecture pass; #68 is complete, clean Git adoption next.
-Discovery#64 now starts on planned base412f33e/branch from M3-Assignments; Runtime
-remains queued. No adapter/full Slice completion.
+Latest recovery marker: checkpoint/m3-shared-prerequisites/20260906-2046Z tags the
+commit adding this current status. It preserves accepted shared prerequisites
+and exact partial branch references; implementation continues, no completion claim.
 
 Local-only test residue: Persistence report atc146bb5 records the owned Windows
 metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's
