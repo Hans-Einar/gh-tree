@@ -508,6 +508,20 @@ func (s *readSession) verifyCommit(repo repository, oidText string) (domain.Revi
 	if err != nil || oid.Format() != repo.format {
 		return domain.Revision{}, diagnostic(api.Invalid, "InvalidExactObject", "The requested object is not a full object identity in this repository format.")
 	}
+	// Git2.43's promisor source can invoke a fetch from ordinary cat-file.
+	// It has no GIT_NO_LAZY_FETCH gate. This unproved partial-clone object-read
+	// profile refuses instead of allowing an implicit acquisition in a facts call.
+	// https://github.com/git/git/blob/v2.43.0/promisor-remote.c
+	profile := s.command(repo.common.path, "--git-dir="+repo.common.path, "config", "--get-regexp", `^(extensions\.partialclone|remote\..*\.(promisor|partialclonefilter))$`)
+	if profile.err == nil && len(profile.stdout) > 0 {
+		return domain.Revision{}, diagnostic(api.Unsupported, "ImplicitFetchReadProfile", "This repository's promisor profile has no proved read-only object lookup.")
+	}
+	if profile.err != nil {
+		exit, p := profile.transport.Data().ExitCode.Value()
+		if !p || exit != 1 {
+			return domain.Revision{}, profile.err
+		}
+	}
 	q := s.command(repo.common.path, "--git-dir="+repo.common.path, "cat-file", "-t", oid.String())
 	if q.err != nil {
 		return domain.Revision{}, q.err

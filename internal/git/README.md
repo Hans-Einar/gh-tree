@@ -18,6 +18,13 @@ cancels immediately. Canceled/killed roots and forced pipe drainage return expli
 cleanup uncertainty; this transport makes no Runtime descendant guarantee.
 Windows subprocesses use hidden windows. Read commands disable optional index
 writes, fsmonitor, untracked cache, automatic maintenance and replace-object lookup.
+Their empty native protocol allowlist also prevents implicit promisor fetches.
+Unproved partial-clone object-read profiles return an explicit diagnostic.
+
+ReadCommits returns native commit messages/parents/signatures by exact endpoint,
+with bounded pages whose authenticated cursors bind repository, full root OID,
+traversal and shallow/graft source context. MergeBase returns Unique,
+NoCommonAncestor or every ambiguous candidate. Neither read joins GitHub facts.
 
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp

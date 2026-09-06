@@ -74,6 +74,12 @@ func (a *Adapter) commandInput(ctx context.Context, cwd string, mutation bool, i
 	cmd := exec.CommandContext(runctx, a.options.GitExecutable, nativeArgs...)
 	cmd.Dir = cwd
 	cmd.Env = commandEnvironment(a.options.Environment)
+	if !mutation {
+		// Also prevents a concurrently enabled promisor remote from turning an
+		// object lookup into a successful implicit fetch. Empty native protocol
+		// allowlist denies every transport, including local file and ext helpers.
+		cmd.Env = append(cmd.Env, "GIT_ALLOW_PROTOCOL=")
+	}
 	cmd.Stdout, cmd.Stderr = stdout, stderr
 	if input != nil {
 		cmd.Stdin = strings.NewReader(string(input))
@@ -106,7 +112,7 @@ func (a *Adapter) commandInput(ctx context.Context, cwd string, mutation bool, i
 // replace namespace, object store, or pathspec interpretation from the parent.
 // Effective configuration and signer/SSH environment remain copied inputs.
 func commandEnvironment(base []string) []string {
-	drop := map[string]bool{"GIT_DIR": true, "GIT_COMMON_DIR": true, "GIT_WORK_TREE": true, "GIT_INDEX_FILE": true, "GIT_OBJECT_DIRECTORY": true, "GIT_ALTERNATE_OBJECT_DIRECTORIES": true, "GIT_NAMESPACE": true, "GIT_PREFIX": true, "GIT_CEILING_DIRECTORIES": true, "GIT_DISCOVERY_ACROSS_FILESYSTEM": true, "GIT_OPTIONAL_LOCKS": true, "GIT_LITERAL_PATHSPECS": true, "GIT_GLOB_PATHSPECS": true, "GIT_NOGLOB_PATHSPECS": true, "GIT_ICASE_PATHSPECS": true, "GIT_NO_REPLACE_OBJECTS": true, "GIT_TERMINAL_PROMPT": true, "GIT_PAGER": true, "LC_ALL": true}
+	drop := map[string]bool{"GIT_DIR": true, "GIT_COMMON_DIR": true, "GIT_WORK_TREE": true, "GIT_INDEX_FILE": true, "GIT_OBJECT_DIRECTORY": true, "GIT_ALTERNATE_OBJECT_DIRECTORIES": true, "GIT_NAMESPACE": true, "GIT_PREFIX": true, "GIT_CEILING_DIRECTORIES": true, "GIT_DISCOVERY_ACROSS_FILESYSTEM": true, "GIT_OPTIONAL_LOCKS": true, "GIT_LITERAL_PATHSPECS": true, "GIT_GLOB_PATHSPECS": true, "GIT_NOGLOB_PATHSPECS": true, "GIT_ICASE_PATHSPECS": true, "GIT_NO_REPLACE_OBJECTS": true, "GIT_TERMINAL_PROMPT": true, "GIT_PAGER": true, "GIT_SHALLOW_FILE": true, "GIT_GRAFT_FILE": true, "GIT_REPLACE_REF_BASE": true, "LC_ALL": true}
 	env := make([]string, 0, len(base)+6)
 	for _, e := range base {
 		name, _, _ := strings.Cut(e, "=")
