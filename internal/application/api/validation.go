@@ -284,6 +284,9 @@ func validateSession(d SessionSnapshotData) error {
 	if a, ok := d.AcquiredCwd.Value(); ok && a.data.Observation.data.Worktree.data.ID != d.WorktreeID {
 		return invalid("acquired cwd")
 	}
+	if a, p := d.AcquiredCwd.Value(); p && !sameCwdSubject(a.data.Observation, d.Display.data.Cwd) {
+		return invalid("snapshot acquired cwd specification")
+	}
 	for _, r := range d.Cleanup.data.Residuals {
 		if id, p := r.data.SessionID.Value(); p && id != d.SessionID {
 			return invalid("session residual identity")
@@ -360,7 +363,16 @@ func endpointRepository(v PullRequestEndpoint) (domain.RepositoryID, bool) {
 	case AvailableEndpoint:
 		return e.data.Repository.data.ID, true
 	case UnavailableEndpoint:
-		return e.data.KnownRepository.Value()
+		if r, p := e.data.KnownRepository.Value(); p {
+			return r, true
+		}
+		if b, p := e.data.KnownBranch.Value(); p {
+			return b.Repository(), true
+		}
+		if r, p := e.data.KnownRevision.Value(); p {
+			return r.Repository(), true
+		}
+		return domain.RepositoryID{}, false
 	}
 	return domain.RepositoryID{}, false
 }

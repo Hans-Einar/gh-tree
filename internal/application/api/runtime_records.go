@@ -657,6 +657,9 @@ func (d SessionStartResultData) validate() error {
 	if err := validateSessionStartResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentSessionStartResult(d); err != nil {
+		return err
+	}
 	if d.Established {
 		if s, p := d.Session.Value(); !p || !s.data.AcquiredCwd.Present() || s.data.Phase == Starting {
 			return invalid("established session identity/cwd barrier")
@@ -850,6 +853,9 @@ func (d SessionRestartResultData) validate() error {
 		}
 	}
 	if err := validateSessionRestartResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentSessionRestartResult(d); err != nil {
 		return err
 	}
 	if r, ok := d.Replacement.Value(); ok {

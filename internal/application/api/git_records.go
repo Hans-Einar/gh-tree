@@ -720,6 +720,9 @@ func (d StatusFactsData) validate() error {
 	if !d.Observation.Valid() {
 		return invalid("d.Observation")
 	}
+	if err := consistentStatusFacts(d); err != nil {
+		return err
+	}
 	if d.Worktree.data.ID.Repository() != d.Observation.data.Repository {
 		return invalid("status scope")
 	}
@@ -1273,7 +1276,9 @@ func (d RefFactData) validate() error {
 	if !d.Observation.Valid() {
 		return invalid("d.Observation")
 	}
-
+	if err := consistentRefFact(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2285,7 +2290,9 @@ func (d ResolveLocalResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentResolveLocalResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2370,7 +2377,9 @@ func (d ListWorktreesResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentListWorktreesResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2452,7 +2461,9 @@ func (d ObserveStatusResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentObserveStatusResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2552,7 +2563,9 @@ func (d ResolveExactResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentResolveExactResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2651,7 +2664,9 @@ func (d ListRefsResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentListRefsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2744,7 +2759,9 @@ func (d ListStashesResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentListStashesResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2844,6 +2861,9 @@ func (d ReadCommitsResultData) validate() error {
 	}
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
+	}
+	if err := gitPageCount(d.Page, d.Observation, len(d.Commits)); err != nil {
+		return err
 	}
 	return validateReadCommitsResult(d)
 }
@@ -2966,7 +2986,9 @@ func (d ReadGraphResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentReadGraphResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3157,7 +3179,9 @@ func (d ReadDiffResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentReadDiffResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3270,7 +3294,9 @@ func (d ReadStashPatchResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentReadStashPatchResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4265,6 +4291,15 @@ type MutationPlanSummaryData struct {
 	RequiredCapabilities []GitCapabilityFact
 	OriginVersion        Optional[SourceVersion]
 	OwnStepVersions      []FacetVersion
+	Destination          Optional[string]
+	StashIntent          Optional[StashIntent]
+	StageAction          Optional[StageAction]
+	CommitIndexPolicy    Optional[CommitIndexPolicy]
+	Message              Optional[string]
+	CreateMode           Optional[CreateMode]
+	RetargetMode         Optional[RetargetMode]
+	Branch               Optional[domain.BranchID]
+	PushBinding          Optional[RemoteBinding]
 }
 
 func NewMutationPlanSummary(d MutationPlanSummaryData) (MutationPlanSummary, error) {
@@ -4355,6 +4390,46 @@ func (d MutationPlanSummaryData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+
+	if item, ok := d.StashIntent.Value(); ok {
+		if !validStashIntent(item) {
+			return invalid("item")
+		}
+	}
+	if item, ok := d.StageAction.Value(); ok {
+		if !item.Valid() {
+			return invalid("item")
+		}
+	}
+	if item, ok := d.CommitIndexPolicy.Value(); ok {
+		if !item.Valid() {
+			return invalid("item")
+		}
+	}
+
+	if item, ok := d.CreateMode.Value(); ok {
+		if !validCreateMode(item) {
+			return invalid("item")
+		}
+	}
+	if item, ok := d.RetargetMode.Value(); ok {
+		if !validRetargetMode(item) {
+			return invalid("item")
+		}
+	}
+	if item, ok := d.Branch.Value(); ok {
+		if !item.Valid() {
+			return invalid("item")
+		}
+	}
+	if item, ok := d.PushBinding.Value(); ok {
+		if !item.Valid() {
+			return invalid("item")
+		}
+	}
+	if err := consistentMutationPlanSummary(d); err != nil {
+		return err
 	}
 	if d.Repository != d.Expected.data.Repository || len(d.Choices) == 0 {
 		return invalid("plan summary")
@@ -4629,7 +4704,9 @@ func (d WorktreeCreatedData) validate() error {
 	if !d.Target.Valid() {
 		return invalid("d.Target")
 	}
-
+	if err := consistentWorktreeCreated(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4669,7 +4746,9 @@ func (d WorktreeRetargetedData) validate() error {
 	if !d.Target.Valid() {
 		return invalid("d.Target")
 	}
-
+	if err := consistentWorktreeRetargeted(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4705,7 +4784,9 @@ func (d IndexChangedData) validate() error {
 	if !d.Action.Valid() {
 		return invalid("d.Action")
 	}
-
+	if err := consistentIndexChanged(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4752,6 +4833,9 @@ func (d CommitCreatedData) validate() error {
 	}
 	if !d.Candidate.Valid() {
 		return invalid("d.Candidate")
+	}
+	if err := consistentCommitCreated(d); err != nil {
+		return err
 	}
 	r, ok := d.Head.Revision()
 	if !ok || r != d.Revision {
@@ -4801,7 +4885,9 @@ func (d TrackedRestoredData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentTrackedRestored(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4841,7 +4927,9 @@ func (d StashCreatedData) validate() error {
 	if !d.Cleanup.Valid() {
 		return invalid("d.Cleanup")
 	}
-
+	if err := consistentStashCreated(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4893,7 +4981,9 @@ func (d StashCreatedCleanupRefusedData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentStashCreatedCleanupRefused(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4932,6 +5022,9 @@ func (d StashAppliedData) validate() error {
 		return invalid("d.Status")
 	}
 
+	if err := consistentStashApplied(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4989,7 +5082,9 @@ func (d AppliedWithConflictsData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentAppliedWithConflicts(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5039,7 +5134,9 @@ func (d StashDroppedData) validate() error {
 	if !d.RefCleanup.Valid() {
 		return invalid("d.RefCleanup")
 	}
-
+	if err := consistentStashDropped(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5080,6 +5177,9 @@ func (d BranchCreatedData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+	if err := consistentBranchCreated(d); err != nil {
+		return err
 	}
 	if d.Branch.Kind() != domain.Local || d.Branch.Repository() != d.Revision.Repository() {
 		return invalid("branch result")
@@ -5143,7 +5243,9 @@ func (d PushedData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentPushed(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5247,7 +5349,9 @@ func (d GitPostFactsData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentGitPostFacts(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5432,6 +5536,9 @@ func (d GitMutationResultData) validate() error {
 	if err := validateGitMutationResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentGitMutationResult(d); err != nil {
+		return err
+	}
 	return validateGitMutation(d)
 }
 
@@ -5605,6 +5712,9 @@ func (d FetchResultData) validate() error {
 	}
 
 	if err := validateFetchResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentFetchResult(d); err != nil {
 		return err
 	}
 	return validateGitRecovery(d.Effects, d.Recovery)

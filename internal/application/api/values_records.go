@@ -1422,6 +1422,9 @@ func (d RecoveryRecordData) validate() error {
 		}
 	}
 
+	if err := consistentRecoveryRecord(d); err != nil {
+		return err
+	}
 	if !nonempty(d.Locator) || !textValue(d.NextAction) {
 		return invalid("recovery locator/action")
 	}

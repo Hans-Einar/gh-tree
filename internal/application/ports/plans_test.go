@@ -27,7 +27,15 @@ func fixtureExpected() api.GitExpectedState {
 }
 func spec(kind api.GitMutationKind, token string) ports.PlanSpec {
 	expected := fixtureExpected()
-	summary := must(api.NewMutationPlanSummary(api.MutationPlanSummaryData{OperationID: op(1), Kind: kind, PlanVersion: version(token), Repository: expected.Data().Repository, Expected: expected, Choices: []api.Choice{api.Proceed, api.Cancel}, ConfirmationRequired: true}))
+	d := api.MutationPlanSummaryData{OperationID: op(1), Kind: kind, PlanVersion: version(token), Repository: expected.Data().Repository, Expected: expected, Worktree: expected.Data().Worktree, Head: expected.Data().Head, Choices: []api.Choice{api.Proceed, api.Cancel}, ConfirmationRequired: true}
+	if kind == api.StageMutation {
+		d.StageAction = api.Some(api.Stage)
+	}
+	if kind == api.CommitMutation {
+		d.Message = api.Some("literal commit")
+		d.CommitIndexPolicy = api.Some(api.ExistingIndex)
+	}
+	summary := must(api.NewMutationPlanSummary(d))
 	return ports.PlanSpec{Operation: op(1), Version: version(token), Token: token, Group: "group", Role: ports.Executable, Summary: summary, SummaryDigest: [32]byte{1}}
 }
 
@@ -87,6 +95,9 @@ func TestContinuationGroupStepAndReceipt(t *testing.T) {
 	issuer := must(ports.NewPlanIssuer("git"))
 	rootSpec := spec(api.CommitMutation, "root")
 	rootSpec.Role = ports.SequenceRoot
+	rootSummary := rootSpec.Summary.Data()
+	rootSummary.CommitIndexPolicy = api.Some(api.ObservedStageAll)
+	rootSpec.Summary = must(api.NewMutationPlanSummary(rootSummary))
 	root := must(issuer.IssueCommit(rootSpec))
 	approver := must(ports.NewApprovalIssuer("app"))
 	approval := must(approver.Issue(root, rootSpec.SummaryDigest, api.Proceed, api.Some(must(api.NewConfirmationID("confirmation")))))

@@ -1138,12 +1138,18 @@ func validateActivateWorktreeResultEvidence(d ActivateWorktreeResultData) error 
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateCommitResultEvidence(d CommitResultData) error {
 	e := newEvidenceSet()
 	e.collectCommitResult(CommitResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1154,12 +1160,18 @@ func validateCreateBranchResultEvidence(d CreateBranchResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateCreatePullRequestResultEvidence(d CreatePullRequestResultData) error {
 	e := newEvidenceSet()
 	e.collectCreatePullRequestResult(CreatePullRequestResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Effects); err != nil {
 		return err
 	}
 	return e.recordUnion(d.Recovery)
@@ -1170,12 +1182,18 @@ func validateCreateWorktreeResultEvidence(d CreateWorktreeResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateDeployResultEvidence(d DeployResultData) error {
 	e := newEvidenceSet()
 	e.collectDeployResult(DeployResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1186,12 +1204,18 @@ func validateFetchResultEvidence(d FetchResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Effects); err != nil {
+		return err
+	}
 	return e.recordUnion(d.Recovery)
 }
 func validateGitMutationResultEvidence(d GitMutationResultData) error {
 	e := newEvidenceSet()
 	e.collectGitMutationResult(GitMutationResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Effects); err != nil {
 		return err
 	}
 	return e.recordUnion(d.Recovery)
@@ -1202,12 +1226,18 @@ func validateGitPreparationResultEvidence(d GitPreparationResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Effects); err != nil {
+		return err
+	}
 	return e.recordUnion(d.Recovery)
 }
 func validateInterruptSessionResultEvidence(d InterruptSessionResultData) error {
 	e := newEvidenceSet()
 	e.collectInterruptSessionResult(InterruptSessionResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1218,12 +1248,18 @@ func validateOpenTerminalResultEvidence(d OpenTerminalResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateOperationTerminalEvidence(d OperationTerminalData) error {
 	e := newEvidenceSet()
 	e.collectOperationTerminal(OperationTerminal{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Recovery)
@@ -1234,12 +1270,18 @@ func validatePullResultEvidence(d PullResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validatePushResultEvidence(d PushResultData) error {
 	e := newEvidenceSet()
 	e.collectPushResult(PushResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1250,12 +1292,18 @@ func validateReconcileResultEvidence(d ReconcileResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Effects); err != nil {
+		return err
+	}
 	return e.recordUnion(d.Recovery)
 }
 func validateResizeSessionResultEvidence(d ResizeSessionResultData) error {
 	e := newEvidenceSet()
 	e.collectResizeSessionResult(ResizeSessionResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1266,6 +1314,9 @@ func validateRestartSessionResultEvidence(d RestartSessionResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateRestoreTrackedResultEvidence(d RestoreTrackedResultData) error {
@@ -1274,12 +1325,18 @@ func validateRestoreTrackedResultEvidence(d RestoreTrackedResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateRetargetWorktreeResultEvidence(d RetargetWorktreeResultData) error {
 	e := newEvidenceSet()
 	e.collectRetargetWorktreeResult(RetargetWorktreeResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1298,12 +1355,18 @@ func validateSaveLaunchResultEvidence(d SaveLaunchResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateSaveNavigationResultEvidence(d SaveNavigationResultData) error {
 	e := newEvidenceSet()
 	e.collectSaveNavigationResult(SaveNavigationResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1322,12 +1385,18 @@ func validateSessionStartResultEvidence(d SessionStartResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Effects); err != nil {
+		return err
+	}
 	return nil
 }
 func validateSessionStopResultEvidence(d SessionStopResultData) error {
 	e := newEvidenceSet()
 	e.collectSessionStopResult(SessionStopResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Effects); err != nil {
 		return err
 	}
 	return nil
@@ -1346,12 +1415,18 @@ func validateStageAllAndCommitResultEvidence(d StageAllAndCommitResultData) erro
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateStageAllResultEvidence(d StageAllResultData) error {
 	e := newEvidenceSet()
 	e.collectStageAllResult(StageAllResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1362,12 +1437,18 @@ func validateStagePathsResultEvidence(d StagePathsResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateStartLaunchResultEvidence(d StartLaunchResultData) error {
 	e := newEvidenceSet()
 	e.collectStartLaunchResult(StartLaunchResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1378,12 +1459,18 @@ func validateStashApplyResultEvidence(d StashApplyResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateStashCreateResultEvidence(d StashCreateResultData) error {
 	e := newEvidenceSet()
 	e.collectStashCreateResult(StashCreateResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
@@ -1394,12 +1481,18 @@ func validateStashDropResultEvidence(d StashDropResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateStashPopResultEvidence(d StashPopResultData) error {
 	e := newEvidenceSet()
 	e.collectStashPopResult(StashPopResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Envelope.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Envelope.data.Recovery)
@@ -1410,12 +1503,18 @@ func validateStopSessionResultEvidence(d StopSessionResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateStorageCommitResultEvidence(d StorageCommitResultData) error {
 	e := newEvidenceSet()
 	e.collectStorageCommitResult(StorageCommitResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Effects); err != nil {
 		return err
 	}
 	return nil
@@ -1426,12 +1525,18 @@ func validateUnstagePathsResultEvidence(d UnstagePathsResultData) error {
 	if err := e.validate(); err != nil {
 		return err
 	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
+		return err
+	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)
 }
 func validateWriteInputResultEvidence(d WriteInputResultData) error {
 	e := newEvidenceSet()
 	e.collectWriteInputResult(WriteInputResult{data: d})
 	if err := e.validate(); err != nil {
+		return err
+	}
+	if err := e.requireEffects(d.Outcome.data.Effects); err != nil {
 		return err
 	}
 	return e.normalizedUnion(d.Outcome.data.Recovery)

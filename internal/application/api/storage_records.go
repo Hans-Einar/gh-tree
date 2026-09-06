@@ -721,6 +721,13 @@ func (d StorageLoadObservationData) validate() error {
 			return invalid("item")
 		}
 	}
+	versions := []StorageVersion{}
+	if v, p := d.Version.Value(); p {
+		versions = append(versions, v)
+	}
+	if err := storageAssociations(versions, d.Recovery); err != nil {
+		return err
+	}
 	if (d.State == LoadAbsent || d.State == ValidLegacy || d.State == ValidCurrent) && !d.Version.Present() {
 		return invalid("usable load requires version")
 	}

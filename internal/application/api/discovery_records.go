@@ -446,6 +446,9 @@ func (d SavedLaunchData) validate() error {
 	if !d.SourceExpectation.Valid() {
 		return invalid("d.SourceExpectation")
 	}
+	if err := consistentSavedLaunch(d); err != nil {
+		return err
+	}
 	if !nonempty(d.Alias) || d.StorageVersion.Family() != RunConfig {
 		return invalid("saved selection")
 	}
@@ -505,6 +508,9 @@ func (d SavedLaunchObservationData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+	if err := consistentSavedLaunchObservation(d); err != nil {
+		return err
 	}
 	if !nonempty(d.Alias) || d.StorageVersion.Family() != RunConfig {
 		return invalid("saved observation")
@@ -572,6 +578,9 @@ func (d ResolvedLaunchDefinitionData) validate() error {
 			return invalid("item")
 		}
 	}
+	if err := consistentResolvedLaunchDefinition(d); err != nil {
+		return err
+	}
 	if len(d.Selected) == 0 || !components(d.ProjectComponents) {
 		return invalid("resolved launch")
 	}
@@ -620,6 +629,9 @@ func (d DiscoveryRequestData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+	if err := consistentDiscoveryRequest(d); err != nil {
+		return err
 	}
 	if !validSavedBinding(d.Saved, d.SavedVersion) {
 		return invalid("saved load binding")
@@ -678,6 +690,9 @@ func (d DiscoveryResultData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+	if err := consistentDiscoveryResult(d); err != nil {
+		return err
 	}
 	if d.WorktreeID != d.Observation.data.WorktreeID {
 		return invalid("discovery observation scope")
@@ -738,6 +753,9 @@ func (d ResolveLaunchRequestData) validate() error {
 	if !d.Geometry.Valid() {
 		return invalid("d.Geometry")
 	}
+	if err := consistentResolveLaunchRequest(d); err != nil {
+		return err
+	}
 	if !validSavedBinding(d.Saved, d.SavedVersion) || !launchMatchesWorktree(d.Selection, d.Worktree.data.ID) {
 		return invalid("launch binding")
 	}
@@ -795,6 +813,9 @@ func (d ResolveLaunchResultData) validate() error {
 		if !item.Valid() {
 			return invalid("item")
 		}
+	}
+	if err := consistentResolveLaunchResult(d); err != nil {
+		return err
 	}
 	if d.Definition.Present() != d.Invocation.Present() {
 		return invalid("resolved invocation")

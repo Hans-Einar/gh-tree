@@ -819,6 +819,9 @@ func (d CreateWorktreeCommandData) validate() error {
 	if !validCreateMode(d.Mode) {
 		return invalid("d.Mode")
 	}
+	if err := consistentCreateWorktreeCommand(d); err != nil {
+		return err
+	}
 	if !nonempty(d.Destination) {
 		return invalid("create path")
 	}
@@ -865,6 +868,9 @@ func (d RetargetWorktreeCommandData) validate() error {
 	if !d.Expected.Valid() {
 		return invalid("d.Expected")
 	}
+	if err := consistentRetargetWorktreeCommand(d); err != nil {
+		return err
+	}
 	if !expectedWorktree(d.Expected, d.WorktreeID, true) || !retargetModeScope(d.Mode, d.WorktreeID.Repository(), None[domain.Revision]()) {
 		return invalid("retarget expected")
 	}
@@ -907,7 +913,9 @@ func (d DeployCommandData) validate() error {
 	if !validRetargetMode(d.Mode) {
 		return invalid("d.Mode")
 	}
-
+	if err := consistentDeployCommand(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -952,6 +960,9 @@ func (d CreateBranchCommandData) validate() error {
 
 	if !d.Expected.Valid() {
 		return invalid("d.Expected")
+	}
+	if err := consistentCreateBranchCommand(d); err != nil {
+		return err
 	}
 	if !expectedWorktree(d.Expected, d.WorktreeID, false) || d.Name.Repository() != d.WorktreeID.Repository() || d.Start.Repository() != d.WorktreeID.Repository() {
 		return invalid("branch command scope")
@@ -1045,6 +1056,9 @@ func (d PullCommandData) validate() error {
 	if !d.Upstream.Valid() {
 		return invalid("d.Upstream")
 	}
+	if err := consistentPullCommand(d); err != nil {
+		return err
+	}
 	if !d.Head.MatchesWorktree(d.WorktreeID) || !expectedWorktree(d.Expected, d.WorktreeID, true) {
 		return invalid("pull scope")
 	}
@@ -1100,6 +1114,9 @@ func (d PushCommandData) validate() error {
 	}
 	if !d.Expected.Valid() {
 		return invalid("d.Expected")
+	}
+	if err := consistentPushCommand(d); err != nil {
+		return err
 	}
 	if !expectedWorktree(d.Expected, d.WorktreeID, false) || d.Source.Repository() != d.WorktreeID.Repository() || d.Binding.data.LocalRepository != d.WorktreeID.Repository() || d.Destination.Repository() != d.Binding.data.RemoteRepository {
 		return invalid("push scope")
@@ -1628,6 +1645,9 @@ func (d SaveLaunchCommandData) validate() error {
 			return invalid("item")
 		}
 	}
+	if err := consistentSaveLaunchCommand(d); err != nil {
+		return err
+	}
 	if !launchMatchesWorktree(d.Selection, d.WorktreeID) || !nonempty(d.Alias) || d.ExpectedStorage.Family() != RunConfig {
 		return invalid("save launch")
 	}
@@ -1672,6 +1692,9 @@ func (d StartLaunchCommandData) validate() error {
 	}
 	if !d.Geometry.Valid() {
 		return invalid("d.Geometry")
+	}
+	if err := consistentStartLaunchCommand(d); err != nil {
+		return err
 	}
 	if s, ok := d.Selection.(SelectedLaunch); ok && !launchMatchesWorktree(s.data.Selection, d.WorktreeID) {
 		return invalid("start launch scope")
@@ -2015,7 +2038,9 @@ func (d StashPopCompletedData) validate() error {
 	if !d.Drop.Valid() {
 		return invalid("d.Drop")
 	}
-
+	if err := consistentStashPopCompleted(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2061,7 +2086,9 @@ func (d AppliedStashRetainedData) validate() error {
 	if !d.Reason.Valid() {
 		return invalid("d.Reason")
 	}
-
+	if err := consistentAppliedStashRetained(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2097,7 +2124,9 @@ func (d StashPopNotAppliedData) validate() error {
 	if !d.Apply.Valid() {
 		return invalid("d.Apply")
 	}
-
+	if err := consistentStashPopNotApplied(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2138,6 +2167,9 @@ func (d ActivateWorktreeResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateActivateWorktreeResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentActivateWorktreeResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2186,6 +2218,9 @@ func (d SaveNavigationResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateSaveNavigationResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentSaveNavigationResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2244,6 +2279,9 @@ func (d CreateWorktreeResultData) validate() error {
 	if err := validateCreateWorktreeResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentCreateWorktreeResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2292,6 +2330,9 @@ func (d RetargetWorktreeResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateRetargetWorktreeResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentRetargetWorktreeResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2356,6 +2397,9 @@ func (d DeployResultData) validate() error {
 	if err := validateDeployResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentDeployResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2404,6 +2448,9 @@ func (d CreateBranchResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateCreateBranchResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentCreateBranchResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2458,6 +2505,9 @@ func (d PullResultData) validate() error {
 	if err := validatePullResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentPullResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2504,6 +2554,9 @@ func (d PushResultData) validate() error {
 	if err := validatePushResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentPushResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2546,6 +2599,9 @@ func (d StagePathsResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateStagePathsResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentStagePathsResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2592,6 +2648,9 @@ func (d UnstagePathsResultData) validate() error {
 	if err := validateUnstagePathsResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentUnstagePathsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2634,6 +2693,9 @@ func (d StageAllResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateStageAllResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentStageAllResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2684,6 +2746,9 @@ func (d CommitResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateCommitResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentCommitResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2744,6 +2809,9 @@ func (d StageAllAndCommitResultData) validate() error {
 	if err := validateStageAllAndCommitResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentStageAllAndCommitResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2786,6 +2854,9 @@ func (d RestoreTrackedResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateRestoreTrackedResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentRestoreTrackedResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2832,6 +2903,9 @@ func (d StashCreateResultData) validate() error {
 	if err := validateStashCreateResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentStashCreateResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2874,6 +2948,9 @@ func (d StashApplyResultData) validate() error {
 	if err := validateStashApplyResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentStashApplyResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -2910,6 +2987,9 @@ func (d StashPopResultData) validate() error {
 		return invalid("d.Envelope")
 	}
 	if err := validateStashPopResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentStashPopResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -2952,6 +3032,9 @@ func (d StashDropResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateStashDropResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentStashDropResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -3000,6 +3083,9 @@ func (d SaveLaunchResultData) validate() error {
 	if err := validateSaveLaunchResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentSaveLaunchResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3036,6 +3122,9 @@ func (d StartLaunchResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateStartLaunchResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentStartLaunchResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -3076,6 +3165,9 @@ func (d OpenTerminalResultData) validate() error {
 	if err := validateOpenTerminalResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentOpenTerminalResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3112,6 +3204,9 @@ func (d WriteInputResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateWriteInputResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentWriteInputResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -3152,6 +3247,9 @@ func (d ResizeSessionResultData) validate() error {
 	if err := validateResizeSessionResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentResizeSessionResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3188,6 +3286,9 @@ func (d InterruptSessionResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateInterruptSessionResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentInterruptSessionResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -3228,6 +3329,9 @@ func (d StopSessionResultData) validate() error {
 	if err := validateStopSessionResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentStopSessionResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -3264,6 +3368,9 @@ func (d RestartSessionResultData) validate() error {
 		return invalid("d.Outcome")
 	}
 	if err := validateRestartSessionResultEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentRestartSessionResult(d); err != nil {
 		return err
 	}
 	return nil
@@ -4087,7 +4194,9 @@ func (d NavigatorResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentNavigatorResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4156,7 +4265,9 @@ func (d BranchContextResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentBranchContextResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4226,7 +4337,9 @@ func (d CommitsResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentCommitsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4311,7 +4424,9 @@ func (d GraphResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentGraphResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4363,7 +4478,9 @@ func (d DiffResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentDiffResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4443,7 +4560,9 @@ func (d PullRequestDiffResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentPullRequestDiffResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4495,7 +4614,9 @@ func (d WorktreeStatusResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentWorktreeStatusResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4552,7 +4673,9 @@ func (d StashesResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentStashesResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4617,7 +4740,9 @@ func (d StashPatchResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentStashPatchResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4693,7 +4818,9 @@ func (d LaunchPointsResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentLaunchPointsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4739,7 +4866,9 @@ func (d SessionsResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentSessionsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4785,7 +4914,9 @@ func (d SessionOutputProjectionData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentSessionOutputProjection(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -4835,7 +4966,9 @@ func (d PreferencesResultData) validate() error {
 			return invalid("item")
 		}
 	}
-
+	if err := consistentPreferencesResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5081,6 +5214,9 @@ func (d OperationTerminalData) validate() error {
 	}
 
 	if err := validateOperationTerminalEvidence(d); err != nil {
+		return err
+	}
+	if err := consistentOperationTerminal(d); err != nil {
 		return err
 	}
 	if d.Disposition == Succeeded && !d.Result.Present() {

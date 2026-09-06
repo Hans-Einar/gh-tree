@@ -143,8 +143,13 @@ func ValidateTerminalFor(request Request, terminal OperationTerminal) error {
 	if request.Correlation().data != terminal.data.Correlation.data {
 		return invalid("terminal correlation")
 	}
-	if r, p := terminal.data.Result.Value(); p && !request.AcceptsResult(r) {
-		return invalid("terminal result family")
+	if r, p := terminal.data.Result.Value(); p {
+		if !request.AcceptsResult(r) {
+			return invalid("terminal result family")
+		}
+		if err := requestResultSubject(request, r); err != nil {
+			return err
+		}
 	}
 	return nil
 }

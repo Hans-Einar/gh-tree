@@ -85,3 +85,24 @@ race run, full test/vet/build, and M1's architecture checker across all twelve
 target selections. Closed-family negatives cover every union; external fakes
 compile all five Client and all 48 port methods. These are M2 leaf checks, not
 completed Slices, native adapter evidence, or a release claim.
+
+The M259 correction checks relationships across individually valid values:
+request/result worktree and exact-target identity; Git read envelopes and successful
+postconditions; complete operation-specific plan intent; compound operation/step
+identity; full Storage run/root/store binding; Runtime admission and original
+restart specification; and every independently known PR endpoint/qualified URL.
+Unavailable/partial observations remain representable and retain their facts.
+
+MutationPlanSummary now includes the supplied operation-specific destination,
+create/retarget mode, stage action, commit message/index policy, closed stash
+intent, branch and push binding where applicable. Validity requires the relevant
+material intent and its consistent Expected identities. These fields describe the
+frozen plan; they neither prepare native state nor grant approval.
+
+MergeEffectReports forms an ordered union of complete facet facts. Aggregates must
+retain every distinct child fact, including observations and recovery identities.
+It never ranks states or reduces a facet to a last writer: an earlier applied
+index and a later unstarted commit-index step can coexist, while typed children
+retain their exact operation/subject/step provenance. Thus a terminal cannot erase
+an applied child or replace it with NotStarted/Partial/Indeterminate. Identical
+facts may coalesce; differing factual states/stages remain visible.

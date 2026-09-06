@@ -207,6 +207,9 @@ func validateRecoveryReferences(e EffectReport, r []RecoveryRecord) error {
 	return nil
 }
 func validateStorageRecovery(d StorageRecoveryData) error {
+	if err := validateStorageRecoveryBindings(d); err != nil {
+		return err
+	}
 	r := d.Record.data
 	s := r.Subject.data
 	if r.Layer != LayerPersistence || r.Locator != d.Locator {
@@ -242,6 +245,15 @@ func validateStorageRecoveryList(v []StorageRecovery) error {
 	return nil
 }
 func validateStorageCommit(d StorageCommitResultData) error {
+	versions := []StorageVersion{}
+	for _, o := range []Optional[StorageVersion]{d.ProposedVersion, d.CurrentVersion} {
+		if v, p := o.Value(); p {
+			versions = append(versions, v)
+		}
+	}
+	if err := storageAssociations(versions, d.Recovery); err != nil {
+		return err
+	}
 	if err := validateStorageRecoveryList(d.Recovery); err != nil {
 		return err
 	}

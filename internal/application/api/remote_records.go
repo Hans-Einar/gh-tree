@@ -450,6 +450,9 @@ func (d PullRequestFactData) validate() error {
 			return invalid("item")
 		}
 	}
+	if err := consistentPullRequestFact(d); err != nil {
+		return err
+	}
 	if d.ID.Repository() != d.Observation.data.Repository || d.Body.Presence() == FieldNull || (d.State == PRUnknown && len(d.Diagnostics) == 0) {
 		return invalid("PR fact")
 	}
@@ -784,7 +787,9 @@ func (d ListBranchesResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentListBranchesResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -884,7 +889,9 @@ func (d ListPullRequestsResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentListPullRequestsResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -987,7 +994,9 @@ func (d ObservePullRequestResultData) validate() error {
 	if !d.Transport.Valid() {
 		return invalid("d.Transport")
 	}
-
+	if err := consistentObservePullRequestResult(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -1277,7 +1286,9 @@ func (d CreatedWithDriftData) validate() error {
 	if !d.Reason.Valid() {
 		return invalid("d.Reason")
 	}
-
+	if err := consistentCreatedWithDrift(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -1319,7 +1330,9 @@ func (d CreationIndeterminateData) validate() error {
 	if !d.Reason.Valid() {
 		return invalid("d.Reason")
 	}
-
+	if err := consistentCreationIndeterminate(d); err != nil {
+		return err
+	}
 	return nil
 }
 

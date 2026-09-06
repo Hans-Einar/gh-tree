@@ -154,7 +154,14 @@ func loadMatchesScope(o api.StorageLoadObservation, s api.WorktreeScope) bool {
 		return false
 	}
 	if v, p := o.Data().Version.Value(); p {
-		return v.MatchesRunScope(s)
+		if !v.MatchesRunScope(s) {
+			return false
+		}
+	}
+	for _, r := range o.Data().Recovery {
+		if !api.StorageRecoveryMatchesScope(r, s) {
+			return false
+		}
 	}
 	return true
 }

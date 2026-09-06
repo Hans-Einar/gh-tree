@@ -42,3 +42,11 @@ Contextless ReleasePlan/AckEvents, the Prepare triple returns, exact specific pl
 types, Runtime direct SessionID calls and aggregate Shutdown result are retained.
 External conformance fakes prove all signatures compile. They intentionally
 implement no behavior and do not constitute workflow or native acceptance.
+
+M259 corrections require complete operation-specific summaries before issuance,
+match sequence-root roles to declared compound intent, and retain the original
+subject/target in derived summaries. Executed receipts bind every supplied result
+subject as well as operation/kind/version. Storage loads validate all represented
+versions and retained recovery records, including documentless failures. These
+checks reject explicit contradictions; native registry and publication proof
+remain the implementing adapter's duty.

@@ -173,6 +173,11 @@ func (v StorageVersion) ByteLength() uint64          { return v.length }
 func (v StorageVersion) SHA256() [32]byte            { return v.digest }
 func (v StorageVersion) Equal(w StorageVersion) bool { return v == w }
 
+// SameBinding compares the complete supplied document subject, excluding bytes.
+func (v StorageVersion) SameBinding(w StorageVersion) bool {
+	return v.Valid() && w.Valid() && v.family == w.family && v.store == w.store && v.worktree == w.worktree && v.root == w.root
+}
+
 type DirectoryIdentity struct {
 	platform DirectoryPlatform
 	device   uint64

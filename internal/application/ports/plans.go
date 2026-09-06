@@ -78,6 +78,13 @@ func (i PlanIssuer) issue(kind api.GitMutationKind, s PlanSpec) (planIdentity, e
 		if v, ok := summary.OriginVersion.Value(); !ok || v != root.version {
 			return planIdentity{}, invalid("summary origin")
 		}
+		original := root.summary.Data()
+		if summary.Repository != original.Repository || summary.Worktree != original.Worktree {
+			return planIdentity{}, invalid("derived summary subject")
+		}
+		if kind == api.RetargetMutation && summary.Target != original.Target {
+			return planIdentity{}, invalid("derived summary target")
+		}
 		p.rootToken = root.token
 		p.rootVersion = root.version
 		p.rootKind = root.kind
@@ -86,8 +93,50 @@ func (i PlanIssuer) issue(kind api.GitMutationKind, s PlanSpec) (planIdentity, e
 		if s.Step != 0 || summary.OriginVersion.Present() {
 			return planIdentity{}, invalid("root step")
 		}
+		sequenceIntent := false
+		switch kind {
+		case api.CommitMutation:
+			p, ok := summary.CommitIndexPolicy.Value()
+			sequenceIntent = ok && p == api.ObservedStageAll
+		case api.StashMutation:
+			if intent, ok := summary.StashIntent.Value(); ok {
+				_, sequenceIntent = intent.(api.PopStashIntent)
+			}
+		case api.RetargetMutation:
+			for _, c := range summary.Choices {
+				sequenceIntent = sequenceIntent || c == api.StashThenDeploy
+			}
+		}
+		if sequenceIntent != (s.Role == SequenceRoot) {
+			return planIdentity{}, invalid("plan role must match sequence intent")
+		}
 		if s.Role == SequenceRoot && kind != api.RetargetMutation && kind != api.StashMutation && kind != api.CommitMutation {
 			return planIdentity{}, invalid("sequence root kind")
+		}
+		if s.Role == SequenceRoot {
+			switch kind {
+			case api.CommitMutation:
+				policy, p := summary.CommitIndexPolicy.Value()
+				if !p || policy != api.ObservedStageAll {
+					return planIdentity{}, invalid("commit sequence intent")
+				}
+			case api.StashMutation:
+				intent, p := summary.StashIntent.Value()
+				if !p {
+					return planIdentity{}, invalid("stash sequence intent")
+				}
+				if _, p := intent.(api.PopStashIntent); !p {
+					return planIdentity{}, invalid("stash sequence requires pop")
+				}
+			case api.RetargetMutation:
+				allowed := false
+				for _, c := range summary.Choices {
+					allowed = allowed || c == api.StashThenDeploy
+				}
+				if !allowed {
+					return planIdentity{}, invalid("retarget sequence choice")
+				}
+			}
 		}
 	}
 	return p, nil
@@ -293,6 +342,18 @@ func NewExecutedGitMutation(facts api.GitMutationResult, receipt api.Optional[Gi
 		f := facts.Data()
 		if !r.Valid() || r.plan.operation != f.Operation || r.plan.kind != f.Kind || r.plan.version != f.PlanVersion {
 			return ExecutedGitMutation{}, invalid("execution receipt binding")
+		}
+		repo, worktree := facts.Subject()
+		summary := r.plan.summary.Data()
+		if repo.Valid() && repo != summary.Repository {
+			return ExecutedGitMutation{}, invalid("receipt result repository")
+		}
+		if r.plan.kind != api.CreateMutation {
+			if actual, p := worktree.Value(); p {
+				if expected, p := summary.Worktree.Value(); p && actual != expected {
+					return ExecutedGitMutation{}, invalid("receipt result worktree")
+				}
+			}
 		}
 		if r.cancellationRequested != f.CancellationRequested {
 			return ExecutedGitMutation{}, invalid("receipt cancellation fact")
