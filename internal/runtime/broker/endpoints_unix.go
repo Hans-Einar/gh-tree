@@ -20,11 +20,7 @@ func inheritedPipe(fd int, write bool) (*os.File, error) {
 	if err != nil {
 		return nil, err
 	}
-	want := unix.O_RDONLY
-	if write {
-		want = unix.O_WRONLY
-	}
-	if flags&unix.O_ACCMODE != want {
+	if !validNativePipeAccess(fd, flags, write) {
 		return nil, ErrProtocol
 	}
 	// Inherited pipe descriptors require nonblocking setup before os.NewFile

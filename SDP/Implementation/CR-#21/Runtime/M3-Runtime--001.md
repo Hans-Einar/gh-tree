@@ -140,8 +140,6 @@ gate remains FAIL. The complete twelve Sessions methods, native Unix supervisor/
 helpers, Windows startup/debug/Jobs/ConPTY/extraction, native platforms and final
 independent review/integration still remain in full scope.
 
-## Next permitted work
-
 ## Checkpoint 3: acquired-group native helpers and census
 
 Checkpoint2 is committed/pushed `46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864`.
@@ -195,6 +193,42 @@ PASS. macOS/FreeBSD native behavior, full supervision/Fchdir/PTY/root-exit lifec
 escape/helper failure residual handling and all twelve Sessions methods remain
 uncompleted. Expected helper prerequisite failure remains; no native acceptance
 or completed Runtime/Slice claim.
+
+## Native FreeBSD correction after checkpoint 3
+
+Exact source da295696 CI run34067206261 is FAILURE: target inventory correctly
+fails missing helper inputs, and actual Native FreeBSD job101577954465 separately
+fails TestNativeAcquiredSignalHelpers. Race detector and Windows amd64/ARM64,
+Ubuntu and macOS native suite jobs PASS. The cross-build/helper jobs skip behind
+inventory. This is not a passing acceptance run.
+
+Downloaded actual artifact `freebsd-native-da2956960cbae22d7e4735b6a20896cd018b1bf5-1`,
+artifact9999340169 (54,211 bytes), from
+[run34067206261](https://github.com/Hans-Einar/gh-tree/actions/runs/34067206261).
+Its tests.jsonl SHA256 is
+`BCA31839C91923C8EC691BA7A41222DEC0A6D68070C540CD4E45BCA69141D2D1`.
+Lines2207..2211 show FreeBSD UID/GID1001, passing foreign-SID refusal, then EOF
+before the first valid own-SID helper reaches Joined. The intentional infrastructure
+TestExpectedFailure is separate and is not the Runtime failure.
+
+Source-backed cause: FreeBSD15 kern_pipe initializes both anonymous endpoints
+FREAD|FWRITE. The original strict O_RDONLY/O_WRONLY gate incorrectly rejects that
+native duplex profile. The correction uses a platform-specific endpoint rule:
+FreeBSD requires O_RDWR and non-vnode pipe evidence (Fstatfs EINVAL); this refuses
+named and unlinked named FIFOs. Linux/Darwin retain their actual directional
+profile. Nonce, role, parent, own SID/group, setpgid-before-exec and Joined/Commit
+checks remain mandatory. Primary sources:
+[kern_pipe](https://github.com/freebsd/freebsd-src/blob/releng/15.0/sys/kern/sys_pipe.c)
+and [kern_fstatfs/getvnode_path](https://github.com/freebsd/freebsd-src/blob/releng/15.0/sys/kern/vfs_syscalls.c).
+
+Added native actual pipe flags/Fstatfs/poller tests on all Unix platforms and a
+FreeBSD named/unlinked FIFO negative. Corrected three FreeBSD cross-compiles and
+Linux native full broker tests as UID/GID65534 PASS locally; actual corrected
+FreeBSD CI remains pending, so the diagnosis is not yet a claimed native resolution.
+The local source also has separately unstaged Unix supervisor/tree work in
+progress (not executed by these tests and not part of this narrow fix commit).
+Final exact committed-source CI must confirm the correction. Downloaded evidence
+is retained under the existing local build directory, `freebsd-da29569/`.
 
 ## Next permitted work
 
