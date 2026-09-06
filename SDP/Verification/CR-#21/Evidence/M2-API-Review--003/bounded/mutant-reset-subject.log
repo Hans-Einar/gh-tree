@@ -1,0 +1,17 @@
+=== RUN   TestRCSubjectAccumulationAcrossAbsentRecords
+=== RUN   TestRCSubjectAccumulationAcrossAbsentRecords/revision
+    review_subject_accumulation_test.go:48: middle absent field erased earlier subject assertion
+=== RUN   TestRCSubjectAccumulationAcrossAbsentRecords/branch
+    review_subject_accumulation_test.go:48: middle absent field erased earlier subject assertion
+=== RUN   TestRCSubjectAccumulationAcrossAbsentRecords/stash
+    review_subject_accumulation_test.go:48: middle absent field erased earlier subject assertion
+=== RUN   TestRCSubjectAccumulationAcrossAbsentRecords/session
+    review_subject_accumulation_test.go:48: middle absent field erased earlier subject assertion
+--- FAIL: TestRCSubjectAccumulationAcrossAbsentRecords (0.00s)
+    --- FAIL: TestRCSubjectAccumulationAcrossAbsentRecords/revision (0.00s)
+    --- FAIL: TestRCSubjectAccumulationAcrossAbsentRecords/branch (0.00s)
+    --- FAIL: TestRCSubjectAccumulationAcrossAbsentRecords/stash (0.00s)
+    --- FAIL: TestRCSubjectAccumulationAcrossAbsentRecords/session (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.508s
+FAIL

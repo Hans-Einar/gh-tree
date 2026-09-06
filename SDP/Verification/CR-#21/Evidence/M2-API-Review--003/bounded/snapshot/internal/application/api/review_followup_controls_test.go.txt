@@ -1,0 +1,81 @@
+package api_test
+
+import (
+	. "github.com/Hans-Einar/gh-tree/internal/application/api"
+	"testing"
+)
+
+func TestRCStartEffectPositiveAndNegativeControls(t *testing.T) {
+	session := rsSnapshot(rsScope("a", 1), 1, Running)
+	cases := []struct {
+		name      string
+		states    []EffectState
+		wantError bool
+	}{
+		{"unasserted", nil, false},
+		{"applied", []EffectState{AppliedVerified}, false},
+		{"partial", []EffectState{EffectPartial}, false},
+		{"indeterminate", []EffectState{EffectIndeterminate}, false},
+		{"mixed-step-applied-and-notstarted", []EffectState{AppliedVerified, NotStarted}, false},
+		{"mixed-step-applied-and-nochange", []EffectState{VerifiedNoTargetChange, AppliedVerified}, false},
+		{"sole-notstarted", []EffectState{NotStarted}, true},
+		{"sole-nochange", []EffectState{VerifiedNoTargetChange}, true},
+		{"only-two-noeffect-assertions", []EffectState{VerifiedNoTargetChange, NotStarted}, true},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			facets := []FacetEffect{}
+			for _, state := range c.states {
+				facets = append(facets, rsMust(NewFacetEffect(FacetEffectData{Facet: RuntimeResources, State: state})))
+			}
+			effects := rsMust(NewEffectReport(EffectReportData{Facets: facets}))
+			value, e := NewSessionStartResult(SessionStartResultData{Session: Some(session), Established: true, Effects: effects})
+			if c.wantError {
+				if e == nil {
+					t.Fatal("explicit effect contradiction accepted")
+				}
+				return
+			}
+			if e != nil {
+				t.Fatal("valid independent/unasserted effect states refused", e)
+			}
+			got := value.Data().Effects.Data().Facets
+			if len(got) != len(facets) {
+				t.Fatal("effect facts erased")
+			}
+			for i, f := range got {
+				if f.Data().State != c.states[i] {
+					t.Fatal("effect state changed")
+				}
+			}
+		})
+	}
+}
+
+func TestRCStorageOptionalSubjectOrderAndRetention(t *testing.T) {
+	a := rsScope("a", 1)
+	v := rcVersion(a, "store", 1)
+	first := rsMust(rcRecovery(a, "store", "first", rcRV(v), None[RecoveryVersion]()))
+	secondData := rsMust(rcRecovery(a, "store", "second", rcRV(v), None[RecoveryVersion]())).Data()
+	record := secondData.Record.Data()
+	subject := record.Subject.Data()
+	subject.Repository = Some(a.Data().ID.Repository())
+	record.Subject = rsMust(NewRecoverySubject(subject))
+	secondData.Record = rsMust(NewRecoveryRecord(record))
+	second := rsMust(NewStorageRecovery(secondData))
+	for _, records := range [][]StorageRecovery{{first, second}, {second, first}} {
+		result, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: records})
+		if e != nil {
+			t.Fatal("compatible record assertion absence refused", e)
+		}
+		got := result.Data().Recovery
+		if len(got) != 2 {
+			t.Fatal("distinct artifact records merged")
+		}
+		for i, r := range got {
+			if r.Data().Record.Data().RecoveryID != records[i].Data().Record.Data().RecoveryID || r.Data().Record.Data().Subject.Data().Repository.Present() != records[i].Data().Record.Data().Subject.Data().Repository.Present() {
+				t.Fatal("original recovery subject assertions changed")
+			}
+		}
+	}
+}

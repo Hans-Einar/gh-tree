@@ -1,0 +1,16 @@
+package api_test
+import ("testing";a "github.com/Hans-Einar/gh-tree/internal/application/api";d "github.com/Hans-Einar/gh-tree/internal/domain")
+func TestFreshReplayReplayRemoteEndpointIdentity(t *testing.T) {
+ ra:=irvMust(d.NewRepositoryID(d.Remote,"host/owner/A"));rb:=irvMust(d.NewRepositoryID(d.Remote,"host/owner/B"))
+ src:=irvSource("remote");page:=irvMust(a.NewPageInfo(a.PageInfoData{Completeness:a.Complete,Source:src}))
+ obs:=irvMust(a.NewRemoteObservation(a.RemoteObservationData{ID:irvMust(a.NewObservationID("remote-A")),Repository:ra,Interval:irvObservation(irvWork(irvRepo("local"),"one")).Data().Interval,Version:src,Origin:irvMust(a.NewLiveRemoteObservation(a.LiveRemoteObservationData{})),Page:page}))
+ baseB:=irvMust(a.NewUnavailableEndpoint(a.UnavailableEndpointData{KnownBranch:a.Some(irvMust(d.NewBranchID(rb,d.RemoteHead,"main"))),Reason:a.EndpointInaccessible}))
+ head:=irvMust(a.NewUnavailableEndpoint(a.UnavailableEndpointData{Reason:a.EndpointDeleted}))
+ t.Run("unavailable_base_retains_foreign_branch",func(t *testing.T){_,e:=a.NewPullRequestFact(a.PullRequestFactData{ID:irvMust(d.NewPRID(ra,1)),URL:"https://host/owner/A/pull/1",State:a.PROpen,Base:baseB,Head:head,Observation:obs});irvReject(t,e)})
+ locator:=irvMust(a.NewRemoteRepositoryLocator(a.RemoteRepositoryLocatorData{Host:"example.test",Owner:"owner",Name:"repo"}))
+ repo:=irvMust(a.NewRemoteRepository(a.RemoteRepositoryData{ID:ra,Locator:locator,URL:"https://example.test/owner/repo",Capabilities:irvMust(a.NewRemoteCapabilities(a.RemoteCapabilitiesData{}))}))
+ endpoint:=irvMust(a.NewAvailableEndpoint(a.AvailableEndpointData{Repository:repo,Branch:irvMust(d.NewBranchID(ra,d.RemoteHead,"main")),Revision:irvRev(ra,"1")}))
+ t.Run("positive_qualified_PR",func(t *testing.T){_,e:=a.NewPullRequestFact(a.PullRequestFactData{ID:irvMust(d.NewPRID(ra,1)),URL:"https://example.test/owner/repo/pull/1",State:a.PROpen,Base:endpoint,Head:head,Observation:obs});if e!=nil{t.Fatal(e)}})
+ t.Run("PR_URL_does_not_match_known_repository_or_number",func(t *testing.T){_,e:=a.NewPullRequestFact(a.PullRequestFactData{ID:irvMust(d.NewPRID(ra,1)),URL:"https://elsewhere.test/someone/other/pull/999",State:a.PROpen,Base:endpoint,Head:head,Observation:obs});irvReject(t,e)})
+}
+

@@ -1,0 +1,142 @@
+package api
+
+// StorageRecoveryMatchesScope checks every available bound document version and
+// the shared subject. It performs no native lookup or artifact cleanup.
+func StorageRecoveryMatchesScope(r StorageRecovery, s WorktreeScope) bool {
+	if !r.Valid() || !s.Valid() || r.data.Family != RunConfig {
+		return false
+	}
+	w, p := r.data.Record.data.Subject.data.Worktree.Value()
+	if !p || w != s.data.ID {
+		return false
+	}
+	for _, v := range recoveryStorageVersions(r.data.Record) {
+		if !v.MatchesRunScope(s) {
+			return false
+		}
+	}
+	return true
+}
+func recoveryStorageVersions(r RecoveryRecord) []StorageVersion {
+	var versions []StorageVersion
+	for _, o := range []Optional[RecoveryVersion]{r.data.Original, r.data.Proposed} {
+		if v, p := o.Value(); p {
+			if s, ok := v.(StorageRecoveryVersion); ok {
+				versions = append(versions, s.data.Version)
+			}
+		}
+	}
+	return versions
+}
+func recoveryMatchesVersion(r StorageRecovery, v StorageVersion) bool {
+	s := r.data.Record.data.Subject.data
+	store, p := s.Store.Value()
+	if !p || store != v.Store() || r.data.Family != v.Family() {
+		return false
+	}
+	if v.Family() == RunConfig {
+		w, p := s.Worktree.Value()
+		if !p || !versionWorktree(v, w) {
+			return false
+		}
+	}
+	for _, x := range recoveryStorageVersions(r.data.Record) {
+		if !v.SameBinding(x) {
+			return false
+		}
+	}
+	return true
+}
+func storageAssociations(versions []StorageVersion, recovery []StorageRecovery) error {
+	if len(versions) > 0 {
+		for _, v := range versions[1:] {
+			if !versions[0].SameBinding(v) {
+				return invalid("storage version binding")
+			}
+		}
+	}
+	var family StorageFamily
+	var store string
+	var first Optional[StorageVersion]
+	var subject Optional[RecoverySubject]
+	if len(versions) > 0 {
+		first = Some(versions[0])
+		family = versions[0].Family()
+		store = versions[0].Store()
+	}
+	for _, r := range recovery {
+		s := r.data.Record.data.Subject
+		rs, _ := s.data.Store.Value()
+		if family.Valid() && (family != r.data.Family || store != rs) {
+			return invalid("storage recovery store association")
+		}
+		family = r.data.Family
+		store = rs
+		if prior, p := subject.Value(); p {
+			merged, err := mergeRecoverySubjects(prior, s)
+			if err != nil {
+				return err
+			}
+			_ = merged; subject = Some(s)
+		} else {
+			subject = Some(s)
+		}
+		if v, p := first.Value(); p && !recoveryMatchesVersion(r, v) {
+			return invalid("storage recovery version association")
+		}
+		for _, v := range recoveryStorageVersions(r.data.Record) {
+			if previous, p := first.Value(); p {
+				if !previous.SameBinding(v) {
+					return invalid("storage retained version binding")
+				}
+			} else {
+				first = Some(v)
+			}
+		}
+	}
+	return nil
+}
+func validateStorageRecoveryBindings(d StorageRecoveryData) error {
+	s := d.Record.data.Subject.data
+	versions := recoveryStorageVersions(d.Record)
+	for _, v := range versions {
+		if d.Family == RunConfig {
+			w, p := s.Worktree.Value()
+			if !p || !versionWorktree(v, w) {
+				return invalid("recovery original/proposed worktree")
+			}
+		}
+	}
+	if len(versions) == 2 && !versions[0].SameBinding(versions[1]) {
+		return invalid("recovery original/proposed root")
+	}
+	return nil
+}
+func consistentRecoveryRecord(d RecoveryRecordData) error {
+	var versions []StorageVersion
+	for _, o := range []Optional[RecoveryVersion]{d.Original, d.Proposed} {
+		if v, p := o.Value(); p {
+			if s, ok := v.(StorageRecoveryVersion); ok {
+				versions = append(versions, s.data.Version)
+			}
+		}
+	}
+	for _, v := range versions {
+		subject := d.Subject.data
+		family, fp := subject.Family.Value()
+		store, sp := subject.Store.Value()
+		if !fp || !sp || family != v.Family() || store != v.Store() {
+			return invalid("recovery document subject")
+		}
+		if family == RunConfig {
+			w, p := subject.Worktree.Value()
+			if !p || !versionWorktree(v, w) {
+				return invalid("recovery document worktree")
+			}
+		}
+	}
+	if len(versions) > 1 && !versions[0].SameBinding(versions[1]) {
+		return invalid("recovery document root binding")
+	}
+	return nil
+}

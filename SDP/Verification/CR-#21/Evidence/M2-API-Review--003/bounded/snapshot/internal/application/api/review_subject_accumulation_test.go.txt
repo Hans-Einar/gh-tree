@@ -1,0 +1,90 @@
+package api_test
+
+import (
+	. "github.com/Hans-Einar/gh-tree/internal/application/api"
+	"github.com/Hans-Einar/gh-tree/internal/domain"
+	"strings"
+	"testing"
+)
+
+func raSubjectRecord(scope WorktreeScope, id string, change func(*RecoverySubjectData)) StorageRecovery {
+	r := rsMust(rcRecovery(scope, "store", id, None[RecoveryVersion](), None[RecoveryVersion]())).Data()
+	d := r.Record.Data()
+	s := d.Subject.Data()
+	change(&s)
+	d.Subject = rsMust(NewRecoverySubject(s))
+	r.Record = rsMust(NewRecoveryRecord(d))
+	return rsMust(NewStorageRecovery(r))
+}
+
+func TestRCSubjectAccumulationAcrossAbsentRecords(t *testing.T) {
+	a := rsScope("a", 1)
+	repo := a.Data().ID.Repository()
+	revisionA := rsMust(domain.NewRevision(repo, rsMust(domain.NewOID(strings.Repeat("1", 40)))))
+	revisionB := rsMust(domain.NewRevision(repo, rsMust(domain.NewOID(strings.Repeat("2", 40)))))
+	branchA := rsMust(domain.NewBranchID(repo, domain.Local, "a"))
+	branchB := rsMust(domain.NewBranchID(repo, domain.Local, "b"))
+	stashA := rsMust(domain.NewStashID(repo, revisionA.OID()))
+	stashB := rsMust(domain.NewStashID(repo, revisionB.OID()))
+	sessionA := rsMust(domain.NewSessionID(1))
+	sessionB := rsMust(domain.NewSessionID(2))
+	tests := []struct {
+		name        string
+		first, last func(*RecoverySubjectData)
+	}{
+		{"revision", func(s *RecoverySubjectData) { s.Revision = Some(revisionA) }, func(s *RecoverySubjectData) { s.Revision = Some(revisionB) }},
+		{"branch", func(s *RecoverySubjectData) { s.Branch = Some(branchA) }, func(s *RecoverySubjectData) { s.Branch = Some(branchB) }},
+		{"stash", func(s *RecoverySubjectData) { s.Stash = Some(stashA) }, func(s *RecoverySubjectData) { s.Stash = Some(stashB) }},
+		{"session", func(s *RecoverySubjectData) { s.Session = Some(sessionA) }, func(s *RecoverySubjectData) { s.Session = Some(sessionB) }},
+	}
+	empty := func(*RecoverySubjectData) {}
+	for _, c := range tests {
+		t.Run(c.name, func(t *testing.T) {
+			first := raSubjectRecord(a, "first", c.first)
+			middle := raSubjectRecord(a, "middle", empty)
+			last := raSubjectRecord(a, "last", c.last)
+			for _, records := range [][]StorageRecovery{{first, middle, last}, {last, middle, first}} {
+				if _, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: records}); e == nil {
+					t.Fatal("middle absent field erased earlier subject assertion")
+				}
+				if _, e := NewStorageCommitResult(StorageCommitResultData{Outcome: NotCommitted, Durability: DurabilityNotApplicable, Effects: rsEffects(Storage, NotStarted), Recovery: records}); e == nil {
+					t.Fatal("commit middle absent field erased earlier subject assertion")
+				}
+			}
+			repeated := raSubjectRecord(a, "last-equal", c.first)
+			records := []StorageRecovery{first, middle, repeated}
+			value, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: records})
+			if e != nil {
+				t.Fatal("compatible assertions across absent record refused", e)
+			}
+			for i, r := range value.Data().Recovery {
+				if r.Data().Record.Data() != records[i].Data().Record.Data() {
+					t.Fatal("validation rewrote retained artifact")
+				}
+			}
+		})
+	}
+}
+
+func TestRCSubjectAccumulationDuplicateIDs(t *testing.T) {
+	a := rsScope("a", 1)
+	first := raSubjectRecord(a, "stable", func(*RecoverySubjectData) {})
+	complementary := raSubjectRecord(a, "stable", func(s *RecoverySubjectData) { s.Repository = Some(a.Data().ID.Repository()) })
+	if _, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{first, complementary}}); e == nil {
+		t.Fatal("same-ID changed optional record accepted as equal")
+	}
+	if _, e := NormalizeRecovery(nil, []StorageRecovery{first, complementary}); e == nil {
+		t.Fatal("same-ID changed record normalized")
+	}
+	value, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{first, first}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	if len(value.Data().Recovery) != 2 {
+		t.Fatal("raw same-ID observations unexpectedly rewritten")
+	}
+	normal, e := NormalizeRecovery(nil, []StorageRecovery{first, first})
+	if e != nil || len(normal) != 1 {
+		t.Fatal("equal same-ID normalization", e)
+	}
+}

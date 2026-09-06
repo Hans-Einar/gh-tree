@@ -1,0 +1,13 @@
+=== RUN   TestFreshReplayKnownOutcomeEffect
+=== RUN   TestFreshReplayKnownOutcomeEffect/positive_known_creation
+=== RUN   TestFreshReplayKnownOutcomeEffect/reject_not_started_creation
+    fresh_independent_outcome_effect_test.go:6: created branch paired with explicit unchanged/unstarted local-ref effect
+=== RUN   TestFreshReplayKnownOutcomeEffect/reject_unchanged_creation
+    fresh_independent_outcome_effect_test.go:6: created branch paired with explicit unchanged/unstarted local-ref effect
+--- FAIL: TestFreshReplayKnownOutcomeEffect (0.00s)
+    --- PASS: TestFreshReplayKnownOutcomeEffect/positive_known_creation (0.00s)
+    --- FAIL: TestFreshReplayKnownOutcomeEffect/reject_not_started_creation (0.00s)
+    --- FAIL: TestFreshReplayKnownOutcomeEffect/reject_unchanged_creation (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.510s
+FAIL

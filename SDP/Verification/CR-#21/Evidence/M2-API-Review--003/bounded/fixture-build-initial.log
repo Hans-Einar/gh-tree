@@ -1,0 +1,7 @@
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api [build failed]
+# github.com/Hans-Einar/gh-tree/internal/application/api_test [github.com/Hans-Einar/gh-tree/internal/application/api.test]
+internal\application\api\review_subject_accumulation_test.go:25:39: cannot use domain.Local (constant 1 of uint8 type domain.BranchKind) as domain.RepositoryID value in argument to domain.NewBranchID
+internal\application\api\review_subject_accumulation_test.go:25:53: cannot use repo (variable of struct type domain.RepositoryID) as domain.BranchKind value in argument to domain.NewBranchID
+internal\application\api\review_subject_accumulation_test.go:26:39: cannot use domain.Local (constant 1 of uint8 type domain.BranchKind) as domain.RepositoryID value in argument to domain.NewBranchID
+internal\application\api\review_subject_accumulation_test.go:26:53: cannot use repo (variable of struct type domain.RepositoryID) as domain.BranchKind value in argument to domain.NewBranchID
+FAIL

@@ -359,6 +359,14 @@
       "to": "6e289c4b47a7816493f376c886c00bf0df4835e8",
       "priorReviewedHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
       "state": "independent_rereview"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--003.md",
+      "head": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+      "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+      "state": "accepted_pending_integration"
     }
   ],
   "errata": [

@@ -1,0 +1,167 @@
+{
+  "disposition": "ACCEPT",
+  "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+  "candidate": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+  "items": [
+    {
+      "sha256": "AA49AB699603E11CA3E438B374AEE4ECD90DC80CA75B8EB44BBA897EE4542724",
+      "length": 689,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\final-candidate-proof.json"
+    },
+    {
+      "sha256": "7C56485CF52DF159018ACD4A9EC14693CE1DC806FF6838F8FA512B0891E62F2F",
+      "length": 10631,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\final-report.zip"
+    },
+    {
+      "sha256": "B4285D3AF241463D6AA32D2DAAD8DA813EF2298BA1291D17AFFA6B583F165DA3",
+      "length": 1139,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\full-suite.log"
+    },
+    {
+      "sha256": "FBEDA063227383132369CDAE0564B52DBB02609282E16B4C68187052BCB54771",
+      "length": 138,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\independent-all-replays.log"
+    },
+    {
+      "sha256": "5F0DB49B69EA7767FE6299325D8B55B3E8BA180897156C911EBE17A7D11E887D",
+      "length": 838,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\independent-behavior.log"
+    },
+    {
+      "sha256": "CFA979F85B98E45AD1FBE7E5481F9B04FAF437FE2EDE06F4C5EF963CEF26D924",
+      "length": 526,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\independent-push-context.log"
+    },
+    {
+      "sha256": "D43F6C9833F35A8EA364675E108F382A257AF05506242123D2FDC7BEE050222A",
+      "length": 1506,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison.initial.go.txt"
+    },
+    {
+      "sha256": "7F53F5FEE38EE4239411D434B11820DBE7961FE034D7B7E66F4D77DB70B2BDD8",
+      "length": 896,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison.initial.log"
+    },
+    {
+      "sha256": "271709DA03BD68084B3B6AFC9750EC48C795BF1DC334DF17BE796BE597CD9C79",
+      "length": 976,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison.log"
+    },
+    {
+      "sha256": "59EE696C19B56737112E120D59E89EAA5B6D31DC8D990F78BE7407572D9CA154",
+      "length": 635,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-git-scope.log"
+    },
+    {
+      "sha256": "EC2ED23C7D096AB71DE284C139683A06BFE5A69B71082039086D9B76FCDDF31D",
+      "length": 870,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-known-effect.log"
+    },
+    {
+      "sha256": "0E461F2EE2B9A92CBFC559F316E17018C30A1CEF8D69FEC2B672D40E4F9076E1",
+      "length": 1723,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutation-results.json"
+    },
+    {
+      "sha256": "5D2353EF5D38C871D8E597044FC85D1ACD1EEB65A28072BE9EDE73A329D7AB56",
+      "length": 138,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\race.log"
+    },
+    {
+      "sha256": "374A4EBAB448E6004E808B61956399F904C80711D92196C5B676F62E45911461",
+      "length": 1337,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\results.json"
+    },
+    {
+      "sha256": "EF9B1459F216F9DF4B70ADB83D44EA75200A7821C89A6381BA038EB3B7FCC6F6",
+      "length": 10536,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\review-acceptance.md"
+    },
+    {
+      "sha256": "4412F6A3630D5DD7B60E1522CBDCAF9021A2C0F2D39E0D4C99168A1265E3401B",
+      "length": 1578915,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\source-6e289.zip"
+    },
+    {
+      "sha256": "252CED7FC955AA8A8CC24EB859E1A9EDBE4C0280F59F80211AD06A1D1841D610",
+      "length": 29924,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\source-hashes.json"
+    },
+    {
+      "sha256": "209C018B3AE2834D7CCE8114BA00EF0A127B7AFA463DEBFDDAC8560D5EFE01B8",
+      "length": 11,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\vet.log"
+    },
+    {
+      "sha256": "B95E2F025DB0B58EEAF2809B3D07122E258A0A1C11F42FA8569168D10A15B010",
+      "length": 5284,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_behavior_test.go"
+    },
+    {
+      "sha256": "F2570E5C261A228730149298A6D4CDCBD997ECE14DBB7E603220444CF11C21DC",
+      "length": 3168,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_comparison_test.go"
+    },
+    {
+      "sha256": "F5BA7F51B0B54249827A634E755B337BCE9C2AAD85843472409B6E6903DDF066",
+      "length": 1012,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_outcome_effect_test.go"
+    },
+    {
+      "sha256": "45125CDA5219FE11D1877BD6EAEB58DA3821DE7792ADD3EEE9C5FC484DBBA1D6",
+      "length": 827,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_plan_choice_test.go"
+    },
+    {
+      "sha256": "F45D2D8CCF1A47C9416F981C1EDE205699507C21016F6EFB51E85D7FB518C826",
+      "length": 65376,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_replay_review_clone_test.go"
+    },
+    {
+      "sha256": "DB2C2B4EBAAC96B8A120B7160507EF85FE7738743895681721FDE7B2A7135934",
+      "length": 11344,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_replay_review_independent_test.go"
+    },
+    {
+      "sha256": "C6DC4F51C228727F679B520940C861D5AB09D58DDC4A1264EE1136A2C8151252",
+      "length": 2250,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_replay_review_remote_test.go"
+    },
+    {
+      "sha256": "B468DD3BAEE5E5D1533F57A32E18A40410D40017DA38706A0462FB2054D06ECD",
+      "length": 4245,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_replay_review_runtime_test.go"
+    },
+    {
+      "sha256": "C63B882807E67C78946A481AD493F083E87535B76316B9C253977E2AAC2DA7CA",
+      "length": 1312,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\api\\fresh_independent_repo_recovery_test.go"
+    },
+    {
+      "sha256": "38076FA59E8CFA224DF4146E23A34215491B603024EAB9BD5964528E8E0BDDCC",
+      "length": 5632,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\exact-source\\internal\\application\\ports\\fresh_push_test.go"
+    },
+    {
+      "sha256": "9C02AACDDC2CD64736754362694423C108F29D9C4E0821658FDB590D7026C6F3",
+      "length": 4740,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-git-scope\\internal\\application\\api\\git_recovery_consistency.go"
+    },
+    {
+      "sha256": "1699DC0EB68958A25A616C3A1C8262D31CDBCEE330B4AC1FEDFBEEC55F97E25C",
+      "length": 1716,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison\\internal\\application\\api\\selection_equality.go"
+    },
+    {
+      "sha256": "E0ED00414996A7C35F9F90BDF89355CF888F642ECD0CB0CBF52A89ADA0CCACC1",
+      "length": 2322,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-known-effect\\internal\\application\\api\\effect_consistency.go"
+    },
+    {
+      "sha256": "832797B2DF3C1F38630BC25489298E19325995980BE44ECE5650B81A19582648",
+      "length": 23839,
+      "path": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\final-report\\SDP\\Implementation\\CR-#21\\Application\\M2-API--001.md"
+    }
+  ]
+}

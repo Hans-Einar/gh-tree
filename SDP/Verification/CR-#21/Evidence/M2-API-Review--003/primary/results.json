@@ -1,0 +1,51 @@
+{
+  "toolchain": "go1.25.0 windows/amd64",
+  "disposition": "ACCEPT",
+  "finalCandidate": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+  "sourceBlobMismatches": 0,
+  "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+  "sourceBlobCount": 99,
+  "resolved": [
+    "M259-M01",
+    "M259-M02",
+    "M259-M03",
+    "M259-M04",
+    "M259-M05",
+    "M259-M06",
+    "M259-M07",
+    "M259-M08"
+  ],
+  "findings": [],
+  "checks": [
+    {
+      "log": "independent-all-replays.log",
+      "exitCode": 0,
+      "command": "go test ./internal/application/... -count=1"
+    },
+    {
+      "log": "independent-behavior.log",
+      "exitCode": 0,
+      "command": "go test ./internal/application/api -run ^TestFresh(Noop|Comparison|Partial) -count=1 -v"
+    },
+    {
+      "log": "independent-push-context.log",
+      "exitCode": 0,
+      "command": "go test ./internal/application/ports -run TestFreshPushEvidenceContext -count=1 -v"
+    },
+    {
+      "log": "full-suite.log",
+      "exitCode": 0,
+      "command": "go test ./... -count=1"
+    },
+    {
+      "log": "race.log",
+      "exitCode": 0,
+      "command": "go test -race ./internal/application/... -count=1"
+    },
+    {
+      "log": "vet.log",
+      "exitCode": 0,
+      "command": "go vet ./internal/application/..."
+    }
+  ]
+}

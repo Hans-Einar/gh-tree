@@ -1,0 +1,32 @@
+package api_test
+import ("testing";"strings";a "github.com/Hans-Einar/gh-tree/internal/application/api";d "github.com/Hans-Einar/gh-tree/internal/domain")
+
+
+
+func irvSession(w d.WorktreeID,id uint64,phase a.SessionPhase) a.SessionSnapshot {
+ cwd:=irvMust(a.NewCwdObservation(a.CwdObservationData{Worktree:irvScope(w),ProjectIdentity:irvScope(w).Data().RootIdentity,Source:irvSource("cwd")}))
+ geometry:=irvMust(a.NewGeometry(a.GeometryData{Rows:24,Columns:80}))
+ display:=irvMust(a.NewInvocationSummary(a.InvocationSummaryData{Cwd:cwd,AcceptedLocator:"C:/review",Terminal:a.Terminal,Geometry:geometry}))
+ cleanup:=a.CleanupPending;if phase==a.Cleaned {cleanup=a.CleanupComplete}
+ return irvMust(a.NewSessionSnapshot(a.SessionSnapshotData{SessionID:irvMust(d.NewSessionID(id)),WorktreeID:w,StartOperation:irvMust(a.NewOperationID(id)),Display:display,Capabilities:irvMust(a.NewSessionCapabilities(a.SessionCapabilitiesData{})),Phase:phase,Cleanup:irvMust(a.NewSessionCleanup(a.SessionCleanupData{State:cleanup})),Sequence:irvMust(a.NewSessionSequence(1)),OutputRange:irvMust(a.NewOutputRange(a.OutputRangeData{})),AcquiredCwd:a.Some(irvMust(a.NewAcquiredCwd(a.AcquiredCwdData{Observation:cwd})))}))
+}
+func TestFreshReplayReplayRuntimeConsistency(t *testing.T) {
+ wa,wb:=irvWork(irvRepo("A"),"one"),irvWork(irvRepo("B"),"two")
+ t.Run("unadmitted_start_reports_applied_resources",func(t *testing.T){_,e:=a.NewSessionStartResult(a.SessionStartResultData{Effects:irvEffect(a.RuntimeResources,a.AppliedVerified)});irvReject(t,e)})
+ t.Run("running_session_reports_never_established",func(t *testing.T){_,e:=a.NewSessionStartResult(a.SessionStartResultData{Session:a.Some(irvSession(wa,1,a.Running)),Effects:irvEffects()});irvReject(t,e)})
+ old:=irvMust(a.NewSessionStopResult(a.SessionStopResultData{Session:irvSession(wa,1,a.Cleaned),CleanupComplete:true,Effects:irvEffects()}))
+ replaced:=irvSession(wb,2,a.Running).Data();replaced.RestartOf=a.Some(irvMust(d.NewSessionID(1)))
+ replacement:=irvMust(a.NewSessionStartResult(a.SessionStartResultData{Session:a.Some(irvMust(a.NewSessionSnapshot(replaced))),Established:true,Effects:irvEffect(a.RuntimeResources,a.AppliedVerified)}))
+ t.Run("restart_changes_worktree_and_cwd",func(t *testing.T){_,e:=a.NewSessionRestartResult(a.SessionRestartResultData{Old:old,Replacement:a.Some(replacement)});irvReject(t,e)})
+}
+func TestFreshReplayReplayCopiesAndBounds(t *testing.T) {
+ wa:=irvWork(irvRepo("copy"),"one");scope:=irvScope(wa)
+ bytes:=[]byte{0,255,1}; chunk:=irvMust(a.NewSessionOutputChunk(a.SessionOutputChunkData{Stream:a.Stdout,Bytes:bytes,Sequence:irvMust(a.NewSessionSequence(1))}))
+ out:=irvMust(a.NewSessionOutputResult(a.SessionOutputResultData{SessionID:irvMust(d.NewSessionID(1)),Sequence:irvMust(a.NewSessionSequence(1)),Chunks:[]a.SessionOutputChunk{chunk},End:3,NextOffset:3}))
+ bytes[0]=9;x:=out.Data();x.Chunks[0].Data().Bytes[0]=8;x.Chunks[0]=a.SessionOutputChunk{}
+ if out.Data().Chunks[0].Data().Bytes[0]!=0 {t.Fatal("nested output alias")}
+ unknown:=irvMust(a.NewJSONMembers(nil)); names:=[]string{"a"," b "};def:=irvMust(a.NewSavedLaunchDefinition(a.SavedLaunchDefinitionData{Provider:"make",Targets:a.PresentField(names),UnknownMembers:unknown}));entry:=irvMust(a.NewSavedLaunchEntry(a.SavedLaunchEntryData{Alias:" exact ",Definition:def}));entries:=[]a.SavedLaunchEntry{entry};doc:=irvMust(a.NewRunConfigDocument(a.RunConfigDocumentData{SchemaVersion:1,Launch:a.PresentField(entries),UnknownMembers:unknown}));names[0]="changed";entries[0]=a.SavedLaunchEntry{};stored,_:=doc.Data().Launch.Value();targets,_:=stored[0].Data().Definition.Data().Targets.Value();targets[0]="getter";stored[0]=a.SavedLaunchEntry{};got,_:=doc.Data().Launch.Value();tg,_:=got[0].Data().Definition.Data().Targets.Value();if tg[0]!="a" {t.Fatal("stored nested alias")}
+ for _,raw:=range []string{`{"A":1,"A":2}`,`{"z":[{"𝄞":1,"𝄞":2}]}`,strings.Repeat("[",65)+"0"+strings.Repeat("]",65)} {if _,e:=a.NewOpaqueJSON([]byte(raw));e==nil {t.Fatal("invalid JSON accepted")}}
+ v:=irvRunVersion(wa);other:=scope.Data();other.RootIdentity=irvMust(a.NewDirectoryIdentity(a.DirectoryWindows,1,[16]byte{2},"stamp"));if v.MatchesRunScope(irvMust(a.NewWorktreeScope(other))) {t.Fatal("replaced root accepted")}
+}
+

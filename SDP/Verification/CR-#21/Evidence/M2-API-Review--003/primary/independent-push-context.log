@@ -1,0 +1,10 @@
+=== RUN   TestFreshPushEvidenceContext
+=== RUN   TestFreshPushEvidenceContext/matching
+=== RUN   TestFreshPushEvidenceContext/foreign-repository
+=== RUN   TestFreshPushEvidenceContext/foreign-branch
+--- PASS: TestFreshPushEvidenceContext (0.00s)
+    --- PASS: TestFreshPushEvidenceContext/matching (0.00s)
+    --- PASS: TestFreshPushEvidenceContext/foreign-repository (0.00s)
+    --- PASS: TestFreshPushEvidenceContext/foreign-branch (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/application/ports	0.439s

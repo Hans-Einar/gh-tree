@@ -1,0 +1,7 @@
+{
+  "exitCode": 1,
+  "source": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+  "mutation": "validation accumulator forgets earlier assertions when next record omits them",
+  "command": "go test -overlay mutant-reset-subject-overlay.json ./internal/application/api -run ^TestRCSubjectAccumulationAcrossAbsentRecords$ -count=1 -v",
+  "toolchain": "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe"
+}

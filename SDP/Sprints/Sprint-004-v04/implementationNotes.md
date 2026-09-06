@@ -332,3 +332,12 @@ partial Push may retain unassociated remote recovery; supplied request/summary/
 returned bindings must match known repository/branch facts without mutating them.
 Primary resolved this under existing B5/G6/G11; no token decoding or BC change.
 Known findings remain unresolved until actual re-review. No M2 or Slice closure.
+
+API/ports#59 independently ACCEPTED atd4c3bfdd2038bbc5921488fbcffad1b8736c7460,
+technical6e289c4b47a7816493f376c886c00bf0df4835e8. All M259-M01..M08 resolved;
+complete primary/bounded reports/raw probes and99/77 exact blobs verified/archived
+in M2-API-Review--003. Full/replay/race/copy and meaningful mutation controls pass.
+Final report-only scope/identical product tree verified; sourceCI34044482946 and
+finalCI34045071509 each18/explicitM3skip. Master integrates accepted API first,
+verifies exact integratedCI and recordsSHA, then accepted viewmodeld279c3f. No M2
+completion before both serial gates; all143 baseline findings/full13 Slices remain.

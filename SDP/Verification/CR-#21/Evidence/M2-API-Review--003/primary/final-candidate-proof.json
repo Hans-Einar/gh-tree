@@ -1,0 +1,14 @@
+{
+  "technicalSource": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+  "expectedReportBlob": "4ff0ec63fd0e09e52305262eb8aea6abef6b487e",
+  "reportBlob": "4ff0ec63fd0e09e52305262eb8aea6abef6b487e",
+  "candidateStatus": [],
+  "reportPath": "C:/Users/hanse/GIT/gh-tree-review-evidence/api-rereview-6e289/final-report/SDP/Implementation/CR-#21/Application/M2-API--001.md",
+  "changedPaths": [
+    "SDP/Implementation/CR-#21/Application/M2-API--001.md"
+  ],
+  "finalApplicationTree": "2d98bb2d3ae142f363db6caf7117c99b62c764a3",
+  "reportMatches": true,
+  "sourceApplicationTree": "2d98bb2d3ae142f363db6caf7117c99b62c764a3",
+  "candidate": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460"
+}

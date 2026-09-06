@@ -1,0 +1,37 @@
+package api_test
+import ("testing";a "github.com/Hans-Einar/gh-tree/internal/application/api";d "github.com/Hans-Einar/gh-tree/internal/domain")
+func TestFreshNoopOutcomes(t *testing.T){
+ w:=irvWork(irvRepo("no-op"),"w");status:=irvStatus(w);head,_:=status.Data().Worktree.Data().Head.Value();r,_:=head.Revision();target:=irvMust(d.NewCommitTarget(r));resolution:=irvMust(a.NewExactLocalResolution(a.ExactLocalResolutionData{Requested:target,Local:r,Observation:irvObservation(w)}));stash:=irvMust(d.NewStashID(w.Repository(),r.OID()));path:=irvMust(a.NewGitPath("already-equal"))
+ cases:=[]struct{name string;kind a.GitMutationKind;out a.GitMutationOutcome;effect a.EffectReport}{
+ {"stage",a.StageMutation,irvMust(a.NewIndexChanged(a.IndexChangedData{Status:status,Action:a.Stage})),irvEffect(a.Index,a.VerifiedNoTargetChange)},
+ {"restore",a.RestoreMutation,irvMust(a.NewTrackedRestored(a.TrackedRestoredData{Paths:[]a.GitPath{path},Status:status})),irvEffect(a.WorktreeBytes,a.VerifiedNoTargetChange)},
+ {"retarget",a.RetargetMutation,irvMust(a.NewWorktreeRetargeted(a.WorktreeRetargetedData{Worktree:status.Data().Worktree,PriorHead:head,Target:resolution})),irvEffect(a.LocalRefsHead,a.VerifiedNoTargetChange)},
+ {"apply",a.StashMutation,irvMust(a.NewStashApplied(a.StashAppliedData{Stash:stash,Status:status,IndexRestored:true,Retained:true})),irvEffect(a.WorktreeBytes,a.VerifiedNoTargetChange)},
+ }
+ for _,c:=range cases{t.Run(c.name,func(t *testing.T){if _,e:=a.NewGitMutationResult(a.GitMutationResultData{Operation:irvMust(a.NewOperationID(1)),Kind:c.kind,PlanVersion:irvSource("plan"),Outcome:c.out,Effects:c.effect,Transport:irvTransport()});e!=nil{t.Fatal(e)}})}
+ cleanup:=irvEffect(a.LocalRefsHead,a.NotStarted);drop:=irvMust(a.NewStashDropped(a.StashDroppedData{Stash:stash,Occurrence:irvSource("occurrence"),Observation:irvObservation(w),RefCleanup:cleanup}))
+ t.Run("narrow_ref_cleanup",func(t *testing.T){if _,e:=a.NewGitMutationResult(a.GitMutationResultData{Operation:irvMust(a.NewOperationID(1)),Kind:a.StashMutation,PlanVersion:irvSource("drop"),Outcome:drop,Effects:cleanup,Transport:irvTransport()});e!=nil{t.Fatal(e)}})
+ applied:=irvEffect(a.Index,a.AppliedVerified);unstarted:=irvEffect(a.Index,a.NotStarted);merged:=irvMust(a.MergeEffectReports(applied,unstarted,applied));if len(merged.Data().Facets)!=2{t.Fatal("mixed stages lost")}
+ stage:=irvMutation(irvMust(a.NewIndexChanged(a.IndexChangedData{Status:status,Action:a.Stage})),a.StageMutation,applied);commit:=irvMutation(irvMust(a.NewRefusedMutation(a.RefusedMutationData{Reason:irvDiag(),Effects:unstarted})),a.CommitMutation,unstarted)
+ if _,e:=a.NewStageAllAndCommitResult(a.StageAllAndCommitResultData{Stage:a.Some(stage),Commit:a.Some(commit),Outcome:irvEnvelope(merged)});e!=nil{t.Fatal("mixed compound",e)}
+}
+func TestFreshComparisonVariantMatrix(t *testing.T){
+ w:=irvWork(irvRepo("compare-matrix"),"w");r:=irvRev(w.Repository(),"1");s:=irvRev(w.Repository(),"2");h:=irvMust(d.NewDetachedHead(r))
+ variants:=[]a.GitComparison{
+ irvMust(a.NewCommitParentComparison(a.CommitParentComparisonData{Commit:r,Parent:irvMust(a.NewRootParent(a.RootParentData{}))})),
+ irvMust(a.NewCommitParentComparison(a.CommitParentComparisonData{Commit:r,Parent:irvMust(a.NewSelectedParent(a.SelectedParentData{Index:0}))})),
+ irvMust(a.NewCommitPairComparison(a.CommitPairComparisonData{From:r,To:s})),
+ irvMust(a.NewIndexToWorktreeComparison(a.IndexToWorktreeComparisonData{Worktree:w,Index:irvSource("index"),WorktreeVersion:irvSource("worktree")})),
+ irvMust(a.NewHeadToIndexComparison(a.HeadToIndexComparisonData{Worktree:w,Head:h,HeadVersion:irvSource("head"),Index:irvSource("index")})),
+ }
+ corr:=ficorr();sources:=irvMust(a.NewProjectionSources(a.ProjectionSourcesData{}));limits:=irvMust(a.NewPatchLimits(a.PatchLimitsData{MaxBytes:100,MaxFiles:1}))
+ for i,x:=range variants {req:=irvMust(a.NewQueryRequest(irvMust(a.NewDiffQuery(a.DiffQueryData{Comparison:x,Limits:limits})),corr));for j,y:=range variants{result:=irvMust(a.NewDiffResult(a.DiffResultData{Comparison:y,Sources:sources}));e:=a.ValidateTerminalFor(req,fiterm(corr,result));if (e==nil)!=(i==j){t.Fatalf("comparison %d/%d error %v",i,j,e)}}}
+}
+func TestFreshPartialAndPreparationRecovery(t *testing.T){
+ w:=irvWork(irvRepo("recovery"),"w");other:=irvRepo("other");expected:=irvExpected(w)
+ summary:=irvMust(a.NewMutationPlanSummary(a.MutationPlanSummaryData{OperationID:irvMust(a.NewOperationID(1)),Kind:a.StageMutation,PlanVersion:irvSource("plan"),Repository:w.Repository(),Worktree:a.Some(w),Head:expected.Data().Head,Expected:expected,Choices:[]a.Choice{a.Proceed},StageAction:a.Some(a.Stage)}))
+ base:=a.GitPreparationResultData{Summary:a.Some(summary),Effects:irvEffects(),Transport:irvTransport(),Recovery:[]a.RecoveryRecord{fiRecoveryFor(w.Repository())}}
+ if _,e:=a.NewGitPreparationResult(base);e!=nil{t.Fatal(e)};base.Recovery=[]a.RecoveryRecord{fiRecoveryFor(other)};if _,e:=a.NewGitPreparationResult(base);e==nil{t.Fatal("foreign prepared recovery")}
+ facts:=irvMust(a.NewGitPostFacts(a.GitPostFactsData{Worktrees:[]a.WorktreeFacts{irvFacts(w)}}));if _,e:=a.NewPartialMutation(a.PartialMutationData{Facts:facts,Reason:irvDiag(),Recovery:[]a.RecoveryRecord{fiRecoveryFor(other)}});e==nil{t.Fatal("foreign partial recovery")}
+}
+

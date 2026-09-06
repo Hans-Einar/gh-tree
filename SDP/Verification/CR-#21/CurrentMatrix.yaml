@@ -98,7 +98,7 @@
     },
     {
       "id": "V-APP-06",
-      "state": "rework_required",
+      "state": "partial",
       "evidence": [
         {
           "kind": "API_ports_leaf_initial_review",
@@ -115,10 +115,19 @@
           "review": "SDP/Verification/CR-#21/M2-API-Review--002.md",
           "ciRun": "34041943143",
           "result": "CHANGES_REQUIRED_M259-M02_M03_M04_M05_M06"
+        },
+        {
+          "kind": "API_ports_leaf_acceptance",
+          "sourceHead": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+          "finalCandidate": "d4c3bfdd2038bbc5921488fbcffad1b8736c7460",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-API-Review--003.md",
+          "ciRun": "34045071509",
+          "result": "ACCEPT_all_M259_findings_resolved"
         }
       ],
       "limits": [
-        "Original26 malformed cases now refuse; remaining nine invalid admissions and one false refusal require correction. API/ports and viewmodel not integrated; no workflow/native/Slice acceptance."
+        "Accepted pure API/ports values/interfaces only, pending serial integration. Full coordinator/use-case sequencing, native adapters and end-to-end Slice checks remain required."
       ]
     },
     {

@@ -1,0 +1,15 @@
+=== RUN   TestFreshReplayExactRequestResults
+=== RUN   TestFreshReplayExactRequestResults/positive_diff_comparison
+=== RUN   TestFreshReplayExactRequestResults/reject_changed_diff_endpoint
+    fresh_independent_comparison_test.go:12: different exact diff endpoint accepted
+=== RUN   TestFreshReplayExactRequestResults/reject_changed_requested_PR_base
+    fresh_independent_comparison_test.go:16: different requested PR base accepted
+=== RUN   TestFreshReplayExactRequestResults/reject_changed_graph_roots
+--- FAIL: TestFreshReplayExactRequestResults (0.00s)
+    --- PASS: TestFreshReplayExactRequestResults/positive_diff_comparison (0.00s)
+    --- FAIL: TestFreshReplayExactRequestResults/reject_changed_diff_endpoint (0.00s)
+    --- FAIL: TestFreshReplayExactRequestResults/reject_changed_requested_PR_base (0.00s)
+    --- PASS: TestFreshReplayExactRequestResults/reject_changed_graph_roots (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.538s
+FAIL

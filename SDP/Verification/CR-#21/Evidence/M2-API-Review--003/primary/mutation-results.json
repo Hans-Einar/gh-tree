@@ -1,0 +1,32 @@
+[
+  {
+    "name": "git-scope",
+    "test": "^TestFreshReplayRepoOnlyMutationRecovery$",
+    "exitCode": 1,
+    "sourceSHA256": "9C02AACDDC2CD64736754362694423C108F29D9C4E0821658FDB590D7026C6F3",
+    "log": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-git-scope.log",
+    "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-git-scope\\internal\\application\\api\\git_recovery_consistency.go",
+    "expectedDiagnostic": "known repository-A mutation retained repository-B recovery",
+    "detected": true
+  },
+  {
+    "name": "comparison",
+    "test": "^TestFreshReplayExactRequestResults$",
+    "exitCode": 1,
+    "sourceSHA256": "1699DC0EB68958A25A616C3A1C8262D31CDBCEE330B4AC1FEDFBEEC55F97E25C",
+    "log": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison.log",
+    "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-comparison\\internal\\application\\api\\selection_equality.go",
+    "expectedDiagnostic": "different exact diff endpoint accepted",
+    "detected": true
+  },
+  {
+    "name": "known-effect",
+    "test": "^TestFreshReplayKnownOutcomeEffect$",
+    "exitCode": 1,
+    "sourceSHA256": "E0ED00414996A7C35F9F90BDF89355CF888F642ECD0CB0CBF52A89ADA0CCACC1",
+    "log": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-known-effect.log",
+    "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\api-rereview-6e289\\mutant-known-effect\\internal\\application\\api\\effect_consistency.go",
+    "expectedDiagnostic": "created branch paired with explicit unchanged/unstarted local-ref effect",
+    "detected": true
+  }
+]

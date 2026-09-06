@@ -1,0 +1,10 @@
+=== RUN   TestFreshReplayRepoOnlyMutationRecovery
+=== RUN   TestFreshReplayRepoOnlyMutationRecovery/positive_same_repository
+=== RUN   TestFreshReplayRepoOnlyMutationRecovery/reject_foreign_repository_recovery
+    fresh_independent_repo_recovery_test.go:10: known repository-A mutation retained repository-B recovery
+--- FAIL: TestFreshReplayRepoOnlyMutationRecovery (0.00s)
+    --- PASS: TestFreshReplayRepoOnlyMutationRecovery/positive_same_repository (0.00s)
+    --- FAIL: TestFreshReplayRepoOnlyMutationRecovery/reject_foreign_repository_recovery (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.545s
+FAIL

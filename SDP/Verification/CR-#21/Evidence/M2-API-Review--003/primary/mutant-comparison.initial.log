@@ -1,0 +1,12 @@
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api [build failed]
+# github.com/Hans-Einar/gh-tree/internal/application/api [github.com/Hans-Einar/gh-tree/internal/application/api.test]
+internal\application\api\selection_equality.go:9:9: x declared and not used
+internal\application\api\selection_equality.go:11:3: declared and not used: y
+internal\application\api\selection_equality.go:14:3: declared and not used: y
+internal\application\api\selection_equality.go:17:3: declared and not used: y
+internal\application\api\selection_equality.go:20:3: declared and not used: y
+internal\application\api\selection_equality.go:29:9: x declared and not used
+internal\application\api\selection_equality.go:31:3: declared and not used: y
+internal\application\api\selection_equality.go:43:9: x declared and not used
+internal\application\api\selection_equality.go:57:3: declared and not used: y
+FAIL

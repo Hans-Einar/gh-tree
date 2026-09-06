@@ -1,0 +1,319 @@
+package api_test
+
+import (
+	. "github.com/Hans-Einar/gh-tree/internal/application/api"
+	"github.com/Hans-Einar/gh-tree/internal/application/ports"
+	"testing"
+)
+
+func rcAccept(t *testing.T, e error) {
+	t.Helper()
+	if e != nil {
+		t.Fatal("legitimate value refused:", e)
+	}
+}
+func rcReject(t *testing.T, e error) {
+	t.Helper()
+	if e == nil {
+		t.Fatal("contradictory value accepted")
+	}
+}
+func rcVersion(s WorktreeScope, store string, n byte) StorageVersion {
+	return rsMust(NewRunStorageVersion(s, store, true, uint64(n), [32]byte{n}))
+}
+func rcRecovery(s WorktreeScope, store, id string, original, proposed Optional[RecoveryVersion]) (StorageRecovery, error) {
+	subject := rsMust(NewRecoverySubject(RecoverySubjectData{Worktree: Some(s.Data().ID), Store: Some(store), Family: Some(RunConfig)}))
+	record, e := NewRecoveryRecord(RecoveryRecordData{RecoveryID: rsMust(NewRecoveryID(id)), Kind: RecoveryManifest, Layer: LayerPersistence, Subject: subject, Locator: "C:/review/" + id, Original: original, Proposed: proposed, NextAction: "Inspect"})
+	if e != nil {
+		return StorageRecovery{}, e
+	}
+	return NewStorageRecovery(StorageRecoveryData{Record: record, Family: RunConfig, Locator: "C:/review/" + id, Kind: Manifest, Identity: rsSource(id)})
+}
+func rcRV(v StorageVersion) Optional[RecoveryVersion] {
+	return Some[RecoveryVersion](rsMust(NewStorageRecoveryVersion(StorageRecoveryVersionData{Version: v})))
+}
+func rcStart(s SessionSnapshot, established bool) SessionStartResult {
+	return rsMust(NewSessionStartResult(SessionStartResultData{Session: Some(s), Established: established, Effects: rsEffects(RuntimeResources, AppliedVerified)}))
+}
+
+func TestRCCorrectionStorageBindings(t *testing.T) {
+	a, b, rootB := rsScope("a", 1), rsScope("b", 2), rsScope("a", 2)
+	va := rcVersion(a, "store", 1)
+	cases := []struct {
+		name  string
+		other StorageVersion
+	}{
+		{"worktree", rcVersion(b, "store", 2)}, {"root", rcVersion(rootB, "store", 2)}, {"store", rcVersion(a, "other-store", 2)},
+		{"family", rsMust(NewStorageVersion(UserConfig, "store", true, 2, [32]byte{2}))},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if va.SameBinding(c.other) {
+				t.Fatal("SameBinding collapsed subjects")
+			}
+			_, e := NewStorageCommitResult(StorageCommitResultData{Outcome: Committed, PublicationKnown: true, Durability: SupportedCrashBarrierComplete, ProposedVersion: Some(va), CurrentVersion: Some(c.other), Effects: rsEffects(Storage, AppliedVerified)})
+			rcReject(t, e)
+			_, e = rcRecovery(a, "store", "artifact", rcRV(va), rcRV(c.other))
+			rcReject(t, e)
+		})
+	}
+	t.Run("same-binding-content-and-presence", func(t *testing.T) {
+		absent := rsMust(NewRunStorageVersion(a, "store", false, 0, [32]byte{}))
+		if !absent.SameBinding(va) || !va.SameBinding(rcVersion(a, "store", 7)) {
+			t.Fatal("content identity mistaken for store binding")
+		}
+		_, e := rcRecovery(a, "store", "artifact", rcRV(absent), rcRV(va))
+		rcAccept(t, e)
+	})
+	t.Run("source-version-not-document-version", func(t *testing.T) {
+		source := Some[RecoveryVersion](rsMust(NewSourceRecoveryVersion(SourceRecoveryVersionData{Version: rsSource("not-storage")})))
+		_, e := rcRecovery(a, "store", "artifact", source, None[RecoveryVersion]())
+		rcReject(t, e)
+	})
+	t.Run("distinct-artifacts-same-binding", func(t *testing.T) {
+		one := rsMust(rcRecovery(a, "store", "first", rcRV(va), None[RecoveryVersion]()))
+		two := rsMust(rcRecovery(a, "store", "second", None[RecoveryVersion](), rcRV(rcVersion(a, "store", 2))))
+		_, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{one, two}})
+		rcAccept(t, e)
+	})
+	t.Run("documentless-foreign-root", func(t *testing.T) {
+		wrong := rsMust(rcRecovery(rootB, "store", "foreign-root", rcRV(rcVersion(rootB, "store", 1)), None[RecoveryVersion]()))
+		obs := rsMust(NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{wrong}}))
+		_, e := ports.NewLoadedRunConfig(a, obs, None[RunConfigDocument]())
+		rcReject(t, e)
+	})
+	t.Run("documentless-foreign-worktree", func(t *testing.T) {
+		wrong := rsMust(rcRecovery(b, "store", "foreign-worktree", None[RecoveryVersion](), None[RecoveryVersion]()))
+		obs := rsMust(NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{wrong}}))
+		_, e := ports.NewLoadedRunConfig(a, obs, None[RunConfigDocument]())
+		rcReject(t, e)
+	})
+	t.Run("documentless-unknown-root", func(t *testing.T) {
+		record := rsMust(rcRecovery(a, "store", "unknown-versions", None[RecoveryVersion](), None[RecoveryVersion]()))
+		obs := rsMust(NewStorageLoadObservation(StorageLoadObservationData{State: LoadUnavailable, Recovery: []StorageRecovery{record}, Diagnostics: []Diagnostic{rsDiagnostic()}}))
+		_, e := ports.NewLoadedRunConfig(a, obs, None[RunConfigDocument]())
+		rcAccept(t, e)
+	})
+	t.Run("versionless-mixed-recovery-store", func(t *testing.T) {
+		one := rsMust(rcRecovery(a, "store", "first", None[RecoveryVersion](), None[RecoveryVersion]()))
+		two := rsMust(rcRecovery(a, "other-store", "second", None[RecoveryVersion](), None[RecoveryVersion]()))
+		_, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Recovery: []StorageRecovery{one, two}})
+		rcReject(t, e)
+	})
+	t.Run("known-publication-unavailable-current", func(t *testing.T) {
+		_, e := NewStorageCommitResult(StorageCommitResultData{Outcome: CommittedDurabilityUncertain, PublicationKnown: true, Durability: DurabilityUncertain, ProposedVersion: Some(va), Effects: rsEffects(Storage, AppliedVerified), CancellationAsked: true, Diagnostics: []Diagnostic{rsDiagnostic()}})
+		rcAccept(t, e)
+	})
+	t.Run("unavailable-all-versions", func(t *testing.T) {
+		_, e := NewStorageCommitResult(StorageCommitResultData{Outcome: NotCommitted, Durability: DurabilityNotApplicable, Effects: rsEffects(Storage, NotStarted), Diagnostics: []Diagnostic{rsDiagnostic()}})
+		rcAccept(t, e)
+		_, e = NewStorageCommitResult(StorageCommitResultData{Outcome: StorageIndeterminate, Durability: DurabilityUncertain, Effects: rsEffects(Storage, EffectIndeterminate), Diagnostics: []Diagnostic{rsDiagnostic()}})
+		rcAccept(t, e)
+	})
+}
+
+func TestRCCorrectionRuntimeStates(t *testing.T) {
+	a := rsScope("a", 1)
+	for _, state := range []EffectState{AppliedVerified, EffectPartial, EffectIndeterminate} {
+		t.Run("no-identity-effect", func(t *testing.T) {
+			_, e := NewSessionStartResult(SessionStartResultData{Effects: rsEffects(RuntimeResources, state)})
+			rcReject(t, e)
+		})
+	}
+	for _, state := range []EffectState{NotStarted, VerifiedNoTargetChange} {
+		t.Run("refused-no-effect", func(t *testing.T) {
+			_, e := NewSessionStartResult(SessionStartResultData{Effects: rsEffects(RuntimeResources, state), CancellationAsked: true})
+			rcAccept(t, e)
+		})
+	}
+	for _, phase := range []SessionPhase{Starting, Stopping, CleanupFailed, Cleaned} {
+		t.Run("admitted-not-established", func(t *testing.T) {
+			d := rsSnapshot(a, 1, phase).Data()
+			d.AcquiredCwd = None[AcquiredCwd]()
+			if phase == CleanupFailed {
+				residual := rsMust(NewRuntimeResidual(RuntimeResidualData{SessionID: Some(d.SessionID), Stage: Acquisition, Detail: rsDiagnostic()}))
+				d.Cleanup = rsMust(NewSessionCleanup(SessionCleanupData{State: CleanupFailedState, Residuals: []RuntimeResidual{residual}}))
+			}
+			s := rsMust(NewSessionSnapshot(d))
+			_, e := NewSessionStartResult(SessionStartResultData{Session: Some(s), Effects: rsEffects(RuntimeResources, EffectPartial), Diagnostics: []Diagnostic{rsDiagnostic()}})
+			rcAccept(t, e)
+		})
+	}
+	t.Run("known-established-now-cleaned", func(t *testing.T) {
+		s := rsSnapshot(a, 1, Cleaned)
+		_, e := NewSessionStartResult(SessionStartResultData{Session: Some(s), Established: true, Effects: rsEffects(RuntimeResources, AppliedVerified)})
+		rcAccept(t, e)
+	})
+}
+
+func TestRCCorrectionRestartContinuity(t *testing.T) {
+	a := rsScope("a", 1)
+	old := rsMust(NewSessionStopResult(SessionStopResultData{Session: rsSnapshot(a, 1, Cleaned), CleanupComplete: true, Effects: rsEffects(RuntimeResources, AppliedVerified)}))
+	base := rsSnapshot(a, 2, Running).Data()
+	base.RestartOf = Some(old.Data().Session.Data().SessionID)
+	cases := []struct {
+		name   string
+		change func(*SessionSnapshotData)
+		reject bool
+	}{
+		{"geometry-and-fresh-sources", func(d *SessionSnapshotData) {
+			display := d.Display.Data()
+			display.Geometry = rsMust(NewGeometry(GeometryData{Rows: 40, Columns: 120}))
+			cwd := display.Cwd.Data()
+			cwd.Source = rsSource("fresh-cwd")
+			scope := cwd.Worktree.Data()
+			scope.Source = rsSource("fresh-scope")
+			cwd.Worktree = rsMust(NewWorktreeScope(scope))
+			display.Cwd = rsMust(NewCwdObservation(cwd))
+			d.Display = rsMust(NewInvocationSummary(display))
+		}, false},
+		{"argv", func(d *SessionSnapshotData) {
+			display := d.Display.Data()
+			display.ArgumentDisplay = []string{"different"}
+			d.Display = rsMust(NewInvocationSummary(display))
+		}, true},
+		{"executable", func(d *SessionSnapshotData) {
+			display := d.Display.Data()
+			display.ExecutableDisplay = "other.exe"
+			d.Display = rsMust(NewInvocationSummary(display))
+		}, true},
+		{"terminal-mode", func(d *SessionSnapshotData) {
+			display := d.Display.Data()
+			display.Terminal = Terminal
+			d.Display = rsMust(NewInvocationSummary(display))
+		}, true},
+		{"project-components", func(d *SessionSnapshotData) {
+			display := d.Display.Data()
+			cwd := display.Cwd.Data()
+			cwd.ProjectComponents = []string{"project"}
+			cwd.ProjectIdentity = rsMust(NewDirectoryIdentity(DirectoryWindows, 1, [16]byte{4}, "stamp"))
+			display.Cwd = rsMust(NewCwdObservation(cwd))
+			d.Display = rsMust(NewInvocationSummary(display))
+			d.AcquiredCwd = None[AcquiredCwd]()
+			d.Phase = Stopping
+		}, true},
+		{"same-worktree-replaced-root", func(d *SessionSnapshotData) {
+			other := rsSnapshot(rsScope("a", 2), 2, Running).Data()
+			other.RestartOf = d.RestartOf
+			*d = other
+		}, true},
+		{"failed-new-acquisition", func(d *SessionSnapshotData) {
+			d.Phase = CleanupFailed
+			d.Cleanup = rsMust(NewSessionCleanup(SessionCleanupData{State: CleanupFailedState}))
+			d.AcquiredCwd = None[AcquiredCwd]()
+		}, false},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			d := base
+			c.change(&d)
+			s, e := NewSessionSnapshot(d)
+			if e != nil {
+				if c.reject {
+					return
+				}
+				t.Fatal(e)
+			}
+			established := d.Phase == Running
+			start, e := NewSessionStartResult(SessionStartResultData{Session: Some(s), Established: established, Effects: rsEffects(RuntimeResources, EffectPartial)})
+			if e != nil {
+				if c.reject {
+					return
+				}
+				t.Fatal(e)
+			}
+			_, e = NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(start)})
+			if c.reject {
+				rcReject(t, e)
+			} else {
+				rcAccept(t, e)
+			}
+		})
+	}
+	t.Run("snapshot-acquired-project-subject", func(t *testing.T) {
+		d := base
+		acq, _ := d.AcquiredCwd.Value()
+		ad := acq.Data()
+		cwd := ad.Observation.Data()
+		cwd.ProjectComponents = []string{"other"}
+		cwd.ProjectIdentity = rsMust(NewDirectoryIdentity(DirectoryWindows, 1, [16]byte{4}, "stamp"))
+		ad.Observation = rsMust(NewCwdObservation(cwd))
+		d.AcquiredCwd = Some(rsMust(NewAcquiredCwd(ad)))
+		_, e := NewSessionSnapshot(d)
+		rcReject(t, e)
+	})
+}
+
+func TestRCStorageEquivalentSubjectObservation(t *testing.T) {
+	a := rsScope("a", 1)
+	v := rcVersion(a, "store", 1)
+	first := rsMust(rcRecovery(a, "store", "first", rcRV(v), None[RecoveryVersion]()))
+	secondData := rsMust(rcRecovery(a, "store", "second", rcRV(v), None[RecoveryVersion]())).Data()
+	record := secondData.Record.Data()
+	subject := record.Subject.Data()
+	subject.Repository = Some(a.Data().ID.Repository())
+	record.Subject = rsMust(NewRecoverySubject(subject))
+	secondData.Record = rsMust(NewRecoveryRecord(record))
+	second := rsMust(NewStorageRecovery(secondData))
+	_, e := NewStorageLoadObservation(StorageLoadObservationData{State: Corrupt, Version: Some(v), Recovery: []StorageRecovery{first, second}})
+	t.Logf("same store/worktree, optional consistent repository additionally present: %v", e)
+	rcAccept(t, e)
+}
+
+func TestRCExpectedAbsenceAnchorTransition(t *testing.T) {
+	a := rsScope("a", 1)
+	before := rsMust(NewRunStorageVersion(a, "observed-root-anchor/.gh-tree-absent", false, 0, [32]byte{}))
+	after := rcVersion(a, "established-gh-tree-parent-object", 1)
+	_, e := rcRecovery(a, "established-gh-tree-parent-object", "manifest", rcRV(before), rcRV(after))
+	t.Logf("known original absence below anchor and known proposed version under newly established parent: %v", e)
+	// This is an interpretation probe, not a disposition assertion: Persistence
+	// may represent Original as the guarded prepublication absence observation
+	// after the parent is established. The manifest still owns the input token.
+	beforePublish := rsMust(NewRunStorageVersion(a, "established-gh-tree-parent-object", false, 0, [32]byte{}))
+	_, e = rcRecovery(a, "established-gh-tree-parent-object", "manifest", rcRV(beforePublish), rcRV(after))
+	rcAccept(t, e)
+	document := rsMust(NewRunConfigDocument(RunConfigDocumentData{SchemaVersion: 1, UnknownMembers: rsMust(NewJSONMembers(nil))}))
+	request, e := ports.NewRunConfigCommit(a, before, document)
+	rcAccept(t, e)
+	if request.Expected() != before {
+		t.Fatal("original expected anchor token lost")
+	}
+}
+
+func TestRCCorrectionRestartAdmission(t *testing.T) {
+	a := rsScope("a", 1)
+	old := rsMust(NewSessionStopResult(SessionStopResultData{Session: rsSnapshot(a, 5, Cleaned), CleanupComplete: true, Effects: rsEffects(RuntimeResources, AppliedVerified)}))
+	refused := rsMust(NewSessionStartResult(SessionStartResultData{Effects: rsEffects(RuntimeResources, NotStarted)}))
+	_, e := NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(refused)})
+	rcReject(t, e)
+	for _, id := range []uint64{4, 5} {
+		t.Run("old-or-equal-identity", func(t *testing.T) {
+			data := rsSnapshot(a, id, Running).Data()
+			data.RestartOf = Some(old.Data().Session.Data().SessionID)
+			snap, e := NewSessionSnapshot(data)
+			if e != nil {
+				t.Logf("identity contradiction rejected in snapshot: %v", e)
+				return
+			}
+			_, e = NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(rcStart(snap, true))})
+			rcReject(t, e)
+		})
+	}
+	t.Run("cancel-before-admission", func(t *testing.T) {
+		_, e := NewSessionRestartResult(SessionRestartResultData{Old: old, CancellationAsked: true})
+		rcAccept(t, e)
+	})
+	t.Run("admitted-failure-new-id", func(t *testing.T) {
+		data := rsSnapshot(a, 6, CleanupFailed).Data()
+		data.RestartOf = Some(old.Data().Session.Data().SessionID)
+		_, e := NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(rcStart(rsMust(NewSessionSnapshot(data)), false))})
+		rcAccept(t, e)
+	})
+	t.Run("failed-old-cleanup-no-new-id", func(t *testing.T) {
+		prior := rsMust(NewSessionStopResult(SessionStopResultData{Session: rsSnapshot(a, 5, CleanupFailed), Effects: rsEffects(RuntimeResources, EffectPartial)}))
+		data := rsSnapshot(a, 6, Running).Data()
+		data.RestartOf = Some(prior.Data().Session.Data().SessionID)
+		_, e := NewSessionRestartResult(SessionRestartResultData{Old: prior, Replacement: Some(rcStart(rsMust(NewSessionSnapshot(data)), true))})
+		rcReject(t, e)
+	})
+}
