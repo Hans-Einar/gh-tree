@@ -164,7 +164,7 @@ func TestUnixRecoveryUnsupportedEntryPreservesAllTypedLoadFamilies(t *testing.T)
 			l, e := s.LoadRunConfig(context.Background(), scope)
 			observation, err, valid, document = l.Observation(), e, l.Valid(), l.Document().Present()
 		}
-		if err == nil || !valid || !document || observation.Data().State != api.ValidCurrent || !observation.Data().Version.Present() {
+		if err == nil || !valid || !document || observation.Data().State != api.ValidCurrent || !observation.Data().Version.Present() || len(observation.Data().Recovery) == 0 {
 			t.Fatalf("recovery error erased family %v load: valid=%v document=%v state=%v error=%v", family, valid, document, observation.Data().State, err)
 		}
 	}

@@ -65,6 +65,7 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 	var names []string
 	records := map[string]struct{}{}
 	var size int64
+	var observedErr error
 	entries := 0
 	for {
 		if err := ctx.Err(); err != nil {
@@ -82,19 +83,6 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 			if !singleName(name) {
 				return names, len(records), size, errors.New("invalid recovery basename")
 			}
-			object, openErr := nativeOpenDocument(parent, name)
-			if openErr != nil {
-				return names, len(records), size, openErr
-			}
-			n, sizeErr := nativeObjectSize(object)
-			sizeErr = errors.Join(sizeErr, object.close())
-			if sizeErr != nil {
-				return names, len(records), size, sizeErr
-			}
-			if n < 0 || n > maxBytes-size {
-				return names, len(records), size, errRecoveryCapacity
-			}
-			size += n
 			key := strings.TrimPrefix(nativeNameKey(name), prefix)
 			// A valid operation has one 256-bit nonce, followed by a suffix.
 			// Malformed matching names each count as an independent record.
@@ -106,14 +94,29 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 			records[key] = struct{}{}
 			names = append(names, name)
 			if len(records) > maxRecords || len(names) > 5*maxRecords {
-				return names, len(records), size, errRecoveryCapacity
+				return names, len(records), size, errors.Join(observedErr, errRecoveryCapacity)
 			}
+			object, openErr := nativeOpenDocument(parent, name)
+			if openErr != nil {
+				observedErr = errors.Join(observedErr, openErr)
+				continue
+			}
+			n, sizeErr := nativeObjectSize(object)
+			sizeErr = errors.Join(sizeErr, object.close())
+			if sizeErr != nil {
+				observedErr = errors.Join(observedErr, sizeErr)
+				continue
+			}
+			if n < 0 || n > maxBytes-size {
+				return names, len(records), size, errors.Join(observedErr, errRecoveryCapacity)
+			}
+			size += n
 		}
 		if errors.Is(err, io.EOF) {
-			return names, len(records), size, nil
+			return names, len(records), size, observedErr
 		}
 		if err != nil {
-			return names, len(records), size, err
+			return names, len(records), size, errors.Join(observedErr, err)
 		}
 	}
 }

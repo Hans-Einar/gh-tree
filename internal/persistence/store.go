@@ -254,6 +254,9 @@ func loadAcquired(ctx context.Context, c *nativeChain, family api.StorageFamily,
 }
 
 func storageDiagnostic(stage string, cause error) api.Diagnostic {
+	if notices, only := recoveryNotices(cause); only && len(notices) != 0 {
+		return notices[0]
+	}
 	code := api.IOFailure
 	if nativeUnsupported(cause) {
 		code = api.Unsupported

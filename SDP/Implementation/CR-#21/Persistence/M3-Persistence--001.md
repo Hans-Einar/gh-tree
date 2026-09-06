@@ -369,6 +369,23 @@ That path still requires explicit native controls and independent review.
 
 ## Exact successor work
 
+P3g recovery observation correction (this commit) distinguishes a later write to
+the proved retained payload inode from replacement of that artifact. Payload
+RecoveryID and historical shared Record remain unchanged; Identity reflects the
+changed byte observation and a precise notice accompanies the usable current
+document. A freshly validated Expected can commit while preserving that notice.
+Changed raw-original backups and unproved native incarnations still refuse.
+Bounded inventory continues past unreadable/unsupported entries to retain other
+readable manifest facts; commit admission refuses unknown capacity after retaining
+those independent records. No entry is removed, adopted or replayed.
+
+Windows complete package PASS. Native Linux/ext4 UID65534 targeted controls PASS:
+same-inode external payload edit preserves IDs/Record, changes SourceVersion,
+reports a notice and permits a fresh intent; unsupported recovery entry in each
+of all3 families preserves valid current document/version and readable recovery
+records plus error. Full acceptance/native profiles and resource/fault controls
+remain outstanding as listed below.
+
 P3f early independent audit corrections (this commit) address three confirmed
 defects from the separate native Linux/ext4 UID65534 audit of5e8aaeb. A retained
 publisher descriptor alone did not establish that Unix's `.publication` pathname

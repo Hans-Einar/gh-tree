@@ -326,7 +326,14 @@ func observeManifest(ctx context.Context, chain *nativeChain, name, basename, lo
 			content, readErr := nativeRead(ctx, observed)
 			err = readErr
 			if err == nil && (uint64(len(content)) != artifact.Length || sha256.Sum256(content) != artifact.Digest) {
-				err = errors.New("recovery artifact content changed")
+				if artifact.Kind == api.RetainedPayload {
+					// Native incarnation is still proved. Preserve its ID and
+					// historical record while returning the new observation token.
+					artifact.Length, artifact.Digest = uint64(len(content)), sha256.Sum256(content)
+					resultErr = errors.Join(resultErr, &recoveryPayloadChanged{})
+				} else {
+					err = errors.New("raw original backup content changed")
+				}
 			}
 		}
 		err = errors.Join(err, observed.close())

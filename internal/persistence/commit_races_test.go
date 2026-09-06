@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -36,6 +37,48 @@ func externalReplacement(t testing.TB, root, target string, raw []byte, present 
 	}
 	if err := nativePublish(payload, c.parent(), "external-editor-payload", target, present); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestCommitLatePayloadWriteKeepsIDAndAllowsFreshExpectedIntent(t *testing.T) {
+	root := physicalStoreTemp(t)
+	s := newTestStore(t, root)
+	loaded, err := s.LoadUserConfig(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	v, _ := loaded.Observation().Data().Version.Value()
+	first, err := s.CommitUserConfig(context.Background(), userProposal(t, v, "first"))
+	assertCommitted(t, first, err)
+	before := map[api.RecoveryID]api.StorageRecovery{}
+	for _, recovery := range first.Data().Recovery {
+		before[recovery.Data().Record.Data().RecoveryID] = recovery
+	}
+	if err := os.WriteFile(filepath.Join(root, "config.json"), []byte(`{"schemaVersion":1,"stripPrefixes":["external"]}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	loaded, err = newTestStore(t, root).LoadUserConfig(context.Background())
+	if err == nil || !loaded.Valid() || !loaded.Document().Present() || loaded.Observation().Data().State != api.ValidCurrent {
+		t.Fatalf("changed payload erased current: %v %v", loaded, err)
+	}
+	changed := false
+	for _, recovery := range loaded.Observation().Data().Recovery {
+		old, ok := before[recovery.Data().Record.Data().RecoveryID]
+		if !ok || !reflect.DeepEqual(old.Data().Record, recovery.Data().Record) {
+			t.Fatal("late edit reminted/changed historical recovery record")
+		}
+		if recovery.Data().Kind == api.RetainedPayload && !recovery.Data().Identity.Equal(old.Data().Identity) {
+			changed = true
+		}
+	}
+	if !changed {
+		t.Fatal("payload's changed byte observation missing")
+	}
+	v, _ = loaded.Observation().Data().Version.Value()
+	second, err := s.CommitUserConfig(context.Background(), userProposal(t, v, "fresh-intent"))
+	assertCommitted(t, second, err)
+	if len(second.Data().Diagnostics) == 0 {
+		t.Fatal("fresh commit silently discarded old payload observation notice")
 	}
 }
 

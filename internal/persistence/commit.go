@@ -299,9 +299,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	r.ProposedVersion = api.Some(proposedVersion)
 	stage = "admission"
 	names, records, retainedBytes, err := inventoryRecovery(ctx, c.parent(), name, s.options.RecoveryMaxRecords, s.options.RecoveryMaxBytes)
-	if err != nil {
-		return result, err
-	}
+	inventoryErr := err
 	for _, entry := range names {
 		if !manifestName(entry) {
 			continue
@@ -309,8 +307,15 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		retained, observeErr := observeManifest(ctx, c, entry, name, locator, proposed.family, effectiveScope)
 		r.Recovery = append(r.Recovery, retained...)
 		if observeErr != nil {
-			return result, observeErr
+			if notices, only := recoveryNotices(observeErr); only {
+				r.Diagnostics = append(r.Diagnostics, notices...)
+			} else {
+				inventoryErr = errors.Join(inventoryErr, observeErr)
+			}
 		}
+	}
+	if inventoryErr != nil {
+		return result, inventoryErr
 	}
 	reserve := int64(maxManifestJournalBytes + 2*len(raw) + 2*len(current.raw))
 	if records >= s.options.RecoveryMaxRecords || reserve > s.options.RecoveryMaxBytes-retainedBytes {
