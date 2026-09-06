@@ -5,7 +5,9 @@ on:
     branches:
       - main
       - "codex/**"
+      - "codereview-21/**"
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,21 +17,70 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  prepare:
+    name: Accepted target inventory and M3 prerequisites
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.inventory.outputs.targets }}
+      runtime-helper: ${{ steps.inventory.outputs.runtime-helper }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Require all twelve accepted targets and classify Runtime prerequisites
+        id: inventory
+        shell: bash
+        run: |
+          matrix=$(go run ./internal/composition/architecture -targets)
+          echo "targets=$matrix" >> "$GITHUB_OUTPUT"
+          state=$(go run ./internal/composition/architecture -runtime-prerequisite)
+          echo "runtime-helper=$state" >> "$GITHUB_OUTPUT"
+          if [[ "$state" == pending-m3 ]]; then
+            echo 'Runtime helper conformance NOT RUN: M3 Runtime/helper inputs have not been integrated.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   test:
     name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        include:
+          - os: ubuntu-latest
+            architecture: x64
+            goarch: amd64
+          - os: macos-latest
+            architecture: arm64
+            goarch: arm64
+          - os: windows-latest
+            architecture: x64
+            goarch: amd64
+          - os: windows-11-arm
+            architecture: arm64
+            goarch: arm64
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+          architecture: ${{ matrix.architecture }}
+      - name: Record actual native environment
+        shell: pwsh
+        env:
+          EXPECTED_GOARCH: ${{ matrix.goarch }}
+        run: |
+          Write-Output "source=$env:GITHUB_SHA ref=$env:GITHUB_REF run=$env:GITHUB_RUN_ID attempt=$env:GITHUB_RUN_ATTEMPT"
+          Write-Output "runner=$env:RUNNER_OS/$env:RUNNER_ARCH image=$env:ImageOS version=$env:ImageVersion"
+          Write-Output ([System.Runtime.InteropServices.RuntimeInformation]::OSDescription)
+          Write-Output "host=$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) shell=$($PSVersionTable.PSVersion)"
+          go version
+          go env GOHOSTOS GOHOSTARCH GOOS GOARCH CGO_ENABLED GOTOOLCHAIN
+          git --version
+          gh --version
+          go list -m all
+          if ((go env GOARCH) -ne $env:EXPECTED_GOARCH -or (go env GOHOSTARCH) -ne $env:EXPECTED_GOARCH) { throw 'Native Go architecture mismatch' }
+          if ($env:EXPECTED_GOARCH -eq 'arm64' -and [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne 'Arm64') { throw 'ARM64 job is not on native ARM64' }
       - run: go test ./...
       - run: go vet ./...
       - run: go build -trimpath ./cmd/gh-tree
@@ -45,35 +96,53 @@ jobs:
       - run: go test -race ./...
 
   release-targets:
-    name: Build ${{ matrix.goos }}/${{ matrix.goarch }}
+    name: Build and architecture ${{ matrix.goos }}/${{ matrix.goarch }}
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - goos: windows
-            goarch: amd64
-            extension: .exe
-          - goos: linux
-            goarch: amd64
-            extension: ""
-          - goos: linux
-            goarch: arm64
-            extension: ""
-          - goos: darwin
-            goarch: amd64
-            extension: ""
-          - goos: darwin
-            goarch: arm64
-            extension: ""
+      matrix: ${{ fromJSON(needs.prepare.outputs.targets) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - name: Cross-compile
+      - name: Check selected production, exported types and separate test imports
+        run: go run ./internal/composition/architecture -target '${{ matrix.goos }}/${{ matrix.goarch }}'
+      - name: Cross-compile exact public asset name
         env:
           CGO_ENABLED: 0
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -trimpath -o "gh-tree-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.extension }}" ./cmd/gh-tree
+          GOAMD64: v1
+          GO386: sse2
+          GOARM: '7'
+          GOARM64: v8.0
+        run: go build -trimpath -o '${{ runner.temp }}/${{ matrix.asset }}' ./cmd/gh-tree
+
+  runtime-helper:
+    name: Runtime helper source closure and reproducibility (M3)
+    needs: prepare
+    if: needs.prepare.outputs.runtime-helper == 'ready'
+    runs-on: windows-latest
+    env:
+      CGO_ENABLED: 0
+      GOTOOLCHAIN: local
+      GOFLAGS: -mod=readonly
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          architecture: x64
+      - name: Require canonical builder and real Runtime-owned verifier
+        shell: pwsh
+        run: |
+          go version
+          go env GOHOSTOS GOHOSTARCH
+          if ((go env GOVERSION) -ne 'go1.25.0' -or (go env GOHOSTOS) -ne 'windows' -or (go env GOHOSTARCH) -ne 'amd64') { throw 'Wrong canonical helper builder' }
+          go run ./internal/runtime/cmd/helpergen -check
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime helper source-closure/rebuild verification failed' }
+          if (git status --porcelain --untracked-files=all -- internal/runtime) { throw 'Helper verification changed committed or untracked Runtime inputs' }
+      - name: Ordinary committed-input build without generation
+        run: go build -trimpath -o '${{ runner.temp }}/gh-tree.exe' ./cmd/gh-tree

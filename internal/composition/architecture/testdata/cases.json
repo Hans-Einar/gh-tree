@@ -1,0 +1,229 @@
+[
+  {
+    "Name": "api-to-ports",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/application/api/bad.go": "package api\nimport _ \"$MODULE/internal/application/ports\"\n"
+    }
+  },
+  {
+    "Name": "state-to-view",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/tuiview/view.go": "package tuiview\n",
+      "internal/tuistate/state.go": "package tuistate\nimport _ \"$MODULE/internal/tuiview\"\n"
+    }
+  },
+  {
+    "Name": "viewmodel-to-api",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/tuistate/viewmodel/bad.go": "package viewmodel\nimport _ \"$MODULE/internal/application/api\"\n"
+    }
+  },
+  {
+    "Name": "viewmodel-to-parent",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/tuistate/state.go": "package tuistate\n",
+      "internal/tuistate/viewmodel/bad.go": "package viewmodel\nimport _ \"$MODULE/internal/tuistate\"\n"
+    }
+  },
+  {
+    "Name": "usecase-to-coordinator",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/application/coordinator.go": "package application\n",
+      "internal/application/usecases/bad.go": "package usecases\nimport _ \"$MODULE/internal/application\"\n"
+    }
+  },
+  {
+    "Name": "adapter-to-adapter",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/runtime/registry.go": "package runtime\n",
+      "internal/git/bad.go": "package git\nimport _ \"$MODULE/internal/runtime\"\n"
+    }
+  },
+  {
+    "Name": "host-to-adapter",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/git/adapter.go": "package git\n",
+      "internal/composition/host/bad.go": "package host\nimport _ \"$MODULE/internal/git\"\n"
+    }
+  },
+  {
+    "Name": "domain-os",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/domain/bad.go": "package domain\nimport _ \"os\"\n"
+    }
+  },
+  {
+    "Name": "domain-json",
+    "Want": "Domain cannot own JSON",
+    "Files": {
+      "internal/domain/bad.go": "package domain\ntype Bad struct { Value string `json:\"value\"` }\n"
+    }
+  },
+  {
+    "Name": "fmt-print-alias",
+    "Want": "I/O symbol fmt.Println",
+    "Files": {
+      "internal/tuistate/bad.go": "package tuistate\nimport f \"fmt\"\nvar output = f.Println\n"
+    }
+  },
+  {
+    "Name": "time-now-alias",
+    "Want": "clock/environment symbol time.Now",
+    "Files": {
+      "internal/application/api/bad.go": "package api\nimport t \"time\"\nvar now = t.Now\n"
+    }
+  },
+  {
+    "Name": "selected-windows-only-import",
+    "Target": "windows/arm64",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/tuistate/bad_windows.go": "package tuistate\nimport _ \"os/exec\"\n"
+    }
+  },
+  {
+    "Name": "selected-freebsd-only-import",
+    "Target": "freebsd/386",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/tuistate/bad_freebsd.go": "package tuistate\nimport _ \"net/http\"\n"
+    }
+  },
+  {
+    "Name": "unsupported-build-tag",
+    "Want": "not selected by any accepted target",
+    "Files": {
+      "internal/domain/hidden.go": "//go:build architecture_bypass\n\npackage domain\n"
+    }
+  },
+  {
+    "Name": "unknown-layer",
+    "Want": "package inventory forbids",
+    "Files": {
+      "internal/shared/value.go": "package shared\n"
+    }
+  },
+  {
+    "Name": "near-prefix-package",
+    "Want": "package inventory forbids",
+    "Files": {
+      "internal/domainish/value.go": "package domainish\n"
+    }
+  },
+  {
+    "Name": "exposed-callback-alias",
+    "Want": "exported boundary exposes callback",
+    "Files": {
+      "internal/application/api/bad.go": "package api\ntype hidden = func()\ntype Result struct { Continue hidden }\n"
+    }
+  },
+  {
+    "Name": "exposed-inferred-native-type",
+    "Want": "exported API exposes forbidden type time.Timer",
+    "Files": {
+      "internal/application/api/bad.go": "package api\nimport \"time\"\nfunc private() *time.Timer { return nil }\nvar Exposed = private()\n"
+    }
+  },
+  {
+    "Name": "exposed-nested-any",
+    "Want": "untyped any/interface{} payload",
+    "Files": {
+      "internal/application/api/bad.go": "package api\ntype hidden struct { Payload any }\ntype Result struct { Values []hidden }\n"
+    }
+  },
+  {
+    "Name": "external-tests-do-not-bypass-graph",
+    "Want": "forbidden test import",
+    "Files": {
+      "internal/git/adapter.go": "package git\n",
+      "internal/runtime/registry.go": "package runtime\n",
+      "internal/git/bad_test.go": "package git_test\nimport _ \"$MODULE/internal/runtime\"\n"
+    }
+  },
+  {
+    "Name": "private-subpackages-and-pure-values",
+    "Files": {
+      "internal/git/transport/transport.go": "package transport\nimport \"context\"\nfunc Run(context.Context) error { return nil }\n",
+      "internal/git/adapter.go": "package git\nimport (\"context\"; \"$MODULE/internal/git/transport\")\nfunc Run(ctx context.Context) error { return transport.Run(ctx) }\n",
+      "internal/tuistate/state.go": "package tuistate\nimport (\"fmt\"; \"time\")\nfunc Text(t time.Time) string { return fmt.Sprintf(\"%s\", t.Format(time.RFC3339)) }\n",
+      "internal/application/api/optional.go": "package api\ntype Optional[T any] struct { value T }\nfunc Some[T any](v T) Optional[T] { return Optional[T]{value:v} }\n",
+      "internal/tuistate/state_test.go": "package tuistate_test\nimport (\"os\"; \"testing\"; state \"$MODULE/internal/tuistate\")\nfunc TestFixture(t *testing.T) { _ = os.Getenv(\"TEMP\"); _ = state.Text }\n"
+    }
+  },
+  {
+    "Name": "runtime-broker-layout",
+    "Target": "windows/arm64",
+    "Files": {
+      "internal/runtime/registry.go": "package runtime\nimport (_ \"$MODULE/internal/runtime/broker\"; _ \"$MODULE/internal/runtime/brokerassets\")\n",
+      "internal/runtime/broker/engine_windows.go": "package broker\nimport _ \"os/exec\"\n",
+      "internal/runtime/broker/cmd/main_windows.go": "package main\nimport _ \"$MODULE/internal/runtime/broker\"\nfunc main(){}\n",
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport _ \"embed\"\n",
+      "internal/runtime/cmd/helpergen/main.go": "package main\nimport _ \"os/exec\"\nfunc main(){}\n"
+    }
+  },
+  {
+    "Name": "broker-cannot-embed-itself",
+    "Target": "windows/amd64",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\n",
+      "internal/runtime/broker/bad_windows.go": "package broker\nimport _ \"$MODULE/internal/runtime/brokerassets\"\n"
+    }
+  },
+  {
+    "Name": "broker-cannot-import-registry",
+    "Target": "windows/amd64",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/runtime/registry.go": "package runtime\n",
+      "internal/runtime/broker/bad_windows.go": "package broker\nimport _ \"$MODULE/internal/runtime\"\n"
+    }
+  },
+  {
+    "Name": "discovery-cannot-execute",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/launchdiscovery/bad.go": "package launchdiscovery\nimport _ \"os/exec\"\n"
+    }
+  },
+  {
+    "Name": "composition-test-harness",
+    "Files": {
+      "internal/composition/root.go": "package composition\n",
+      "internal/tuistate/state.go": "package tuistate\n",
+      "internal/git/adapter.go": "package git\n",
+      "internal/composition/harness_test.go": "package composition_test\nimport (_ \"$MODULE/internal/tuistate\"; _ \"$MODULE/internal/git\"; _ \"os/exec\")\n"
+    }
+  },
+  {
+    "Name": "adapter-exported-native-handle",
+    "Want": "exported API exposes forbidden type os.File",
+    "Files": {
+      "internal/git/bad.go": "package git\nimport \"os\"\ntype hidden = *os.File\nfunc Open() hidden {return nil}\n"
+    }
+  },
+  {
+    "Name": "private-subpackage-is-not-cross-layer-api",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/git/transport/value.go": "package transport\n",
+      "internal/composition/root.go": "package composition\nimport _ \"$MODULE/internal/git/transport\"\n"
+    }
+  },
+  {
+    "Name": "new-code-cannot-use-legacy-backend",
+    "Want": "package inventory forbids",
+    "Files": {
+      "internal/github/adapter/bad.go": "package adapter\nimport _ \"$MODULE/internal/github\"\n",
+      "internal/github/client.go": "package github\n"
+    }
+  }
+]

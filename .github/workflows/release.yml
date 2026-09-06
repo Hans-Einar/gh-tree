@@ -1,46 +1,79 @@
-name: Release
+name: Release staging (publication deferred to M8)
 
+# No push/tag/bootstrap trigger and no release/token-write capability. This is
+# compilation staging only; M8 must add separately reviewed exact-SHA publication.
 on:
-  push:
-    tags:
-      - "v*"
-    branches:
-      - "release/v*-bootstrap"
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Full forty-character source commit to stage; no tag is created
+        required: true
+        type: string
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release-staging-${{ inputs.source_sha }}
+  cancel-in-progress: false
 
 jobs:
-  release:
-    name: Publish precompiled extension
+  stage:
+    name: Stage twelve assets without publishing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 0
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - name: Resolve release tag
-        id: release
+      - name: Verify selected source and record prerequisites
         shell: bash
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
         run: |
-          tag="${GITHUB_REF_NAME}"
-          if [[ "${GITHUB_REF_TYPE}" == "branch" ]]; then
-            tag="${tag#release/}"
-            tag="${tag%-bootstrap}"
-          fi
-          if [[ ! "${tag}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
-            echo "invalid release tag: ${tag}" >&2
-            exit 1
-          fi
-          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
-      - name: Verify release commit
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'A full lowercase source SHA is required' >&2; exit 1; }
+          [[ "$(git rev-parse HEAD)" == "$SOURCE_SHA" ]] || { echo 'Source SHA mismatch' >&2; exit 1; }
+          go version
+          git --version
+          gh --version
+          go run ./internal/composition/architecture -runtime-prerequisite
+          echo 'Compilation staging only. No M8/native/helper/Slice conformance, release approval or install/upgrade proof is claimed.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Build complete accepted manifest
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          WORKFLOW_SHA: ${{ github.workflow_sha }}
+          CGO_ENABLED: 0
+          GOAMD64: v1
+          GO386: sse2
+          GOARM: '7'
+          GOARM64: v8.0
         run: |
-          go test ./...
-          go vet ./...
-      - uses: cli/gh-extension-precompile@v2
+          stage="$RUNNER_TEMP/gh-tree-staging"
+          mkdir "$stage"
+          go run ./internal/composition/architecture -targets > "$RUNNER_TEMP/targets.json"
+          jq -e '.include | length == 12' "$RUNNER_TEMP/targets.json"
+          while IFS= read -r target; do
+            goos=$(jq -r .goos <<< "$target")
+            goarch=$(jq -r .goarch <<< "$target")
+            asset=$(jq -r .asset <<< "$target")
+            GOOS="$goos" GOARCH="$goarch" go build -trimpath -o "$stage/$asset" ./cmd/gh-tree
+            test -s "$stage/$asset"
+            hash=$(sha256sum "$stage/$asset" | cut -d ' ' -f 1)
+            size=$(stat -c %s "$stage/$asset")
+            jq -cn --arg name "$asset" --arg sha256 "$hash" --argjson bytes "$size" '{name:$name,sha256:$sha256,bytes:$bytes}' >> "$RUNNER_TEMP/staged-assets.ndjson"
+          done < <(jq -c '.include[]' "$RUNNER_TEMP/targets.json")
+          jq -s --arg source "$SOURCE_SHA" --arg workflow "$WORKFLOW_SHA" --arg go "$(go version)" \
+            '{state:"compilation_only_M8_not_verified",sourceSHA:$source,workflowSHA:$workflow,toolchain:$go,assets:.}' \
+            "$RUNNER_TEMP/staged-assets.ndjson" > "$stage/manifest.json"
+          jq -e '.assets | length == 12 and (map(.name) | unique | length == 12)' "$stage/manifest.json"
+          test "$(find "$stage" -maxdepth 1 -type f | wc -l)" -eq 13
+      - uses: actions/upload-artifact@v4
         with:
-          go_version_file: go.mod
-          go_build_options: ./cmd/gh-tree
-          release_tag: ${{ steps.release.outputs.tag }}
+          name: compilation-staging-${{ inputs.source_sha }}
+          path: ${{ runner.temp }}/gh-tree-staging/*
+          if-no-files-found: error
+          retention-days: 14
