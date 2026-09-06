@@ -98,3 +98,34 @@ Next permitted action: author corrects M3GH-R01 in the owned adapter/tests and
 updates its report, freezes/pushes corrected technical SHA; independent bounded
 re-review checks sibling retention plus strict rejection/positive controls.
 Master holds GitHub for Git-first serial integration and exact integrated CI.
+
+## Bounded re-review — M3GH-R01 resolved
+
+Current technical disposition: **ACCEPT** at corrected frozen/pushed SHA
+`738261756b86930a5f2d7c8374f5eaf3deb56bf0`; no blocking review findings remain.
+The initial rejection and original candidate above remain historical evidence.
+The worktree was clean at this SHA. Actual correction changes only decodeList's
+global UTF-8 admission, adds `record_utf8_test.go`, and updates the worker report.
+Native supervision, transport, creation and remote fact methods are unchanged.
+
+Independently inspected the complete correction: RawMessage preserves each
+record's bytes; unchanged strictJSON rejects malformed UTF-8 before typed scalar
+decoding. Both valid siblings now survive unchanged with Unknown and a record
+diagnostic. Framing still refuses broken syntax, trailing values, wrong root,
+null and invalid bytes outside a scalar; a valid empty array remains accepted.
+No replacement-decoded identity is admitted.
+
+Native Windows amd64, Go1.25.0, independently executed with exit0:
+
+```text
+go test -overlay C:/Users/hanse/.codex/tmp/gh-tree-m3-github-review/overlay.json ./internal/github/adapter -run TestIndependent -count=1 -v
+go test ./internal/github/adapter -run 'TestMalformed(Branch|PullRequest)UTF8|TestListFraming|TestRepositoryScopeAndStrictParsing|TestBranchMalformedRecord' -count=1 -v
+```
+
+All four original independent groups (including both previously failing cases)
+and five targeted parser/framing/regression tests PASS. git diff --check passes.
+Prior exact-source native evidence is reused for unchanged native code. Corrected
+source CI is a separate Master gate and is not claimed passed by this record.
+No integration, whole Slice closure or release acceptance occurs here. Next:
+Master checks corrected source CI, holds GitHub until accepted Git integration,
+then performs the required serial integration and exact integrated-SHA gate.
