@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "private_identity_adoption_dispatch_ready",
+      "state": "identity_adoption_and_freebsd_assessment",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -719,7 +719,7 @@
         "run": 34063088464,
         "result": "FAILED 6 jobs: Windows tunneling regression and non-Windows test selection; latter fixed by6fc6c2c, all12 test binaries compile"
       },
-      "activeWorker": "m3_persistence_finish_worker",
+      "activeWorker": "m3_persistence_identity_worker",
       "pendingNativeFinding": "Native Windows repeated-commit recovery fails when NTFS rename transfers CreationTime with same full FileID; failing12-cycle control preserved. FreeBSD system-EA profile and no-birth/source-name interval proof remain.",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
@@ -743,7 +743,9 @@
         "result": "16 SUCCESS, 3 FAILURE (Windows amd64/ARM64 and native FreeBSD), helper skip; test-selection compilation failure resolved"
       },
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
-      "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending"
+      "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
+      "identityWorkerBase": "c515d31e0a1c241622104291c49e3335e3f5927e",
+      "freebsdAssessment": "SDP/Implementation/CR-#21/Persistence/M3-FreeBSD-Assessment--001.md"
     },
     {
       "id": "IMPL64",
