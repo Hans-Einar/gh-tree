@@ -747,7 +747,7 @@
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "independent_review",
+      "state": "bounded_correction",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -777,13 +777,15 @@
       "sourceCI": {
         "run": 34059784449,
         "result": "SUCCESS; independent acceptance pending"
-      }
+      },
+      "reviewHead": "591cb46cc1a5b5e57deefb12eb11fc2c6bec8453",
+      "reviewDisposition": "CHANGES_REQUIRED: M364-M01 Make comment classification"
     },
     {
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "authorized_queued",
+      "state": "implementation_dispatch_ready",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -799,12 +801,14 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
+      "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2",
       "requiredChecks": [
         "V-RUN-01..08"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "activeWorker": "m3_runtime_worker",
+      "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d"
     },
     {
       "id": "IMPL66",
@@ -1969,7 +1973,8 @@
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
     "IMPL64",
-    "IMPL63"
+    "IMPL63",
+    "IMPL65"
   ],
   "pausedInitialContributions": [
     "IMPL61",

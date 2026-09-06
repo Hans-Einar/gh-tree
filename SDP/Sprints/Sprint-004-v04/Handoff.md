@@ -32,6 +32,10 @@ review now uses its frozen2a18fdd/report8e2d2d1 candidate under#64. It reviews o
 that passive adapter and is not a retry, relabeling or substitute for the failed
 Git review. No model/permission change or withheld-output retrieval is authorized.
 The Git gate remains open; all original M3..M8 requirements remain.
+Runtime#65 also starts independently from26d5f4f after its accepted M2/frozen
+prerequisites and shared CI were verified; its authoring does not depend on Git
+review. Discovery review found M364-M01 and a bounded parser correction is active.
+Persistence native identity proposal assessment is active; no adoption yet.
 
 ## Durable state
 

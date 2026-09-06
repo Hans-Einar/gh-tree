@@ -248,3 +248,12 @@ frozen artifact identity contract and unchanged class65/class11 publication.
 This is separate from the blocked Git audit. Product adoption remains withheld
 until the private protocol's scope, negative controls and crash association are
 reviewed; no directory convention, timestamp repair or original-ID mutation waiver.
+
+#65 Runtime dispatch is independent of concrete adapter implementation: the Issue
+requires accepted M2 values/ports and frozen Runtime authority, already present.
+Its clean planned branch was fast-forwarded to26d5f4f (verified executable baseline
+d5eeaac and current shared native CI/governance), then pushed before authoring.
+Fresh worker owns only Runtime and its report. No Git-review retry/substitution,
+serial integration, concrete adapter coupling or native safety waiver occurs.
+The first Runtime input activates the existing helper conformance gate; incomplete
+checkpoints remain explicit. No permanent placeholder implementation is accepted.
