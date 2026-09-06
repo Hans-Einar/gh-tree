@@ -23,8 +23,14 @@ func consistentSessionStartResult(d SessionStartResultData) error {
 }
 func consistentSessionRestartResult(d SessionRestartResultData) error {
 	if replacement, p := d.Replacement.Value(); p {
+		if !replacement.data.Session.Present() {
+			return invalid("replacement without registry admission")
+		}
 		if s, p := replacement.data.Session.Value(); p {
 			old := d.Old.data.Session
+			if s.data.SessionID.Value() <= old.data.SessionID.Value() {
+				return invalid("replacement identity is not newer")
+			}
 			if s.data.WorktreeID != old.data.WorktreeID || !sameRestartSummary(old.data.Display, s.data.Display) {
 				return invalid("restart original specification")
 			}

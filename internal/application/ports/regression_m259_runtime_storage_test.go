@@ -317,3 +317,18 @@ func TestM259RestartSpecificationAndObservationControls(t *testing.T) {
 		t.Fatal("restart changed published argv")
 	}
 }
+
+func TestM259ReplacementRequiresNewAdmission(t *testing.T) {
+	scope := rsScope("a", 1)
+	old := rsMust(NewSessionStopResult(SessionStopResultData{Session: rsSnapshot(scope, 5, Cleaned), CleanupComplete: true, Effects: rsEffects(RuntimeResources, AppliedVerified)}))
+	refused := rsMust(NewSessionStartResult(SessionStartResultData{Effects: rsEffects(RuntimeResources, NotStarted)}))
+	if _, e := NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(refused)}); e == nil {
+		t.Fatal("present replacement omitted admitted identity")
+	}
+	d := rsSnapshot(scope, 4, Running).Data()
+	d.RestartOf = Some(old.Data().Session.Data().SessionID)
+	older := rsMust(NewSessionStartResult(SessionStartResultData{Session: Some(rsMust(NewSessionSnapshot(d))), Established: true, Effects: rsEffects(RuntimeResources, AppliedVerified)}))
+	if _, e := NewSessionRestartResult(SessionRestartResultData{Old: old, Replacement: Some(older)}); e == nil {
+		t.Fatal("replacement identity regressed")
+	}
+}
