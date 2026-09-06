@@ -1,7 +1,7 @@
 # M3 Persistence contribution — Issue #63
 
-State: IN PROGRESS; durable codec/version and Windows/Unix acquisition milestones,
-not adapter acceptance.
+State: IN PROGRESS; codec/version, native mechanisms/security and bound typed-load
+milestones; public commit/recovery and adapter acceptance remain pending.
 Branch: `codereview-21/layer-persistence`.
 Initial base: `412f33e477cec03cb6eafe7b846c9bcdd02c0a25`.
 Worker owns only `internal/persistence/` and this report. Master supplies separate
@@ -91,9 +91,10 @@ PowerShell test flags. No Linux toolchain installation/global change was made.
 
 ## Remaining native and acceptance work
 
-P2: native constructor/run binding, no-follow retained object acquisition, stable
-cooperative locks, coherent bounded reads, missing-parent revalidation/adoption,
-supported metadata and all six declared Storage methods. Preserve the originally
+P2f now supplies constructor/run binding and three typed read paths with native
+reacquisition and observed missing-parent adoption. Private lock/security/native
+publication helpers are tested foundations. Public commit methods and load-time
+recovery observation remain pending. Preserve the originally
 supplied Expected absence anchor in the native manifest through parent creation;
 shared recovery Original can be the guarded established-parent absence.
 
@@ -216,9 +217,88 @@ P2c exact0630ded CI34055865289 passed18 SUCCESS plus the pre-Runtime helper skip
 independently confirmed by Master. It proves those mechanisms on current native
 CI platforms, not P2d/P2e metadata or the forthcoming complete request protocol.
 
+## Milestone P2f — explicit binding and typed read paths
+
+Exact source is the commit adding this subsection, reported after push. `New`
+accepts Composition-selected absolute locations and bounded construction settings,
+resolves explicitly selected links/junctions once and binds actual parent/absence
+anchor identities. No ambient default location, directory creation or migration.
+Three typed load methods acquire/revalidate native objects for each request and
+return complete documents or explicit absence/corruption/unsupported/unavailable
+observations. Recovery manifest observation is not yet wired into these methods.
+No Commit method stub or port-conformance assertion claims completed Storage.
+
+Binding checks reject user/preference same location or hardlink identity,
+document/other-family permanent-lock collision and run/user overlap. Missing
+components may be observed/adopted; a small in-process protected identity record
+then rejects later replacement of the adopted parent. The original construction
+anchor/literal remainder remains separately retained for forthcoming expected-
+absence transition evidence. Run scope rechecks Git's exact root/profile before
+the sole literal .gh-tree child. Unix honors a supplied change stamp without
+silently substituting its available birth stamp; observed change then refuses.
+
+Native author verification: Windows amd64 complete package/vet PASS; Windows386
+typed binding/link tests PASS; WSL Linux/ext4 ordinary UID/GID65534 package PASS
+before the final additional cases, then all typed-load/link/change-profile cases
+PASS and Linux-target vet PASS. Tests prove no-write absence, full families/raw
+versions, legacy/current/corrupt/forward/oversized inputs, exact file/lock family
+overlap, replaced parent/adoption, cancellation/concurrency, explicit external
+link selection versus project-child refusal, and no request-held parent guards
+after return. All filesystem changes remain in test-owned temporary directories.
+
+Windows filepath.EvalSymlinks does not resolve the fixture's directory junction;
+explicit selection now uses one CreateFile/GetFinalPathNameByHandle resolution,
+followed by the required no-reparse native binding/reacquisition. This is confined
+to constructor-owned explicit user scope, never run scope or publication fallback.
+One existing child lock fixture produced an EOF without native cause; targeted
+rerun passed. Its uncontended child initialization now uses a1s budget within the
+frozen5s cap and captures actual stderr/wait failure. Separate contention/bounded-
+cancel tests retain their short deadlines. The updated complete Windows run passes.
+
+Native CI history: P2d c146bb5 CI34056256194 SUCCESS. P2e cb1f625
+CI34056596058 failed only macOS TestUnixNativeMetadataCopy: bitmap-based extended
+security detection refused an ordinary no-ACL APFS file. This failure is retained.
+Apple XNU attr_pack_common omits the returned bit for a supported NULL ACL as
+well as unavailable metadata; vfs_attr_pack_internal with RETURNED_ATTRS omitted
+instead returns EINVAL for unsupported requested metadata. The corrected single
+selector distinguishes native zero-length ACL absence from unsupported requests,
+with bounded12-byte header/reference and complete filesec/NOACL validation.
+[Exact source functions](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/vfs/vfs_attrlist.c)
+establish this correction; corrected Darwin ARM64 cross-build passes but its
+new native CI result remains pending at this checkpoint. No bitmap/error/xattr
+absence is silently accepted. Native extended-ACL refusal test remains required.
+
+Root's #66 infrastructure run34056731199 independently observed ordinary FreeBSD
+uid1001 system-EA enumeration EPERM on its actual filesystem, while user namespace
+enumeration succeeded. This is not adapter proof; the direct FreeBSD helper
+preserves that error. Ordinary-user supported-profile resolution remains with
+Master and future native adapter evidence, without weakening guards.
+
+## Exact successor work
+
+Stop clean after this pushed milestone for the Master-requested fresh request-
+protocol worker. Existing private helpers are not an assembled safety protocol.
+Implement all three public commits and wire recovery into loads: expected whole-
+version validation under permanent lock; safe missing-parent creation/adoption
+with original Expected anchor preserved; supported parent/new-project/per-user
+metadata and exclusive payload/manifest/raw backup; exact original hardlink;
+bounded256/1GiB actual admission; manifest/artifact identities and per-artifact
+persisted RecoveryIDs; all required write/flush/close/prepublication comparisons;
+selected native commit and barriers; truthful known/indeterminate/cancel/error
+results and independent current observation. Native helpers currently expect
+their caller to establish those barriers. Never call them merely because encoding
+succeeds. Extend construction namespace overlap for the final recovery-name scheme.
+
+Restart observation must reacquire the stable lock and safely report exact retained
+facts, preserving same IDs and family/worktree/store/document-version association;
+no replay/eviction/age cleanup or attribution from equal bytes. Explicitly prove
+missing-parent Original/Proposed rebinding versus the original request Expected,
+including own-effect updates for change-stamp profiles. Full native fault/crash/
+late-writer/cooperative multi-process/external-gap/outcome-delivery tests remain.
+Obtain corrected macOS and supported FreeBSD metadata evidence, then separate
+fresh review of the complete candidate. No integration or Slice closure here.
+
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: commit/push P2e; obtain native Darwin/FreeBSD metadata results and wire
-constructor/ports with
-version/manifest/retention/admission/restart barriers around these primitives;
-freeze the complete adapter later for independent review and full native gates.
+NEXT: push P2f and hand the clean exact source to the fresh request-protocol worker;
+native CI remains pending. Complete public commits/recovery before final review.

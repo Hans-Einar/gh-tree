@@ -50,7 +50,7 @@ func winObserve(handle windows.Handle) (winObservation, error) {
 		return result, errors.New("native file identity unavailable")
 	}
 	if result.basic.FileAttributes&windows.FILE_ATTRIBUTE_REPARSE_POINT != 0 {
-		return result, errors.New("storage refuses reparse object")
+		return result, fmt.Errorf("%w: storage refuses reparse object", errUnsupportedProfile)
 	}
 	return result, nil
 }
@@ -179,11 +179,11 @@ func winAcquire(ctx context.Context, path string) (_ *winChain, resultErr error)
 		return nil, err
 	}
 	if windows.UTF16ToString(fileSystem[:]) != "NTFS" {
-		return nil, errors.New("unsupported storage filesystem; local NTFS required")
+		return nil, fmt.Errorf("%w: local NTFS required", errUnsupportedProfile)
 	}
 	rootPath, _ := windows.UTF16PtrFromString(path[:3])
 	if driveType := windows.GetDriveType(rootPath); driveType != windows.DRIVE_FIXED && driveType != windows.DRIVE_REMOVABLE {
-		return nil, errors.New("unsupported nonlocal storage volume")
+		return nil, fmt.Errorf("%w: nonlocal volume", errUnsupportedProfile)
 	}
 	for i, part := range parts {
 		if err := ctx.Err(); err != nil {
@@ -208,8 +208,11 @@ func winRead(ctx context.Context, object *winObject) ([]byte, winObservation, er
 		if err != nil {
 			return nil, before, err
 		}
-		if before.basic.FileAttributes&windows.FILE_ATTRIBUTE_DIRECTORY != 0 || before.size() > api.MaxDocumentBytes {
-			return nil, before, errors.New("document type or size limit")
+		if before.basic.FileAttributes&windows.FILE_ATTRIBUTE_DIRECTORY != 0 {
+			return nil, before, errUnsupportedProfile
+		}
+		if before.size() > api.MaxDocumentBytes {
+			return nil, before, corrupt("document exceeds 4 MiB")
 		}
 		if _, err := object.file.Seek(0, io.SeekStart); err != nil {
 			return nil, before, err
@@ -223,7 +226,7 @@ func winRead(ctx context.Context, object *winObject) ([]byte, winObservation, er
 			n, err := object.file.Read(buffer)
 			if n > 0 {
 				if len(data)+n > api.MaxDocumentBytes {
-					return nil, before, errors.New("document size limit")
+					return nil, before, corrupt("document exceeds 4 MiB")
 				}
 				data = append(data, buffer[:n]...)
 			}

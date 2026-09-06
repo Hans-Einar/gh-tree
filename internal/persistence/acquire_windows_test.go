@@ -241,10 +241,12 @@ func TestWindowsLockProcessFixture(t *testing.T) {
 	}
 	chain, err := winAcquire(context.Background(), path)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, "child acquisition:", err)
 		os.Exit(71)
 	}
-	lock, err := winLock(context.Background(), chain.parent(), "run.json", 50*time.Millisecond)
+	lock, err := winLock(context.Background(), chain.parent(), "run.json", time.Second)
 	if err != nil {
+		fmt.Fprintln(os.Stderr, "child lock:", err)
 		os.Exit(72)
 	}
 	if os.Getenv("GH_TREE_PERSISTENCE_LOCK_HOLD") == "1" {
@@ -271,6 +273,8 @@ func TestWindowsLockProcessExitReleasesKernelOwnership(t *testing.T) {
 	defer cancel()
 	child := exec.CommandContext(ctx, executable, "-test.run=^TestWindowsLockProcessFixture$")
 	child.Env = append(os.Environ(), "GH_TREE_PERSISTENCE_LOCK_FIXTURE="+root, "GH_TREE_PERSISTENCE_LOCK_HOLD=1")
+	var childErrors bytes.Buffer
+	child.Stderr = &childErrors
 	stdout, err := child.StdoutPipe()
 	if err != nil {
 		t.Fatal(err)
@@ -287,7 +291,9 @@ func TestWindowsLockProcessExitReleasesKernelOwnership(t *testing.T) {
 	}()
 	line, err := bufio.NewReader(stdout).ReadString('\n')
 	if err != nil || line != "locked\n" {
-		t.Fatal("child did not acquire native lock", line, err)
+		waitErr := child.Wait()
+		joined = true
+		t.Fatal("child did not acquire native lock", line, err, waitErr, childErrors.String())
 	}
 	if lock, err := winLock(context.Background(), chain.parent(), "run.json", 30*time.Millisecond); err == nil {
 		lock.close()

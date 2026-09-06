@@ -2,8 +2,8 @@
 
 Issue #63 implements the FROZEN Application--Persistence 1.0.0 boundary in
 isolated milestones. Current milestones supply private schema/document/version
-primitives and native Windows/Unix acquisition/read/lock helpers. The six-method Storage
-adapter is still pending;
+primitives, native Windows/Unix mechanisms, an explicit-location constructor and
+three typed load paths. Public commits and manifest recovery are still pending;
 this package is not connected to the product entry point.
 
 The codec maps all specified schema0/schema1 user configuration, preferences,
@@ -113,12 +113,27 @@ Linux copies user attributes and POSIX access ACLs, rejects other returned
 security namespaces and unsupported inode flags; extents allocation is allowed.
 Native unprivileged Linux/ext4 tests prove named-user ACL/uid/gid/mode and xattr
 copying, extra inherited metadata refusal and native-query error propagation.
-Darwin separately queries fgetattrlist extended security, requiring a returned
-attribute and validating the native no-ACL sentinel; extended ACLs refuse.
+Darwin separately queries fgetattrlist extended security without RETURNED_ATTRS:
+XNU reports unsupported requested ACL metadata as EINVAL and supported NULL ACL
+as a zero-length reference. Complete filesec/no-ACL sentinel validation follows;
+extended ACLs refuse. The first bitmap-based probe refused ordinary APFS absence
+in CI34056596058; this corrected selector awaits its new exact-source native run.
 FreeBSD queries native POSIX/NFS4 ACLs and direct ExtattrListFd for both namespaces,
 preserving errors that the pinned convenience wrappers hide. Darwin/FreeBSD
 metadata mechanisms currently have cross-build evidence only; FreeBSD unprivileged
 system-namespace enumeration must be proved before claiming ordinary-user support.
+
+New binds explicit absolute configuration/preferences locations once, including
+an explicit link/junction selection, and rejects coincident file objects or
+document/permanent-lock namespaces across families. Loads retain no native handles
+after returning; each reacquires the binding and rejects a replaced observed
+parent. Newly appeared missing components can be adopted and thereafter cannot
+be silently replaced. Run loads validate the supplied Git root identity/profile,
+then acquire only `.gh-tree/run.json` without following child redirects. They
+also refuse overlap with either bound user store. No load creates directories,
+lock files, migrations or defaults on disk. Three typed load methods return the
+strict documents/whole-byte versions or explicit absent/corrupt/unsupported/
+unavailable observations; recovery manifest observation remains pending.
 
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing

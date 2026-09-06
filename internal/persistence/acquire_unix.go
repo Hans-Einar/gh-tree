@@ -71,7 +71,7 @@ func unixOpen(parent int, name string, flags int, mode uint32, directory bool) (
 	}
 	observation, err := unixObserve(fd)
 	if err == nil && uint32(observation.stat.Mode)&unix.S_IFMT != unix.S_IFREG && !directory {
-		err = errors.New("storage refuses nonregular object")
+		err = fmt.Errorf("%w: nonregular object", errUnsupportedProfile)
 	}
 	if err != nil {
 		return nil, errors.Join(err, unix.Close(fd))
@@ -185,8 +185,11 @@ func unixRead(ctx context.Context, object *unixObject) ([]byte, unixObservation,
 		if err != nil {
 			return nil, before, err
 		}
-		if uint32(before.stat.Mode)&unix.S_IFMT != unix.S_IFREG || before.stat.Size < 0 || before.stat.Size > api.MaxDocumentBytes {
-			return nil, before, errors.New("document type or size limit")
+		if uint32(before.stat.Mode)&unix.S_IFMT != unix.S_IFREG || before.stat.Size < 0 {
+			return nil, before, errUnsupportedProfile
+		}
+		if before.stat.Size > api.MaxDocumentBytes {
+			return nil, before, corrupt("document exceeds 4 MiB")
 		}
 		if _, err := object.file.Seek(0, io.SeekStart); err != nil {
 			return nil, before, err
@@ -200,7 +203,7 @@ func unixRead(ctx context.Context, object *unixObject) ([]byte, unixObservation,
 			n, err := object.file.Read(buffer)
 			if n > 0 {
 				if len(data)+n > api.MaxDocumentBytes {
-					return nil, before, errors.New("document size limit")
+					return nil, before, corrupt("document exceeds 4 MiB")
 				}
 				data = append(data, buffer[:n]...)
 			}

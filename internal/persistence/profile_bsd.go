@@ -24,5 +24,5 @@ func unixLocalFileSystem(fd int) (string, error) {
 	case "apfs", "hfs", "ufs", "zfs", "tmpfs":
 		return name, nil
 	}
-	return "", fmt.Errorf("unsupported storage filesystem %s", name)
+	return "", fmt.Errorf("%w: filesystem %s", errUnsupportedProfile, name)
 }

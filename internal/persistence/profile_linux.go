@@ -27,5 +27,5 @@ func unixLocalFileSystem(fd int) (string, error) {
 	case unix.TMPFS_MAGIC:
 		return "tmpfs", nil
 	}
-	return "", fmt.Errorf("unsupported storage filesystem type %x", fs.Type)
+	return "", fmt.Errorf("%w: filesystem type %x", errUnsupportedProfile, fs.Type)
 }
