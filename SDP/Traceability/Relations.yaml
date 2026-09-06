@@ -491,6 +491,18 @@
       "relation": "source_accepted",
       "to": "70d1719d7f0ff834b4d59245ea775ea7b2c2d66c",
       "reviewHead": "736129aad8d55a906fe706286430fcf18416fc9d"
+    },
+    {
+      "from": "IMPL68",
+      "relation": "integrated_at",
+      "to": "396a62999ff991889bf1b468e2abeba84cc38045",
+      "ci": 34057368177
+    },
+    {
+      "from": "IMPL66",
+      "relation": "source_accepted",
+      "to": "489a731557ca699992386a0fc07fcbe57e792070",
+      "reviewHead": "be94b447fd69529daa1cf3f780ada7ea4d8fbcf6"
     }
   ],
   "errata": [

@@ -36,24 +36,27 @@ frozen candidates; serial integration is Git→GitHub→Persistence→Discovery�
 
 Git adopted #67 at775121d (source tree unchanged on adoption). Native branch
 CI34056687102 FAILED Linux race positive-transport timeout and both Windows ACL
-assertions; author is correcting while implementing status/general diff. Nine
+assertions; correctionee42b1b is pushed and CI34057368746 pending. Author continues
+status/general diff. Nine
 read methods/native foundations existed before status; mutations remain pending.
 GitHub technical7382617/reviewccbc843 remains ACCEPTED, held for Git-first.
-Persistencecb1f625 has native metadata/publication primitives; public loads are
-in progress, commits/manifests/recovery remain. macOS CI34056596058 failed native
-extended-security detection; worker is checking actual no-ACL kernel semantics.
+Persistence87506ee includes native primitives/metadata and three public loads.
+Fresh successor must complete three commits/manifests/recovery. macOS failure
+34056596058 has a kernel-semantics-based correction awaiting exact new native CI.
 FreeBSD#66 ordinary-user probe confirms system namespace EPERM, never empty.
 
 #66 source489a731 CI34056731199 passes19/helper skip, including actual FreeBSD15
 amd64 Go1.25 uid1001 guest-native tests and expected failure propagation. Only M2
 leaves exist at that source, all absent adapters explicitly NOT RUN. Independent
-workflow/security review is running; no infrastructure integration yet.
+reviewbe94b44 ACCEPTS infrastructure only; canonical integration is next.
 
 #67 complete: contract10f687e, API675dfff/review0bb8f28, integrated4d1b548;
 source/integration CI34055882003/34056365373 pass18/helper skip. #68 mechanical
 ports accessor70d1719/review736129a independently ACCEPTED, source CI34057016256
-passes18/helper skip. It is integrated by this record commit; exact integrated
-verification remains before Git adoption. No adapter/full Slice completion.
+passes18/helper skip. Exact integration396a629 CI34057368177 passes18/helper skip and local ports
+race/vet/windows architecture pass; #68 is complete, clean Git adoption next.
+Discovery#64 now starts on planned base412f33e/branch from M3-Assignments; Runtime
+remains queued. No adapter/full Slice completion.
 
 Local-only test residue: Persistence report atc146bb5 records the owned Windows
 metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's

@@ -633,14 +633,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "775121dd856bced37d8627a1f0615d33612464d9",
+      "lastCheckpoint": "ee42b1b0f48421e9b2faf8da5ab254380c5d01d1",
       "checkpointScope": "partial, not accepted/integrated",
       "blockedScope": "Only #68 approval digest pending integrated gate; status adoption done",
       "sourceCI": {
         "run": 34056687102,
         "head": "775121dd856bced37d8627a1f0615d33612464d9",
         "result": "FAILED Linux race positive transport timeout and Windowsamd64/ARM64 ACL assertion; author correcting"
-      }
+      },
+      "pendingCI": 34057368746
     },
     {
       "id": "IMPL62",
@@ -684,7 +685,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "implementation_in_progress",
+      "state": "successor_dispatch_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -708,21 +709,21 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "cb1f62526d1f868b2afea00de06a765d02496e46",
-      "checkpointScope": "private codecs/acquisition/locks/publication/metadata; public loads pending checkpoint, public commits/recovery incomplete",
+      "lastCheckpoint": "87506ee56c63a8be6dbece4e2b364a1c6cbd3e21",
+      "checkpointScope": "private native mechanisms/metadata + three public loads; three commits/manifests/recovery still incomplete",
       "sourceCI": {
         "run": 34055865289,
         "head": "0630ded502b2a086768459e475f83111f1fe4e9a",
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "activeWorker": "m3_persistence_publication_worker",
+      "activeWorker": "m3_persistence_commit_worker",
       "pendingNativeFinding": "macOS metadata query indicates unavailable extended security; CI34056596058 failed, worker inspecting native no-ACL semantics; FreeBSD system namespace EPERM confirmed by #66 probe"
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "authorized_queued",
+      "state": "implementation_dispatch_ready",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -742,7 +743,8 @@
         "V-LCH-01..03"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "activeWorker": "m3_discovery_worker"
     },
     {
       "id": "IMPL65",
@@ -775,7 +777,7 @@
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "independent_review",
+      "state": "accepted_candidate",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
@@ -789,7 +791,9 @@
         "run": 34056731199,
         "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "nativeJob": 101549884000
+      "nativeJob": 101549884000,
+      "reviewHead": "be94b447fd69529daa1cf3f780ada7ea4d8fbcf6",
+      "reviewDisposition": "ACCEPT; infrastructure only, native adapter proof not claimed"
     },
     {
       "id": "BC-CHANGE-67",
@@ -829,7 +833,7 @@
       "id": "IMPL68",
       "kind": "implementation_prerequisite",
       "issue": 68,
-      "state": "integrated_ci_pending",
+      "state": "complete",
       "layer": "Application ports",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": "read-only issued PlanSummaryDigest accessor and bounded validation/approval tests; no frozen semantics change",
@@ -842,7 +846,13 @@
       "sourceCI": {
         "run": 34057016256,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
-      }
+      },
+      "integrationHead": "396a62999ff991889bf1b468e2abeba84cc38045",
+      "integrationCI": {
+        "run": 34057368177,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "localIntegrationChecks": "ports race/vet/windows architecture and exact accepted source tree match PASS"
     }
   ],
   "productFindings": [
@@ -1917,11 +1927,11 @@
     "SLC-13"
   ],
   "activeContribution": "M3-ADAPTERS",
-  "integrationHead": "4d1b5486a029eeabcd874306d7a7ece4ae629ff3",
+  "integrationHead": "396a62999ff991889bf1b468e2abeba84cc38045",
   "activeContributions": [
     "IMPL61",
     "IMPL63",
-    "IMPL66"
+    "IMPL64"
   ],
   "pausedInitialContributions": [
     "IMPL61",

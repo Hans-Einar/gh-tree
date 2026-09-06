@@ -417,3 +417,8 @@ integrated by this commit, exact integrated gate next. #66 native infrastructure
 source489a731 passes19/helper skip, independent review pending. Git775121d CI
 findings and Persistence macOS metadata failure are explicit in Handoff/CurrentIndex;
 no failing adapter is integrated. #67 adoption preserved Git source unchanged.
+
+#68 complete at verified/pushed396a629 CI34057368177 (18/helper skip), local
+ports race/vet/windows architecture pass. #66 independently ACCEPTED489a731/
+be94b44 (native infrastructure19PASS), integration next. Fresh Discovery author
+starts planned412f33e; fresh Persistence commit/recovery author starts87506ee.

@@ -172,12 +172,21 @@ the selected profile and its limits, and the critical independent review must
 check both preservation and refusal. This is an interpretation of existing
 bounded authority, not native proof, a contract relaxation or adapter acceptance.
 
-## Plan summary digest plumbing (#68, queued)
+## Plan summary digest plumbing (#68, complete)
 
 Existing frozen Git G5 requires coordinator approval bound to the issued summary
 digest. Actual ports stores PlanSpec.SummaryDigest privately, yet ApprovalIssuer
 requires the consumer to provide it; only same-author test fixtures know it.
 #68 authorizes a bounded read-only PlanSummaryDigest accessor through the existing
 sealed identity path, value copy and proper invalid-plan rejection. No new hash
-format, confirmation rule, approval privilege or frozen boundary change. Fresh
-worker/reviewer and exact source/integration gates precede Git consumption.
+format, confirmation rule, approval privilege or frozen boundary change. Fresh worker/reviewer accepted source70d1719/review736129a; source CI34057016256
+and integrated396a629 CI34057368177 pass18/helper skip. Exact integrated ports
+race/vet/windows architecture pass. Git may adopt at a clean boundary; original
+approval and native-registry obligations remain.
+
+Current dispatch: Discovery#64 starts on its already-pushed planned base412f33e
+and owned branch/worktree from M3-Assignments; unchanged Discovery/Runtime/shared
+contracts and current native identity conventions apply. Persistence successor
+starts from pushed87506ee, three public loads present; three commits/recovery
+protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED with native CI19PASS,
+awaiting canonical integration. No adapter integration or complete Slice claim.
