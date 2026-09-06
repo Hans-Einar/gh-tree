@@ -191,6 +191,7 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 	}
 	seen := map[string]bool{}
 	limited := false
+	continuing := false
 	for len(b) > 0 {
 		if err := ctx.Err(); err != nil {
 			return p, err
@@ -200,7 +201,8 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 			i = len(b)
 		}
 		line := string(b[:i])
-		if i < len(b) {
+		hasNewline := i < len(b)
+		if hasNewline {
 			b = b[i+1:]
 		} else {
 			b = nil
@@ -209,6 +211,16 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 			return p, fmt.Errorf("%w: Make line limit", errLimit)
 		}
 		line = strings.TrimSuffix(line, "\r")
+		// Continuations apply even to comment and recipe lines. Refuse the whole
+		// logical line, including its tails, rather than discovering a tail as a
+		// separate rule. Escaped backslashes and spaces after a backslash do not
+		// continue the physical line. No joining or Make evaluation occurs here.
+		continued := hasNewline && makeContinues(line)
+		if continuing || continued {
+			limited = true
+			continuing = continued
+			continue
+		}
 		if strings.HasPrefix(line, "\t") {
 			continue
 		}
@@ -216,14 +228,20 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue
 		}
-		// Includes, directives and expansion can change the native rule set. We
-		// still retain independent simple textual rules and report partial scope.
+		if i := strings.IndexByte(line, '#'); i >= 0 {
+			// Any escape before this marker is outside the simple profile, so an
+			// escaped # cannot be mistaken for an ordinary comment delimiter.
+			if strings.ContainsRune(line[:i], '\\') {
+				limited = true
+				continue
+			}
+			line = line[:i]
+		}
+		// Comment prose has no expansion/pattern meaning. Actual rule escapes,
+		// directives and expansion remain explicit profile limitations.
 		if strings.ContainsAny(line, "$%\\") {
 			limited = true
 			continue
-		}
-		if i := strings.IndexByte(line, '#'); i >= 0 {
-			line = line[:i]
 		}
 		i = strings.IndexByte(line, ':')
 		if i < 0 {
@@ -258,4 +276,12 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 	}
 	sort.Slice(p.members, func(i, j int) bool { return p.members[i].name < p.members[j].name })
 	return p, nil
+}
+
+func makeContinues(line string) bool {
+	n := 0
+	for i := len(line) - 1; i >= 0 && line[i] == '\\'; i-- {
+		n++
+	}
+	return n%2 == 1
 }
