@@ -5,7 +5,7 @@
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
   "activeGate": "M3",
-  "executionState": "active",
+  "executionState": "held_for_external_review_access",
   "resumeRequiresExplicitUserInstruction": false,
   "checkpointTag": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
   "checkpointPurpose": "recovery_only_not_completion",
@@ -603,7 +603,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "mutation_worker_dispatch_ready",
+      "state": "held_external_review_access",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -633,18 +633,19 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "855a144689dae3ce69fdc6bb1fa2d303c7e27da0",
-      "checkpointScope": "all11 GitFacts, bounded plan registry and ReleasePlan; eight Prepare methods/ExecutePrepared/Fetch/Reconcile/native mutations absent",
+      "lastCheckpoint": "25240dd2acc40cb93003674844c248cdceac5920",
+      "checkpointScope": "11 facts, registry/ReleasePlan, common scheduler/permanent locks; all8 Prepare/ExecutePrepared/Fetch/Reconcile/native mutations incomplete",
       "blockedScope": null,
       "sourceCI": {
-        "run": 34057368746,
-        "head": "ee42b1b0f48421e9b2faf8da5ab254380c5d01d1",
-        "result": "18 applicable SUCCESS; earlier race/Windows ACL failures resolved"
+        "run": 34063202321,
+        "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
       "pendingCI": 34057368746,
       "sharedPrerequisiteAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
-      "activeWorker": "m3_git_mutation_worker"
+      "activeWorker": "m3_git_mutation_worker",
+      "sourceHead": "8c2584bff7c1f04461cd2f519bc3f6d5921360db",
+      "foundationReview": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
     },
     {
       "id": "IMPL62",
@@ -688,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "finishing_worker_dispatch_ready",
+      "state": "held_external_review_access",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -712,12 +713,11 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "a147a1d57d2eadda1ab998a218eb03c53b66540a",
-      "checkpointScope": "three public loads and private preparation/manifest/native mechanisms; public commits/recovery assembly incomplete",
+      "lastCheckpoint": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
+      "checkpointScope": "all6 methods present but unaccepted; native ObjectID mechanism probes only, product adoption pending; Windows repeated-publication, FreeBSD/no-birth/source-name/fault/profile gates remain",
       "sourceCI": {
-        "run": 34058262124,
-        "head": "8775a80a15cdc52de8ce8eb46a450b1ef050b76a",
-        "result": "18 applicable SUCCESS, including corrected native macOS metadata; helper skip"
+        "run": 34063088464,
+        "result": "FAILED 6 jobs: Windows tunneling regression and non-Windows test selection; latter fixed by6fc6c2c, all12 test binaries compile"
       },
       "activeWorker": "m3_persistence_finish_worker",
       "pendingNativeFinding": "Native Windows repeated-commit recovery fails when NTFS rename transfers CreationTime with same full FileID; failing12-cycle control preserved. FreeBSD system-EA profile and no-birth/source-name interval proof remain.",
@@ -735,13 +735,15 @@
         "state": "three_bounded_findings_resolved",
         "confirmedSource": "91acac5ecff941f95dbdaf00c86e9ced64b2a76f",
         "scope": "bounded confirmation only; full candidate not accepted"
-      }
+      },
+      "sourceHead": "699a69f2735106d1a06ea9c703a7f0eaa5ff930b",
+      "pendingCI": 34063842833
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "frozen_candidate_review_queued",
+      "state": "frozen_candidate_review_queued_on_hold",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -770,7 +772,7 @@
       "sourceHead": "2a18fdd5b884568d832afeb7fab54bb4d4b50682",
       "sourceCI": {
         "run": 34059784449,
-        "result": "SUCCESS, independent review pending"
+        "result": "SUCCESS; independent acceptance pending"
       }
     },
     {
@@ -1961,16 +1963,21 @@
   ],
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-  "activeContributions": [
-    "IMPL61",
-    "IMPL63"
-  ],
+  "activeContributions": [],
   "pausedInitialContributions": [
     "IMPL61",
     "IMPL62",
     "IMPL63"
   ],
   "resumedFrom": "3e259652797295504e34bafe2063a8022a503965",
-  "latestCheckpointTag": "checkpoint/m3-shared-prerequisites/20260906-2046Z",
-  "latestCheckpointPurpose": "Accepted M3 shared prerequisites and current partial adapter references; recovery only, ongoing implementation"
+  "latestCheckpointTag": "checkpoint/m3-access-hold/20260906-2225Z",
+  "latestCheckpointPurpose": "External review-access hold; all code and current reports pushed; recovery marker only",
+  "externalBlocker": {
+    "kind": "review_service_content_access",
+    "stage": "required Git independent foundation review",
+    "message": "This content was flagged for possible cybersecurity risk.",
+    "reviewSource": "855a144689dae3ce69fdc6bb1fa2d303c7e27da0",
+    "reviewStatus": "incomplete_no_acceptance",
+    "next": "Use confirmed approved identity/workspace/model/surface or resolve false positive; then resume from durable refs without bypassing safeguards"
+  }
 }

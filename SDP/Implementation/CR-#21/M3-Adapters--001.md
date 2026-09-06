@@ -216,3 +216,22 @@ No timestamp-writing workaround, identity-check removal, or selected native
 primitive change is accepted. Fresh finishing worker must establish a safe native
 profile and crash/restart association; any frozen primitive change needs BC review.
 Shared DirectoryIdentity conventions concern directories and remain unchanged.
+
+## External review-access hold
+
+Required Git foundation review stopped with a service cybersecurity content/access
+block. M3-Foundation-Review--001 is a Master incomplete-status record, not an
+acceptance. Active authors stopped at clean pushed boundaries; no retry/rephrased
+review/model switch or withheld-output recovery was attempted. No additional
+implementation begins until the approved review access/surface is resolved.
+All original scope and engineering gates remain; the program is not complete.
+
+Git technical8c2584b/report25240dd adds verified common scheduling/permanent locks,
+with CI34063202321 19PASS/helper skip, but no native mutation assembly. Persistence
+mechanism699a69f/report3a5a8e7 proves owned Windows ObjectID/FileIdInfo behavior,
+including negative ID-transfer and pre-outcome process-death controls; proposal
+remains unadopted in product. Its Windows failing regression remains, FreeBSD
+profile is unresolved. Mechanical6fc6c2c only repairs native test file selection,
+with all12 test binaries compiling; no native/full-matrix acceptance implied.
+Discovery2a18fdd/report8e2d2d1 is frozen with successful source CI, review pending.
+Current exact refs and next steps are in Handoff/CurrentIndex and worker reports.

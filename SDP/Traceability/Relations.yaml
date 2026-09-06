@@ -519,6 +519,12 @@
       "relation": "integrated_at",
       "to": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
       "ci": 34058149301
+    },
+    {
+      "from": "IMPL61",
+      "relation": "review_blocked_by",
+      "to": "external_review_access",
+      "doc": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
     }
   ],
   "errata": [
