@@ -141,9 +141,11 @@ per-cause kind/rename identity and consistent current facts; other contracts and
 all native mutation protocols remain1.0.0/unchanged. The original whole-set freeze
 history stays in BCFreeze--001; this bounded correction does not reopen that set.
 
-Pure API correction and independent exact-source review are next under#67;
-ObserveStatus/dependent Git work remains paused until that prerequisite is
-integrated and pushed. Independent Git reads continue. Impact remains only
+API correction675dfff/review0bb8f28 is independently ACCEPTED, integrated and
+pushed at4d1b5486a029eeabcd874306d7a7ece4ae629ff3. Source CI34055882003 and
+integrated CI34056365373 each pass18 applicable jobs/helper skip; integrated
+Application race/vet/windows architecture and source-tree match pass. Git may
+adopt this exact prerequisite at a clean boundary and resume status. Impact is
 Application--Git G3, API value/consistency/tests/README; no port, Domain, adapter,
 viewmodel or legacy change. M4/M5 must preserve causes in public/presentation
 projection. The freeze is contract authority, not implementation acceptance.
@@ -169,3 +171,22 @@ ACCESS_SYSTEM_SECURITY for audit-SACL. Adapter code/report/native tests must sta
 the selected profile and its limits, and the critical independent review must
 check both preservation and refusal. This is an interpretation of existing
 bounded authority, not native proof, a contract relaxation or adapter acceptance.
+
+## Plan summary digest plumbing (#68, complete)
+
+Existing frozen Git G5 requires coordinator approval bound to the issued summary
+digest. Actual ports stores PlanSpec.SummaryDigest privately, yet ApprovalIssuer
+requires the consumer to provide it; only same-author test fixtures know it.
+#68 authorizes a bounded read-only PlanSummaryDigest accessor through the existing
+sealed identity path, value copy and proper invalid-plan rejection. No new hash
+format, confirmation rule, approval privilege or frozen boundary change. Fresh worker/reviewer accepted source70d1719/review736129a; source CI34057016256
+and integrated396a629 CI34057368177 pass18/helper skip. Exact integrated ports
+race/vet/windows architecture pass. Git may adopt at a clean boundary; original
+approval and native-registry obligations remain.
+
+Current dispatch: Discovery#64 starts on its already-pushed planned base412f33e
+and owned branch/worktree from M3-Assignments; unchanged Discovery/Runtime/shared
+contracts and current native identity conventions apply. Persistence successor
+starts from pushed87506ee, three public loads present; three commits/recovery
+protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED with native CI19PASS,
+awaiting canonical integration. No adapter integration or complete Slice claim.

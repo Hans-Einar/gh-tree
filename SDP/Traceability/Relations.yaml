@@ -474,6 +474,45 @@
       "relation": "source_accepted",
       "to": "675dfffb6d055caa1074fe3feaccdfbdd8b21f74",
       "reviewHead": "0bb8f283ed1c2f31b4834f3e6c4f108e65df751b"
+    },
+    {
+      "from": "BC-CHANGE-67",
+      "relation": "integrated_at",
+      "to": "4d1b5486a029eeabcd874306d7a7ece4ae629ff3",
+      "ci": 34056365373
+    },
+    {
+      "from": "IMPL61",
+      "relation": "requires_approval_plumbing",
+      "to": "IMPL68"
+    },
+    {
+      "from": "IMPL68",
+      "relation": "source_accepted",
+      "to": "70d1719d7f0ff834b4d59245ea775ea7b2c2d66c",
+      "reviewHead": "736129aad8d55a906fe706286430fcf18416fc9d"
+    },
+    {
+      "from": "IMPL68",
+      "relation": "integrated_at",
+      "to": "396a62999ff991889bf1b468e2abeba84cc38045",
+      "ci": 34057368177
+    },
+    {
+      "from": "IMPL66",
+      "relation": "source_accepted",
+      "to": "489a731557ca699992386a0fc07fcbe57e792070",
+      "reviewHead": "be94b447fd69529daa1cf3f780ada7ea4d8fbcf6"
+    },
+    {
+      "from": "IMPL66",
+      "relation": "supplies_native_infrastructure",
+      "to": [
+        "IMPL61",
+        "IMPL63",
+        "IMPL64",
+        "IMPL65"
+      ]
     }
   ],
   "errata": [
