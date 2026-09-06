@@ -267,3 +267,29 @@ Read-only API inventory review found no material contradiction:5 Client methods,
 checklist under frozen authority, not implementation acceptance. Opened59/60 for
 independent API/ports and State-viewmodel leaves; M2-Surfaces/index/relations/matrix/
 ledger kickoff is recorded before fresh worker dispatch. Master retains shared scope.
+
+Current M2 leaves: API/ports#59 final7e3dd0a3545cc259af6dfe67885b20c8ddc57749
+(product3e45f31) is under independent review/current CI34038064464. Viewmodel#60
+atdbb89ea received M260-M01 MEDIUM despite CI34037022233 green18/M3skip: disjoint
+modes reject retained simultaneous Navigator/Branch cockpit. Independent copies,
+identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
+adds no scope. Actual report/test/control/raw/hash evidence is archived in
+M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
+new exact re-review/CI required. No M2 integration or baseline finding closure.
+
+Viewmodel#60 source d279c3f2af59e48029e77d845f5a55271c7889cf independently
+ACCEPTED; M260-M01 resolved, source CI34038307701 green18/explicitM3skip. Full
+correction/review/control/raw/hash evidence is in M2-Viewmodel-Review--002. This
+leaf waits for accepted API/ports#59 before serial integration; do not integrate
+or close60 yet. API#59 current7e3dd0a is still independently reviewed, with a
+separate Runtime/Storage sub-review consolidating semantic findings. No M2/full
+Slice/baseline finding closure; all143 baseline findings remain open.
+
+API/ports#59 independent complete review at7e3dd0a3545cc259af6dfe67885b20c8ddc57749
+is CHANGES_REQUIRED for eight MEDIUM groups M259-M01..M08 (26 invalid admissions).
+Separate Runtime/Storage reviewer confirms six cases in M06/M07; positive/race/
+copy tests pass, but cross-field semantics do not. Actual full reports/probes/logs/
+source hashes are in M2-API-Review--001 and its archive. Source/final CI passed18/
+explicitM3skip; this does not override findings. Worker corrects all groups before
+new frozen review/current CI. Viewmodeld279c3f is accepted and waits unintegrated
+for API/ports. All143 baseline findings/full13 Slices remain; no M2 completion.

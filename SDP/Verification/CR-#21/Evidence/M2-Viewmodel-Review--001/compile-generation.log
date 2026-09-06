@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel_test [github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel.test]
+.\compile-generation.go.txt:3:31: cannot use vm.ContentGeneration(1) (constant 1 of uint64 type viewmodel.ContentGeneration) as viewmodel.ViewportGeneration value in variable declaration
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel [build failed]
+FAIL

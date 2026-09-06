@@ -1,0 +1,16 @@
+--- FAIL: TestReviewCopyInventory (0.07s)
+    --- FAIL: TestReviewCopyInventory/ActiveModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Worktree.value.data.Changes / b.data.Worktree.value.data.Changes
+    --- FAIL: TestReviewCopyInventory/ConsoleModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Presentation.value.data.Lines / b.data.Presentation.value.data.Lines
+    --- FAIL: TestReviewCopyInventory/ConsolesModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Presentation.value.data.Lines / b.data.Rows[].data.Presentation.value.data.Lines
+    --- FAIL: TestReviewCopyInventory/PaneModel#02 (0.00s)
+        review_independent_test.go:38: shared mutable interval a.active.data.Worktree.value.data.Changes / b.active.data.Worktree.value.data.Changes
+    --- FAIL: TestReviewCopyInventory/PaneModel#05 (0.00s)
+        review_independent_test.go:38: shared mutable interval a.console.data.Rows[].data.Presentation.value.data.Lines / b.console.data.Rows[].data.Presentation.value.data.Lines
+    --- FAIL: TestReviewCopyInventory/Snapshot (0.03s)
+        review_independent_test.go:36: shared mutable interval a.Panes[].active.data.Worktree.value.data.Changes / b.data.Panes[].active.data.Worktree.value.data.Changes
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel	0.603s
+FAIL

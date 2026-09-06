@@ -1,0 +1,3 @@
+package viewmodel_test
+import vm "github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel"
+var _ = vm.Snapshot{valid: true}

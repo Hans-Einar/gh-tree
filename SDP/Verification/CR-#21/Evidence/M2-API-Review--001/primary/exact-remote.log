@@ -1,0 +1,13 @@
+=== RUN   TestReviewRemoteEndpointIdentity
+=== RUN   TestReviewRemoteEndpointIdentity/unavailable_base_retains_foreign_branch
+    review_remote_test.go:9: contradictory value was admitted as valid
+=== RUN   TestReviewRemoteEndpointIdentity/positive_qualified_PR
+=== RUN   TestReviewRemoteEndpointIdentity/PR_URL_does_not_match_known_repository_or_number
+    review_remote_test.go:14: contradictory value was admitted as valid
+--- FAIL: TestReviewRemoteEndpointIdentity (0.00s)
+    --- FAIL: TestReviewRemoteEndpointIdentity/unavailable_base_retains_foreign_branch (0.00s)
+    --- PASS: TestReviewRemoteEndpointIdentity/positive_qualified_PR (0.00s)
+    --- FAIL: TestReviewRemoteEndpointIdentity/PR_URL_does_not_match_known_repository_or_number (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.489s
+FAIL

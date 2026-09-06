@@ -1,0 +1,346 @@
+{
+  "sourceHead": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+  "productHead": "3e45f313d3e953f3293b9d42405f6843264656e0",
+  "kind": "independent_API_review_changes_required",
+  "productFiles": [
+    {
+      "gitBlob": "15baefc7ea1658e6383ea09385b7c7561cd5e905",
+      "path": "internal/application/api/README.md",
+      "sha256": "EDE44156533CED5333A827C1191E1CEAF6006E812E7F6EF422874931B4FE22C1"
+    },
+    {
+      "gitBlob": "f2f1e848f48def781abde9b5405ca14e113dd2a7",
+      "path": "internal/application/api/application_records.go",
+      "sha256": "9093369B0CB4530AE4660D203F9CCB3C8EF8A6C41096590AA186723C4FB85CA2"
+    },
+    {
+      "gitBlob": "5cc1435138f6d4082caa0be5603ca11041ad54bd",
+      "path": "internal/application/api/client.go",
+      "sha256": "AD7361BE44F053A86F4D6B1AA9924E7366C812AA9246F9E11D67F43F2B6B1FBD"
+    },
+    {
+      "gitBlob": "726f9b094bee32d11d87849055f7397b18c45d43",
+      "path": "internal/application/api/closed_variants_test.go",
+      "sha256": "E94B3B9B5E5277D61F6374915D3C6036DD2DE079810771CC748DD428F320276D"
+    },
+    {
+      "gitBlob": "5d1bd57b78416c7b1f3cb7e2be93e95b0b6500b8",
+      "path": "internal/application/api/conformance_test.go",
+      "sha256": "C60B38211FD78495748173388E02C32A1DC2D2D963AFDBD250DDF0562E834D44"
+    },
+    {
+      "gitBlob": "8d35502e96bd42fe874872bd5fea6e4a6f9e0b81",
+      "path": "internal/application/api/discovery_records.go",
+      "sha256": "53D217988A7E3E58D6CA436A1543FBCCDC964BC5D63B4FD1F538633594B9E262"
+    },
+    {
+      "gitBlob": "945d16f60803ac4df7f284a42c029c2f610f5689",
+      "path": "internal/application/api/enums.go",
+      "sha256": "E75BCEABF5DA5EAE477CDF541CF9885913199B9F16F202E955EB9463504370DF"
+    },
+    {
+      "gitBlob": "9fb2690a5ebf5e159e271c062d7c983574817275",
+      "path": "internal/application/api/evidence.go",
+      "sha256": "D28C4E0A21AFCBCE4DB33C61BBECC20AC0E7367B741A4F25496366CD9B970ABE"
+    },
+    {
+      "gitBlob": "63c911b5579964bcb4d89fcee3f682b1348a957f",
+      "path": "internal/application/api/evidence_records.go",
+      "sha256": "F2902E2B98865BFC0B2C0DBC515E6755C71C1675F6597683800AFA8D3BF25E81"
+    },
+    {
+      "gitBlob": "d1842135d2df824655ef240f03dc2a4a719864d5",
+      "path": "internal/application/api/git_records.go",
+      "sha256": "CDBB918EC7C53D4436F3E8F12DE1FE46923E0F3824E28852F8F8CD1C2331F5EF"
+    },
+    {
+      "gitBlob": "61eb3916cf7ba17b73420f2a436eb23140f37f52",
+      "path": "internal/application/api/ids.go",
+      "sha256": "CA68B391C315617C94F48971CF05C375A9D6D097758DB406FBFDCB3583931898"
+    },
+    {
+      "gitBlob": "8b7b6dea7180b506d99193c1a9474092d7382339",
+      "path": "internal/application/api/json_values.go",
+      "sha256": "F86EB22771970FC0E5AE222AF4B35A12D244172CB9E65B3030A64FE48F4AAD3D"
+    },
+    {
+      "gitBlob": "94eda35e6d680579b85f6c266c29e36cd69aeb5d",
+      "path": "internal/application/api/primitives.go",
+      "sha256": "429FD18B6B822A18A6BF6CF36D8654BAA90235512D235A31BBCE1731873406A0"
+    },
+    {
+      "gitBlob": "125ac9ede39caef4112f5f3a1c193a81020599f9",
+      "path": "internal/application/api/remote_records.go",
+      "sha256": "2000B2017A775DCE8598D18980AC5E48ACDCA3A5BAB29FDC710EE7B37F1377CA"
+    },
+    {
+      "gitBlob": "990a7fecb0758051c127b0353e32e2c43dd52c89",
+      "path": "internal/application/api/result_binding.go",
+      "sha256": "ADDFA559912B4F6A2D30F03E61F4A938C74B53698D83D1D64D0AC609D3B7EA77"
+    },
+    {
+      "gitBlob": "d56eaa2c439377e14855c65d3e2885b8a21c8a6d",
+      "path": "internal/application/api/runtime_records.go",
+      "sha256": "41F573D476820EB6D444ACAA6DA6591B81B9F2CD168210911AB1C8D6403AEA5C"
+    },
+    {
+      "gitBlob": "417f704f646b3e128faf3bdfdedbe65efa241de8",
+      "path": "internal/application/api/storage_records.go",
+      "sha256": "F0C877E9985FD15504A2308E7CAFA21211D21F96963FFD7CCE3E25B8D237E2B2"
+    },
+    {
+      "gitBlob": "293dccbac4618719b7f78f0f61c8eee814c69d5e",
+      "path": "internal/application/api/storage_validation.go",
+      "sha256": "6F0028C0877D642058771A70630A2E100D3DDF7A6CD711FB88363CD980BDD20E"
+    },
+    {
+      "gitBlob": "c188661ee37ac21a9c00b48ae0e502650e77c9c0",
+      "path": "internal/application/api/unions.go",
+      "sha256": "CFA19C386CA40ABE89E8B4F4A551169BCEFE1B0C2D111285D5AD407AE607175F"
+    },
+    {
+      "gitBlob": "35d26e0fcef534959c1a9846971fd28fbd73e1a2",
+      "path": "internal/application/api/validation.go",
+      "sha256": "9B0F4176F187AE2D72C9D555B514A8D18BDCF568188606A7A264B1FEF895CB61"
+    },
+    {
+      "gitBlob": "99aa087df774aa6da38f6940e67d40c2fd280f23",
+      "path": "internal/application/api/values_records.go",
+      "sha256": "2D75A529E6D0460373998EDE4BDF208FF0E641BD96A278341B85658D32113F03"
+    },
+    {
+      "gitBlob": "dd84b07d7eb290a18a5c15c0c47a4ef2817850ae",
+      "path": "internal/application/api/values_test.go",
+      "sha256": "7BF55D355B60B8DDCBB605426515C749D7D981BEF8387503E9924F363ABE9E65"
+    },
+    {
+      "gitBlob": "dec90f182589225d124fa2f55c5508fc3ba662bd",
+      "path": "internal/application/ports/README.md",
+      "sha256": "4F27D28819BC73B5FDAD25E27040DB647D7A30103938F1304B80A6065B71DFC5"
+    },
+    {
+      "gitBlob": "d69d776cf74939652b20da05aa9f55a7cc3b1940",
+      "path": "internal/application/ports/conformance_test.go",
+      "sha256": "9BC0FD005DF842B973CCFF54576F08501E59AE547D4C36A378FFA936EE17F479"
+    },
+    {
+      "gitBlob": "89fa822b9944425fbb9886b1b229ac14eea29c90",
+      "path": "internal/application/ports/interfaces.go",
+      "sha256": "9253FB2077580E2F983E3F4680A5FFABE9B5DA5BD1F2FACD207E496EBC71835B"
+    },
+    {
+      "gitBlob": "d3a98be31fae7a5120ea536a5f9c68552c985b80",
+      "path": "internal/application/ports/plan_variants.go",
+      "sha256": "A9DD441179D7413226B9F499E9DCD548AF870701653FF37E76CDA64EC3DC550E"
+    },
+    {
+      "gitBlob": "b097828d306b9f9f010cee996d51e1c6211eccd1",
+      "path": "internal/application/ports/plans.go",
+      "sha256": "CA3408404337914EB898B81BD6D81AF28945640AA756E353039D119264438359"
+    },
+    {
+      "gitBlob": "c3235aa01478d5bc9a96d2fa3465d51c1744c0c0",
+      "path": "internal/application/ports/plans_test.go",
+      "sha256": "B7AE6B4957921052E2FD8A762DEA4C3444F042BB2C7A6B091B63C9B7B19EC27A"
+    },
+    {
+      "gitBlob": "fcee502ab2d1d9b5d860cc9378ca99cc48b73b89",
+      "path": "internal/application/ports/storage.go",
+      "sha256": "624275ED4B4C6A6F23BFA85ACC1203F69F04D7D12A2E8A07F8ECC2AC1B2748B6"
+    }
+  ],
+  "files": [
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-source\\internal\\application\\api\\review_independent_test.go",
+      "archive": "primary/internal/application/api/review_independent_test.go.txt",
+      "bytes": 11075,
+      "sha256": "d7ecfe0eb10a7d89d7e12f77a3ccddfad6c72e7352dacac27e0d4f636435dc95"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-source\\internal\\application\\api\\review_runtime_test.go",
+      "archive": "primary/internal/application/api/review_runtime_test.go.txt",
+      "bytes": 4175,
+      "sha256": "e42862df31860a8a9844c74ce2f5d843ae0a6469ad3ce5e0c0d3d54b9ae94158"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-source\\internal\\application\\api\\review_remote_test.go",
+      "archive": "primary/internal/application/api/review_remote_test.go.txt",
+      "bytes": 2215,
+      "sha256": "6062e425c467ecbd0a5a503430a260b723ccf1de8dde3484eca6f73a2aaf136d"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-source\\internal\\application\\api\\review_clone_test.go",
+      "archive": "primary/internal/application/api/review_clone_test.go.txt",
+      "bytes": 65365,
+      "sha256": "5fc8620c54864fe87120c6f63a5649091398e2baa50bf8350316cd485b54369f"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\audit.ps1",
+      "archive": "primary/audit.ps1.txt",
+      "bytes": 1431,
+      "sha256": "d222d5b95840fadfbdb6a401640e4eda9c08642b6c8cbd7fc77c263dbc02db10"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\review-findings.md",
+      "archive": "primary/review-findings.md",
+      "bytes": 14396,
+      "sha256": "a3640fb908b76948c141e33f8d4e2e24d45f3a58ed6f4309222d8f06c270263d"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-invariants.log",
+      "archive": "primary/exact-invariants.log",
+      "bytes": 6450,
+      "sha256": "0afb38a3a7f402887731a9100a11da33669a275556b56706a7ba59a47c97b88a"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-remote.log",
+      "archive": "primary/exact-remote.log",
+      "bytes": 843,
+      "sha256": "78ba7dfe09e6636b890944eedd2a0012ccf76984dbc4292ea7bf7c47dd2816b6"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-clone-all.log",
+      "archive": "primary/exact-clone-all.log",
+      "bytes": 68,
+      "sha256": "168f1736eb549ac160d3afc89cbf49f79fc07a212d6b703bf35be69fdcc77092"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-full-suite.log",
+      "archive": "primary/exact-full-suite.log",
+      "bytes": 1139,
+      "sha256": "d20d966a9310d59d7e3b20cccf53c5c3362a127babf5f9539a99b85a940c4625"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-race-positive.log",
+      "archive": "primary/exact-race-positive.log",
+      "bytes": 138,
+      "sha256": "0a92632eee38a82a873e57447254bf82ecec14011281c3081a534e75e19334e4"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\exact-vet.log",
+      "archive": "primary/exact-vet.log",
+      "bytes": 11,
+      "sha256": "209c018b3ae2834d7cce8114ba00ef0a127b7afa463debfddac8560d5efe01b8"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\ReviewManifest.json",
+      "archive": "primary/OriginalManifest.json",
+      "bytes": 8435,
+      "sha256": "cddef671239cb738dbae4fedb2269f15991444bd3d22ff956e4123d74ebd5871"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\independent-full-suite.log",
+      "archive": "primary/independent-full-suite.log",
+      "bytes": 1675,
+      "sha256": "15b0b8e36a4467448282d3133df62318490b780169b85ee7e599bf14ae706802"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\independent-invariants.log",
+      "archive": "primary/independent-invariants.log",
+      "bytes": 5546,
+      "sha256": "e6cd4d3c205d97aa75c083935a3c2dab820e162ee1211b2dff144f18870c7dce"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-api-review-3e45f31-73d2a1c84312439a88d6966d4afeaa88\\independent-runtime-copy.log",
+      "archive": "primary/independent-runtime-copy.log",
+      "bytes": 984,
+      "sha256": "b95c2024b87b2b3fa2d1739b4cd42dfd518061332476e33913e6b2877d83fd0b"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\bounded-review.md",
+      "archive": "bounded/bounded-review.md",
+      "bytes": 8244,
+      "sha256": "30de6c5b4a70c5f5abd4a7adfab9b6b70d6404f68e7f885823c2ea4f8d9015ff"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\candidate-head.txt",
+      "archive": "bounded/candidate-head.txt",
+      "bytes": 42,
+      "sha256": "c613e36218e631bf75a1afc2063a372a02f49867658ce8ca2b45d6ad209c1ef7"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\exact-source.tar",
+      "archive": "bounded/exact-source.tar",
+      "bytes": 849920,
+      "sha256": "d075f2712da35036e0f62cb6fb859494374aba75ec9de1b6e68201641ac51385"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\independent-probes-final-result.json",
+      "archive": "bounded/independent-probes-final-result.json",
+      "bytes": 294,
+      "sha256": "c0d7dbb6ec5d4f0edbbf91fe969891c10895429f92aff4302957cb754bf33211"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\independent-probes-final.log",
+      "archive": "bounded/independent-probes-final.log",
+      "bytes": 2390,
+      "sha256": "da9b085049a32907d373ff6ad9f86c1a0417e6c4e8dff9cc1962fa077f94f6dc"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\independent-probes-result.json",
+      "archive": "bounded/independent-probes-result.json",
+      "bytes": 264,
+      "sha256": "4e192a81728ca9118a29b0c37f04495fc70ec15a4b8187a07d188823cb45b498"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\independent-probes.log",
+      "archive": "bounded/independent-probes.log",
+      "bytes": 563,
+      "sha256": "b9421ebef21c4fe9bcb05d5a24f48b973404dc99eda079d22e7c29de4eb3ad32"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\issue21.json",
+      "archive": "bounded/issue21.json",
+      "bytes": 40877,
+      "sha256": "a190fb890154210bfa559448f3e3a25982cde5a1c6d9cef7f1f0601fcdb7df85"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\issue59.json",
+      "archive": "bounded/issue59.json",
+      "bytes": 8347,
+      "sha256": "a402640b15dbb484f76e45418e60c8ff0a7de69e5e548ee7be20bd3e166cf3c6"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\positive-controls-result.json",
+      "archive": "bounded/positive-controls-result.json",
+      "bytes": 399,
+      "sha256": "dd2de0eec167316079702045fe24cbc387707103924960a0dab7cc736ffea4b6"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\positive-controls.log",
+      "archive": "bounded/positive-controls.log",
+      "bytes": 448,
+      "sha256": "efe7e166835e46ad125088c4b4ddea5ea45e48e7c93aad01242972e38a85f995"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\source-archive-hash.json",
+      "archive": "bounded/source-archive-hash.json",
+      "bytes": 217,
+      "sha256": "7f0925fb33313d7991984177e4efd40dfeebee871bc6242b9fae3936240cb6a7"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\source-copy-hashes.json",
+      "archive": "bounded/source-copy-hashes.json",
+      "bytes": 12680,
+      "sha256": "a83f9b443d72031185950c68135e1b207f1212cb460026de42bd2a3771e664c7"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\source-copy-verification.json",
+      "archive": "bounded/source-copy-verification.json",
+      "bytes": 188,
+      "sha256": "5a0ab09b8602ac96e58c2c2b71268c20286772226001827ef553ba7470545f09"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\snapshot\\internal\\application\\api\\review_runtime_storage_test.go",
+      "archive": "bounded/snapshot/internal/application/api/review_runtime_storage_test.go.txt",
+      "bytes": 15840,
+      "sha256": "0b7b85fe283c65cb3b8c0dd78aae0e295bca38ec7cfee0ffb19d43cf6f5091fb"
+    },
+    {
+      "source": "C:\\Users\\hanse\\GIT\\gh-tree-review-evidence\\m2-runtime-storage-7e3dd0a\\evidence-manifest.json",
+      "archive": "bounded/OriginalManifest.json",
+      "bytes": 3481,
+      "sha256": "4f184bf0107eecf361bbf123945f51b994da2f0d3380b0c824329019966535ca"
+    }
+  ]
+}

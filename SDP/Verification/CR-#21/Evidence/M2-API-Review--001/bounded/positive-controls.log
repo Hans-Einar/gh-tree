@@ -1,0 +1,10 @@
+=== RUN   TestRSPositiveControls
+--- PASS: TestRSPositiveControls (0.00s)
+=== RUN   TestRSOutputAndCopyControls
+--- PASS: TestRSOutputAndCopyControls (0.00s)
+=== RUN   TestRSStorageJSONAndCopyControls
+--- PASS: TestRSStorageJSONAndCopyControls (0.00s)
+=== RUN   TestRSStorageErrorAndNormalizationControls
+--- PASS: TestRSStorageErrorAndNormalizationControls (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/application/api	0.462s

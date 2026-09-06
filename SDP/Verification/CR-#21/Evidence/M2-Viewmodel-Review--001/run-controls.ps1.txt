@@ -1,0 +1,47 @@
+$ErrorActionPreference='Stop'
+$reviewRoot=$PSScriptRoot
+$goTool='C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe'
+$encoding=New-Object System.Text.UTF8Encoding($false)
+$valuePath=Join-Path $reviewRoot 'internal/tuistate/viewmodel/value.go'
+$testPath=Join-Path $reviewRoot 'internal/tuistate/viewmodel/review_independent_test.go'
+$valueSource=[System.IO.File]::ReadAllText($valuePath,$encoding)
+$results=@()
+$mutants=@(
+ @{Name='copy-slice';Old='func copySlice[T any](xs []T) []T {';New='func copySlice[T any](xs []T) []T { return xs'},
+ @{Name='copy-nested';Old='out[i] = x.Clone()';New='out[i] = x'},
+ @{Name='copy-optional';Old='return Some(o.value.Clone())';New='return o'}
+)
+foreach($case in $mutants){
+ if(!$valueSource.Contains($case.Old)){throw "Missing mutation point $($case.Name)"}
+ $replacement=Join-Path $reviewRoot "$($case.Name).go.txt"
+ [System.IO.File]::WriteAllText($replacement,$valueSource.Replace($case.Old,$case.New),$encoding)
+ $overlay=Join-Path $reviewRoot "$($case.Name).json"
+ $replace=@{};$replace[$valuePath]=$replacement
+ [System.IO.File]::WriteAllText($overlay,(@{Replace=$replace}|ConvertTo-Json -Depth 5),$encoding)
+ $log=Join-Path $reviewRoot "$($case.Name).log"
+ & $goTool test -overlay $overlay ./internal/tuistate/viewmodel -run '^TestReviewCopyInventory$' -count=1 *> $log
+ $exit=$LASTEXITCODE
+ $specific=(Get-Content -LiteralPath $log -Raw -Encoding UTF8).Contains('shared mutable interval')
+ $results+=[pscustomobject]@{Name=$case.Name;Exit=$exit;SpecificExpectedDiagnostic=$specific;ExpectedOutcome='fail';Passed=($exit -ne 0 -and $specific)}
+}
+$compiles=@(
+ @{Name='compile-positive';Body='var _ = vm.None[vm.ModalID](); var _ vm.ViewportGeneration = vm.ViewportGeneration(1)';Diagnostic='';Exit=0},
+ @{Name='compile-generation';Body='var _ vm.ViewportGeneration = vm.ContentGeneration(1)';Diagnostic='cannot use';Exit=1},
+ @{Name='compile-modal-key';Body='var _ = vm.ModalID("not a capability")';Diagnostic='cannot convert';Exit=1},
+ @{Name='compile-snapshot-private';Body='var _ = vm.Snapshot{valid: true}';Diagnostic='unexported field valid';Exit=1},
+ @{Name='compile-nil-variant';Body='var _ vm.ModalBody = nil';Diagnostic='cannot use nil';Exit=1}
+)
+foreach($case in $compiles){
+ $replacement=Join-Path $reviewRoot "$($case.Name).go.txt"
+ $snippet="package viewmodel_test`nimport vm `"github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel`"`n$($case.Body)`n"
+ [System.IO.File]::WriteAllText($replacement,$snippet,$encoding)
+ $overlay=Join-Path $reviewRoot "$($case.Name).json";$replace=@{};$replace[$testPath]=$replacement
+ [System.IO.File]::WriteAllText($overlay,(@{Replace=$replace}|ConvertTo-Json -Depth 5),$encoding)
+ $log=Join-Path $reviewRoot "$($case.Name).log"
+ & $goTool test -overlay $overlay ./internal/tuistate/viewmodel -run '^$' -count=1 *> $log
+ $exit=$LASTEXITCODE
+ $specific=($case.Diagnostic -eq '' -or (Get-Content -LiteralPath $log -Raw -Encoding UTF8).Contains($case.Diagnostic))
+ $results+=[pscustomobject]@{Name=$case.Name;Exit=$exit;SpecificExpectedDiagnostic=$specific;ExpectedExit=$case.Exit;Passed=($exit -eq $case.Exit -and $specific)}
+}
+[System.IO.File]::WriteAllText((Join-Path $reviewRoot 'control-results.json'),($results|ConvertTo-Json -Depth 5),$encoding)
+$results|Format-Table -AutoSize

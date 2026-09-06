@@ -1,0 +1,18 @@
+?   	github.com/Hans-Einar/gh-tree/cmd/gh-tree	[no test files]
+?   	github.com/Hans-Einar/gh-tree/internal/app	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/application/api	0.707s
+ok  	github.com/Hans-Einar/gh-tree/internal/application/ports	0.596s
+ok  	github.com/Hans-Einar/gh-tree/internal/composition/architecture	38.505s
+ok  	github.com/Hans-Einar/gh-tree/internal/config	0.605s
+ok  	github.com/Hans-Einar/gh-tree/internal/diff	0.556s
+ok  	github.com/Hans-Einar/gh-tree/internal/domain	0.728s
+ok  	github.com/Hans-Einar/gh-tree/internal/github	0.595s
+ok  	github.com/Hans-Einar/gh-tree/internal/graph	0.569s
+?   	github.com/Hans-Einar/gh-tree/internal/graphui	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/launch	1.085s
+?   	github.com/Hans-Einar/gh-tree/internal/process	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/terminal	0.614s
+ok  	github.com/Hans-Einar/gh-tree/internal/tree	0.600s
+ok  	github.com/Hans-Einar/gh-tree/internal/tui	0.700s
+?   	github.com/Hans-Einar/gh-tree/internal/version	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/worktree	21.502s

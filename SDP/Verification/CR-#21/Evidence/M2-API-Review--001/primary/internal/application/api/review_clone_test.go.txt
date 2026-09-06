@@ -1,0 +1,683 @@
+package api
+import ("testing"; "github.com/Hans-Einar/gh-tree/internal/domain")
+var _ = domain.WorktreeID{}
+func TestReviewCloneAllContainers(t *testing.T) {
+t.Run("ProjectionSources.Git",func(t *testing.T){
+d:=ProjectionSourcesData{Git:make([]GitObservation,1)}; c:=d.clone(); if &d.Git[0] == &c.Git[0] {t.Fatal("shared backing storage")}; z:=(ProjectionSourcesData{}).clone();if z.Git!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectionSources.Remote",func(t *testing.T){
+d:=ProjectionSourcesData{Remote:make([]RemoteObservation,1)}; c:=d.clone(); if &d.Remote[0] == &c.Remote[0] {t.Fatal("shared backing storage")}; z:=(ProjectionSourcesData{}).clone();if z.Remote!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectionSources.Storage",func(t *testing.T){
+d:=ProjectionSourcesData{Storage:make([]StorageProjectionSource,1)}; c:=d.clone(); if &d.Storage[0] == &c.Storage[0] {t.Fatal("shared backing storage")}; z:=(ProjectionSourcesData{}).clone();if z.Storage!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectionSources.Discovery",func(t *testing.T){
+d:=ProjectionSourcesData{Discovery:make([]DiscoveryObservation,1)}; c:=d.clone(); if &d.Discovery[0] == &c.Discovery[0] {t.Fatal("shared backing storage")}; z:=(ProjectionSourcesData{}).clone();if z.Discovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectionSources.Diagnostics",func(t *testing.T){
+d:=ProjectionSourcesData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ProjectionSourcesData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ActiveContext.CommitDiagnostics",func(t *testing.T){
+d:=ActiveContextData{CommitDiagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.CommitDiagnostics[0] == &c.CommitDiagnostics[0] {t.Fatal("shared backing storage")}; z:=(ActiveContextData{}).clone();if z.CommitDiagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("PRRelation.Diagnostics",func(t *testing.T){
+d:=PRRelationData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(PRRelationData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchRelationship.RemoteEndpoints",func(t *testing.T){
+d:=BranchRelationshipData{RemoteEndpoints:make([]RemoteBranchFact,1)}; c:=d.clone(); if &d.RemoteEndpoints[0] == &c.RemoteEndpoints[0] {t.Fatal("shared backing storage")}; z:=(BranchRelationshipData{}).clone();if z.RemoteEndpoints!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchRelationship.PullRequests",func(t *testing.T){
+d:=BranchRelationshipData{PullRequests:make([]PRRelation,1)}; c:=d.clone(); if &d.PullRequests[0] == &c.PullRequests[0] {t.Fatal("shared backing storage")}; z:=(BranchRelationshipData{}).clone();if z.PullRequests!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchRelationship.Worktrees",func(t *testing.T){
+d:=BranchRelationshipData{Worktrees:make([]WorktreeRelation,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(BranchRelationshipData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchRelationship.Diagnostics",func(t *testing.T){
+d:=BranchRelationshipData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(BranchRelationshipData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigationIntent.Namespace",func(t *testing.T){
+d:=NavigationIntentData{Namespace:make([]string,1)}; c:=d.clone(); if &d.Namespace[0] == &c.Namespace[0] {t.Fatal("shared backing storage")}; z:=(NavigationIntentData{}).clone();if z.Namespace!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchCommand.RefScope",func(t *testing.T){
+d:=FetchCommandData{RefScope:make([]FetchRefSpec,1)}; c:=d.clone(); if &d.RefScope[0] == &c.RefScope[0] {t.Fatal("shared backing storage")}; z:=(FetchCommandData{}).clone();if z.RefScope!=nil {t.Fatal("nil changed")}
+})
+t.Run("StagePathsCommand.Paths",func(t *testing.T){
+d:=StagePathsCommandData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(StagePathsCommandData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("UnstagePathsCommand.Paths",func(t *testing.T){
+d:=UnstagePathsCommandData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(UnstagePathsCommandData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("RestoreTrackedCommand.Paths",func(t *testing.T){
+d:=RestoreTrackedCommandData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(RestoreTrackedCommandData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("WriteInputCommand.Bytes",func(t *testing.T){
+d:=WriteInputCommandData{Bytes:make([]byte,1)}; c:=d.clone(); if &d.Bytes[0] == &c.Bytes[0] {t.Fatal("shared backing storage")}; z:=(WriteInputCommandData{}).clone();if z.Bytes!=nil {t.Fatal("nil changed")}
+})
+t.Run("OutcomeEnvelope.Diagnostics",func(t *testing.T){
+d:=OutcomeEnvelopeData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(OutcomeEnvelopeData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("OutcomeEnvelope.Recovery",func(t *testing.T){
+d:=OutcomeEnvelopeData{Recovery:make([]NormalizedRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(OutcomeEnvelopeData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("DeployResult.Steps",func(t *testing.T){
+d:=DeployResultData{Steps:make([]GitMutationResult,1)}; c:=d.clone(); if &d.Steps[0] == &c.Steps[0] {t.Fatal("shared backing storage")}; z:=(DeployResultData{}).clone();if z.Steps!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorQuery.Namespace",func(t *testing.T){
+d:=NavigatorQueryData{Namespace:make([]string,1)}; c:=d.clone(); if &d.Namespace[0] == &c.Namespace[0] {t.Fatal("shared backing storage")}; z:=(NavigatorQueryData{}).clone();if z.Namespace!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphQuery.Roots",func(t *testing.T){
+d:=GraphQueryData{Roots:make([]domain.Revision,1)}; c:=d.clone(); if &d.Roots[0] == &c.Roots[0] {t.Fatal("shared backing storage")}; z:=(GraphQueryData{}).clone();if z.Roots!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiffQuery.Paths",func(t *testing.T){
+d:=DiffQueryData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(DiffQueryData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("PullRequestDiffQuery.Paths",func(t *testing.T){
+d:=PullRequestDiffQueryData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(PullRequestDiffQueryData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashPatchQuery.Paths",func(t *testing.T){
+d:=StashPatchQueryData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(StashPatchQueryData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphAnnotation.Branches",func(t *testing.T){
+d:=GraphAnnotationData{Branches:make([]BranchRelationship,1)}; c:=d.clone(); if &d.Branches[0] == &c.Branches[0] {t.Fatal("shared backing storage")}; z:=(GraphAnnotationData{}).clone();if z.Branches!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphAnnotation.PullRequests",func(t *testing.T){
+d:=GraphAnnotationData{PullRequests:make([]PRRelation,1)}; c:=d.clone(); if &d.PullRequests[0] == &c.PullRequests[0] {t.Fatal("shared backing storage")}; z:=(GraphAnnotationData{}).clone();if z.PullRequests!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphAnnotation.Worktrees",func(t *testing.T){
+d:=GraphAnnotationData{Worktrees:make([]WorktreeRelation,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(GraphAnnotationData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("EffectivePreferences.StripPrefixes",func(t *testing.T){
+d:=EffectivePreferencesData{StripPrefixes:make([]string,1)}; c:=d.clone(); if &d.StripPrefixes[0] == &c.StripPrefixes[0] {t.Fatal("shared backing storage")}; z:=(EffectivePreferencesData{}).clone();if z.StripPrefixes!=nil {t.Fatal("nil changed")}
+})
+t.Run("EffectivePreferences.ConfiguredTargets",func(t *testing.T){
+d:=EffectivePreferencesData{ConfiguredTargets:make([]ConfiguredWorktreeTarget,1)}; c:=d.clone(); if &d.ConfiguredTargets[0] == &c.ConfiguredTargets[0] {t.Fatal("shared backing storage")}; z:=(EffectivePreferencesData{}).clone();if z.ConfiguredTargets!=nil {t.Fatal("nil changed")}
+})
+t.Run("EffectivePreferences.MigrationDiagnostics",func(t *testing.T){
+d:=EffectivePreferencesData{MigrationDiagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.MigrationDiagnostics[0] == &c.MigrationDiagnostics[0] {t.Fatal("shared backing storage")}; z:=(EffectivePreferencesData{}).clone();if z.MigrationDiagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Namespace",func(t *testing.T){
+d:=NavigatorResultData{Namespace:make([]string,1)}; c:=d.clone(); if &d.Namespace[0] == &c.Namespace[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Namespace!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.PullRequests",func(t *testing.T){
+d:=NavigatorResultData{PullRequests:make([]PullRequestFact,1)}; c:=d.clone(); if &d.PullRequests[0] == &c.PullRequests[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.PullRequests!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Branches",func(t *testing.T){
+d:=NavigatorResultData{Branches:make([]BranchRelationship,1)}; c:=d.clone(); if &d.Branches[0] == &c.Branches[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Branches!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Worktrees",func(t *testing.T){
+d:=NavigatorResultData{Worktrees:make([]WorktreeFacts,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Capabilities",func(t *testing.T){
+d:=NavigatorResultData{Capabilities:make([]RemoteCapabilities,1)}; c:=d.clone(); if &d.Capabilities[0] == &c.Capabilities[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Capabilities!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Activations",func(t *testing.T){
+d:=NavigatorResultData{Activations:make([]ActivationCandidate,1)}; c:=d.clone(); if &d.Activations[0] == &c.Activations[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Activations!=nil {t.Fatal("nil changed")}
+})
+t.Run("NavigatorResult.Diagnostics",func(t *testing.T){
+d:=NavigatorResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(NavigatorResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchContextResult.Commits",func(t *testing.T){
+d:=BranchContextResultData{Commits:make([]CommitFact,1)}; c:=d.clone(); if &d.Commits[0] == &c.Commits[0] {t.Fatal("shared backing storage")}; z:=(BranchContextResultData{}).clone();if z.Commits!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchContextResult.Diagnostics",func(t *testing.T){
+d:=BranchContextResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(BranchContextResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommitsResult.Commits",func(t *testing.T){
+d:=CommitsResultData{Commits:make([]CommitFact,1)}; c:=d.clone(); if &d.Commits[0] == &c.Commits[0] {t.Fatal("shared backing storage")}; z:=(CommitsResultData{}).clone();if z.Commits!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommitsResult.Relationships",func(t *testing.T){
+d:=CommitsResultData{Relationships:make([]BranchRelationship,1)}; c:=d.clone(); if &d.Relationships[0] == &c.Relationships[0] {t.Fatal("shared backing storage")}; z:=(CommitsResultData{}).clone();if z.Relationships!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommitsResult.Diagnostics",func(t *testing.T){
+d:=CommitsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(CommitsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Roots",func(t *testing.T){
+d:=GraphResultData{Roots:make([]domain.Revision,1)}; c:=d.clone(); if &d.Roots[0] == &c.Roots[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Roots!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Commits",func(t *testing.T){
+d:=GraphResultData{Commits:make([]CommitFact,1)}; c:=d.clone(); if &d.Commits[0] == &c.Commits[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Commits!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Edges",func(t *testing.T){
+d:=GraphResultData{Edges:make([]GraphEdge,1)}; c:=d.clone(); if &d.Edges[0] == &c.Edges[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Edges!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Refs",func(t *testing.T){
+d:=GraphResultData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Annotations",func(t *testing.T){
+d:=GraphResultData{Annotations:make([]GraphAnnotation,1)}; c:=d.clone(); if &d.Annotations[0] == &c.Annotations[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Annotations!=nil {t.Fatal("nil changed")}
+})
+t.Run("GraphResult.Diagnostics",func(t *testing.T){
+d:=GraphResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(GraphResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiffResult.Diagnostics",func(t *testing.T){
+d:=DiffResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(DiffResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("PullRequestDiffResult.Diagnostics",func(t *testing.T){
+d:=PullRequestDiffResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(PullRequestDiffResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("WorktreeStatusResult.Diagnostics",func(t *testing.T){
+d:=WorktreeStatusResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(WorktreeStatusResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashesResult.Stashes",func(t *testing.T){
+d:=StashesResultData{Stashes:make([]StashFact,1)}; c:=d.clone(); if &d.Stashes[0] == &c.Stashes[0] {t.Fatal("shared backing storage")}; z:=(StashesResultData{}).clone();if z.Stashes!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashesResult.Diagnostics",func(t *testing.T){
+d:=StashesResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(StashesResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashPatchResult.Parents",func(t *testing.T){
+d:=StashPatchResultData{Parents:make([]domain.OID,1)}; c:=d.clone(); if &d.Parents[0] == &c.Parents[0] {t.Fatal("shared backing storage")}; z:=(StashPatchResultData{}).clone();if z.Parents!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashPatchResult.Diagnostics",func(t *testing.T){
+d:=StashPatchResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(StashPatchResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("LaunchPointsResult.Definitions",func(t *testing.T){
+d:=LaunchPointsResultData{Definitions:make([]LaunchDefinition,1)}; c:=d.clone(); if &d.Definitions[0] == &c.Definitions[0] {t.Fatal("shared backing storage")}; z:=(LaunchPointsResultData{}).clone();if z.Definitions!=nil {t.Fatal("nil changed")}
+})
+t.Run("LaunchPointsResult.Saved",func(t *testing.T){
+d:=LaunchPointsResultData{Saved:make([]SavedLaunchObservation,1)}; c:=d.clone(); if &d.Saved[0] == &c.Saved[0] {t.Fatal("shared backing storage")}; z:=(LaunchPointsResultData{}).clone();if z.Saved!=nil {t.Fatal("nil changed")}
+})
+t.Run("LaunchPointsResult.Diagnostics",func(t *testing.T){
+d:=LaunchPointsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(LaunchPointsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionsResult.Diagnostics",func(t *testing.T){
+d:=SessionsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionOutputProjection.Diagnostics",func(t *testing.T){
+d:=SessionOutputProjectionData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionOutputProjectionData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("PreferencesResult.Diagnostics",func(t *testing.T){
+d:=PreferencesResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(PreferencesResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ConfirmationRequested.Choices",func(t *testing.T){
+d:=ConfirmationRequestedData{Choices:make([]Choice,1)}; c:=d.clone(); if &d.Choices[0] == &c.Choices[0] {t.Fatal("shared backing storage")}; z:=(ConfirmationRequestedData{}).clone();if z.Choices!=nil {t.Fatal("nil changed")}
+})
+t.Run("OperationTerminal.Diagnostics",func(t *testing.T){
+d:=OperationTerminalData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(OperationTerminalData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("OperationTerminal.Recovery",func(t *testing.T){
+d:=OperationTerminalData{Recovery:make([]NormalizedRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(OperationTerminalData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("OperationResidual.Recovery",func(t *testing.T){
+d:=OperationResidualData{Recovery:make([]NormalizedRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(OperationResidualData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("OperationResidual.Diagnostics",func(t *testing.T){
+d:=OperationResidualData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(OperationResidualData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ShutdownResult.Operations",func(t *testing.T){
+d:=ShutdownResultData{Operations:make([]OperationResidual,1)}; c:=d.clone(); if &d.Operations[0] == &c.Operations[0] {t.Fatal("shared backing storage")}; z:=(ShutdownResultData{}).clone();if z.Operations!=nil {t.Fatal("nil changed")}
+})
+t.Run("ShutdownResult.PendingAcknowledgments",func(t *testing.T){
+d:=ShutdownResultData{PendingAcknowledgments:make([]PendingRuntimeAcknowledgment,1)}; c:=d.clone(); if &d.PendingAcknowledgments[0] == &c.PendingAcknowledgments[0] {t.Fatal("shared backing storage")}; z:=(ShutdownResultData{}).clone();if z.PendingAcknowledgments!=nil {t.Fatal("nil changed")}
+})
+t.Run("ShutdownResult.Recovery",func(t *testing.T){
+d:=ShutdownResultData{Recovery:make([]NormalizedRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(ShutdownResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("ShutdownResult.Diagnostics",func(t *testing.T){
+d:=ShutdownResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ShutdownResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryObservation.ProviderProfiles",func(t *testing.T){
+d:=DiscoveryObservationData{ProviderProfiles:make([]ProviderProfile,1)}; c:=d.clone(); if &d.ProviderProfiles[0] == &c.ProviderProfiles[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryObservationData{}).clone();if z.ProviderProfiles!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryObservation.Sources",func(t *testing.T){
+d:=DiscoveryObservationData{Sources:make([]DiscoverySourceDiagnostic,1)}; c:=d.clone(); if &d.Sources[0] == &c.Sources[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryObservationData{}).clone();if z.Sources!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectInputObservation.Diagnostics",func(t *testing.T){
+d:=ProjectInputObservationData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ProjectInputObservationData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ProjectSource.Inputs",func(t *testing.T){
+d:=ProjectSourceData{Inputs:make([]ProjectInputObservation,1)}; c:=d.clone(); if &d.Inputs[0] == &c.Inputs[0] {t.Fatal("shared backing storage")}; z:=(ProjectSourceData{}).clone();if z.Inputs!=nil {t.Fatal("nil changed")}
+})
+t.Run("LaunchDefinition.ProjectComponents",func(t *testing.T){
+d:=LaunchDefinitionData{ProjectComponents:make([]string,1)}; c:=d.clone(); if &d.ProjectComponents[0] == &c.ProjectComponents[0] {t.Fatal("shared backing storage")}; z:=(LaunchDefinitionData{}).clone();if z.ProjectComponents!=nil {t.Fatal("nil changed")}
+})
+t.Run("LaunchDefinition.Diagnostics",func(t *testing.T){
+d:=LaunchDefinitionData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(LaunchDefinitionData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("OrderedMakeLaunch.Members",func(t *testing.T){
+d:=OrderedMakeLaunchData{Members:make([]MemberSelection,1)}; c:=d.clone(); if &d.Members[0] == &c.Members[0] {t.Fatal("shared backing storage")}; z:=(OrderedMakeLaunchData{}).clone();if z.Members!=nil {t.Fatal("nil changed")}
+})
+t.Run("SavedLaunchObservation.Diagnostics",func(t *testing.T){
+d:=SavedLaunchObservationData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SavedLaunchObservationData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolvedLaunchDefinition.Selected",func(t *testing.T){
+d:=ResolvedLaunchDefinitionData{Selected:make([]MemberSelection,1)}; c:=d.clone(); if &d.Selected[0] == &c.Selected[0] {t.Fatal("shared backing storage")}; z:=(ResolvedLaunchDefinitionData{}).clone();if z.Selected!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolvedLaunchDefinition.ProjectComponents",func(t *testing.T){
+d:=ResolvedLaunchDefinitionData{ProjectComponents:make([]string,1)}; c:=d.clone(); if &d.ProjectComponents[0] == &c.ProjectComponents[0] {t.Fatal("shared backing storage")}; z:=(ResolvedLaunchDefinitionData{}).clone();if z.ProjectComponents!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolvedLaunchDefinition.SourceVersions",func(t *testing.T){
+d:=ResolvedLaunchDefinitionData{SourceVersions:make([]SourceVersion,1)}; c:=d.clone(); if &d.SourceVersions[0] == &c.SourceVersions[0] {t.Fatal("shared backing storage")}; z:=(ResolvedLaunchDefinitionData{}).clone();if z.SourceVersions!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryRequest.Saved",func(t *testing.T){
+d:=DiscoveryRequestData{Saved:make([]SavedLaunchEntry,1)}; c:=d.clone(); if &d.Saved[0] == &c.Saved[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryRequestData{}).clone();if z.Saved!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryResult.Definitions",func(t *testing.T){
+d:=DiscoveryResultData{Definitions:make([]LaunchDefinition,1)}; c:=d.clone(); if &d.Definitions[0] == &c.Definitions[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryResultData{}).clone();if z.Definitions!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryResult.Saved",func(t *testing.T){
+d:=DiscoveryResultData{Saved:make([]SavedLaunchObservation,1)}; c:=d.clone(); if &d.Saved[0] == &c.Saved[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryResultData{}).clone();if z.Saved!=nil {t.Fatal("nil changed")}
+})
+t.Run("DiscoveryResult.Diagnostics",func(t *testing.T){
+d:=DiscoveryResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(DiscoveryResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolveLaunchRequest.Saved",func(t *testing.T){
+d:=ResolveLaunchRequestData{Saved:make([]SavedLaunchEntry,1)}; c:=d.clone(); if &d.Saved[0] == &c.Saved[0] {t.Fatal("shared backing storage")}; z:=(ResolveLaunchRequestData{}).clone();if z.Saved!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolveLaunchResult.Diagnostics",func(t *testing.T){
+d:=ResolveLaunchResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ResolveLaunchResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitCapabilityFact.Diagnostics",func(t *testing.T){
+d:=GitCapabilityFactData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(GitCapabilityFactData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitCapabilities.Capabilities",func(t *testing.T){
+d:=GitCapabilitiesData{Capabilities:make([]GitCapabilityFact,1)}; c:=d.clone(); if &d.Capabilities[0] == &c.Capabilities[0] {t.Fatal("shared backing storage")}; z:=(GitCapabilitiesData{}).clone();if z.Capabilities!=nil {t.Fatal("nil changed")}
+})
+t.Run("WorktreeFacts.Occupancy",func(t *testing.T){
+d:=WorktreeFactsData{Occupancy:make([]BranchOccupancy,1)}; c:=d.clone(); if &d.Occupancy[0] == &c.Occupancy[0] {t.Fatal("shared backing storage")}; z:=(WorktreeFactsData{}).clone();if z.Occupancy!=nil {t.Fatal("nil changed")}
+})
+t.Run("BranchOccupancy.Worktrees",func(t *testing.T){
+d:=BranchOccupancyData{Worktrees:make([]domain.WorktreeID,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(BranchOccupancyData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("LocalRepositoryFacts.Worktrees",func(t *testing.T){
+d:=LocalRepositoryFactsData{Worktrees:make([]WorktreeFacts,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(LocalRepositoryFactsData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("LocalRepositoryFacts.Remotes",func(t *testing.T){
+d:=LocalRepositoryFactsData{Remotes:make([]RemoteBinding,1)}; c:=d.clone(); if &d.Remotes[0] == &c.Remotes[0] {t.Fatal("shared backing storage")}; z:=(LocalRepositoryFactsData{}).clone();if z.Remotes!=nil {t.Fatal("nil changed")}
+})
+t.Run("IndexEntryFact.SemanticFlags",func(t *testing.T){
+d:=IndexEntryFactData{SemanticFlags:make([]IndexFlag,1)}; c:=d.clone(); if &d.SemanticFlags[0] == &c.SemanticFlags[0] {t.Fatal("shared backing storage")}; z:=(IndexEntryFactData{}).clone();if z.SemanticFlags!=nil {t.Fatal("nil changed")}
+})
+t.Run("ChangeFact.IndexEntries",func(t *testing.T){
+d:=ChangeFactData{IndexEntries:make([]IndexEntryFact,1)}; c:=d.clone(); if &d.IndexEntries[0] == &c.IndexEntries[0] {t.Fatal("shared backing storage")}; z:=(ChangeFactData{}).clone();if z.IndexEntries!=nil {t.Fatal("nil changed")}
+})
+t.Run("StatusFacts.Changes",func(t *testing.T){
+d:=StatusFactsData{Changes:make([]ChangeFact,1)}; c:=d.clone(); if &d.Changes[0] == &c.Changes[0] {t.Fatal("shared backing storage")}; z:=(StatusFactsData{}).clone();if z.Changes!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchGeneration.RefScope",func(t *testing.T){
+d:=FetchGenerationData{RefScope:make([]GitRefLocator,1)}; c:=d.clone(); if &d.RefScope[0] == &c.RefScope[0] {t.Fatal("shared backing storage")}; z:=(FetchGenerationData{}).clone();if z.RefScope!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchFreshness.RefScope",func(t *testing.T){
+d:=FetchFreshnessData{RefScope:make([]GitRefLocator,1)}; c:=d.clone(); if &d.RefScope[0] == &c.RefScope[0] {t.Fatal("shared backing storage")}; z:=(FetchFreshnessData{}).clone();if z.RefScope!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashFact.Parents",func(t *testing.T){
+d:=StashFactData{Parents:make([]domain.OID,1)}; c:=d.clone(); if &d.Parents[0] == &c.Parents[0] {t.Fatal("shared backing storage")}; z:=(StashFactData{}).clone();if z.Parents!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommitFact.Parents",func(t *testing.T){
+d:=CommitFactData{Parents:make([]domain.Revision,1)}; c:=d.clone(); if &d.Parents[0] == &c.Parents[0] {t.Fatal("shared backing storage")}; z:=(CommitFactData{}).clone();if z.Parents!=nil {t.Fatal("nil changed")}
+})
+t.Run("AllGraph.Paths",func(t *testing.T){
+d:=AllGraphData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(AllGraphData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReachableFromRoots.Paths",func(t *testing.T){
+d:=ReachableFromRootsData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(ReachableFromRootsData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("PatchFacts.Bytes",func(t *testing.T){
+d:=PatchFactsData{Bytes:make([]byte,1)}; c:=d.clone(); if &d.Bytes[0] == &c.Bytes[0] {t.Fatal("shared backing storage")}; z:=(PatchFactsData{}).clone();if z.Bytes!=nil {t.Fatal("nil changed")}
+})
+t.Run("PatchFacts.Files",func(t *testing.T){
+d:=PatchFactsData{Files:make([]DiffFileFact,1)}; c:=d.clone(); if &d.Files[0] == &c.Files[0] {t.Fatal("shared backing storage")}; z:=(PatchFactsData{}).clone();if z.Files!=nil {t.Fatal("nil changed")}
+})
+t.Run("AmbiguousMergeBase.Candidates",func(t *testing.T){
+d:=AmbiguousMergeBaseData{Candidates:make([]domain.Revision,1)}; c:=d.clone(); if &d.Candidates[0] == &c.Candidates[0] {t.Fatal("shared backing storage")}; z:=(AmbiguousMergeBaseData{}).clone();if z.Candidates!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolveLocalResult.Diagnostics",func(t *testing.T){
+d:=ResolveLocalResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ResolveLocalResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListWorktreesResult.Worktrees",func(t *testing.T){
+d:=ListWorktreesResultData{Worktrees:make([]WorktreeFacts,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(ListWorktreesResultData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListWorktreesResult.Diagnostics",func(t *testing.T){
+d:=ListWorktreesResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ListWorktreesResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ObserveStatusResult.Diagnostics",func(t *testing.T){
+d:=ObserveStatusResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ObserveStatusResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolveExactResult.Diagnostics",func(t *testing.T){
+d:=ResolveExactResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ResolveExactResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListRefsRequest.Kinds",func(t *testing.T){
+d:=ListRefsRequestData{Kinds:make([]RefKind,1)}; c:=d.clone(); if &d.Kinds[0] == &c.Kinds[0] {t.Fatal("shared backing storage")}; z:=(ListRefsRequestData{}).clone();if z.Kinds!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListRefsResult.Refs",func(t *testing.T){
+d:=ListRefsResultData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(ListRefsResultData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListRefsResult.Diagnostics",func(t *testing.T){
+d:=ListRefsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ListRefsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListStashesResult.Stashes",func(t *testing.T){
+d:=ListStashesResultData{Stashes:make([]StashFact,1)}; c:=d.clone(); if &d.Stashes[0] == &c.Stashes[0] {t.Fatal("shared backing storage")}; z:=(ListStashesResultData{}).clone();if z.Stashes!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListStashesResult.Diagnostics",func(t *testing.T){
+d:=ListStashesResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ListStashesResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadCommitsResult.Commits",func(t *testing.T){
+d:=ReadCommitsResultData{Commits:make([]CommitFact,1)}; c:=d.clone(); if &d.Commits[0] == &c.Commits[0] {t.Fatal("shared backing storage")}; z:=(ReadCommitsResultData{}).clone();if z.Commits!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadCommitsResult.Diagnostics",func(t *testing.T){
+d:=ReadCommitsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReadCommitsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadGraphRequest.Roots",func(t *testing.T){
+d:=ReadGraphRequestData{Roots:make([]domain.Revision,1)}; c:=d.clone(); if &d.Roots[0] == &c.Roots[0] {t.Fatal("shared backing storage")}; z:=(ReadGraphRequestData{}).clone();if z.Roots!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadGraphResult.Commits",func(t *testing.T){
+d:=ReadGraphResultData{Commits:make([]CommitFact,1)}; c:=d.clone(); if &d.Commits[0] == &c.Commits[0] {t.Fatal("shared backing storage")}; z:=(ReadGraphResultData{}).clone();if z.Commits!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadGraphResult.Refs",func(t *testing.T){
+d:=ReadGraphResultData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(ReadGraphResultData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadGraphResult.Heads",func(t *testing.T){
+d:=ReadGraphResultData{Heads:make([]WorktreeFacts,1)}; c:=d.clone(); if &d.Heads[0] == &c.Heads[0] {t.Fatal("shared backing storage")}; z:=(ReadGraphResultData{}).clone();if z.Heads!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadGraphResult.Diagnostics",func(t *testing.T){
+d:=ReadGraphResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReadGraphResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("MergeBaseResult.Diagnostics",func(t *testing.T){
+d:=MergeBaseResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(MergeBaseResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadDiffRequest.Paths",func(t *testing.T){
+d:=ReadDiffRequestData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(ReadDiffRequestData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadDiffResult.Diagnostics",func(t *testing.T){
+d:=ReadDiffResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReadDiffResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadStashPatchRequest.Paths",func(t *testing.T){
+d:=ReadStashPatchRequestData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(ReadStashPatchRequestData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadStashPatchResult.Parents",func(t *testing.T){
+d:=ReadStashPatchResultData{Parents:make([]domain.OID,1)}; c:=d.clone(); if &d.Parents[0] == &c.Parents[0] {t.Fatal("shared backing storage")}; z:=(ReadStashPatchResultData{}).clone();if z.Parents!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReadStashPatchResult.Diagnostics",func(t *testing.T){
+d:=ReadStashPatchResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReadStashPatchResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ExactPaths.Paths",func(t *testing.T){
+d:=ExactPathsData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(ExactPathsData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("PrepareRestoreRequest.Paths",func(t *testing.T){
+d:=PrepareRestoreRequestData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(PrepareRestoreRequestData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationPlanSummary.Paths",func(t *testing.T){
+d:=MutationPlanSummaryData{Paths:make([]PlannedPathEffect,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(MutationPlanSummaryData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationPlanSummary.Refs",func(t *testing.T){
+d:=MutationPlanSummaryData{Refs:make([]PlannedRefEffect,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(MutationPlanSummaryData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationPlanSummary.Choices",func(t *testing.T){
+d:=MutationPlanSummaryData{Choices:make([]Choice,1)}; c:=d.clone(); if &d.Choices[0] == &c.Choices[0] {t.Fatal("shared backing storage")}; z:=(MutationPlanSummaryData{}).clone();if z.Choices!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationPlanSummary.RequiredCapabilities",func(t *testing.T){
+d:=MutationPlanSummaryData{RequiredCapabilities:make([]GitCapabilityFact,1)}; c:=d.clone(); if &d.RequiredCapabilities[0] == &c.RequiredCapabilities[0] {t.Fatal("shared backing storage")}; z:=(MutationPlanSummaryData{}).clone();if z.RequiredCapabilities!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationPlanSummary.OwnStepVersions",func(t *testing.T){
+d:=MutationPlanSummaryData{OwnStepVersions:make([]FacetVersion,1)}; c:=d.clone(); if &d.OwnStepVersions[0] == &c.OwnStepVersions[0] {t.Fatal("shared backing storage")}; z:=(MutationPlanSummaryData{}).clone();if z.OwnStepVersions!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPreparationResult.Diagnostics",func(t *testing.T){
+d:=GitPreparationResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(GitPreparationResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPreparationResult.Recovery",func(t *testing.T){
+d:=GitPreparationResultData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(GitPreparationResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommitCandidateFacts.FinalIndexObjects",func(t *testing.T){
+d:=CommitCandidateFactsData{FinalIndexObjects:make([]domain.OID,1)}; c:=d.clone(); if &d.FinalIndexObjects[0] == &c.FinalIndexObjects[0] {t.Fatal("shared backing storage")}; z:=(CommitCandidateFactsData{}).clone();if z.FinalIndexObjects!=nil {t.Fatal("nil changed")}
+})
+t.Run("TrackedRestored.Paths",func(t *testing.T){
+d:=TrackedRestoredData{Paths:make([]GitPath,1)}; c:=d.clone(); if &d.Paths[0] == &c.Paths[0] {t.Fatal("shared backing storage")}; z:=(TrackedRestoredData{}).clone();if z.Paths!=nil {t.Fatal("nil changed")}
+})
+t.Run("TrackedRestored.Recovery",func(t *testing.T){
+d:=TrackedRestoredData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(TrackedRestoredData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashCreatedCleanupRefused.Recovery",func(t *testing.T){
+d:=StashCreatedCleanupRefusedData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(StashCreatedCleanupRefusedData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("AppliedWithConflicts.ConflictPaths",func(t *testing.T){
+d:=AppliedWithConflictsData{ConflictPaths:make([]GitPath,1)}; c:=d.clone(); if &d.ConflictPaths[0] == &c.ConflictPaths[0] {t.Fatal("shared backing storage")}; z:=(AppliedWithConflictsData{}).clone();if z.ConflictPaths!=nil {t.Fatal("nil changed")}
+})
+t.Run("AppliedWithConflicts.IndexEntries",func(t *testing.T){
+d:=AppliedWithConflictsData{IndexEntries:make([]IndexEntryFact,1)}; c:=d.clone(); if &d.IndexEntries[0] == &c.IndexEntries[0] {t.Fatal("shared backing storage")}; z:=(AppliedWithConflictsData{}).clone();if z.IndexEntries!=nil {t.Fatal("nil changed")}
+})
+t.Run("AppliedWithConflicts.Recovery",func(t *testing.T){
+d:=AppliedWithConflictsData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(AppliedWithConflictsData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("StashDropped.Survivors",func(t *testing.T){
+d:=StashDroppedData{Survivors:make([]StashFact,1)}; c:=d.clone(); if &d.Survivors[0] == &c.Survivors[0] {t.Fatal("shared backing storage")}; z:=(StashDroppedData{}).clone();if z.Survivors!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPostFacts.Worktrees",func(t *testing.T){
+d:=GitPostFactsData{Worktrees:make([]WorktreeFacts,1)}; c:=d.clone(); if &d.Worktrees[0] == &c.Worktrees[0] {t.Fatal("shared backing storage")}; z:=(GitPostFactsData{}).clone();if z.Worktrees!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPostFacts.Status",func(t *testing.T){
+d:=GitPostFactsData{Status:make([]StatusFacts,1)}; c:=d.clone(); if &d.Status[0] == &c.Status[0] {t.Fatal("shared backing storage")}; z:=(GitPostFactsData{}).clone();if z.Status!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPostFacts.Refs",func(t *testing.T){
+d:=GitPostFactsData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(GitPostFactsData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPostFacts.Stashes",func(t *testing.T){
+d:=GitPostFactsData{Stashes:make([]StashFact,1)}; c:=d.clone(); if &d.Stashes[0] == &c.Stashes[0] {t.Fatal("shared backing storage")}; z:=(GitPostFactsData{}).clone();if z.Stashes!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitPostFacts.Configuration",func(t *testing.T){
+d:=GitPostFactsData{Configuration:make([]LocalConfigurationObservation,1)}; c:=d.clone(); if &d.Configuration[0] == &c.Configuration[0] {t.Fatal("shared backing storage")}; z:=(GitPostFactsData{}).clone();if z.Configuration!=nil {t.Fatal("nil changed")}
+})
+t.Run("PartialMutation.FailedSteps",func(t *testing.T){
+d:=PartialMutationData{FailedSteps:make([]GitStepKind,1)}; c:=d.clone(); if &d.FailedSteps[0] == &c.FailedSteps[0] {t.Fatal("shared backing storage")}; z:=(PartialMutationData{}).clone();if z.FailedSteps!=nil {t.Fatal("nil changed")}
+})
+t.Run("PartialMutation.Recovery",func(t *testing.T){
+d:=PartialMutationData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(PartialMutationData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationIndeterminate.UnclassifiedSteps",func(t *testing.T){
+d:=MutationIndeterminateData{UnclassifiedSteps:make([]GitStepKind,1)}; c:=d.clone(); if &d.UnclassifiedSteps[0] == &c.UnclassifiedSteps[0] {t.Fatal("shared backing storage")}; z:=(MutationIndeterminateData{}).clone();if z.UnclassifiedSteps!=nil {t.Fatal("nil changed")}
+})
+t.Run("MutationIndeterminate.Recovery",func(t *testing.T){
+d:=MutationIndeterminateData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(MutationIndeterminateData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitMutationResult.Steps",func(t *testing.T){
+d:=GitMutationResultData{Steps:make([]GitCompletedStep,1)}; c:=d.clone(); if &d.Steps[0] == &c.Steps[0] {t.Fatal("shared backing storage")}; z:=(GitMutationResultData{}).clone();if z.Steps!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitMutationResult.Diagnostics",func(t *testing.T){
+d:=GitMutationResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(GitMutationResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("GitMutationResult.Recovery",func(t *testing.T){
+d:=GitMutationResultData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(GitMutationResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchRequest.RefScope",func(t *testing.T){
+d:=FetchRequestData{RefScope:make([]FetchRefSpec,1)}; c:=d.clone(); if &d.RefScope[0] == &c.RefScope[0] {t.Fatal("shared backing storage")}; z:=(FetchRequestData{}).clone();if z.RefScope!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchResult.Refs",func(t *testing.T){
+d:=FetchResultData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(FetchResultData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchResult.Diagnostics",func(t *testing.T){
+d:=FetchResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(FetchResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("FetchResult.Recovery",func(t *testing.T){
+d:=FetchResultData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(FetchResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileRequest.Targets",func(t *testing.T){
+d:=ReconcileRequestData{Targets:make([]domain.ExactTarget,1)}; c:=d.clone(); if &d.Targets[0] == &c.Targets[0] {t.Fatal("shared backing storage")}; z:=(ReconcileRequestData{}).clone();if z.Targets!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileRequest.Recovery",func(t *testing.T){
+d:=ReconcileRequestData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(ReconcileRequestData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileRequest.Facets",func(t *testing.T){
+d:=ReconcileRequestData{Facets:make([]EffectFacet,1)}; c:=d.clone(); if &d.Facets[0] == &c.Facets[0] {t.Fatal("shared backing storage")}; z:=(ReconcileRequestData{}).clone();if z.Facets!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Objects",func(t *testing.T){
+d:=ReconciledFacetData{Objects:make([]domain.OID,1)}; c:=d.clone(); if &d.Objects[0] == &c.Objects[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Objects!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Recovery",func(t *testing.T){
+d:=ReconciledFacetData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Refs",func(t *testing.T){
+d:=ReconciledFacetData{Refs:make([]RefFact,1)}; c:=d.clone(); if &d.Refs[0] == &c.Refs[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Refs!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Statuses",func(t *testing.T){
+d:=ReconciledFacetData{Statuses:make([]StatusFacts,1)}; c:=d.clone(); if &d.Statuses[0] == &c.Statuses[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Statuses!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Stashes",func(t *testing.T){
+d:=ReconciledFacetData{Stashes:make([]StashFact,1)}; c:=d.clone(); if &d.Stashes[0] == &c.Stashes[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Stashes!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Configuration",func(t *testing.T){
+d:=ReconciledFacetData{Configuration:make([]LocalConfigurationObservation,1)}; c:=d.clone(); if &d.Configuration[0] == &c.Configuration[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Configuration!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconciledFacet.Diagnostics",func(t *testing.T){
+d:=ReconciledFacetData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReconciledFacetData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileResult.Facets",func(t *testing.T){
+d:=ReconcileResultData{Facets:make([]ReconciledFacet,1)}; c:=d.clone(); if &d.Facets[0] == &c.Facets[0] {t.Fatal("shared backing storage")}; z:=(ReconcileResultData{}).clone();if z.Facets!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileResult.Diagnostics",func(t *testing.T){
+d:=ReconcileResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ReconcileResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ReconcileResult.Recovery",func(t *testing.T){
+d:=ReconcileResultData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(ReconcileResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("RemoteCapabilities.SupportedObjectFormats",func(t *testing.T){
+d:=RemoteCapabilitiesData{SupportedObjectFormats:make([]domain.ObjectFormat,1)}; c:=d.clone(); if &d.SupportedObjectFormats[0] == &c.SupportedObjectFormats[0] {t.Fatal("shared backing storage")}; z:=(RemoteCapabilitiesData{}).clone();if z.SupportedObjectFormats!=nil {t.Fatal("nil changed")}
+})
+t.Run("RemoteCapabilities.Diagnostics",func(t *testing.T){
+d:=RemoteCapabilitiesData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(RemoteCapabilitiesData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("PullRequestFact.Diagnostics",func(t *testing.T){
+d:=PullRequestFactData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(PullRequestFactData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ResolveRepositoryResult.Diagnostics",func(t *testing.T){
+d:=ResolveRepositoryResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ResolveRepositoryResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListBranchesResult.Branches",func(t *testing.T){
+d:=ListBranchesResultData{Branches:make([]RemoteBranchFact,1)}; c:=d.clone(); if &d.Branches[0] == &c.Branches[0] {t.Fatal("shared backing storage")}; z:=(ListBranchesResultData{}).clone();if z.Branches!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListBranchesResult.Diagnostics",func(t *testing.T){
+d:=ListBranchesResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ListBranchesResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListPullRequestsResult.PullRequests",func(t *testing.T){
+d:=ListPullRequestsResultData{PullRequests:make([]PullRequestFact,1)}; c:=d.clone(); if &d.PullRequests[0] == &c.PullRequests[0] {t.Fatal("shared backing storage")}; z:=(ListPullRequestsResultData{}).clone();if z.PullRequests!=nil {t.Fatal("nil changed")}
+})
+t.Run("ListPullRequestsResult.Diagnostics",func(t *testing.T){
+d:=ListPullRequestsResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ListPullRequestsResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ObservePullRequestResult.Diagnostics",func(t *testing.T){
+d:=ObservePullRequestResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(ObservePullRequestResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("ExistingCandidate.Candidates",func(t *testing.T){
+d:=ExistingCandidateData{Candidates:make([]PullRequestFact,1)}; c:=d.clone(); if &d.Candidates[0] == &c.Candidates[0] {t.Fatal("shared backing storage")}; z:=(ExistingCandidateData{}).clone();if z.Candidates!=nil {t.Fatal("nil changed")}
+})
+t.Run("CreatePullRequestResult.Recovery",func(t *testing.T){
+d:=CreatePullRequestResultData{Recovery:make([]RecoveryRecord,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(CreatePullRequestResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("CreatePullRequestResult.Diagnostics",func(t *testing.T){
+d:=CreatePullRequestResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(CreatePullRequestResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionCleanup.Residuals",func(t *testing.T){
+d:=SessionCleanupData{Residuals:make([]RuntimeResidual,1)}; c:=d.clone(); if &d.Residuals[0] == &c.Residuals[0] {t.Fatal("shared backing storage")}; z:=(SessionCleanupData{}).clone();if z.Residuals!=nil {t.Fatal("nil changed")}
+})
+t.Run("AcquiredCwd.Diagnostics",func(t *testing.T){
+d:=AcquiredCwdData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(AcquiredCwdData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionList.Sessions",func(t *testing.T){
+d:=SessionListData{Sessions:make([]SessionSnapshot,1)}; c:=d.clone(); if &d.Sessions[0] == &c.Sessions[0] {t.Fatal("shared backing storage")}; z:=(SessionListData{}).clone();if z.Sessions!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionWriteRequest.Bytes",func(t *testing.T){
+d:=SessionWriteRequestData{Bytes:make([]byte,1)}; c:=d.clone(); if &d.Bytes[0] == &c.Bytes[0] {t.Fatal("shared backing storage")}; z:=(SessionWriteRequestData{}).clone();if z.Bytes!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionStartResult.Diagnostics",func(t *testing.T){
+d:=SessionStartResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionStartResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionControlResult.Diagnostics",func(t *testing.T){
+d:=SessionControlResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionControlResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionWriteResult.Diagnostics",func(t *testing.T){
+d:=SessionWriteResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionWriteResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionStopResult.Diagnostics",func(t *testing.T){
+d:=SessionStopResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionStopResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionRestartResult.Diagnostics",func(t *testing.T){
+d:=SessionRestartResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(SessionRestartResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("RuntimeShutdownResult.Sessions",func(t *testing.T){
+d:=RuntimeShutdownResultData{Sessions:make([]SessionStopResult,1)}; c:=d.clone(); if &d.Sessions[0] == &c.Sessions[0] {t.Fatal("shared backing storage")}; z:=(RuntimeShutdownResultData{}).clone();if z.Sessions!=nil {t.Fatal("nil changed")}
+})
+t.Run("RuntimeShutdownResult.Residuals",func(t *testing.T){
+d:=RuntimeShutdownResultData{Residuals:make([]RuntimeResidual,1)}; c:=d.clone(); if &d.Residuals[0] == &c.Residuals[0] {t.Fatal("shared backing storage")}; z:=(RuntimeShutdownResultData{}).clone();if z.Residuals!=nil {t.Fatal("nil changed")}
+})
+t.Run("RuntimeShutdownResult.Diagnostics",func(t *testing.T){
+d:=RuntimeShutdownResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(RuntimeShutdownResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionOutputChunk.Bytes",func(t *testing.T){
+d:=SessionOutputChunkData{Bytes:make([]byte,1)}; c:=d.clone(); if &d.Bytes[0] == &c.Bytes[0] {t.Fatal("shared backing storage")}; z:=(SessionOutputChunkData{}).clone();if z.Bytes!=nil {t.Fatal("nil changed")}
+})
+t.Run("SessionOutputResult.Chunks",func(t *testing.T){
+d:=SessionOutputResultData{Chunks:make([]SessionOutputChunk,1)}; c:=d.clone(); if &d.Chunks[0] == &c.Chunks[0] {t.Fatal("shared backing storage")}; z:=(SessionOutputResultData{}).clone();if z.Chunks!=nil {t.Fatal("nil changed")}
+})
+t.Run("UserConfigDocument.StripPrefixes",func(t *testing.T){
+d:=UserConfigDocumentData{StripPrefixes:PresentField(make([]string,1))}; c:=d.clone();x,_:=d.StripPrefixes.Value();y,_:=c.StripPrefixes.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("UserConfigDocument.LegacyRepos",func(t *testing.T){
+d:=UserConfigDocumentData{LegacyRepos:PresentField(make([]LegacyRepositoryConfig,1))}; c:=d.clone();x,_:=d.LegacyRepos.Value();y,_:=c.LegacyRepos.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("UserConfigDocument.ScopedRepos",func(t *testing.T){
+d:=UserConfigDocumentData{ScopedRepos:PresentField(make([]ScopedRepositoryConfig,1))}; c:=d.clone();x,_:=d.ScopedRepos.Value();y,_:=c.ScopedRepos.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("ConfiguredRepository.Worktrees",func(t *testing.T){
+d:=ConfiguredRepositoryData{Worktrees:PresentField(make([]ConfiguredWorktreeTarget,1))}; c:=d.clone();x,_:=d.Worktrees.Value();y,_:=c.Worktrees.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("PreferencesDocument.LegacyFolders",func(t *testing.T){
+d:=PreferencesDocumentData{LegacyFolders:PresentField(make([]LegacyStringPreference,1))}; c:=d.clone();x,_:=d.LegacyFolders.Value();y,_:=c.LegacyFolders.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("PreferencesDocument.LegacyWorktrees",func(t *testing.T){
+d:=PreferencesDocumentData{LegacyWorktrees:PresentField(make([]LegacyStringPreference,1))}; c:=d.clone();x,_:=d.LegacyWorktrees.Value();y,_:=c.LegacyWorktrees.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("PreferencesDocument.ScopedPreferences",func(t *testing.T){
+d:=PreferencesDocumentData{ScopedPreferences:PresentField(make([]ScopedPreference,1))}; c:=d.clone();x,_:=d.ScopedPreferences.Value();y,_:=c.ScopedPreferences.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("RunConfigDocument.Launch",func(t *testing.T){
+d:=RunConfigDocumentData{Launch:PresentField(make([]SavedLaunchEntry,1))}; c:=d.clone();x,_:=d.Launch.Value();y,_:=c.Launch.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("SavedLaunchDefinition.Targets",func(t *testing.T){
+d:=SavedLaunchDefinitionData{Targets:PresentField(make([]string,1))}; c:=d.clone();x,_:=d.Targets.Value();y,_:=c.Targets.Value();if &x[0]==&y[0] {t.Fatal("shared stored backing storage")}
+})
+t.Run("StorageLoadObservation.Diagnostics",func(t *testing.T){
+d:=StorageLoadObservationData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(StorageLoadObservationData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("StorageLoadObservation.Recovery",func(t *testing.T){
+d:=StorageLoadObservationData{Recovery:make([]StorageRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(StorageLoadObservationData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("StorageCommitResult.Recovery",func(t *testing.T){
+d:=StorageCommitResultData{Recovery:make([]StorageRecovery,1)}; c:=d.clone(); if &d.Recovery[0] == &c.Recovery[0] {t.Fatal("shared backing storage")}; z:=(StorageCommitResultData{}).clone();if z.Recovery!=nil {t.Fatal("nil changed")}
+})
+t.Run("StorageCommitResult.Diagnostics",func(t *testing.T){
+d:=StorageCommitResultData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(StorageCommitResultData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("CwdObservation.ProjectComponents",func(t *testing.T){
+d:=CwdObservationData{ProjectComponents:make([]string,1)}; c:=d.clone(); if &d.ProjectComponents[0] == &c.ProjectComponents[0] {t.Fatal("shared backing storage")}; z:=(CwdObservationData{}).clone();if z.ProjectComponents!=nil {t.Fatal("nil changed")}
+})
+t.Run("RemoteBinding.FetchURLs",func(t *testing.T){
+d:=RemoteBindingData{FetchURLs:make([]string,1)}; c:=d.clone(); if &d.FetchURLs[0] == &c.FetchURLs[0] {t.Fatal("shared backing storage")}; z:=(RemoteBindingData{}).clone();if z.FetchURLs!=nil {t.Fatal("nil changed")}
+})
+t.Run("RemoteBinding.PushURLs",func(t *testing.T){
+d:=RemoteBindingData{PushURLs:make([]string,1)}; c:=d.clone(); if &d.PushURLs[0] == &c.PushURLs[0] {t.Fatal("shared backing storage")}; z:=(RemoteBindingData{}).clone();if z.PushURLs!=nil {t.Fatal("nil changed")}
+})
+t.Run("RemoteBinding.Refspecs",func(t *testing.T){
+d:=RemoteBindingData{Refspecs:make([]RefspecMapping,1)}; c:=d.clone(); if &d.Refspecs[0] == &c.Refspecs[0] {t.Fatal("shared backing storage")}; z:=(RemoteBindingData{}).clone();if z.Refspecs!=nil {t.Fatal("nil changed")}
+})
+t.Run("EnvironmentPolicy.Set",func(t *testing.T){
+d:=EnvironmentPolicyData{Set:make([]EnvironmentEntry,1)}; c:=d.clone(); if &d.Set[0] == &c.Set[0] {t.Fatal("shared backing storage")}; z:=(EnvironmentPolicyData{}).clone();if z.Set!=nil {t.Fatal("nil changed")}
+})
+t.Run("EnvironmentPolicy.Remove",func(t *testing.T){
+d:=EnvironmentPolicyData{Remove:make([]string,1)}; c:=d.clone(); if &d.Remove[0] == &c.Remove[0] {t.Fatal("shared backing storage")}; z:=(EnvironmentPolicyData{}).clone();if z.Remove!=nil {t.Fatal("nil changed")}
+})
+t.Run("ArgvExecution.Arguments",func(t *testing.T){
+d:=ArgvExecutionData{Arguments:make([]string,1)}; c:=d.clone(); if &d.Arguments[0] == &c.Arguments[0] {t.Fatal("shared backing storage")}; z:=(ArgvExecutionData{}).clone();if z.Arguments!=nil {t.Fatal("nil changed")}
+})
+t.Run("InvocationSummary.ArgumentDisplay",func(t *testing.T){
+d:=InvocationSummaryData{ArgumentDisplay:make([]string,1)}; c:=d.clone(); if &d.ArgumentDisplay[0] == &c.ArgumentDisplay[0] {t.Fatal("shared backing storage")}; z:=(InvocationSummaryData{}).clone();if z.ArgumentDisplay!=nil {t.Fatal("nil changed")}
+})
+t.Run("IdentityDiagnosticDetail.RecoveryIDs",func(t *testing.T){
+d:=IdentityDiagnosticDetailData{RecoveryIDs:make([]RecoveryID,1)}; c:=d.clone(); if &d.RecoveryIDs[0] == &c.RecoveryIDs[0] {t.Fatal("shared backing storage")}; z:=(IdentityDiagnosticDetailData{}).clone();if z.RecoveryIDs!=nil {t.Fatal("nil changed")}
+})
+t.Run("CommandTransportOutcome.Diagnostics",func(t *testing.T){
+d:=CommandTransportOutcomeData{Diagnostics:make([]Diagnostic,1)}; c:=d.clone(); if &d.Diagnostics[0] == &c.Diagnostics[0] {t.Fatal("shared backing storage")}; z:=(CommandTransportOutcomeData{}).clone();if z.Diagnostics!=nil {t.Fatal("nil changed")}
+})
+t.Run("FacetEffect.RecoveryIDs",func(t *testing.T){
+d:=FacetEffectData{RecoveryIDs:make([]RecoveryID,1)}; c:=d.clone(); if &d.RecoveryIDs[0] == &c.RecoveryIDs[0] {t.Fatal("shared backing storage")}; z:=(FacetEffectData{}).clone();if z.RecoveryIDs!=nil {t.Fatal("nil changed")}
+})
+t.Run("EffectReport.Facets",func(t *testing.T){
+d:=EffectReportData{Facets:make([]FacetEffect,1)}; c:=d.clone(); if &d.Facets[0] == &c.Facets[0] {t.Fatal("shared backing storage")}; z:=(EffectReportData{}).clone();if z.Facets!=nil {t.Fatal("nil changed")}
+})
+}

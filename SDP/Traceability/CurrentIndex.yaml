@@ -471,7 +471,7 @@
       "id": "IMPL59",
       "kind": "implementation_contribution",
       "issue": 59,
-      "state": "kickoff",
+      "state": "correction_in_progress",
       "layer": "Application API/ports",
       "slices": [
         "SLC-01",
@@ -490,13 +490,29 @@
       ],
       "branch": "codereview-21/layer-application-api",
       "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "head": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "productHead": "3e45f313d3e953f3293b9d42405f6843264656e0",
+      "sourceCiRun": "34038064464",
+      "reviewedHead": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "disposition": "CHANGES_REQUIRED",
+      "findings": [
+        "M259-M01",
+        "M259-M02",
+        "M259-M03",
+        "M259-M04",
+        "M259-M05",
+        "M259-M06",
+        "M259-M07",
+        "M259-M08"
+      ],
+      "review": "SDP/Verification/CR-#21/M2-API-Review--001.md"
     },
     {
       "id": "IMPL60",
       "kind": "implementation_contribution",
       "issue": 60,
-      "state": "kickoff",
+      "state": "accepted_pending_predecessor_integration",
       "layer": "TUI State viewmodel",
       "slices": [
         "SLC-01",
@@ -515,7 +531,17 @@
       ],
       "branch": "codereview-21/layer-tuistate-viewmodel",
       "base": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
-      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md"
+      "doc": "SDP/Implementation/CR-#21/M2-Surfaces--001.md",
+      "reviewedHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+      "sourceCiRun": "34038307701",
+      "head": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "resolvedImplementationFindings": [
+        "M260-M01"
+      ],
+      "integrationHead": null
     },
     {
       "id": "M2-SURFACES",

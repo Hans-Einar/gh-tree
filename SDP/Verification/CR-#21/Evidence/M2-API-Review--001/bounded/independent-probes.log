@@ -1,0 +1,5 @@
+# github.com/Hans-Einar/gh-tree/internal/application/api_test [github.com/Hans-Einar/gh-tree/internal/application/api.test]
+internal\application\api\review_runtime_storage_test.go:47:123: cannot use Partial (constant 3 of uint8 type api.Completeness) as api.EffectState value in argument to rsEffects
+internal\application\api\review_runtime_storage_test.go:57:111: cannot use Partial (constant 3 of uint8 type api.Completeness) as api.EffectState value in argument to rsEffects
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api [build failed]
+FAIL

@@ -1,0 +1,5 @@
+--- FAIL: TestReviewCorrectionRetainsIndependentCockpit (6.77s)
+    review_correction_test.go:67: expected invalid zero viewmodel.NavigatorModel, got error <nil>
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel	7.349s
+FAIL

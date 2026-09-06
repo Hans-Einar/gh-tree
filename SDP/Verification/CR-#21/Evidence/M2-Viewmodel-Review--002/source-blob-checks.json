@@ -1,0 +1,194 @@
+[
+  {
+    "Path": "go.mod",
+    "ExpectedBlob": "02f76de07dc0ae03e39a1de9965bb8fc1aff6525",
+    "ActualBlob": "02f76de07dc0ae03e39a1de9965bb8fc1aff6525",
+    "Match": true
+  },
+  {
+    "Path": "go.sum",
+    "ExpectedBlob": "d4ba0e7bfc7493390a2246cc7c8c03c6f2202e65",
+    "ActualBlob": "d4ba0e7bfc7493390a2246cc7c8c03c6f2202e65",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/README.md",
+    "ExpectedBlob": "295d152f7e799689035abe98bbc69a002081a71c",
+    "ActualBlob": "295d152f7e799689035abe98bbc69a002081a71c",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/branch.go",
+    "ExpectedBlob": "8de8e34e5985b8a64e91116e4a04f1d34035d494",
+    "ActualBlob": "8de8e34e5985b8a64e91116e4a04f1d34035d494",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/closed_test.go",
+    "ExpectedBlob": "08c44aa1b55a0051dbb69fdbf353234d0dae3ee1",
+    "ActualBlob": "08c44aa1b55a0051dbb69fdbf353234d0dae3ee1",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/head.go",
+    "ExpectedBlob": "146bf5e6ed0af3994758e65bb37b6dffddca070e",
+    "ActualBlob": "146bf5e6ed0af3994758e65bb37b6dffddca070e",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/identity_test.go",
+    "ExpectedBlob": "ee11e8c9fd28e33465b036b156fceeadb5968f3f",
+    "ActualBlob": "ee11e8c9fd28e33465b036b156fceeadb5968f3f",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/launch.go",
+    "ExpectedBlob": "f8d798a6f65029e59f0ff29007954ab7031b60e0",
+    "ActualBlob": "f8d798a6f65029e59f0ff29007954ab7031b60e0",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/oid.go",
+    "ExpectedBlob": "81c5ead32b06b8db4366b6973df47066ca4bdda5",
+    "ActualBlob": "81c5ead32b06b8db4366b6973df47066ca4bdda5",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/repository.go",
+    "ExpectedBlob": "3256e795a55bdf62636be70093adc826a9595e7e",
+    "ActualBlob": "3256e795a55bdf62636be70093adc826a9595e7e",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/revision_test.go",
+    "ExpectedBlob": "a7f1c66da551c25c10eb2b7f2edb1ec20c457de7",
+    "ActualBlob": "a7f1c66da551c25c10eb2b7f2edb1ec20c457de7",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/session.go",
+    "ExpectedBlob": "a41b248d1034e9bbc6f97a66218ed2d91da6a06e",
+    "ActualBlob": "a41b248d1034e9bbc6f97a66218ed2d91da6a06e",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/surface_test.go",
+    "ExpectedBlob": "2668175b4a003c42c0bb082064685ed8b949cf77",
+    "ActualBlob": "2668175b4a003c42c0bb082064685ed8b949cf77",
+    "Match": true
+  },
+  {
+    "Path": "internal/domain/target.go",
+    "ExpectedBlob": "89a059614ed740ac4ba8fd3c711bec2d535d19a7",
+    "ActualBlob": "89a059614ed740ac4ba8fd3c711bec2d535d19a7",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/README.md",
+    "ExpectedBlob": "7c22affbbf0819334ea28c938a10c288128e635f",
+    "ActualBlob": "7c22affbbf0819334ea28c938a10c288128e635f",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/action.go",
+    "ExpectedBlob": "daa9521aae4e813e60eece0dc1ab6236d3e9db34",
+    "ActualBlob": "daa9521aae4e813e60eece0dc1ab6236d3e9db34",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/closed_test.go",
+    "ExpectedBlob": "3f2b9aa9c27124c14f5205760e481007e44d8f9c",
+    "ActualBlob": "3f2b9aa9c27124c14f5205760e481007e44d8f9c",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/cockpit_test.go",
+    "ExpectedBlob": "c4674d4521451a2e7bb881342ff73ded0fb70474",
+    "ActualBlob": "c4674d4521451a2e7bb881342ff73ded0fb70474",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/console.go",
+    "ExpectedBlob": "27ef682d430c6a8e7c8d47248c405e6ce387e4fe",
+    "ActualBlob": "27ef682d430c6a8e7c8d47248c405e6ce387e4fe",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/detail.go",
+    "ExpectedBlob": "9c7d689c14e244503b219bd0290641023fe508e7",
+    "ActualBlob": "9c7d689c14e244503b219bd0290641023fe508e7",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/identity.go",
+    "ExpectedBlob": "a0052c27638f95619085e1ccf063b008d364ec50",
+    "ActualBlob": "a0052c27638f95619085e1ccf063b008d364ec50",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/modal.go",
+    "ExpectedBlob": "754e7db5b4e53f800e14526fcc5fb34fbc9740f9",
+    "ActualBlob": "754e7db5b4e53f800e14526fcc5fb34fbc9740f9",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/modal_test.go",
+    "ExpectedBlob": "3ec988df19319b82b825c835d187ed96df43ab3a",
+    "ActualBlob": "3ec988df19319b82b825c835d187ed96df43ab3a",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/pane.go",
+    "ExpectedBlob": "167c391293d9bebb432e1085e5394a9ed4731f41",
+    "ActualBlob": "167c391293d9bebb432e1085e5394a9ed4731f41",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/rows.go",
+    "ExpectedBlob": "bc3830b9119b4b1f8686bb40806fefddd01b91ec",
+    "ActualBlob": "bc3830b9119b4b1f8686bb40806fefddd01b91ec",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/snapshot.go",
+    "ExpectedBlob": "03396ad74d1432d7f2d01376c28d8843a09d525a",
+    "ActualBlob": "03396ad74d1432d7f2d01376c28d8843a09d525a",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/stash.go",
+    "ExpectedBlob": "9eaa6fae0277d8d9c1d1be11f64d1ce3905a8a88",
+    "ActualBlob": "9eaa6fae0277d8d9c1d1be11f64d1ce3905a8a88",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/stash_time_test.go",
+    "ExpectedBlob": "79e8f5a3089f2e611ac6d45e1447b26e61c8cded",
+    "ActualBlob": "79e8f5a3089f2e611ac6d45e1447b26e61c8cded",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/surface_test.go",
+    "ExpectedBlob": "e96b0f199edc5760a40185d6b1f957a0043d9cba",
+    "ActualBlob": "e96b0f199edc5760a40185d6b1f957a0043d9cba",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/time.go",
+    "ExpectedBlob": "b7125a0c7ece91cc5abe35491785d3342b5baf02",
+    "ActualBlob": "b7125a0c7ece91cc5abe35491785d3342b5baf02",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/value.go",
+    "ExpectedBlob": "1b5e2dfb4b0eec211394893cec294df77bdc8b7b",
+    "ActualBlob": "1b5e2dfb4b0eec211394893cec294df77bdc8b7b",
+    "Match": true
+  },
+  {
+    "Path": "internal/tuistate/viewmodel/viewmodel_test.go",
+    "ExpectedBlob": "8517c92a2f73fab29105a60bbc605b1da4eaee3b",
+    "ActualBlob": "8517c92a2f73fab29105a60bbc605b1da4eaee3b",
+    "Match": true
+  }
+]

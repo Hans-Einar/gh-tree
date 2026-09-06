@@ -1,0 +1,190 @@
+package viewmodel_test
+
+import (
+ "reflect"
+ "strings"
+ "testing"
+ "time"
+
+ "github.com/Hans-Einar/gh-tree/internal/domain"
+ vm "github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel"
+)
+
+func reviewMust[T any](v T, e error) T { if e != nil { panic(e) }; return v }
+func reviewReject[T any](t *testing.T, v T, e error) { t.Helper(); if e == nil || !reflect.DeepEqual(v, *new(T)) { t.Fatalf("expected invalid zero %T, got error %v",v,e) } }
+type reviewSpan struct { start,end uintptr; path string }
+func reviewSpans(v reflect.Value, path string) (out []reviewSpan) {
+ switch v.Kind() {
+ case reflect.Struct:
+  for i:=0;i<v.NumField();i++ { out=append(out,reviewSpans(v.Field(i),path+"."+v.Type().Field(i).Name)...)}
+ case reflect.Array:
+  for i:=0;i<v.Len();i++ {out=append(out,reviewSpans(v.Index(i),path+"[]")...)}
+ case reflect.Slice:
+  if v.Cap()>0 && v.Type().Elem().Size()>0 {out=append(out,reviewSpan{v.Pointer(),v.Pointer()+uintptr(v.Cap())*v.Type().Elem().Size(),path})}
+  for i:=0;i<v.Len();i++ {out=append(out,reviewSpans(v.Index(i),path+"[]")...)}
+ case reflect.Map:
+  if !v.IsNil() { panic("unexpected mutable map in viewmodel") }
+ }
+ return out
+}
+func reviewDisjoint(t *testing.T,a,b any) {
+ t.Helper()
+ for _,x:=range reviewSpans(reflect.ValueOf(a),"a") { for _,y:=range reviewSpans(reflect.ValueOf(b),"b") { if x.start<y.end && y.start<x.end {t.Fatalf("shared mutable interval %s / %s",x.path,y.path)} } }
+}
+func reviewCopy(t *testing.T,spec,value any) {
+ t.Helper(); t.Run(reflect.TypeOf(value).Name(),func(t *testing.T) {
+  reviewDisjoint(t,spec,value)
+  v:=reflect.ValueOf(value)
+  if m:=v.MethodByName("Clone");m.IsValid(){ cloned:=m.Call(nil)[0].Interface();reviewDisjoint(t,value,cloned);if !reflect.DeepEqual(value,cloned){t.Fatal("clone changed value")} }
+  if m:=v.MethodByName("Fields");m.IsValid(){fields:=m.Call(nil)[0].Interface();reviewDisjoint(t,value,fields);reviewDisjoint(t,fields,m.Call(nil)[0].Interface())}
+ })
+}
+type reviewFixture struct {
+ repo, remote, fork domain.RepositoryID
+ wt domain.WorktreeID
+ rev, parent domain.Revision
+ branch domain.BranchID
+ pr domain.PRID
+ stash domain.StashID
+ launch domain.LaunchPointID
+ sid domain.SessionID
+ id vm.ElementID
+ meta vm.RowMeta
+ source vm.SourceStatus
+ notice vm.StatusNotice
+ list vm.ListState
+ header vm.PaneHeader
+ target vm.TargetDetail
+ branchRow vm.BranchRow
+ worktreeRow vm.WorktreeRow
+ commit vm.CommitRow
+ launchRow vm.LaunchRow
+ console vm.ConsoleModel
+ diff vm.DiffModel
+ graph vm.GraphModel
+}
+func reviewData(t *testing.T) reviewFixture {
+ t.Helper(); f:=reviewFixture{}
+ f.repo=reviewMust(domain.NewRepositoryID(domain.LocalCommon,"clone-A"));f.remote=reviewMust(domain.NewRepositoryID(domain.Remote,"base/repo"));f.fork=reviewMust(domain.NewRepositoryID(domain.Remote,"fork/repo"))
+ f.wt=reviewMust(domain.NewWorktreeID(f.repo,"linked"));f.rev=reviewMust(domain.NewRevision(f.repo,reviewMust(domain.NewOID(strings.Repeat("b",64)))));f.parent=reviewMust(domain.NewRevision(f.repo,reviewMust(domain.NewOID(strings.Repeat("c",64)))))
+ f.branch=reviewMust(domain.NewBranchID(f.repo,domain.Local,"feature/exact"));f.pr=reviewMust(domain.NewPRID(f.remote,1));f.stash=reviewMust(domain.NewStashID(f.repo,f.rev.OID()));f.launch=reviewMust(domain.NewLaunchPointID(f.wt,"make","project","one"));f.sid=reviewMust(domain.NewSessionID(19));f.id=reviewMust(vm.NewRevisionElement(f.rev))
+ ns:=vm.StatusNoticeSpec{Text:"partial source",Severity:vm.Warning,Subject:vm.Some(f.id)};f.notice=reviewMust(vm.NewStatusNotice(ns));reviewCopy(t,ns,f.notice)
+ ss:=vm.SourceStatusSpec{Label:"source",Availability:vm.Available,Completeness:vm.Partial,Freshness:vm.Cached,Generation:vm.Some(vm.SourceGeneration(13)),Notices:[]vm.StatusNotice{f.notice}};f.source=reviewMust(vm.NewSourceStatus(ss));reviewCopy(t,ss,f.source)
+ bs:=vm.BadgeSpec{Label:"unknown",Severity:vm.Warning,Relation:vm.Some(vm.RelationUnknown)};badge:=reviewMust(vm.NewBadge(bs));reviewCopy(t,bs,badge)
+ ms:=vm.RowMetaSpec{Label:"full",Details:[]string{"details"},Badges:[]vm.Badge{badge},Sources:[]vm.SourceStatus{f.source}};f.meta=reviewMust(vm.NewRowMeta(ms));reviewCopy(t,ms,f.meta)
+ ls:=vm.ListStateSpec{Selected:vm.Some(f.id),Cursor:vm.Some(999),Scroll:reviewMust(vm.NewScroll(999,321)),Filter:"partial selection is retained"};f.list=reviewMust(vm.NewListState(ls));reviewCopy(t,ls,f.list)
+ hs:=vm.PaneHeaderSpec{Title:"pane",Availability:vm.Available,Completeness:vm.Partial,ContentGeneration:17,Sources:[]vm.SourceStatus{f.source},Notices:[]vm.StatusNotice{f.notice}};f.header=reviewMust(vm.NewPaneHeader(hs));reviewCopy(t,hs,f.header)
+ ds:=vm.DetailFieldSpec{Label:"full identity",Value:f.rev.OID().String()};df:=reviewMust(vm.NewDetailField(ds));reviewCopy(t,ds,df)
+ ts:=vm.TargetDetailSpec{Target:vm.Some(reviewMust(domain.NewCommitTarget(f.rev))),Worktree:vm.Some(f.wt),ExpectedHead:vm.Some(reviewMust(domain.NewDetachedHead(f.rev))),Subjects:[]vm.ElementID{f.id},Stashes:[]domain.StashID{f.stash},Paths:[]string{"literal path\n"},Fields:[]vm.DetailField{df}};f.target=reviewMust(vm.NewTargetDetail(ts));reviewCopy(t,ts,f.target)
+ epSpec:=vm.BranchEndpointSpec{Branch:f.branch,Revision:vm.Some(f.rev),Freshness:vm.Cached,Evidence:vm.Partial};ep:=reviewMust(vm.NewBranchEndpoint(epSpec));reviewCopy(t,epSpec,ep)
+ remoteBranch:=reviewMust(domain.NewBranchID(f.fork,domain.RemoteHead,"feature/exact"));remoteRev:=reviewMust(domain.NewRevision(f.fork,f.rev.OID()));remoteEP:=reviewMust(vm.NewBranchEndpoint(vm.BranchEndpointSpec{Branch:remoteBranch,Revision:vm.Some(remoteRev),Freshness:vm.Fresh,Evidence:vm.More}))
+ us:=vm.UpstreamSpec{State:vm.UpstreamResolved,Endpoint:vm.Some(remoteEP),Ahead:vm.Some(uint64(0)),Behind:vm.None[uint64]()};up:=reviewMust(vm.NewUpstream(us));reviewCopy(t,us,up)
+ pas:=vm.PRAnnotationSpec{ID:f.pr,Role:vm.PRHead,Endpoint:vm.Some(remoteEP),Evidence:vm.Partial};pa:=reviewMust(vm.NewPRAnnotation(pas));reviewCopy(t,pas,pa)
+ was:=vm.WorktreeAnnotationSpec{ID:f.wt,Head:vm.Some(reviewMust(domain.NewDetachedHead(f.rev))),Relation:vm.ExactSelectedRevision,Availability:vm.Available,Active:true};wa:=reviewMust(vm.NewWorktreeAnnotation(was));reviewCopy(t,was,wa)
+ brs:=vm.BranchRowSpec{ID:f.branch,ExpectedRevision:vm.Some(f.rev),Local:vm.Some(ep),Upstream:vm.Some(up),Remote:[]vm.BranchEndpoint{remoteEP},PullRequests:[]vm.PRAnnotation{pa},Worktrees:[]vm.WorktreeAnnotation{wa},Meta:f.meta};f.branchRow=reviewMust(vm.NewBranchRow(brs));reviewCopy(t,brs,f.branchRow)
+ stamp:=reviewMust(vm.NewTimestamp(time.Date(2026,9,6,4,5,6,789,time.UTC),-12600))
+ prs:=vm.PRRowSpec{ID:f.pr,Head:vm.Some(remoteEP),Title:"title",Body:"full\nbody",UpdatedAt:vm.Some(stamp),State:vm.PRStateUnknown,Worktrees:[]vm.WorktreeAnnotation{wa},Meta:f.meta};pr:=reviewMust(vm.NewPRRow(prs));reviewCopy(t,prs,pr)
+ fs:=vm.FileChangeSpec{Path:"new",OldPath:vm.Some("old"),Kind:vm.RenamedChange,IndexStatus:vm.StatusRenamed,WorktreeStatus:vm.StatusModified,Meta:f.meta};fc:=reviewMust(vm.NewFileChange(fs));reviewCopy(t,fs,fc)
+ ws:=vm.WorktreeRowSpec{ID:f.wt,Head:vm.Some(reviewMust(domain.NewUnbornHead(f.branch))),Availability:vm.AvailabilityUnknown,Upstream:vm.Some(up),Changes:[]vm.FileChange{fc},Meta:f.meta};f.worktreeRow=reviewMust(vm.NewWorktreeRow(ws));reviewCopy(t,ws,f.worktreeRow)
+ cs:=vm.CommitRowSpec{Revision:f.rev,Parents:[]domain.Revision{f.parent},Subject:"literal\x1b[2J",Message:"full\nmessage\xff",Author:"author",AuthorEmail:"a@example.test",Committer:"committer",AuthoredAt:vm.Some(stamp),CommittedAt:vm.Some(stamp),Meta:f.meta};f.commit=reviewMust(vm.NewCommitRow(cs));reviewCopy(t,cs,f.commit)
+ sts:=vm.StashRowSpec{ID:f.stash,Parents:[]domain.Revision{f.parent,f.rev},OriginWorktree:vm.Some(f.wt),CreatedAt:vm.Some(stamp),Meta:f.meta};st:=reviewMust(vm.NewStashRow(sts));reviewCopy(t,sts,st)
+ memberS:=vm.LaunchMemberSpec{ID:f.launch,Label:"one",SelectedOrder:vm.Some(uint32(1))};member:=reviewMust(vm.NewLaunchMember(memberS));reviewCopy(t,memberS,member)
+ lrs:=vm.LaunchRowSpec{ID:f.launch,SavedAlias:vm.Some("Alias A"),OrderedMembers:[]vm.LaunchMember{member},Availability:vm.Available,Meta:f.meta};f.launchRow=reviewMust(vm.NewLaunchRow(lrs));reviewCopy(t,lrs,f.launchRow)
+ nrs:=vm.NamespaceRowSpec{ID:reviewMust(vm.NewBranchElement(f.branch)),Parent:vm.Some(reviewMust(vm.NewNamespaceElement("folder","folder",vm.Some(f.repo)))),Meta:f.meta};nr:=reviewMust(vm.NewNamespaceRow(nrs));reviewCopy(t,nrs,nr)
+ grs:=vm.GraphRefSpec{Name:"refs/heads/feature/exact",Kind:vm.BranchRef,Revision:f.rev,Branch:vm.Some(f.branch)};gr:=reviewMust(vm.NewGraphRef(grs));reviewCopy(t,grs,gr)
+ gas:=vm.GraphAnnotationSpec{Revision:f.rev,PullRequests:[]vm.PRAnnotation{pa},Worktrees:[]vm.WorktreeAnnotation{wa},Badges:[]vm.Badge{badge}};ga:=reviewMust(vm.NewGraphAnnotation(gas));reviewCopy(t,gas,ga)
+ gs:=vm.GraphModelSpec{Repository:f.repo,SourceGeneration:41,Roots:[]domain.Revision{f.rev},Commits:[]vm.CommitRow{f.commit},Refs:[]vm.GraphRef{gr},Annotations:[]vm.GraphAnnotation{ga},BoundaryParents:[]domain.Revision{f.parent},Sources:[]vm.SourceStatus{f.source},List:f.list};f.graph=reviewMust(vm.NewGraphModel(gs));reviewCopy(t,gs,f.graph)
+ ps:=vm.PatchSpec{Bytes:[]byte("literal\npatch\x1b[2J"),Truncated:true,OriginalByteCount:vm.Some(uint64(500)),Notices:[]vm.StatusNotice{f.notice}};patch:=reviewMust(vm.NewPatch(ps));reviewCopy(t,ps,patch)
+ empty:=reviewMust(vm.NewListState(vm.ListStateSpec{}))
+ dfs:=vm.DiffModelSpec{Comparison:reviewMust(vm.NewIndexToWorktreeComparison(f.wt)),Files:[]vm.FileChange{fc},Patch:patch,Sources:[]vm.SourceStatus{f.source},List:empty,CanStage:true};f.diff=reviewMust(vm.NewDiffModel(dfs));reviewCopy(t,dfs,f.diff)
+ tds:=vm.TextDetailSpec{Subject:vm.Some(f.id),Title:"detail",Text:"verbatim\xff",Fields:[]vm.DetailField{df}};detail:=reviewMust(vm.NewTextDetail(tds));reviewCopy(t,tds,detail)
+ parentID,_:=nrs.Parent.Value()
+ nspec:=vm.NavigatorModelSpec{Rows:[]vm.NamespaceRow{nr},Branches:[]vm.BranchRow{f.branchRow},PullRequests:[]vm.PRRow{pr},List:empty,Folder:[]vm.ElementID{parentID}};nm:=reviewMust(vm.NewNavigatorModel(nspec));reviewCopy(t,nspec,nm)
+ wspec:=vm.WorktreesModelSpec{Rows:[]vm.WorktreeRow{f.worktreeRow},List:empty};wm:=reviewMust(vm.NewWorktreesModel(wspec));reviewCopy(t,wspec,wm)
+ aspec:=vm.ActiveModelSpec{Worktree:vm.Some(f.worktreeRow),Changes:empty};am:=reviewMust(vm.NewActiveModel(aspec));reviewCopy(t,aspec,am)
+ bspec:=vm.BranchModelSpec{Branch:f.branchRow,Commits:[]vm.CommitRow{f.commit},List:f.list};bm:=reviewMust(vm.NewBranchModel(bspec));reviewCopy(t,bspec,bm)
+ hspec:=vm.HistoryModelSpec{Source:f.id,Target:vm.Some(reviewMust(domain.NewCommitTarget(f.rev))),Commits:[]vm.CommitRow{f.commit},List:f.list};hm:=reviewMust(vm.NewHistoryModel(hspec));reviewCopy(t,hspec,hm)
+ lspec:=vm.LaunchModelSpec{Worktree:f.wt,Rows:[]vm.LaunchRow{f.launchRow},List:empty};lm:=reviewMust(vm.NewLaunchModel(lspec));reviewCopy(t,lspec,lm)
+ sspec:=vm.StashesModelSpec{Repository:f.repo,Rows:[]vm.StashRow{st,st},List:empty};sm:=reviewMust(vm.NewStashesModel(sspec));reviewCopy(t,sspec,sm)
+ byteRange:=reviewMust(vm.NewByteRange(2,20));gap:=reviewMust(vm.NewByteRange(2,4))
+ lineSpec:=vm.ConsoleLineSpec{Text:"safe e\u0301 界",Stream:vm.TerminalStream,SourceRange:reviewMust(vm.NewByteRange(4,20))};line:=reviewMust(vm.NewConsoleLine(lineSpec));reviewCopy(t,lineSpec,line)
+ presSpec:=vm.ConsolePresentationSpec{SessionID:f.sid,SourceGeneration:53,PresentationGeneration:71,ContentGeneration:97,Range:byteRange,Lines:[]vm.ConsoleLine{line},Gaps:[]vm.ByteRange{gap},Truncated:true,Notices:[]vm.StatusNotice{f.notice}};pres:=reviewMust(vm.NewConsolePresentation(presSpec));reviewCopy(t,presSpec,pres)
+ sumSpec:=vm.ConsoleSummarySpec{Label:"safe invocation",ExecutableDisplay:"tool",ArgumentDisplay:[]string{"one","two"},CwdDisplay:"original cwd",WorktreeID:f.wt,Terminal:true};sum:=reviewMust(vm.NewConsoleSummary(sumSpec));reviewCopy(t,sumSpec,sum)
+ conSpec:=vm.ConsoleModelSpec{SessionID:f.sid,SourceGeneration:53,PresentationGeneration:71,ContentGeneration:97,Phase:vm.RunningSession,Cleanup:vm.CleanupPending,Activity:vm.OutputObserved,Capabilities:vm.NewConsoleCapabilities(true,true,true,true),Summary:sum,Presentation:vm.Some(pres),Notices:[]vm.StatusNotice{f.notice}};f.console=reviewMust(vm.NewConsoleModel(conSpec));reviewCopy(t,conSpec,f.console)
+ consSpec:=vm.ConsolesModelSpec{Rows:[]vm.ConsoleModel{f.console},List:empty};cons:=reviewMust(vm.NewConsolesModel(consSpec));reviewCopy(t,consSpec,cons)
+ inSpec:=vm.OutputInputSpec{SessionID:f.sid,SourceGeneration:53,PresentationGeneration:71,ContentGeneration:97,Offset:4,Bytes:[]byte("raw\x1b[2J"),Stream:vm.TerminalStream,Gaps:[]vm.ByteRange{gap}};in:=reviewMust(vm.NewOutputInput(inSpec));reviewCopy(t,inSpec,in)
+ configSpec:=vm.ConfiguredTargetRowSpec{ID:reviewMust(vm.NewNamespaceElement("configured","vacant",vm.Some(f.repo))),Label:"vacant",Path:"literal vacant destination",Availability:vm.Available,Meta:f.meta};ct:=reviewMust(vm.NewConfiguredTargetRow(configSpec));reviewCopy(t,configSpec,ct)
+ formField:=reviewMust(vm.NewTextField(vm.MessageField,"message","exact\nmessage",3,true,[]vm.StatusNotice{f.notice}));reviewCopy(t,[]vm.StatusNotice{f.notice},formField)
+ bodies:=[]vm.ModalBody{reviewMust(vm.NewConfirmationBody(f.target,[]string{"safe summary"})),reviewMust(vm.NewFormBody(f.target,[]vm.FormField{formField,reviewMust(vm.NewBooleanField(vm.StageAllField,"all",true,[]vm.StatusNotice{f.notice}))})),reviewMust(vm.NewWorktreeChooserBody(f.target,[]vm.WorktreeRow{f.worktreeRow},empty)),reviewMust(vm.NewDeployChooserBody(f.target,[]vm.ConfiguredTargetRow{ct},empty)),reviewMust(vm.NewLaunchChooserBody(f.target,lm)),reviewMust(vm.NewDetailBody(f.target,detail))}
+ for _,body:=range bodies {reviewCopy(t,f.target,body);reviewDisjoint(t,body,body.Target());reviewDisjoint(t,body,body.Fields());reviewDisjoint(t,body,body.Paragraphs())}
+ choices:=[]vm.ModalChoice{reviewMust(vm.NewModalChoice(vm.CancelChoice,"Cancel",true)),reviewMust(vm.NewModalChoice(vm.ProceedChoice,"Proceed",true))}
+ modSpec:=vm.ModalSpec{ID:reviewMust(vm.NewModalID("modal-A")),Owner:reviewMust(vm.NewOwnerKey("owner-A")),Purpose:vm.ConfirmDeploy,Title:"exact target",Body:bodies[0],Choices:choices};modal:=reviewMust(vm.NewModal(modSpec));reviewCopy(t,modSpec,modal)
+ actionSpec:=vm.ActionBindingSpec{Action:vm.ConfirmChoice,Chord:[]vm.KeyStroke{reviewMust(vm.NewKeyStroke("Enter",vm.ControlModifier))},Scope:reviewMust(vm.NewModalActionScope(modSpec.ID)),Applicable:true,Enabled:true,Label:"Proceed"};action:=reviewMust(vm.NewActionBinding(actionSpec));reviewCopy(t,actionSpec,action)
+ panes:=[]vm.PaneModel{reviewMust(vm.NewGraphPane(f.header,f.graph)),reviewMust(vm.NewWorktreesPane(f.header,wm)),reviewMust(vm.NewActivePane(f.header,am)),reviewMust(vm.NewLaunchPane(f.header,lm)),reviewMust(vm.NewStashesPane(f.header,sm)),reviewMust(vm.NewConsolePane(f.header,cons))}
+ for _,pane:=range panes{reviewCopy(t,f.header,pane);reviewDisjoint(t,pane,pane.Header())}
+ snapSpec:=vm.SnapshotSpec{PresentationGeneration:137,Viewport:reviewMust(vm.NewViewport(160,70,139)),Mode:vm.GraphMode,Focus:reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.ModalPane,vm.ChoicesPart)),vm.Some(modSpec.ID),vm.None[vm.FieldID]())),Selected:[]vm.ElementID{f.id},Panes:panes,Modal:vm.Some(modal),Actions:[]vm.ActionBinding{action},Status:[]vm.StatusNotice{f.notice},AnimationFrame:23,VersionDisplay:"supplied version"};snap:=reviewMust(vm.NewSnapshot(snapSpec));reviewCopy(t,snapSpec,snap)
+ measSpec:=vm.MeasurementSpec{Viewport:snapSpec.Viewport,PresentationGeneration:137,ModalID:vm.Some(modSpec.ID),ConfirmationPresentable:true,Panes:[]vm.PaneRect{reviewMust(vm.NewPaneRect(reviewMust(vm.NewPanePath(vm.ModalPane,vm.RootPart)),reviewMust(vm.NewRect(0,0,100,30))))},Consoles:[]vm.ConsoleRect{reviewMust(vm.NewConsoleRect(f.sid,97,reviewMust(vm.NewRect(101,31,40,20))))}};meas:=reviewMust(vm.NewMeasurement(measSpec));reviewCopy(t,measSpec,meas);if !meas.Matches(snap){t.Fatal("independent snapshot/console generations should match")}
+ return f
+}
+
+func TestReviewCopyInventory(t *testing.T){reviewData(t)}
+
+func TestReviewRetainedBranchCockpit(t *testing.T){
+ r:=reviewMust(domain.NewRepositoryID(domain.LocalCommon,"r"));b:=reviewMust(domain.NewBranchID(r,domain.Local,"b"));rev:=reviewMust(domain.NewRevision(r,reviewMust(domain.NewOID(strings.Repeat("a",40)))))
+ meta:=reviewMust(vm.NewRowMeta(vm.RowMetaSpec{}));list:=reviewMust(vm.NewListState(vm.ListStateSpec{}));header:=reviewMust(vm.NewPaneHeader(vm.PaneHeaderSpec{Title:"pane",Availability:vm.Available,Completeness:vm.Partial,ContentGeneration:1}))
+ nav:=reviewMust(vm.NewNavigatorPane(header,reviewMust(vm.NewNavigatorModel(vm.NavigatorModelSpec{List:list}))))
+ br:=reviewMust(vm.NewBranchPane(header,reviewMust(vm.NewBranchModel(vm.BranchModelSpec{Branch:reviewMust(vm.NewBranchRow(vm.BranchRowSpec{ID:b,ExpectedRevision:vm.Some(rev),Meta:meta})),List:list}))))
+ for _,focus:=range []vm.Pane{vm.NavigatorPane,vm.BranchPane}{
+  spec:=vm.SnapshotSpec{PresentationGeneration:1,Viewport:reviewMust(vm.NewViewport(160,70,1)),Mode:vm.BranchContextMode,Focus:reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(focus,vm.ListPart)),vm.None[vm.ModalID](),vm.None[vm.FieldID]())),Panes:[]vm.PaneModel{nav,br}}
+  if _,err:=vm.NewSnapshot(spec);err!=nil{t.Errorf("retained wide navigator+branch cockpit, focused pane %v, refused: %v",focus,err)}
+ }
+}
+
+// The initial missing-worktree deployment hypothesis was rejected after reading
+// baseline Deploy: configured deployment requires an observed registered worktree.
+// Keep this negative control, without turning it into an invented capability.
+func TestReviewConfiguredMissingWorktreeIsRefused(t *testing.T){
+ repo:=reviewMust(domain.NewRepositoryID(domain.LocalCommon,"local"));rev:=reviewMust(domain.NewRevision(repo,reviewMust(domain.NewOID(strings.Repeat("a",40)))))
+ target:=reviewMust(vm.NewTargetDetail(vm.TargetDetailSpec{Target:vm.Some(reviewMust(domain.NewCommitTarget(rev))),Paths:[]string{"C:/vacant/deploy"},Subjects:[]vm.ElementID{reviewMust(vm.NewNamespaceElement("configured-target","named-destination",vm.Some(repo)))}}))
+ body:=reviewMust(vm.NewConfirmationBody(target,[]string{"Create configured worktree at the displayed vacant path"}))
+ modal,err:=vm.NewModal(vm.ModalSpec{ID:reviewMust(vm.NewModalID("creation")),Owner:reviewMust(vm.NewOwnerKey("local-owner")),Purpose:vm.ConfirmDeploy,Title:"Deploy exact revision to configured destination",Body:body,Choices:[]vm.ModalChoice{reviewMust(vm.NewModalChoice(vm.CancelChoice,"Cancel",true)),reviewMust(vm.NewModalChoice(vm.ProceedChoice,"Create and deploy",true))}})
+ reviewReject(t,modal,err)
+}
+
+func TestReviewGeometryAndGenerationMatrix(t *testing.T){
+ list:=reviewMust(vm.NewListState(vm.ListStateSpec{}));header:=reviewMust(vm.NewPaneHeader(vm.PaneHeaderSpec{Title:"nav",Availability:vm.Available,Completeness:vm.Partial,ContentGeneration:1}));pane:=reviewMust(vm.NewNavigatorPane(header,reviewMust(vm.NewNavigatorModel(vm.NavigatorModelSpec{List:list}))));focus:=reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.NavigatorPane,vm.ListPart)),vm.None[vm.ModalID](),vm.None[vm.FieldID]()))
+ for _,w:=range []int{0,1,2,39,40,69,70,87,88,91,92,160}{for _,h:=range []int{0,1,17,18,24,32,70}{
+  vp:=reviewMust(vm.NewViewport(w,h,11));r:=reviewMust(vm.NewRect(0,0,w,h));if vp.Width()!=w||vp.Height()!=h||!r.Within(vp){t.Fatal("known viewport altered")}
+  s:=reviewMust(vm.NewSnapshot(vm.SnapshotSpec{PresentationGeneration:7,Viewport:vp,Mode:vm.BranchesMode,Focus:focus,Panes:[]vm.PaneModel{pane}}))
+  m:=reviewMust(vm.NewMeasurement(vm.MeasurementSpec{Viewport:vp,PresentationGeneration:7,Panes:[]vm.PaneRect{reviewMust(vm.NewPaneRect(focus.Path(),r))}}));if !m.Matches(s){t.Fatal("known zero/tiny measurement rejected")}
+  f:=m.Fields();f.PresentationGeneration=8;if reviewMust(vm.NewMeasurement(f)).Matches(s){t.Fatal("stale generation matched")}
+  f=m.Fields();f.Viewport=reviewMust(vm.NewViewport(w,h,12));if reviewMust(vm.NewMeasurement(f)).Matches(s){t.Fatal("stale viewport matched")}
+  f=m.Fields();f.Panes=append(f.Panes,f.Panes[0]);bad,e:=vm.NewMeasurement(f);reviewReject(t,bad,e)
+ }}
+ r,e:=vm.NewRect(int(^uint(0)>>1),1,1,1);reviewReject(t,r,e)
+ vp,e:=vm.NewViewport(1,-1,1);reviewReject(t,vp,e)
+}
+
+func TestReviewStashAndExactIdentity(t *testing.T){
+ repo:=reviewMust(domain.NewRepositoryID(domain.LocalCommon,"scope"))
+ for _,n:=range []int{40,64}{
+  oid:=reviewMust(domain.NewOID(strings.Repeat("A",n)));stash:=reviewMust(domain.NewStashID(repo,oid));p1:=reviewMust(domain.NewOID(strings.Repeat("b",n)));p2:=reviewMust(domain.NewOID(strings.Repeat("c",n)));p3:=reviewMust(domain.NewOID(strings.Repeat("d",n)));tree1:=reviewMust(domain.NewOID(strings.Repeat("e",n)));tree2:=reviewMust(domain.NewOID(strings.Repeat("f",n)))
+  for _,view:=range []vm.StashView{vm.StashWorktreeView,vm.StashIndexView,vm.StashIndexToWorktreeView,vm.StashParentView,vm.StashUntrackedView}{
+   s:=vm.StashComparisonDetailSpec{Stash:stash,View:view,Parents:[]domain.OID{p1,p2,p3},FromTree:vm.Some(tree1),ToTree:vm.Some(tree2)};if view==vm.StashParentView{s.ParentIndex=vm.Some(uint32(2))}
+   detail:=reviewMust(vm.NewStashComparisonDetail(s));cmp:=reviewMust(vm.NewStashComparison(detail));got,ok:=cmp.Stash();if !ok||got.Fields().Stash!=stash||len(got.Fields().Stash.OID().String())!=n||got.Fields().Parents[2]!=p3{t.Fatal("exact stash detail lost")}
+   from,_:=got.Fields().FromTree.Value();to,_:=got.Fields().ToTree.Value();if from!=tree1||to!=tree2{t.Fatal("tree replaced by commit OID")}
+   s.Parents[0]=domain.OID{};if detail.Fields().Parents[0]!=p1{t.Fatal("stash parents not copied")}
+  }
+  s:=vm.StashComparisonDetailSpec{Stash:stash,View:vm.StashUntrackedView,Parents:[]domain.OID{p1,p2}};if !reviewMust(vm.NewStashComparisonDetail(s)).Valid(){t.Fatal("absent untracked should be representable")}
+  s.ParentIndex=vm.Some(uint32(0));bad,e:=vm.NewStashComparisonDetail(s);reviewReject(t,bad,e)
+ }
+ for _,offset:=range []int{-86399,-12600,0,19800,86399}{instant:=time.Date(2026,9,6,12,30,40,123456789,time.UTC);stamp:=reviewMust(vm.NewTimestamp(instant,offset));if !stamp.Time().Equal(instant)||stamp.OriginalOffsetSeconds()!=offset{t.Fatal("timestamp changed")}}
+}
+
+func TestReviewOutputCorrelationsAndClosedInput(t *testing.T){
+ sid:=reviewMust(domain.NewSessionID(10));spec:=vm.OutputInputSpec{SessionID:sid,SourceGeneration:11,PresentationGeneration:19,ContentGeneration:23,Offset:8,Bytes:[]byte("a\r\b\xff\x1b[2J"),Stream:vm.TerminalStream,Gaps:[]vm.ByteRange{reviewMust(vm.NewByteRange(2,8))},End:true};input:=reviewMust(vm.NewOutputInput(spec));spec.Bytes[0]='X';if input.Fields().Bytes[0]!='a'{t.Fatal("admission copy escaped")};f:=input.Fields();f.Bytes[0]='Y';if input.Fields().Bytes[0]!='a'{t.Fatal("access copy escaped")}
+ f=input.Fields();f.Offset=^uint64(0);bad,e:=vm.NewOutputInput(f);reviewReject(t,bad,e)
+ f=input.Fields();f.Gaps=[]vm.ByteRange{reviewMust(vm.NewByteRange(3,8)),reviewMust(vm.NewByteRange(7,8))};bad,e=vm.NewOutputInput(f);reviewReject(t,bad,e)
+ for _,invalid:=range []string{"\r","\b","\x00","\x1b[2J","\u009b","\xff"}{line,e:=vm.NewConsoleLine(vm.ConsoleLineSpec{Text:invalid,Stream:vm.StdoutStream});reviewReject(t,line,e)}
+ for _,valid:=range []string{"","e\u0301","界","👩‍💻"}{if !reviewMust(vm.NewConsoleLine(vm.ConsoleLineSpec{Text:valid,Stream:vm.StdoutStream})).Valid(){t.Fatal("safe line refused")}}
+}

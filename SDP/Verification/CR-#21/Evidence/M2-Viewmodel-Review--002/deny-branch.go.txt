@@ -1,0 +1,368 @@
+// Package viewmodel holds immutable presentation values supplied by State and
+// consumed by the pure View. It contains no operation or confirmation capability.
+package viewmodel
+
+import "errors"
+
+// Optional represents presence, not validation or ownership of arbitrary T.
+// Containing families validate values and copy their entire nested payload.
+type Optional[T any] struct {
+	present bool
+	value   T
+}
+
+func None[T any]() Optional[T]         { return Optional[T]{} }
+func Some[T any](v T) Optional[T]      { return Optional[T]{true, v} }
+func (o Optional[T]) Present() bool    { return o.present }
+func (o Optional[T]) Value() (T, bool) { return o.value, o.present }
+
+func optionalValid[T interface{ Valid() bool }](o Optional[T]) bool {
+	return !o.present || o.value.Valid()
+}
+func allValid[T interface{ Valid() bool }](xs []T) bool {
+	for _, x := range xs {
+		if !x.Valid() {
+			return false
+		}
+	}
+	return true
+}
+func copyValues[T interface{ Clone() T }](xs []T) []T {
+	if xs == nil {
+		return nil
+	}
+	out := make([]T, len(xs))
+	for i, x := range xs {
+		out[i] = x.Clone()
+	}
+	return out
+}
+func copyOptional[T interface{ Clone() T }](o Optional[T]) Optional[T] {
+	if !o.present {
+		return None[T]()
+	}
+	return Some(o.value.Clone())
+}
+func copySlice[T any](xs []T) []T {
+	if xs == nil {
+		return nil
+	}
+	out := make([]T, len(xs))
+	copy(out, xs)
+	return out
+}
+func invalid(name string) error { return errors.New("invalid " + name + " presentation value") }
+
+// These counters have distinct roles and cannot be assigned across domains.
+// They are supplied observations/correlation, never allocators or authority.
+type PresentationGeneration uint64
+type ViewportGeneration uint64
+type ContentGeneration uint64
+type SourceGeneration uint64
+
+func (g PresentationGeneration) Valid() bool { return g > 0 }
+func (g ViewportGeneration) Valid() bool     { return g > 0 }
+func (g ContentGeneration) Valid() bool      { return g > 0 }
+func (g SourceGeneration) Valid() bool       { return g > 0 }
+
+type ModalID struct{ key string }
+
+func NewModalID(key string) (ModalID, error) {
+	if key == "" {
+		return ModalID{}, invalid("modal identity")
+	}
+	return ModalID{key}, nil
+}
+func (id ModalID) Valid() bool { return id.key != "" }
+func (id ModalID) Key() string { return id.key }
+
+// OwnerKey is a local presentation correlation key, unrelated to API IDs.
+type OwnerKey struct{ key string }
+
+func NewOwnerKey(key string) (OwnerKey, error) {
+	if key == "" {
+		return OwnerKey{}, invalid("owner key")
+	}
+	return OwnerKey{key}, nil
+}
+func (id OwnerKey) Valid() bool { return id.key != "" }
+func (id OwnerKey) Key() string { return id.key }
+
+type Availability uint8
+
+const (
+	AvailabilityUnknown Availability = iota + 1
+	Available
+	Unavailable
+)
+
+func (v Availability) Valid() bool { return v >= AvailabilityUnknown && v <= Unavailable }
+
+type Completeness uint8
+
+const (
+	Complete Completeness = iota + 1
+	More
+	Partial
+	Unknown
+	NotAvailable
+)
+
+func (v Completeness) Valid() bool { return v >= Complete && v <= NotAvailable }
+
+type Freshness uint8
+
+const (
+	FreshnessUnknown Freshness = iota + 1
+	Fresh
+	Cached
+)
+
+func (v Freshness) Valid() bool { return v >= FreshnessUnknown && v <= Cached }
+
+type Severity uint8
+
+const (
+	Info Severity = iota + 1
+	Warning
+	Failure
+)
+
+func (v Severity) Valid() bool { return v >= Info && v <= Failure }
+
+type Relation uint8
+
+const (
+	RelationUnknown Relation = iota + 1
+	ExactSelectedRevision
+	SameScopedBranchDifferentRevision
+	Unrelated
+	PRHead
+	PRBase
+)
+
+func (v Relation) Valid() bool { return v >= RelationUnknown && v <= PRBase }
+
+type UpstreamState uint8
+
+const (
+	UpstreamNone UpstreamState = iota + 1
+	UpstreamResolved
+	UpstreamGone
+	UpstreamUnresolved
+	UpstreamNotApplicable
+)
+
+func (v UpstreamState) Valid() bool { return v >= UpstreamNone && v <= UpstreamNotApplicable }
+
+// Mode selects the screen family, independently of pane focus and navigator
+// content. The cockpit can retain Navigator and Branch context simultaneously.
+type Mode uint8
+
+const (
+	CockpitMode Mode = iota + 1
+	HistoryMode
+	GraphMode
+	DiffMode
+)
+
+func (v Mode) Valid() bool { return v >= CockpitMode && v <= DiffMode }
+
+// NavigatorContent is State's explicit PR-versus-branch browsing intent.
+// Cached rows, selection, titles and the focused pane never determine it.
+type NavigatorContent uint8
+
+const (
+	PullRequestsContent NavigatorContent = iota + 1
+	BranchesContent
+)
+
+func (v NavigatorContent) Valid() bool { return v == PullRequestsContent || v == BranchesContent }
+
+type Pane uint8
+
+const (
+	NavigatorPane Pane = iota + 1
+	WorktreesPane
+	ActivePane
+	BranchPane
+	LaunchPane
+	StashesPane
+	ConsolePane
+	HistoryPane
+	GraphPane
+	DiffPane
+	ModalPane
+)
+
+func (v Pane) Valid() bool { return v >= NavigatorPane && v <= ModalPane }
+
+type Part uint8
+
+const (
+	RootPart Part = iota + 1
+	ListPart
+	DetailsPart
+	MessagePart
+	ChangesPart
+	FilesPart
+	PatchPart
+	TabsPart
+	InputPart
+	FilterPart
+	BodyPart
+	ChoicesPart
+	FormPart
+)
+
+func (v Part) Valid() bool { return v >= RootPart && v <= FormPart }
+
+// PanePath names geometry and focus independently of titles or row positions.
+type PanePath struct {
+	pane Pane
+	part Part
+}
+
+func NewPanePath(pane Pane, part Part) (PanePath, error) {
+	p := PanePath{pane, part}
+	if !p.Valid() {
+		return PanePath{}, invalid("pane path")
+	}
+	return p, nil
+}
+func (p PanePath) Pane() Pane { return p.pane }
+func (p PanePath) Part() Part { return p.part }
+func (p PanePath) Valid() bool {
+	if !p.pane.Valid() || !p.part.Valid() {
+		return false
+	}
+	if p.part == RootPart {
+		return true
+	}
+	switch p.pane {
+	case NavigatorPane:
+		return p.part == ListPart || p.part == DetailsPart || p.part == FilterPart
+	case WorktreesPane:
+		return p.part == ListPart || p.part == DetailsPart
+	case ActivePane:
+		return p.part == DetailsPart || p.part == ChangesPart
+	case BranchPane:
+		return p.part == DetailsPart || p.part == ListPart || p.part == MessagePart
+	case LaunchPane, StashesPane:
+		return p.part == ListPart || p.part == DetailsPart
+	case ConsolePane:
+		return p.part == TabsPart || p.part == BodyPart || p.part == InputPart
+	case HistoryPane, GraphPane:
+		return p.part == ListPart || p.part == MessagePart || p.part == DetailsPart
+	case DiffPane:
+		return p.part == FilesPart || p.part == PatchPart
+	case ModalPane:
+		return p.part == BodyPart || p.part == ChoicesPart || p.part == FormPart || p.part == ListPart
+	}
+	return false
+}
+func paneInMode(p Pane, m Mode) bool {
+	if !m.Valid() {
+		return false
+	}
+	switch p {
+	case BranchPane:
+ return false
+ case NavigatorPane:
+		return m == CockpitMode
+	case HistoryPane:
+		return m == HistoryMode
+	case GraphPane:
+		return m == GraphMode
+	case DiffPane:
+		return m == DiffMode
+	case WorktreesPane, ActivePane, LaunchPane, StashesPane, ConsolePane, ModalPane:
+		return true
+	}
+	return false
+}
+
+type FocusPath struct {
+	path  PanePath
+	modal Optional[ModalID]
+	field Optional[FieldID]
+}
+
+func NewFocusPath(path PanePath, modal Optional[ModalID], field Optional[FieldID]) (FocusPath, error) {
+	f := FocusPath{path, modal, field}
+	if !f.Valid() {
+		return FocusPath{}, invalid("focus path")
+	}
+	return f, nil
+}
+func (f FocusPath) Valid() bool {
+	return f.path.Valid() && optionalValid(f.modal) && optionalValid(f.field) && (f.path.pane == ModalPane) == f.modal.present && (f.path.part == FormPart) == f.field.present
+}
+func (f FocusPath) Path() PanePath           { return f.path }
+func (f FocusPath) Modal() Optional[ModalID] { return f.modal }
+func (f FocusPath) Field() Optional[FieldID] { return f.field }
+
+type Scroll struct{ vertical, horizontal int }
+
+func NewScroll(vertical, horizontal int) (Scroll, error) {
+	if vertical < 0 || horizontal < 0 {
+		return Scroll{}, invalid("scroll")
+	}
+	return Scroll{vertical, horizontal}, nil
+}
+
+// Zero scroll is intentionally valid.
+func (s Scroll) Valid() bool     { return s.vertical >= 0 && s.horizontal >= 0 }
+func (s Scroll) Vertical() int   { return s.vertical }
+func (s Scroll) Horizontal() int { return s.horizontal }
+
+// Viewport preserves known zero/tiny bounds; only unknown initial dimensions
+// have generation zero and may later permit the View's explicit fallback.
+type Viewport struct {
+	known         bool
+	width, height int
+	generation    ViewportGeneration
+}
+
+func UnknownViewport() Viewport { return Viewport{} }
+func NewViewport(width, height int, generation ViewportGeneration) (Viewport, error) {
+	v := Viewport{true, width, height, generation}
+	if !v.Valid() {
+		return Viewport{}, invalid("viewport")
+	}
+	return v, nil
+}
+func (v Viewport) Valid() bool {
+	if !v.known {
+		return v.width == 0 && v.height == 0 && v.generation == 0
+	}
+	return v.width >= 0 && v.height >= 0 && v.generation.Valid()
+}
+func (v Viewport) Known() bool                    { return v.known }
+func (v Viewport) Width() int                     { return v.width }
+func (v Viewport) Height() int                    { return v.height }
+func (v Viewport) Generation() ViewportGeneration { return v.generation }
+
+type Rect struct{ x, y, width, height int }
+
+func NewRect(x, y, width, height int) (Rect, error) {
+	r := Rect{x, y, width, height}
+	if !r.Valid() {
+		return Rect{}, invalid("rectangle")
+	}
+	return r, nil
+}
+
+// Empty rectangles are intentional layout facts, never native resize requests.
+func (r Rect) Valid() bool {
+	maxInt := int(^uint(0) >> 1)
+	return r.x >= 0 && r.y >= 0 && r.width >= 0 && r.height >= 0 && r.width <= maxInt-r.x && r.height <= maxInt-r.y
+}
+func (r Rect) X() int      { return r.x }
+func (r Rect) Y() int      { return r.y }
+func (r Rect) Width() int  { return r.width }
+func (r Rect) Height() int { return r.height }
+func (r Rect) Within(v Viewport) bool {
+	return r.Valid() && v.Valid() && (!v.known || r.x <= v.width && r.width <= v.width-r.x && r.y <= v.height && r.height <= v.height-r.y)
+}
+func (r Rect) Positive() bool { return r.Valid() && r.width > 0 && r.height > 0 }

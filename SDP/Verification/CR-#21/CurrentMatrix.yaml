@@ -98,9 +98,20 @@
     },
     {
       "id": "V-APP-06",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "rework_required",
+      "evidence": [
+        {
+          "kind": "API_ports_leaf_initial_review",
+          "sourceHead": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-API-Review--001.md",
+          "ciRun": "34038064464",
+          "result": "CHANGES_REQUIRED_M259-M01_through_M08"
+        }
+      ],
+      "limits": [
+        "26 invalid semantic admissions require correction;226 copy probes pass, but no workflow/native/Slice or leaf integration acceptance."
+      ]
     },
     {
       "id": "V-GIT-01",
@@ -248,9 +259,28 @@
     },
     {
       "id": "V-VIEW-03",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "partial",
+      "evidence": [
+        {
+          "kind": "viewmodel_leaf_initial_review",
+          "sourceHead": "dbb89ea813a954bb8bbb276bea2bb46647826810",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
+          "ciRun": "34037022233",
+          "result": "CHANGES_REQUIRED_M260-M01"
+        },
+        {
+          "kind": "accepted_viewmodel_leaf",
+          "sourceHead": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+          "integrationHead": null,
+          "review": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+          "ciRun": "34038307701",
+          "result": "ACCEPT_M260-M01_resolved"
+        }
+      ],
+      "limits": [
+        "Source leaf accepted; API/ports integration prerequisite and full State/View/layout/native/E2E proof remain."
+      ]
     },
     {
       "id": "V-PER-01",

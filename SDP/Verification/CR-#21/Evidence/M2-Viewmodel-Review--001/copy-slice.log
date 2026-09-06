@@ -1,0 +1,59 @@
+--- FAIL: TestReviewCopyInventory (0.00s)
+    --- FAIL: TestReviewCopyInventory/RowMeta (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Details / b.data.Details
+    --- FAIL: TestReviewCopyInventory/TargetDetail (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Subjects / b.data.Subjects
+    --- FAIL: TestReviewCopyInventory/BranchRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/PRRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/FileChange (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/WorktreeRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Changes[].data.Meta.data.Details / b.data.Changes[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/CommitRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Parents / b.data.Parents
+    --- FAIL: TestReviewCopyInventory/StashRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Parents / b.data.Parents
+    --- FAIL: TestReviewCopyInventory/LaunchRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/NamespaceRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/GraphModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Roots / b.data.Roots
+    --- FAIL: TestReviewCopyInventory/Patch (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Bytes / b.data.Bytes
+    --- FAIL: TestReviewCopyInventory/DiffModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Files[].data.Meta.data.Details / b.data.Files[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/NavigatorModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Meta.data.Details / b.data.Rows[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/WorktreesModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Changes[].data.Meta.data.Details / b.data.Rows[].data.Changes[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/ActiveModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Worktree.value.data.Changes[].data.Meta.data.Details / b.data.Worktree.value.data.Changes[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/BranchModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Branch.data.Meta.data.Details / b.data.Branch.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/HistoryModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Commits[].data.Parents / b.data.Commits[].data.Parents
+    --- FAIL: TestReviewCopyInventory/LaunchModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Meta.data.Details / b.data.Rows[].data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/StashesModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Parents / b.data.Rows[].data.Parents
+    --- FAIL: TestReviewCopyInventory/ConsolePresentation (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Gaps / b.data.Gaps
+    --- FAIL: TestReviewCopyInventory/ConsoleSummary (0.00s)
+        review_independent_test.go:36: shared mutable interval a.ArgumentDisplay / b.data.ArgumentDisplay
+    --- FAIL: TestReviewCopyInventory/ConsoleModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Summary.data.ArgumentDisplay / b.data.Summary.data.ArgumentDisplay
+    --- FAIL: TestReviewCopyInventory/ConsolesModel (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Rows[].data.Summary.data.ArgumentDisplay / b.data.Rows[].data.Summary.data.ArgumentDisplay
+    --- FAIL: TestReviewCopyInventory/OutputInput (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Bytes / b.data.Bytes
+    --- FAIL: TestReviewCopyInventory/ConfiguredTargetRow (0.00s)
+        review_independent_test.go:36: shared mutable interval a.Meta.data.Details / b.data.Meta.data.Details
+    --- FAIL: TestReviewCopyInventory/ModalBody (0.00s)
+        review_independent_test.go:36: shared mutable interval a.data.Subjects / b.target.data.Subjects
+    review_independent_test.go:130: shared mutable interval a.target.data.Subjects / b.data.Subjects
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel	0.517s
+FAIL

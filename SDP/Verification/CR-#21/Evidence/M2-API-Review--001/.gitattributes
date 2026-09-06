@@ -1,0 +1,5 @@
+# Preserve exact independent probe/report/log bytes, including failed initial attempts.
+* -text whitespace=cr-at-eol
+*.tar -diff
+primary/internal/application/api/review_remote_test.go.txt whitespace=cr-at-eol,-blank-at-eof
+primary/internal/application/api/review_runtime_test.go.txt whitespace=cr-at-eol,-blank-at-eof
