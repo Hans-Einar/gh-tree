@@ -496,6 +496,14 @@ A real child process flushes its identity evidence before publication, calls
 class65 and is killed/joined before any postpublication identity observation or
 outcome persistence; GET-only reopen matches its prepublication tuple despite
 tunneled creation time. This proves process-death observation, not power loss.
+Exact mechanism source: `699a69f2735106d1a06ea9c703a7f0eaa5ff930b`.
+Executed Go1.25.0 `go test ./internal/persistence -run
+'^TestWindowsObjectIDProbe' -count=1 -v` on native Windows amd64 and with
+GOARCH386/WOW64; package durations0.878s and0.794s. `go vet
+./internal/persistence` and `git diff --check` PASS. The probe compares the full
+64-byte FILE_OBJECTID_BUFFER together with full FileIdInfo/volume, not just a
+GUID or a cached creation time. Native source CI34063088464 was still running
+when this checkpoint was reported; it is not passing acceptance evidence.
 
 The negative ordinary CREATE-at-cached-name control is material: NTFS gives a
 new file the prior object's ObjectID while its full FileIdInfo differs. The
@@ -516,6 +524,14 @@ and explicit refusal of missing/changed ID. Untagged user originals retain their
 strict preexisting file/birth observation and are never tagged merely for proof.
 Shared directory identity and publication primitives would remain unchanged.
 Master must assess whether this requires contract change before product adoption.
+Only the exact native missing-ID error may select the untouched original's
+strict birth-based observation; unreadable/unsupported/other GET errors cannot
+become absence or a permissive fallback. An old manifest's recorded birth tuple
+remains authoritative and exact: no implicit conversion, identity replacement,
+timestamp normalization or migration to an ObjectID tuple is proposed. The old
+failing records therefore still refuse rather than receive fabricated proof.
+Any new identity must be recorded before publication and must survive the
+crash-before-outcome path without a postpublication repair.
 
 ## Current handoff and exact next permitted action
 
@@ -543,6 +559,12 @@ association remains unproved. Corrected Darwin already has native P2f/P3a CI
 evidence recorded above. Preserve the rejected denied-ACL cleanup fixture and
 all prior evidence. Freeze/push a complete candidate for Master's separate fresh
 review only after these contribution gates are satisfied; no integration here.
+
+Master explicitly held product adoption after the separate required Git review
+encountered an external cybersecurity content/access block. This author stops at
+the clean pushed P3i mechanism checkpoint plus this handoff update; the proposal
+requires Master/fresh assessment in the resumed authorized environment. This is
+an external program boundary, not Persistence acceptance or a waived native gate.
 
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
