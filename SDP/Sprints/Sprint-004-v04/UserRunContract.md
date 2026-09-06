@@ -983,3 +983,37 @@ When the entire assignment finishes, report concisely:
 * exact next action, if anything remains.
 
 Do not report success unless the evidence supports it.
+
+## Resumed execution policy — 2026-09-06
+
+The user explicitly resumed from checkpoint3e259652797295504e34bafe2063a8022a503965.
+The full objective and accepted architecture remain unchanged. Optimize engineering
+value per usage token: reserve the highest reasoning effort and independent review
+for Git/destructive operations, Runtime/Windows/lifecycle/concurrency, corruption/
+recovery, cross-layer contracts and critical integration. Execute mechanical work
+and bookkeeping efficiently. Do not reopen settled design without contrary evidence.
+
+Every coherent completed milestone receives appropriate verification, a commit and
+push before the next substantial step. Prefer one completed Slice per commit, but
+combine tightly coupled work or split a large Slice where recovery/review benefits.
+Substantial partial work gets an explicitly named checkpoint commit and push; it
+must not be reported complete. Use recovery tags where useful, and completion tags
+only for genuinely accepted/verified Slices. No M-stage-long unpublished accumulation.
+
+Use targeted tests during implementation and the complete relevant matrix at source/
+integration gates. Documentation-only commits with no executable/build impact may
+use [skip ci] when branch protection does not require a run (canonical branch was
+verified unprotected at resume). Do not rerun expensive matrices for unchanged code.
+Independent reviewers inspect actual source/tests/exact SHAs; no redundant pass after
+clean acceptance unless material changes occur. Retain concise review results and
+strong shared proofs, referring to Git/CI/existing evidence instead of duplicating
+large archives or creating per-finding ceremonies. The143 findings are an accounting
+set resolved through the planned migration, not143 separate projects.
+
+Use existing Handoff/CurrentIndex/Ledger/implementation notes, with short updates.
+Report meaningful milestone status as SLICE(S), STATUS, BRANCH, HEAD, PUSHED, TAG,
+TESTS, REVIEW, INTEGRATION, NEXT, then continue authorized work. M3 serial integration
+stays Git→GitHub→Persistence→Discovery→Runtime, followed by M4..M8 and the original
+conditional publication authority after all required gates. No extra confirmation
+between authorized steps. Stop for a real authorization/risk boundary, external
+blocker or concrete technical contradiction. Earlier pause instructions are superseded.

@@ -385,3 +385,7 @@ No product source is changed by this kickoff; serial integration order stays
 Git→GitHub→Persistence→Discovery→Runtime. Complete native layer-owned gates and
 M4..M8/full13-Slice/release requirements remain. Current3cf2641 CI34047530046
 passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
+
+Resume: checkpoint3e25965/local-tag-origin/all16 worktrees verified unchanged. User
+policy now requires prompt coherent milestone pushes and concise reused evidence.
+Full M3..M8 remains; first Git/GitHub/Persistence dispatch follows this checkpoint.

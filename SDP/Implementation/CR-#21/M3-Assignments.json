@@ -1,7 +1,7 @@
 {
   "stage": "M3",
-  "state": "paused_by_user_before_dispatch",
-  "resumeRequiresExplicitUserInstruction": true,
+  "state": "resumed_before_dispatch",
+  "resumeRequiresExplicitUserInstruction": false,
   "workerBranchesOrWorktreesCreated": false,
   "implementationAgentsStarted": false,
   "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",

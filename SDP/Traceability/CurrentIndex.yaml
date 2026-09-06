@@ -5,8 +5,8 @@
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
   "activeGate": "M3",
-  "executionState": "paused_by_user",
-  "resumeRequiresExplicitUserInstruction": true,
+  "executionState": "active",
+  "resumeRequiresExplicitUserInstruction": false,
   "checkpointTag": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
   "checkpointPurpose": "recovery_only_not_completion",
   "checkpointInventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260906-1725Z/workspace-before.json",
@@ -579,7 +579,7 @@
     {
       "id": "M3",
       "kind": "integration_gate",
-      "state": "paused_before_dispatch",
+      "state": "active",
       "requires": [
         "M2",
         "IMPL61",
@@ -601,7 +601,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "authorized_paused",
+      "state": "authorized",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -635,7 +635,7 @@
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "authorized_paused",
+      "state": "authorized",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -663,7 +663,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "authorized_paused",
+      "state": "authorized",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -691,7 +691,7 @@
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "authorized_paused",
+      "state": "authorized_queued",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -716,7 +716,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "authorized_paused",
+      "state": "authorized_queued",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -1812,10 +1812,15 @@
   ],
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
-  "activeContributions": [],
+  "activeContributions": [
+    "IMPL61",
+    "IMPL62",
+    "IMPL63"
+  ],
   "pausedInitialContributions": [
     "IMPL61",
     "IMPL62",
     "IMPL63"
-  ]
+  ],
+  "resumedFrom": "3e259652797295504e34bafe2063a8022a503965"
 }

@@ -1,6 +1,6 @@
 # Scrum iterations
 
-State: PAUSED by user; explicit resume instruction required.
+State: ACTIVE after explicit user resumption.
 Sprint: Sprint-004-v04
 Active iteration: I-03 - complete refactor implementation
 Active gate: M3 - adapter implementation under Issues #61..65

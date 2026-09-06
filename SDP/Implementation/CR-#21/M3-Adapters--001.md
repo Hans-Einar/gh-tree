@@ -1,7 +1,7 @@
 # M3 adapter contribution contracts
 
-State: PAUSED by explicit user request before M3 dispatch.
-The full authorized scope below is preserved; resumption requires a user instruction.
+State: ACTIVE after explicit user resumption from checkpoint3e259652.
+Apply the resumed execution policy in UserRunContract.md; frozen behavioral contracts remain unchanged.
 Authority: #61 Git, #62 GitHub, #63 Persistence, #64 Launch Discovery and #65 Runtime
 under full program #21. I-03 / M3; all SLC-01..13 remain selected.
 
