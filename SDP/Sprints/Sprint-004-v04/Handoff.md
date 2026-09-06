@@ -122,3 +122,9 @@ Use explicit UTF-8, exact workdirs and existing resumed durable-milestone policy
 Runtime helper interface remains native Windows/amd64 Go1.25.0 helpergen -check
 with broker-amd64.gz, broker-arm64.gz, manifest.json and actual source closure.
 No product PR, main merge, release/tag-v0.4 or installed extension change occurred.
+
+FreeBSD decision: independent M3-FreeBSD-Assessment--001 establishes the ordinary
+ZFS system-EA privilege barrier and separate fixable flag/ACL implementation gaps.
+Master has not approved extra privilege, metadata loss, read-only substitution or
+platform reduction. User scope decision is pending; any change needs affected
+reviewed design/BC/native gates. Independent Windows/Runtime work continues.

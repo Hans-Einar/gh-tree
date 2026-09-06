@@ -745,7 +745,13 @@
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
       "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
       "identityWorkerBase": "c515d31e0a1c241622104291c49e3335e3f5927e",
-      "freebsdAssessment": "SDP/Implementation/CR-#21/Persistence/M3-FreeBSD-Assessment--001.md"
+      "freebsdAssessment": "SDP/Implementation/CR-#21/Persistence/M3-FreeBSD-Assessment--001.md",
+      "freebsdAssessmentState": "assessed_user_scope_decision_required",
+      "freebsdDecisionOptions": [
+        "retain full requirement and design explicitly privileged mechanism",
+        "explicitly approve bounded profile/metadata scope revision",
+        "keep FreeBSD part blocked pending decision"
+      ]
     },
     {
       "id": "IMPL64",
