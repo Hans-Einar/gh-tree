@@ -53,6 +53,22 @@ vertical product verification remain implementation gates. All 143 baseline
 product findings are still open. No v0.4 product code or delivered release exists
 as a result of this freeze.
 
+## Final metadata review correction
+
+Independent metadata review of a4d160fe0273f7cdfa75794169a679bbc9321929 returned
+CHANGES_REQUIRED for BC55-META-01 (MEDIUM): CurrentIndex paired the initial rejected
+candidate with current ACCEPT, and Relations still said correction awaited review.
+Its18 CI checks passed in34027303143/34027304790. Master preserves the initial SHA
+under initialReviewedHead, names accepted7685494 as current reviewedHead and gives
+the initial rejected/current accepted relations separate explicit states/SHAs.
+Re-review the corrected exact metadata HEAD and its current CI before merge.
+Technical acceptance remains valid; this correction changes no contract behavior.
+
+Reviewer otherwise verified all eight technical bodies unchanged except the
+approved reference correction, correctly gated freeze authority, all143 findings
+open, ledger prefix through31 preserved, clean worktree and unchanged product/
+design/evidence. This actual disposition is recorded rather than inferred from CI.
+
 ## Next permitted work and change control
 
 After PR #56 merges, Master records M0 complete and selects all SLC-01..13 as

@@ -27,6 +27,9 @@ Sprint/iteration/gate: Sprint-004-v04 / I-02 / G-08. Active Issue: #55 / PR #56.
 - Accepted design, product source and archived mechanism evidence are unchanged.
   The freeze does not prove implementation, real signing, native platform/fault
   matrices, package-manager integration or any delivered release.
+- Metadata review at a4d160fe0273f7cdfa75794169a679bbc9321929 found BC55-META-01:
+  initial/current review fields were mixed. BCFreeze--001 records that correction;
+  technical acceptance stands. Re-review corrected metadata and its current CI.
 
 ## Exact next action
 

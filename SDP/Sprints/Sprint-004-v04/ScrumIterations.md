@@ -206,3 +206,7 @@ FROZEN1.0.0 metadata for seven contracts/shared annex in BCFreeze--001, effectiv
 only after final metadata exact-HEAD review/CI and PR56 merge. One reference-only
 Git method-name correction is included for that review. G-08 remains active;
 no implementation branch/Slice is active and all143 product findings stay open.
+
+Metadata review at a4d160f returned BC55-META-01 (MEDIUM) for mixed initial/current
+review fields. Technical acceptance stands. Corrected index/relations preserve
+both exact review SHAs distinctly; metadata re-review/current CI is next.
