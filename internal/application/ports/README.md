@@ -20,6 +20,10 @@ summary digest. Origin binds a derived child to its sequence root. Exact switche
 reject nil, typed nil and foreign embedded plans. Roots are not executable;
 continuation kind/group/step and supplied before/after receipt versions remain
 distinct. Summaries and receipt version getters retain independent copies.
+PlanSummaryDigest returns the exact adapter-issued digest by value through the
+same closed identity validation. An opaque-plan consumer can supply it to
+ApprovalIssuer without decoding versions or inventing another hash convention;
+observing the digest grants no approval or native execution authority.
 
 ApprovalIssuer takes a coordinator-generated lifetime. Issue binds the original
 root/digest/allowed choice and a required ConfirmationID when the plan requires

@@ -1,6 +1,6 @@
 # Implementation and verification notes
 
-Current checkpoint: PAUSED by user before M3 dispatch. M1/M2 are complete;
+Historical pause checkpoint (subsequently explicitly resumed): M1/M2 complete;
 all full native/vertical/release work remains. See Handoff and CurrentIndex.
 The exact pending preparation was committed as5cdd4367af786f0f2a18e500eb621c6867939f63
 before pause/status changes. All16 worktrees were inspected; only its10 SDP files
@@ -389,3 +389,42 @@ passed18/explicitM3skip; superseded docCI34047480826 was canceled, not passing.
 Resume: checkpoint3e25965/local-tag-origin/all16 worktrees verified unchanged. User
 policy now requires prompt coherent milestone pushes and concise reused evidence.
 Full M3..M8 remains; first Git/GitHub/Persistence dispatch follows this checkpoint.
+
+M3 #67: actual G3/API cause omission independently confirmed; focused proposal
+review ACCEPT at980513b2. Master freezes only Git status representation1.1.0;
+API correction/source review and native status proof remain pending. Existing
+M3 record/review carry details. GitHub review requests one bounded UTF8 retention
+fix; native controls/CI pass. Other adapter milestones remain partial and pushed.
+
+GitHub candidate #62 technical7382617/reviewccbc843 now independently ACCEPTED;
+exact CI34055294036 passes18/helper skip, held for Git-first integration. Root
+verified review-head delta is report-only. Persistence4c5e5be passes native
+CI34054966709; fresh successor owns remaining publication work. #67 API authoring
+uses codex/cr21-status-api from frozen contract10f687e. No adapter integrated.
+
+#67 source675dfff/review0bb8f28 ACCEPT; exact source CI34055882003 passes18/helper
+skip. Serial prerequisite integration includes only pure API/tests/reports and
+current status; integrated CI remains before Git consumption. #66 branch22217f9
+is ready for fresh CI worker. No adapter/full Slice acceptance is implied.
+
+#67 exact integration4d1b548 passes local Application race/vet/windows architecture
+and CI34056365373 (18/helper skip); prerequisite complete, native Git adoption next.
+#68 records missing readable issued-plan digest (existing frozen approval semantics,
+no contract change); bounded ports worker/reviewer queued. #66 CI author active.
+
+#68 getter70d1719/review736129a ACCEPT, source CI34057016256 passes18/helper skip;
+integrated by this commit, exact integrated gate next. #66 native infrastructure
+source489a731 passes19/helper skip, independent review pending. Git775121d CI
+findings and Persistence macOS metadata failure are explicit in Handoff/CurrentIndex;
+no failing adapter is integrated. #67 adoption preserved Git source unchanged.
+
+#68 complete at verified/pushed396a629 CI34057368177 (18/helper skip), local
+ports race/vet/windows architecture pass. #66 independently ACCEPTED489a731/
+be94b44 (native infrastructure19PASS), integration next. Fresh Discovery author
+starts planned412f33e; fresh Persistence commit/recovery author starts87506ee.
+
+#66 accepted source489a731/reviewbe94b44 is integrated by this commit. Existing
+jobs/helper bytes remain unchanged; new ordinary-user FreeBSD job is native
+infrastructure, not adapter proof. Exact integrated CI next, then coordinated
+adoption by active adapter branches. Mutable VM dependencies/system-EA EPERM
+and trusted runner/controller boundary remain explicit in independent report.

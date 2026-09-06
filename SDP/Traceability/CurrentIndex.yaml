@@ -37,13 +37,15 @@
     },
     {
       "id": "BC--Application--Git",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "state": "FROZEN",
-      "issue": 55,
+      "issue": 67,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md",
-      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
-      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+      "freezeRecord": "SDP/Implementation/CR-#21/M3-Adapters--001.md#bc-change-67-independent-status-causes-frozen-110-67",
+      "originalFreezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "originalEffectiveMerge": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "proposalHead": "980513b2b126842ab1d50558931a84441c253172",
+      "freezeHead": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39"
     },
     {
       "id": "BC--Application--GitHub",
@@ -601,7 +603,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "authorized",
+      "state": "implementation_in_progress",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -625,17 +627,27 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": null,
+      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
       "requiredChecks": [
         "V-GIT-01..10"
       ],
-      "integrationHead": null
+      "integrationHead": null,
+      "worktreeCreated": true,
+      "lastCheckpoint": "ee42b1b0f48421e9b2faf8da5ab254380c5d01d1",
+      "checkpointScope": "partial, not accepted/integrated",
+      "blockedScope": "Digest #68 ready; clean-branch adoption will be grouped with verified shared CI #66",
+      "sourceCI": {
+        "run": 34056687102,
+        "head": "775121dd856bced37d8627a1f0615d33612464d9",
+        "result": "FAILED Linux race positive transport timeout and Windowsamd64/ARM64 ACL assertion; author correcting"
+      },
+      "pendingCI": 34057368746
     },
     {
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "authorized",
+      "state": "accepted_candidate_held_for_git",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -653,17 +665,27 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": null,
+      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
       "requiredChecks": [
         "V-GH-01..03"
       ],
-      "integrationHead": null
+      "integrationHead": null,
+      "worktreeCreated": true,
+      "lastCheckpoint": "926b2b70900fa5f0c2277b086fda0d9b6aad1194",
+      "checkpointScope": "accepted source candidate; no canonical integration",
+      "sourceCI": {
+        "run": 34055294036,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "reviewHead": "ccbc8430618c24fd2e490d7f7c6565063dd35bbe",
+      "reviewDisposition": "ACCEPT; M3GH-R01 resolved by bounded independent re-review",
+      "sourceHead": "738261756b86930a5f2d7c8374f5eaf3deb56bf0"
     },
     {
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "authorized",
+      "state": "implementation_in_progress",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -681,17 +703,27 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": null,
+      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
       "requiredChecks": [
         "V-PER-01..04"
       ],
-      "integrationHead": null
+      "integrationHead": null,
+      "worktreeCreated": true,
+      "lastCheckpoint": "87506ee56c63a8be6dbece4e2b364a1c6cbd3e21",
+      "checkpointScope": "private native mechanisms/metadata + three public loads; three commits/manifests/recovery still incomplete",
+      "sourceCI": {
+        "run": 34055865289,
+        "head": "0630ded502b2a086768459e475f83111f1fe4e9a",
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "activeWorker": "m3_persistence_commit_worker",
+      "pendingNativeFinding": "macOS metadata query indicates unavailable extended security; CI34056596058 failed, worker inspecting native no-ACL semantics; FreeBSD system namespace EPERM confirmed by #66 probe"
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "authorized_queued",
+      "state": "implementation_in_progress",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -706,11 +738,13 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": null,
+      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
       "requiredChecks": [
         "V-LCH-01..03"
       ],
-      "integrationHead": null
+      "integrationHead": null,
+      "worktreeCreated": true,
+      "activeWorker": "m3_discovery_worker"
     },
     {
       "id": "IMPL65",
@@ -732,11 +766,93 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": null,
+      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
       "requiredChecks": [
         "V-RUN-01..08"
       ],
-      "integrationHead": null
+      "integrationHead": null,
+      "worktreeCreated": true
+    },
+    {
+      "id": "IMPL66",
+      "kind": "shared_CI_support",
+      "issue": 66,
+      "state": "integrated_ci_pending",
+      "layer": "Composition",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
+      "integrationHead": null,
+      "branch": "codex/cr21-freebsd-ci",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci",
+      "workerBase": "22217f9c31b33ab78f030a8dd36bd3624bcf7485",
+      "workerReport": "SDP/Implementation/CR-#21/Composition/M3-CI--001.md",
+      "sourceHead": "489a731557ca699992386a0fc07fcbe57e792070",
+      "sourceCI": {
+        "run": 34056731199,
+        "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "nativeJob": 101549884000,
+      "reviewHead": "be94b447fd69529daa1cf3f780ada7ea4d8fbcf6",
+      "reviewDisposition": "ACCEPT; infrastructure only, native adapter proof not claimed"
+    },
+    {
+      "id": "BC-CHANGE-67",
+      "kind": "boundary_contract_change",
+      "issue": 67,
+      "state": "complete",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "affects": [
+        "IMPL61",
+        "M4",
+        "M5"
+      ],
+      "scope": "Application--Git G3 independent status causes and bounded pure API correction",
+      "version": "1.1.0",
+      "review": "SDP/Implementation/CR-#21/Application/M3-Status-BC-Review--001.md",
+      "proposalHead": "980513b2b126842ab1d50558931a84441c253172",
+      "freezeHead": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39",
+      "branch": "codex/cr21-status-api",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/status-api",
+      "workerBase": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39",
+      "sourceHead": "675dfffb6d055caa1074fe3feaccdfbdd8b21f74",
+      "reviewHead": "0bb8f283ed1c2f31b4834f3e6c4f108e65df751b",
+      "reviewDisposition": "ACCEPT",
+      "sourceCI": {
+        "run": 34055882003,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "integrationHead": "4d1b5486a029eeabcd874306d7a7ece4ae629ff3",
+      "integrationCI": {
+        "run": 34056365373,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "localIntegrationChecks": "Application race/vet, windowsamd64 architecture and exact accepted API tree match PASS",
+      "gitAdoption": "775121dd856bced37d8627a1f0615d33612464d9"
+    },
+    {
+      "id": "IMPL68",
+      "kind": "implementation_prerequisite",
+      "issue": 68,
+      "state": "complete",
+      "layer": "Application ports",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "scope": "read-only issued PlanSummaryDigest accessor and bounded validation/approval tests; no frozen semantics change",
+      "branch": "codex/cr21-plan-digest",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/plan-digest",
+      "workerBase": "64750cb26a0b8e3088e82ced57f5a2bf99b3ac1b",
+      "sourceHead": "70d1719d7f0ff834b4d59245ea775ea7b2c2d66c",
+      "reviewHead": "736129aad8d55a906fe706286430fcf18416fc9d",
+      "reviewDisposition": "ACCEPT",
+      "sourceCI": {
+        "run": 34057016256,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "integrationHead": "396a62999ff991889bf1b468e2abeba84cc38045",
+      "integrationCI": {
+        "run": 34057368177,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "localIntegrationChecks": "ports race/vet/windows architecture and exact accepted source tree match PASS"
     }
   ],
   "productFindings": [
@@ -1811,11 +1927,11 @@
     "SLC-13"
   ],
   "activeContribution": "M3-ADAPTERS",
-  "integrationHead": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
+  "integrationHead": "396a62999ff991889bf1b468e2abeba84cc38045",
   "activeContributions": [
     "IMPL61",
-    "IMPL62",
-    "IMPL63"
+    "IMPL63",
+    "IMPL64"
   ],
   "pausedInitialContributions": [
     "IMPL61",
