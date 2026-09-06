@@ -367,7 +367,7 @@ read observation remains available. Supplied run change-stamps are reobserved
 after own .gh-tree creation, while original request scope is separately retained.
 That path still requires explicit native controls and independent review.
 
-## Exact successor work
+## Historical P3d–P3h checkpoints (latest first)
 
 P3h EXPLICIT PARTIAL/FAILING-REGRESSION CHECKPOINT (this commit): new per-user
 permanent locks receive protected current-user Windows ACLs at native creation;
@@ -478,25 +478,73 @@ incomplete status; append a torn frame after a known commit and retain the valid
 current document/earlier IDs with a tail diagnostic. These are synchronous fault
 controls; full independent process-kill boundaries remain required below.
 
-This is an explicitly partial protocol checkpoint, not a review-ready contribution.
-Finish native Expected-ancestor/manifest association checks and all partial/crash
-artifact reporting; stable payload/staging late-edit semantics; safe exact cleanup
-and outcome error classification; full missing-parent/adopted-scope/own-effect
-controls; actual multiprocess writers/readers, external final-check gap, every
-write/flush/close/publication/crash boundary, resource counts, and reliable result
-delivery. Inspect the actual candidate afresh; these listed controls are not
-established by the small targeted P3c suite. Keep all existing fixtures/history.
+## Milestone P3i — Windows identity mechanism probe only
 
-Restart observation must reacquire the stable lock and safely report exact retained
-facts, preserving same IDs and family/worktree/store/document-version association;
-no replay/eviction/age cleanup or attribution from equal bytes. Explicitly prove
-missing-parent Original/Proposed rebinding versus the original request Expected,
-including own-effect updates for change-stamp profiles. Full native fault/crash/
-late-writer/cooperative multi-process/external-gap/outcome-delivery tests remain.
-Obtain corrected macOS and supported FreeBSD metadata evidence, then separate
-fresh review of the complete candidate. No integration or Slice closure here.
+Fresh finishing author began from clean pushed
+`a147a1d57d2eadda1ab998a218eb03c53b66540a`. Production is unchanged in this
+checkpoint. `objectid_windows_probe_test.go` uses only fixture-owned native
+FILE_CREATE files, the existing class65 publisher/class11 retention and
+CREATE_OR_GET_OBJECT_ID before publication; all subsequent queries are GET-only.
+No SET/DELETE object-ID command, timestamp normalization, global/case setting,
+alternate publisher or existing user-original mutation is used.
+
+Native Windows amd64 and386/WOW64 targeted probes PASS. Both expected-presence
+and cached-name expected-absence execute12 successive same-byte publications;
+each of all24 native publications actually tunnels creation time while the
+complete volume/FileIdInfo/ObjectID tuple survives every retained-name reopen.
+A real child process flushes its identity evidence before publication, calls
+class65 and is killed/joined before any postpublication identity observation or
+outcome persistence; GET-only reopen matches its prepublication tuple despite
+tunneled creation time. This proves process-death observation, not power loss.
+
+The negative ordinary CREATE-at-cached-name control is material: NTFS gives a
+new file the prior object's ObjectID while its full FileIdInfo differs. The
+initial present-profile probe also observed GET_OBJECT_ID fail on the prior
+retained seed after its ID transferred. ObjectID alone is therefore not accepted
+as incarnation identity. The positive present test was corrected to use an
+already ID-bearing staging publisher, as the proposed protocol would. A GET on
+an untagged original fails repeatedly without creating an ID. These findings
+constrain the proposal; they are not hidden by the positive results.
+
+Microsoft documents [CREATE_OR_GET_OBJECT_ID](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_create_or_get_object_id)
+as OS-issued creation only when absent and [GET_OBJECT_ID](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_get_object_id)
+as read-only retrieval with error for absence. Its [rename algorithm](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fsa/87f86c9b-6c2a-4803-84b7-131a74a434fa)
+describes creation-time tunneling and source-ID collision handling. The bounded
+proposal is a private data-file identity consisting of full volume/FileIdInfo
+plus OS-issued ObjectID for newly owned artifacts, with GET-only exact validation,
+and explicit refusal of missing/changed ID. Untagged user originals retain their
+strict preexisting file/birth observation and are never tagged merely for proof.
+Shared directory identity and publication primitives would remain unchanged.
+Master must assess whether this requires contract change before product adoption.
+
+## Current handoff and exact next permitted action
+
+This remains a partial, nonaccepted contribution with the deliberately failing
+Windows12-commit public resource regression preserved. Next: independently assess
+the P3i native identity proposal, then adopt only the permitted private protocol
+and prove the public repeat/restart/crash path. Do not weaken identity checks or
+reinterpret arbitrary timestamp drift. Native Windows ARM64 and complete final
+review/CI remain required; P3i has only amd64/386 mechanism evidence.
+
+P3d–P3h record actual implemented journal, Expected-anchor/missing-parent,
+cooperative multiprocess, eight crash stages, late-write, independent-current,
+external target-gap and load-with-recovery-error controls. Their explicit earlier
+pending statements are historical checkpoints, not claims those tests are absent.
+The independent audit confirmed the three early defects corrected at91acac5;
+its canonical M3-Protocol-Review--001 contains the separate exact evidence. Unix's
+last staging-name check to name-based syscall interval remains expressly unproved
+and must not be folded into the accepted arbitrary target-editor gap.
+
+Finish remaining preparation/write/flush/close/native/crash/resource/permission
+coverage against actual source and exact source CI. FreeBSD ordinary-user system
+EA enumeration EPERM remains a strict failure and supported positive writes are
+unresolved; no EPERM-as-empty or metadata-loss exception. No-birth Unix persistent
+association remains unproved. Corrected Darwin already has native P2f/P3a CI
+evidence recorded above. Preserve the rejected denied-ACL cleanup fixture and
+all prior evidence. Freeze/push a complete candidate for Master's separate fresh
+review only after these contribution gates are satisfied; no integration here.
 
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: push P3c, continue remaining exact protocol/native controls, then provide the
-complete frozen candidate to Master's separate fresh reviewer. CI remains a gate.
+NEXT: evaluate the P3i private Windows identity protocol using its actual native
+evidence, then complete permitted implementation and remaining exact gates.
