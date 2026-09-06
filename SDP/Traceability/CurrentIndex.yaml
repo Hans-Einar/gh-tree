@@ -635,7 +635,7 @@
       "worktreeCreated": true,
       "lastCheckpoint": "ee42b1b0f48421e9b2faf8da5ab254380c5d01d1",
       "checkpointScope": "partial, not accepted/integrated",
-      "blockedScope": "Only #68 approval digest pending integrated gate; status adoption done",
+      "blockedScope": "Digest #68 ready; clean-branch adoption will be grouped with verified shared CI #66",
       "sourceCI": {
         "run": 34056687102,
         "head": "775121dd856bced37d8627a1f0615d33612464d9",
@@ -685,7 +685,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "successor_dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -723,7 +723,7 @@
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "implementation_dispatch_ready",
+      "state": "implementation_in_progress",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -777,7 +777,7 @@
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "accepted_candidate",
+      "state": "integrated_ci_pending",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",

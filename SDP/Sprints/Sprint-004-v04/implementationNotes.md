@@ -422,3 +422,9 @@ no failing adapter is integrated. #67 adoption preserved Git source unchanged.
 ports race/vet/windows architecture pass. #66 independently ACCEPTED489a731/
 be94b44 (native infrastructure19PASS), integration next. Fresh Discovery author
 starts planned412f33e; fresh Persistence commit/recovery author starts87506ee.
+
+#66 accepted source489a731/reviewbe94b44 is integrated by this commit. Existing
+jobs/helper bytes remain unchanged; new ordinary-user FreeBSD job is native
+infrastructure, not adapter proof. Exact integrated CI next, then coordinated
+adoption by active adapter branches. Mutable VM dependencies/system-EA EPERM
+and trusted runner/controller boundary remain explicit in independent report.

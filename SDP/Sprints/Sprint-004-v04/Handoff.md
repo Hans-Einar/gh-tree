@@ -48,7 +48,8 @@ FreeBSD#66 ordinary-user probe confirms system namespace EPERM, never empty.
 #66 source489a731 CI34056731199 passes19/helper skip, including actual FreeBSD15
 amd64 Go1.25 uid1001 guest-native tests and expected failure propagation. Only M2
 leaves exist at that source, all absent adapters explicitly NOT RUN. Independent
-reviewbe94b44 ACCEPTS infrastructure only; canonical integration is next.
+reviewbe94b44 ACCEPTS infrastructure only; integrated by this record commit.
+Exact canonical CI must pass before adapter branches consume the new job.
 
 #67 complete: contract10f687e, API675dfff/review0bb8f28, integrated4d1b548;
 source/integration CI34055882003/34056365373 pass18/helper skip. #68 mechanical
