@@ -199,12 +199,7 @@ func TestPhysicalRepositoryRoot(t *testing.T) {
 		t.Fatal(err)
 	}
 	alias := filepath.Join(t.TempDir(), "root-alias")
-	if err := os.Symlink(c.root, alias); err != nil {
-		if runtime.GOOS == "windows" {
-			t.Skipf("native symlink creation unavailable: %v", err)
-		}
-		t.Fatal(err)
-	}
+	createDirectoryAlias(t, c.root, alias)
 	c.root = alias
 	if err := c.inventory(); err != nil {
 		t.Fatal(err)
@@ -222,6 +217,67 @@ func TestPhysicalRepositoryRoot(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "module source outside repository") {
 		t.Fatalf("outside source passed after root normalization: %v", err)
 	}
+}
+
+func TestOutsideChildDirectoryAlias(t *testing.T) {
+	c := fixture(t)
+	outside := t.TempDir()
+	writeFixture(t, outside, "native.go", "package native\nconst Value = \"outside source\"\n")
+	writeFixture(t, c.root, "internal/git/git.go", "package git\nimport \""+fixtureModule+"/internal/git/native\"\nfunc Value() string {return native.Value}\n")
+	createDirectoryAlias(t, outside, filepath.Join(c.root, "internal/git/native"))
+	if err := c.inventory(); err == nil || !strings.Contains(err.Error(), "child alias") {
+		t.Fatalf("inventory admitted source directory alias: %v", err)
+	}
+	// Exercise the selected-source check independently too: Go can report a
+	// lexical Dir for a package reached through the junction/symlink import.
+	err := c.checkTarget(targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH})
+	if err == nil || !strings.Contains(err.Error(), "module source outside repository") {
+		t.Fatalf("selected source admitted outside object: %v", err)
+	}
+}
+
+func TestInsideChildAliasCannotRelabelOwner(t *testing.T) {
+	for _, targetPath := range []string{"internal/persistence/native", "internal/app"} {
+		t.Run(targetPath, func(t *testing.T) {
+			c := fixture(t)
+			source := "package native\nconst Value = \"different physical owner\"\n"
+			writeFixture(t, c.root, targetPath+"/native.go", source)
+			if targetPath == "internal/app" {
+				c.legacy[targetPath+"/native.go"] = blobHash([]byte(source))
+			}
+			writeFixture(t, c.root, "internal/git/git.go", "package git\nimport \""+fixtureModule+"/internal/git/native\"\nfunc Value()string{return native.Value}\n")
+			createDirectoryAlias(t, filepath.Join(c.root, targetPath), filepath.Join(c.root, "internal/git/native"))
+			if err := c.inventory(); err == nil || !strings.Contains(err.Error(), "child alias") {
+				t.Fatalf("inventory relabeled another owner: %v", err)
+			}
+			err := c.checkTarget(targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH})
+			if err == nil || !strings.Contains(err.Error(), "physical ownership") {
+				t.Fatalf("selected source relabeled another owner: %v", err)
+			}
+		})
+	}
+}
+
+func createDirectoryAlias(t *testing.T, target, alias string) {
+	t.Helper()
+	if runtime.GOOS == "windows" {
+		// Native junctions need no symlink privilege. Both locations were created
+		// under this test's disposable root; no user configuration is involved.
+		cmd := exec.Command("powershell.exe", "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", "New-Item -ItemType Junction -Path $env:GH_TREE_ARCH_LINK -Target $env:GH_TREE_ARCH_LINK_TARGET -ErrorAction Stop | Out-Null")
+		cmd.Env = append(os.Environ(), "GH_TREE_ARCH_LINK="+alias, "GH_TREE_ARCH_LINK_TARGET="+target)
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("native directory junction: %v\n%s", err, out)
+		}
+	} else if err := os.Symlink(target, alias); err != nil {
+		t.Fatal(err)
+	}
+	// Remove only the link before the temporary-root cleanups run. Never walk
+	// through it to remove the target; that target has its own test owner.
+	t.Cleanup(func() {
+		if err := os.Remove(alias); err != nil {
+			t.Errorf("remove owned directory alias: %v", err)
+		}
+	})
 }
 
 func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
@@ -260,7 +316,7 @@ func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
 }
 
 func TestPathSpecificCleanProfile(t *testing.T) {
-	for _, profile := range []string{"minus-text", "plus-text", "autocrlf-false", "autocrlf-true", "filter-refused"} {
+	for _, profile := range []string{"minus-text", "plus-text", "autocrlf-false", "autocrlf-true", "filter-refused", "legacy-minus-crlf", "legacy-plus-crlf", "legacy-crlf-input"} {
 		t.Run(profile, func(t *testing.T) {
 			c := fixture(t)
 			gitFixture(t, c.root, "init", "-q")
@@ -275,12 +331,19 @@ func TestPathSpecificCleanProfile(t *testing.T) {
 				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go text\n")
 			case "autocrlf-true":
 				gitFixture(t, c.root, "config", "--local", "core.autocrlf", "true")
+			case "legacy-minus-crlf", "legacy-plus-crlf", "legacy-crlf-input":
+				gitFixture(t, c.root, "config", "--local", "core.autocrlf", "true")
+				attr := map[string]string{"legacy-minus-crlf": "-crlf", "legacy-plus-crlf": "crlf", "legacy-crlf-input": "crlf=input"}[profile]
+				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go "+attr+"\n")
 			case "filter-refused":
 				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go filter=probe\n")
 				gitFixture(t, c.root, "config", "--local", "filter.probe.clean", "echo FILTER-RAN > filter-ran")
 			}
 			err := c.inventory()
 			want := map[string]string{"minus-text": "legacy allowance changed", "autocrlf-false": "legacy allowance changed", "filter-refused": "unsupported Git clean profile"}[profile]
+			if strings.HasPrefix(profile, "legacy-") {
+				want = "unsupported Git legacy crlf profile"
+			}
 			if want == "" {
 				if err != nil {
 					t.Fatal(err)

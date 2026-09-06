@@ -91,7 +91,7 @@ func (c *checker) inventory() error {
 	// go list reports physical package directories. In particular, macOS's
 	// /var temporary-root alias resolves to /private/var. Bind the selected root
 	// once to that same physical spelling before any relative ownership checks.
-	root, err := filepath.EvalSymlinks(c.root)
+	root, err := physicalPath(c.root)
 	if err != nil {
 		return err
 	}
@@ -112,6 +112,19 @@ func (c *checker) inventory() error {
 		if err != nil {
 			return err
 		}
+		rel, err := filepath.Rel(c.root, path)
+		if err != nil {
+			return err
+		}
+		rel = filepath.ToSlash(rel)
+		if (within(rel, "internal") || within(rel, "cmd")) && (entry.IsDir() || !entry.Type().IsRegular()) {
+			if _, err := c.sourcePath(path); err != nil {
+				return err
+			}
+		}
+		if (within(rel, "internal") || within(rel, "cmd")) && entry.Type()&os.ModeSymlink != 0 {
+			return fmt.Errorf("source child alias is not an owned physical path: %s", rel)
+		}
 		if entry.IsDir() {
 			if path != c.root && (strings.HasPrefix(entry.Name(), ".") || entry.Name() == "testdata" || entry.Name() == "vendor") {
 				return filepath.SkipDir
@@ -121,11 +134,9 @@ func (c *checker) inventory() error {
 		if !strings.HasSuffix(path, ".go") {
 			return nil
 		}
-		rel, err := filepath.Rel(c.root, path)
-		if err != nil {
+		if _, err := c.sourcePath(path); err != nil {
 			return err
 		}
-		rel = filepath.ToSlash(rel)
 		if entry.Type()&os.ModeSymlink != 0 {
 			return fmt.Errorf("source symlink is not an owned physical file: %s", rel)
 		}
@@ -286,13 +297,9 @@ func (c *checker) checkPackage(p listedPackage, all map[string]listedPackage, ta
 	checked := false
 	for _, name := range append(append(append([]string{}, p.GoFiles...), p.TestGoFiles...), p.XTestGoFiles...) {
 		path := filepath.Join(p.Dir, name)
-		rel, err := filepath.Rel(c.root, path)
+		rel, err := c.sourcePath(path)
 		if err != nil {
 			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if strings.HasPrefix(rel, "../") {
-			return fmt.Errorf("module source outside repository: %s", path)
 		}
 		file, err := parser.ParseFile(fset, path, nil, parser.ParseComments)
 		if err != nil {
@@ -362,6 +369,36 @@ func (c *checker) checkPackage(p listedPackage, all map[string]listedPackage, ta
 		return fmt.Errorf("%s: %w", p.ImportPath, err)
 	}
 	return nil
+}
+
+// The root itself was deliberately selected and physically bound by inventory.
+// A child alias is different: it may make Go report a lexical package pathname
+// for an object owned outside this tree, or assign one physical file two owners.
+func (c *checker) sourcePath(path string) (string, error) {
+	rel, err := filepath.Rel(c.root, path)
+	if err != nil {
+		return "", err
+	}
+	rel = filepath.ToSlash(rel)
+	if rel == ".." || strings.HasPrefix(rel, "../") {
+		return "", fmt.Errorf("module source outside repository: %s", path)
+	}
+	physical, err := physicalPath(path)
+	if err != nil {
+		return "", err
+	}
+	physicalRel, err := filepath.Rel(c.root, physical)
+	if err != nil {
+		return "", err
+	}
+	physicalRel = filepath.ToSlash(physicalRel)
+	if physicalRel == ".." || strings.HasPrefix(physicalRel, "../") {
+		return "", fmt.Errorf("module source outside repository through child alias: %s -> %s", path, physical)
+	}
+	if physicalRel != rel {
+		return "", fmt.Errorf("source child alias changes physical ownership: %s -> %s", rel, physicalRel)
+	}
+	return rel, nil
 }
 
 func syntaxPolicy(file *ast.File, r role) error {
@@ -455,8 +492,13 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 			path := obj.Pkg().Path()
 			if within(path, module) {
 				rel := strings.TrimPrefix(path, module+"/")
-				to := classify(rel)
-				if !internalAllowed(r, to, false) || (isAdapter(to) && to != r) {
+				// Import legality is checked for every selected source package.
+				// Here follow the entire transitive value graph, including distinct
+				// role tags in one private decomposition (registry/broker and
+				// coordinator/usecases), and shared API/viewmodel/Domain values.
+				// Reapplying the root's direct-import rule to a transitive DTO
+				// would reject valid View -> viewmodel -> Domain value shapes.
+				if classify(rel) == "" {
 					return fmt.Errorf("exported API exposes forbidden type %s.%s", path, obj.Name())
 				}
 			} else if !publicExternalType(path, obj.Name(), r) {
@@ -481,7 +523,7 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 				children = append(children, t.TypeArgs().At(i))
 			}
 			owner := t.Obj().Pkg()
-			if owner == pkg || (owner != nil && within(owner.Path(), module) && classify(strings.TrimPrefix(owner.Path(), module+"/")) == r) {
+			if owner == pkg || (owner != nil && within(owner.Path(), module)) {
 				children = append(children, t.Underlying())
 				for i := 0; i < t.NumMethods(); i++ {
 					if t.Method(i).Exported() {

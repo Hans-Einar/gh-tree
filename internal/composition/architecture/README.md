@@ -33,7 +33,8 @@ Every remaining old Go file must match its exact path and baseline Git blob.
 The checker reads path-specific text attributes and core.autocrlf. Explicit text
 and ordinary automatic text profiles preserve legitimate CRLF checkout conversion;
 `-text` and autocrlf=false retain the actual bytes. Automatic conversion with a
-CRLF/binary index, filter/encoding/ident/eol attributes and unknown profiles refuse
+CRLF/binary index, filter/encoding/ident/eol attributes, any explicit historical
+`crlf` attribute (including `-crlf`), and unknown profiles refuse
 explicitly. Git clean filters are never executed. Source archives with no Git
 metadata get raw-byte comparison, with no inferred Windows normalization.
 The checker does not trust folder prefixes or a moved copy of the same blob. New files in
@@ -49,6 +50,17 @@ baseline exception carries into `-mode strict`; that mode also requires the fina
 named layer, leaf, host and private broker/helper package inventory. It is expected
 to fail on the M1 tree. A custom-tag-only or unsupported-platform-only production
 file cannot hide outside all twelve default selections.
+
+The selected root may be an alias and is bound to its physical path. Selected
+source paths must retain that physical containment and declared ownership; a child
+alias cannot relabel an outside, another-layer or legacy source. Windows uses a
+temporary, fully shared read-attributes handle and
+[GetFinalPathNameByHandleW](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew)
+because Go1.25 EvalSymlinks does not resolve every junction. Other hosts resolve
+symbolic links. Handles close before returning. This is inspection of a stable
+checkout, not a retained capability or protection against concurrent tree changes.
+Native Windows junction tests require no symlink privilege and exercise both
+selected-root positives and outside/cross-layer/legacy child-alias refusals.
 
 Private subpackages remain under the same layer policy. Cross-layer imports end
 at published roots; the explicit coordinator/usecases and Runtime broker/asset
@@ -66,8 +78,8 @@ explicitly listed; automatic/global Lip Gloss renderer configuration is rejected
 New dependencies or policy changes need the applicable Issue/BC authority and
 independent review, not an in-source suppression comment.
 
-Export checks follow aliases, pointers, collections, generic arguments, local and
-same-layer private named types, embedded fields, methods and inferred variables.
+Export checks follow aliases, pointers, collections, generic arguments, all
+boundary-reachable module named types, embedded fields, methods and inferred variables.
 They distinguish declared API functions/interface methods from callback signatures
 inside value graphs, rejecting nested callbacks, native/adapter types, channels
 and any DTOs on public boundary surfaces. Generic `Optional[T any]` constraints

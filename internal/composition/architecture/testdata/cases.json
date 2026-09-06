@@ -300,5 +300,54 @@
       "internal/git/native/lock.go": "package native\ntype Result struct{ Value string }\n",
       "internal/git/git.go": "package git\nimport \"$MODULE/internal/git/native\"\nfunc Read() native.Result {return native.Result{}}\n"
     }
+  },
+  {
+    "Name": "runtime-broker-native-wrapper-escape",
+    "Target": "windows/amd64",
+    "Want": "exported API exposes forbidden type os.File",
+    "Files": {
+      "internal/runtime/broker/engine_windows.go": "package broker\nimport \"os\"\ntype Result struct{ File *os.File }\n",
+      "internal/runtime/runtime_windows.go": "package runtime\nimport \"$MODULE/internal/runtime/broker\"\nfunc Open() broker.Result {return broker.Result{}}\n"
+    }
+  },
+  {
+    "Name": "runtime-broker-callback-wrapper-escape",
+    "Target": "windows/arm64",
+    "Want": "callback inside a value graph",
+    "Files": {
+      "internal/runtime/broker/engine_windows.go": "package broker\ntype Result struct{ Callbacks []func() }\n",
+      "internal/runtime/runtime_windows.go": "package runtime\nimport \"$MODULE/internal/runtime/broker\"\nfunc Open() broker.Result {return broker.Result{}}\n"
+    }
+  },
+  {
+    "Name": "application-usecase-native-wrapper-escape",
+    "Want": "exported API exposes forbidden type os.File",
+    "Files": {
+      "internal/application/usecases/native/lock.go": "package native\nimport \"os\"\ntype Result struct{ File *os.File }\n",
+      "internal/application/application.go": "package application\nimport \"$MODULE/internal/application/usecases/native\"\nfunc Open() native.Result {return native.Result{}}\n"
+    }
+  },
+  {
+    "Name": "private-runtime-native-plumbing-and-pure-result",
+    "Target": "windows/arm64",
+    "Files": {
+      "internal/runtime/broker/engine_windows.go": "package broker\nimport \"os\"\ntype Result struct{ Message string }\nfunc OpenLock()(*os.File,error){return nil,nil}\n",
+      "internal/runtime/runtime_windows.go": "package runtime\nimport \"$MODULE/internal/runtime/broker\"\nfunc Lock() error {_,err:=broker.OpenLock();return err}\nfunc Result() broker.Result{return broker.Result{}}\n"
+    }
+  },
+  {
+    "Name": "private-usecase-plumbing-and-api-control",
+    "Files": {
+      "internal/application/usecases/native/lock.go": "package native\nimport \"os\"\ntype Result struct{ Message string }\nfunc OpenLock()(*os.File,error){return nil,nil}\n",
+      "internal/application/application.go": "package application\nimport (\"$MODULE/internal/application/usecases/native\";\"$MODULE/internal/application/api\")\nfunc Lock()error{_,err:=native.OpenLock();return err}\nfunc Result() native.Result{return native.Result{}}\nfunc Client() api.Client {return nil}\n",
+      "internal/application/api/client.go": "package api\nimport(\"context\";\"time\")\ntype Client interface { Do(context.Context,time.Time)(Value,error) }\n"
+    }
+  },
+  {
+    "Name": "transitive-viewmodel-domain-values",
+    "Files": {
+      "internal/tuistate/viewmodel/snapshot.go": "package viewmodel\nimport \"$MODULE/internal/domain\"\ntype Snapshot struct{ Value domain.Value }\n",
+      "internal/tuiview/view.go": "package tuiview\nimport \"$MODULE/internal/tuistate/viewmodel\"\nfunc Snapshot()viewmodel.Snapshot{return viewmodel.Snapshot{}}\n"
+    }
   }
 ]

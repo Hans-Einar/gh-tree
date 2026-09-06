@@ -43,19 +43,25 @@ func (c *checker) cleanBlobHash(path string, b []byte) (string, error) {
 	if !c.gitClean {
 		return blobHash(b), nil
 	}
-	cmd := exec.Command("git", "check-attr", "-z", "text", "eol", "filter", "working-tree-encoding", "ident", "--", path)
+	cmd := exec.Command("git", "check-attr", "-z", "text", "eol", "filter", "working-tree-encoding", "ident", "crlf", "--", path)
 	cmd.Dir = c.root
 	out, err := cmd.Output()
 	if err != nil {
 		return "", fmt.Errorf("read path-specific clean attributes for %s: %w", path, err)
 	}
 	fields := strings.Split(strings.TrimSuffix(string(out), "\x00"), "\x00")
-	if len(fields) != 15 {
+	if len(fields) != 18 {
 		return "", fmt.Errorf("incomplete clean attribute metadata for %s", path)
 	}
 	attrs := map[string]string{}
 	for i := 0; i < len(fields); i += 3 {
 		attrs[fields[i+1]] = fields[i+2]
+	}
+	// The historical crlf attribute predates text and still changes Git's
+	// conversion behavior. In particular -crlf is not an inert unset attribute.
+	// Refuse every explicit legacy setting rather than guessing its precedence.
+	if attrs["crlf"] != "unspecified" {
+		return "", fmt.Errorf("unsupported Git legacy crlf profile for %s: crlf=%s", path, attrs["crlf"])
 	}
 	for _, attr := range []string{"filter", "working-tree-encoding", "ident", "eol"} {
 		if value := attrs[attr]; value != "unspecified" && value != "unset" {
