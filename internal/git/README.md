@@ -60,6 +60,13 @@ junction controls pass. Symlink creation needs unavailable local privilege and i
 reported skipped separately. These primitives do not constitute the retained
 publisher, its race/crash proof, or a public mutation implementation.
 
+CI uncovered a race-instrumented test helper's default exit sleep and a fragile
+SDDL-string assertion. Helpers now disable only their synthetic race exit sleep;
+actual command budgets and parent race reporting remain unchanged. Private-file
+creation verifies the protected native DACL using ACE type/mask/flags and binary
+current-user/System SID equality, supporting native SID aliases without widening
+permissions. Tests reject extra users, insufficient rights and unprotected ACLs.
+
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
 `birth-filetime:<decimal uint64>`. Aligned native storage is required; a raw byte

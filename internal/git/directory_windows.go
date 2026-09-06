@@ -95,6 +95,7 @@ func (d *nativeDirectory) relativeFile(name string, create bool) (*os.File, erro
 	attributes := windows.OBJECT_ATTRIBUTES{Length: uint32(unsafe.Sizeof(windows.OBJECT_ATTRIBUTES{})), RootDirectory: d.handle, ObjectName: nativeName, Attributes: windows.OBJ_DONT_REPARSE}
 	access := uint32(windows.FILE_GENERIC_READ)
 	disposition := uint32(windows.FILE_OPEN)
+	var owner *windows.Tokenuser
 	if create {
 		access = windows.FILE_GENERIC_READ | windows.FILE_GENERIC_WRITE
 		disposition = windows.FILE_CREATE
@@ -107,6 +108,7 @@ func (d *nativeDirectory) relativeFile(name string, create bool) (*os.File, erro
 		if err != nil {
 			return nil, err
 		}
+		owner = user
 		descriptor, err := windows.SecurityDescriptorFromString("D:P(A;;FA;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)")
 		if err != nil {
 			return nil, err
@@ -123,6 +125,16 @@ func (d *nativeDirectory) relativeFile(name string, create bool) (*os.File, erro
 	if err = windows.GetFileInformationByHandle(handle, &info); err != nil || info.FileAttributes&windows.FILE_ATTRIBUTE_REPARSE_POINT != 0 || info.FileAttributes&windows.FILE_ATTRIBUTE_DIRECTORY != 0 {
 		windows.CloseHandle(handle)
 		return nil, diagnostic(api.Unsupported, "NonRegularNativeFile", "The native child is not a supported no-reparse regular file.")
+	}
+	if create {
+		security, se := windows.GetSecurityInfo(handle, windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION)
+		if se == nil {
+			se = privateACL(security, owner.User.Sid)
+		}
+		if se != nil {
+			windows.CloseHandle(handle)
+			return nil, se
+		}
 	}
 	return os.NewFile(uintptr(handle), filepath.Join(d.expected.path, name)), nil
 }

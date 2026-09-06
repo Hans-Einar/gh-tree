@@ -52,13 +52,51 @@ func TestNativePrivateFileHasProtectedUserACLAndCorrectABI(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	text := sd.String()
-	if !strings.Contains(text, user.User.Sid.String()) || strings.Contains(text, ";;;WD)") || strings.Contains(text, ";;;AU)") || strings.Contains(text, ";;;BU)") {
-		t.Fatal("private file ACL is not limited to the user and system")
+	if err := privateACL(sd, user.User.Sid); err != nil {
+		t.Fatal(err)
 	}
 	if f, err := directory.createPrivate("private:alternate"); err == nil {
 		f.Close()
 		t.Fatal("created an alternate data stream")
+	}
+}
+
+func TestPrivateACLRejectsBroadenedAndIncompletePolicies(t *testing.T) {
+	token, err := windows.OpenCurrentProcessToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	user, err := token.GetTokenUser()
+	token.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, sddl := range []string{
+		"D:P(A;;FA;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)(A;;FR;;;WD)",
+		"D:P(A;;FR;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)",
+		"D:(A;;FA;;;" + user.User.Sid.String() + ")(A;;FA;;;SY)",
+		"D:P(A;;FA;;;WD)",
+	} {
+		sd, err := windows.SecurityDescriptorFromString(sddl)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = privateACL(sd, user.User.Sid); err == nil {
+			t.Fatal("accepted a broadened/incomplete private ACL")
+		}
+	}
+	// SY is a valid native alias for a current System user. Formatting its SID
+	// differently must not reject the same protected native policy.
+	system, err := windows.CreateWellKnownSid(windows.WinLocalSystemSid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sd, err := windows.SecurityDescriptorFromString("D:P(A;;FA;;;SY)")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = privateACL(sd, system); err != nil {
+		t.Fatal("native alias equality failed", err)
 	}
 }
 

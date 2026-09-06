@@ -50,7 +50,13 @@ func testAdapter(t *testing.T, extra ...string) *Adapter {
 	if err != nil {
 		t.Fatal(err)
 	}
-	a, err := New(Options{GitExecutable: exe, CurrentDirectory: t.TempDir(), Environment: append(os.Environ(), extra...), ReadTimeout: time.Second, DrainTimeout: 50 * time.Millisecond, MaxStdoutBytes: 1024, MaxStderrBytes: 256})
+	// This binary acts as a stand-in for native Git. The race detector's default
+	// 1000ms post-exit sleep is instrumentation, not helper work; disable only
+	// that sleep in child helpers, preserving the parent detector and all race
+	// reporting. See https://go.dev/doc/articles/race_detector#Options .
+	environment := append(os.Environ(), extra...)
+	environment = append(environment, "GORACE="+os.Getenv("GORACE")+" atexit_sleep_ms=0")
+	a, err := New(Options{GitExecutable: exe, CurrentDirectory: t.TempDir(), Environment: environment, ReadTimeout: time.Second, DrainTimeout: 50 * time.Millisecond, MaxStdoutBytes: 1024, MaxStderrBytes: 256})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -76,6 +82,9 @@ func TestTransportLiteralBoundsAndCopy(t *testing.T) {
 		t.Fatalf("stderr merged or lost: %q", r.stderr)
 	}
 	r2 := a.command(context.Background(), a.current.path, false, "next")
+	if r2.err != nil {
+		t.Fatal(r2.err)
+	}
 	r2.stdout[0] = 'x'
 	if !bytes.HasSuffix(r.stdout, want) {
 		t.Fatal("earlier output mutated")
@@ -111,6 +120,19 @@ func TestTransportCancellationBeforeAndAfterStart(t *testing.T) {
 	d := r.transport.Data()
 	if r.err == nil || !d.Started || !d.RootReaped || d.CleanupKnown || !d.CancellationRequested {
 		t.Fatalf("bad canceled result: %v %+v", r.err, d)
+	}
+}
+
+func TestTransportConfiguredDeadlineStillBoundsHelper(t *testing.T) {
+	a := testAdapter(t, "GH_TREE_GIT_TEST_HELPER=wait")
+	a.options.ReadTimeout = 100 * time.Millisecond
+	started := time.Now()
+	r := a.command(context.Background(), a.current.path, false)
+	if r.err == nil || !r.transport.Data().CancellationRequested || r.transport.Data().Started && !r.transport.Data().RootReaped {
+		t.Fatalf("configured deadline lost its cancellation/reap facts: %v %+v", r.err, r.transport.Data())
+	}
+	if time.Since(started) > 2*time.Second {
+		t.Fatal("configured deadline did not bound helper execution")
 	}
 }
 
