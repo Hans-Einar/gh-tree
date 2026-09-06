@@ -214,3 +214,12 @@ merge and opened #57 for first fresh-worker Composition M1 CI/bootstrap contribu
 Plan--001 and I-03/M1 index/relations/ledger kickoff precede worker dispatch.
 No product code changed yet; all143 findings remain open. All11 existing worktrees
 were audited clean before branch creation; old checkpoint local801280a is retained.
+
+M1 worker caught stale top I-02/G-08 header after kickoff. Root traced it to an
+implicit Windows cp1252 read before UTF-8 write, which also altered Unicode dash
+bytes in the two sprint files and prevented the intended header match. Root
+restored those UTF-8 bytes and set explicit current I-03/M1 header. Future reads
+must specify encoding=utf-8. Product-finding/release-baseline data matched the
+prior accepted objects exactly; no product/design/BC content changed. Main CI at
+actual BC merge97cc0d8 passed all9 jobs in34027623200. Worker implementation
+continues under #57/Plan; this corrective metadata commit is supplied separately.

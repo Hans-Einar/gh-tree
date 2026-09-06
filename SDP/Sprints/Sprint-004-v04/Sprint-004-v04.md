@@ -1,4 +1,4 @@
-# Sprint 004 â€” gh-tree v0.4 architecture program
+# Sprint 004 — gh-tree v0.4 architecture program
 
 State: ACTIVE
 Authority: Issues #21 and #35; [full user run contract](UserRunContract.md).

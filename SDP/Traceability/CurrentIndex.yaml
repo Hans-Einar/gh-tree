@@ -347,7 +347,8 @@
       "technicalCiRuns": [
         "34027057276",
         "34027058992"
-      ]
+      ],
+      "mainCiRun": "34027623200"
     },
     {
       "id": "G-08",
@@ -372,7 +373,7 @@
       "id": "IMPL57",
       "kind": "implementation_contribution",
       "issue": 57,
-      "state": "kickoff",
+      "state": "worker_active",
       "layer": "Composition",
       "slices": [
         "SLC-13"
@@ -380,7 +381,8 @@
       "supportsAllSelectedSlices": true,
       "branch": "codereview-21/layer-composition-bootstrap",
       "base": "97cc0d8257603766dd741b49b7d8005857b421a9",
-      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md",
+      "kickoffHead": "4c0cee9f6693c4f0ab58a16a7e98299a67a0f76b"
     },
     {
       "id": "M1",

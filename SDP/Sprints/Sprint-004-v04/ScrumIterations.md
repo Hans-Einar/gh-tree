@@ -2,13 +2,13 @@
 
 State: ACTIVE
 Sprint: Sprint-004-v04
-Active iteration: I-02 â€” Refactor Design and contracts
-Active gate: G-08 â€” Boundary Contract review/freeze (#55)
-No implementation Slice is active before design and BC freeze.
+Active iteration: I-03 - complete refactor implementation
+Active gate: M1 - Composition CI/bootstrap-safety (#57)
+All SLC-01..13 selected; active contribution supplies SLC-13 build prerequisites.
 
 ## I-01 contract
 
-State: COMPLETE â€” all ten focused layer reports accepted and merged.
+State: COMPLETE — all ten focused layer reports accepted and merged.
 
 Goal: complete the focused-review inputs required before designing v0.4.
 Kickoff state: Runtime, TUI State, Application and Git were accepted; Domain was
