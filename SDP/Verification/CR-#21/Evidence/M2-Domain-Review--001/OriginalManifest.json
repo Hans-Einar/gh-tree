@@ -1,0 +1,214 @@
+[
+  {
+    "path": "compile-embedded-variant.go",
+    "sha256": "CC9909631547AA67BE5527CD44876A2BD3250AE72B90CD462461FB48718966AC"
+  },
+  {
+    "path": "compile-embedded-variant.json",
+    "sha256": "EA19EF29FDAABE08323E5E2599D249720E241D5C94E8A2ADB606972DAD3B1440"
+  },
+  {
+    "path": "compile-embedded-variant.log",
+    "sha256": "D8EB0C59487787FE2C336F9752E510025B2498BEDF1B0256CECADDC95BD60FB7"
+  },
+  {
+    "path": "compile-nil-target.go",
+    "sha256": "C7B1C115EC09CA4E19CA8C2BAC67A7CB2C664F3503A71B72B2C5088E2CACAECA"
+  },
+  {
+    "path": "compile-nil-target.json",
+    "sha256": "382BD8FE739FAA04300ABD26CB4A4C88AA10BDADEB76BA8173E553C8FDACA65E"
+  },
+  {
+    "path": "compile-nil-target.log",
+    "sha256": "B3F058BED53371575486D177091ED6CABE67CC1735B31417C884CD74C1F1DD16"
+  },
+  {
+    "path": "compile-positive.go",
+    "sha256": "5E74BCA844DC2DA72147E091D77725566C2D343940CBCF6D170DF78E5FC6B467"
+  },
+  {
+    "path": "compile-positive.json",
+    "sha256": "E7F9506C86261CD0FC2BEEAFA421E62B339B8A76DA41E239B7D273F896CF8C91"
+  },
+  {
+    "path": "compile-positive.log",
+    "sha256": "3C5A96A326CB513C0A33E14F3BEA6F079D1062C24D1E9A4354BFE01CB304555C"
+  },
+  {
+    "path": "compile-private-tag.go",
+    "sha256": "035DD489775A73A02A77822AA07B073DCBDD897390BDEA4FDE02F15DDC8A5971"
+  },
+  {
+    "path": "compile-private-tag.json",
+    "sha256": "A3DF38604C985727E125ABD2240CCCF4CADD55A14EA93B539666B8B4B79BB3D9"
+  },
+  {
+    "path": "compile-private-tag.log",
+    "sha256": "B18F01B50F7E6B6F609B259F8995DB9EA1B1B515E962D86019079F98385592B9"
+  },
+  {
+    "path": "compile-struct-conversion.go",
+    "sha256": "9B3471813DBAD32827C8AE3053831F9317BE2EEE2D621D74EEA3042488B3861C"
+  },
+  {
+    "path": "compile-struct-conversion.json",
+    "sha256": "CB48AA5136D9E23E8BC5133B1548AE05A01DAB2C58EE89AE0B641E4A4E5B9747"
+  },
+  {
+    "path": "compile-struct-conversion.log",
+    "sha256": "161F4201A63A698C9665604B4110C583ABFCC182882F31ED31653B4284EDAD0A"
+  },
+  {
+    "path": "execution-evidence.json",
+    "sha256": "9BFF12ACBF1A5AFCE145DFBD3BF18E91C17804A351752683F4738394973986F7"
+  },
+  {
+    "path": "go.mod",
+    "sha256": "1B225C4EE3AB87CF8A2EE3FCEE32CD1207F813BF61AD734A5AD5434BAA549D9C"
+  },
+  {
+    "path": "independent-race.log",
+    "sha256": "1E0879DE476179A3934CA5225C71FC33885671B591A2F54C89DEFA043752003D"
+  },
+  {
+    "path": "independent-unit.log",
+    "sha256": "61680EF45042B9D9D64F97C28726C1908FFEF5197F4DC6F434AFA872521DD205"
+  },
+  {
+    "path": "mutant-branch-scope.go",
+    "sha256": "A07F723BF1F6ED06E16F243AC42CE1ADAC38E7AC1A8B9CD0A7B4A6952B556BB6"
+  },
+  {
+    "path": "mutant-branch-scope.json",
+    "sha256": "B73C0520B4D7FEB010386531AE61EE640317346E659D1D3559DBFA8E86A6DFFA"
+  },
+  {
+    "path": "mutant-branch-scope.log",
+    "sha256": "701AC0BA9A17514A2BF86556F78F9ED2ACB4B3EEE6DA6895175BA8EABE805BE4"
+  },
+  {
+    "path": "mutant-launch-framing.go",
+    "sha256": "999536D76193980953A77E9965E54E2FCCB29794025BD65B8376D43248055955"
+  },
+  {
+    "path": "mutant-launch-framing.json",
+    "sha256": "0993D850187EF38225BF3E4BE471E77D7BDD667C2BFDB01B4249415021B4B574"
+  },
+  {
+    "path": "mutant-launch-framing.log",
+    "sha256": "04EBEE06B4A94FEF5DF7DCDDDEA43E505DBD770B4D3459CF0B3CFD827B8BD157"
+  },
+  {
+    "path": "mutant-null-oid.go",
+    "sha256": "986F93F0BDAC951DEC0C1BB4DF3A82669DE617155E00E22A8E308A56E4C623CC"
+  },
+  {
+    "path": "mutant-null-oid.json",
+    "sha256": "39C32A67FE219F6B3A56C93FD0934A5DEF5D3C6D2AF600FC6609775C7226516A"
+  },
+  {
+    "path": "mutant-null-oid.log",
+    "sha256": "DAC0F705B52F51383605DEB3C3BCCC4AF9EC3076327D828DB8F883693CA6701C"
+  },
+  {
+    "path": "mutant-pr-base.go",
+    "sha256": "E728ACAABE79DF8FF97CB328EDA0120D3B379AF34808EE5989985135592DA2D8"
+  },
+  {
+    "path": "mutant-pr-base.json",
+    "sha256": "0D38BEEFB93924EBB8726EAC1DB99A68B715D4792234CA6FC7A75730903B7BBB"
+  },
+  {
+    "path": "mutant-pr-base.log",
+    "sha256": "7C992B17DD5474661F809D28137C6EF9AC6C43DA5FDEF8E9B976868C026F7360"
+  },
+  {
+    "path": "mutant-unborn-revision.go",
+    "sha256": "919717B6127639857E5BD52C4615E4311574FC44483CB14B6A4C2F6889297BA6"
+  },
+  {
+    "path": "mutant-unborn-revision.json",
+    "sha256": "526FEE60AE62552D5ED0663E9DF6BB13297AA058C229F19EA637E83B051C23CB"
+  },
+  {
+    "path": "mutant-unborn-revision.log",
+    "sha256": "2E0B6DC6C64AFB7825B47C8FED2E8CFEE1012158E166B2843928F02B9324AE01"
+  },
+  {
+    "path": "mutant-zero-session.go",
+    "sha256": "A5BCB439EC6CD1E32D9FDDEC51F567EBF1C42B97E1C2A029507FD2CDAAEE45D0"
+  },
+  {
+    "path": "mutant-zero-session.json",
+    "sha256": "DED1C273BD5B62DD5386C89BC40FF9AA022CAE2A73D7647621038510F6964AFC"
+  },
+  {
+    "path": "mutant-zero-session.log",
+    "sha256": "92168BE359F8AA4C5C8B8227045CF6FF532C24D12B4792E5A8F19824DB39ADE8"
+  },
+  {
+    "path": "results.json",
+    "sha256": "749D08770D1C23B63F9DEC292D158655A975A5ADBCE6793782295FD949D7516F"
+  },
+  {
+    "path": "run-review.ps1",
+    "sha256": "D33D346250FFA6883A65839CA056DDC5A0E2870A5BD6B2C0D164FD3B49F27D81"
+  },
+  {
+    "path": "source-copy-hashes.json",
+    "sha256": "DFDE2BF74F8ED375F86E0B3CC7541936509F34F238B99FBB8A58CCD7DB0C7BBA"
+  },
+  {
+    "path": "internal\\domain\\branch.go",
+    "sha256": "3133D1593599BAEDA10B597FB526DB591C429E8ECD8689D9207FB835251B280F"
+  },
+  {
+    "path": "internal\\domain\\closed_test.go",
+    "sha256": "D44511BB010F76E3A9E9B422BC4DF51293D8BBF76D2BFFB9F4A3734579EC769F"
+  },
+  {
+    "path": "internal\\domain\\head.go",
+    "sha256": "5CF0FFDCF7DF76E30E1B5CCCF34BC51173A4C100CEC7D18E8DBC36D925848E86"
+  },
+  {
+    "path": "internal\\domain\\identity_test.go",
+    "sha256": "5189AEEA9B5EC59D24E14DDBE58B2921328D5A13A23CC9429E083EC92DC6B5AC"
+  },
+  {
+    "path": "internal\\domain\\launch.go",
+    "sha256": "9F12AE2E2401DE115EECE25506A3AD0430DA61C76CBB6A475CF7509547B4A219"
+  },
+  {
+    "path": "internal\\domain\\oid.go",
+    "sha256": "CA9A1B5E0189352B2B4DB8FE0D44D4C5C6AFCD51605387FD4EE2B1F99F2B8D0E"
+  },
+  {
+    "path": "internal\\domain\\README.md",
+    "sha256": "76D00961038B4A18D9806985F52ABA11ECE7DE9846462C398B68648F897C2312"
+  },
+  {
+    "path": "internal\\domain\\repository.go",
+    "sha256": "CDD152CE953EF5251C7F8DA9466F1D0BAD920CA2BB8A8BE231FFDC92E220DDB0"
+  },
+  {
+    "path": "internal\\domain\\review_independent_test.go",
+    "sha256": "FF9EC3D18BE4499A74AB47D98A3E1B4744C63FBF01FD5D3F46DBC734AD488A1D"
+  },
+  {
+    "path": "internal\\domain\\revision_test.go",
+    "sha256": "0E36C3579AAF90EBF693A8FE4EE68EF0DA382B1CEFCF11888BAAEB73A7BB4F84"
+  },
+  {
+    "path": "internal\\domain\\session.go",
+    "sha256": "446FE4BFB02708D96E9D61C37F846A05F4DA91A18BCF418C964503DBE400C38E"
+  },
+  {
+    "path": "internal\\domain\\surface_test.go",
+    "sha256": "6AF0DA2801C0D8B6FC11DB45272A2F85B9305D610EBAA979915BC999BF495B39"
+  },
+  {
+    "path": "internal\\domain\\target.go",
+    "sha256": "1E286BFC1ED394B1E0E56C071D974EACA84E79D3C77EEDE00012A3E9D3C7B406"
+  }
+]

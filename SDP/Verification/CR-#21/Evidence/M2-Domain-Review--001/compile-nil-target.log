@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/domain_test [github.com/Hans-Einar/gh-tree/internal/domain.test]
+.\compile-nil-target.go:3:28: cannot use nil as domain.ExactTarget value in variable declaration
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain [build failed]
+FAIL

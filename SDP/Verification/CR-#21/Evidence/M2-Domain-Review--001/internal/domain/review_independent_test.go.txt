@@ -1,0 +1,79 @@
+package domain
+
+import (
+ "strconv"
+ "strings"
+ "testing"
+)
+
+func reviewMust[T any](v T, err error) T { if err != nil { panic(err) }; return v }
+
+func TestReviewClosedFamiliesExhaustive(t *testing.T) {
+ l1:=reviewMust(NewRepositoryID(LocalCommon,"same")); l2:=reviewMust(NewRepositoryID(LocalCommon,"clone")); r1:=reviewMust(NewRepositoryID(Remote,"same")); r2:=reviewMust(NewRepositoryID(Remote,"fork"))
+ o1:=reviewMust(NewOID(strings.Repeat("12",20))); o2:=reviewMust(NewOID(strings.Repeat("12",32)))
+ branches:=[]BranchID{{},reviewMust(NewBranchID(l1,Local,"main")),reviewMust(NewBranchID(l2,Local,"main")),reviewMust(NewBranchID(r1,RemoteHead,"main")),reviewMust(NewBranchID(r2,RemoteHead,"main")),{repository:l1,kind:Local},{repository:r1,kind:Local,name:"main"}}
+ revs:=[]Revision{{},reviewMust(NewRevision(l1,o1)),reviewMust(NewRevision(l2,o1)),reviewMust(NewRevision(r1,o1)),reviewMust(NewRevision(r2,o1)),reviewMust(NewRevision(l1,o2)),{repository:l1}}
+ prs:=[]PRID{{},reviewMust(NewPRID(r1,1)),reviewMust(NewPRID(r2,1)),{repository:r1},{repository:l1,number:1}}
+ heads:=map[Head]bool{}; targets:=map[ExactTarget]bool{}
+ for _,b:=range branches { if h,e:=NewUnbornHead(b);e==nil { heads[h]=true }; for _,r:=range revs { if h,e:=NewAttachedHead(b,r);e==nil {heads[h]=true}; if x,e:=NewBranchTarget(b,r);e==nil {targets[x]=true} } }
+ for _,r:=range revs {if h,e:=NewDetachedHead(r);e==nil {heads[h]=true};if x,e:=NewCommitTarget(r);e==nil {targets[x]=true};for _,p:=range prs {if x,e:=NewPullRequestTarget(p,r);e==nil {targets[x]=true}}}
+ if len(heads)!=8 || len(targets)!=14 {t.Fatalf("constructor set omitted/added allowed states: heads=%d targets=%d",len(heads),len(targets))}
+ headCases,targetCases:=0,0
+ for tag:=0;tag<256;tag++ { for _,b:=range branches {for _,r:=range revs {
+ h:=Head{kind:HeadKind(tag),branch:b,revision:r}; headCases++
+ if h.Valid()!=heads[h] {t.Fatalf("Head admitted constructor-inaccessible combination: %#v",h)}
+ if !heads[h] {if v,ok:=h.Branch();ok||v!=(BranchID{}) {t.Fatal("invalid Head leaked branch")};if v,ok:=h.Revision();ok||v!=(Revision{}) {t.Fatal("invalid Head leaked revision")};if h.Repository()!=(RepositoryID{}) {t.Fatal("invalid Head leaked repository")}}
+ for _,p:=range prs {x:=ExactTarget{kind:TargetKind(tag),expected:r,branch:b,pr:p};targetCases++;if x.Valid()!=targets[x] {t.Fatalf("ExactTarget admitted constructor-inaccessible combination: %#v",x)};if !targets[x] {if x.ExpectedRevision()!=(Revision{}) {t.Fatal("invalid target leaked exact revision")};if v,ok:=x.Branch();ok||v!=(BranchID{}) {t.Fatal("invalid target leaked branch")};if v,ok:=x.PullRequest();ok||v!=(PRID{}) {t.Fatal("invalid target leaked PR")}}}
+ }}}
+ t.Logf("validated %d Head and %d ExactTarget tag/payload combinations",headCases,targetCases)
+}
+
+func TestReviewPublicScopeMatrix(t *testing.T) {
+ repos:=[]RepositoryID{{},reviewMust(NewRepositoryID(LocalCommon,"same")),reviewMust(NewRepositoryID(LocalCommon,"clone")),reviewMust(NewRepositoryID(Remote,"same")),reviewMust(NewRepositoryID(Remote,"fork"))}
+ exact:=reviewMust(NewOID(strings.Repeat("A5",20)))
+ for i,r:=range repos {for tag:=0;tag<256;tag++ {
+ b,e:=NewBranchID(r,BranchKind(tag),"main")
+ want:=i>0 && ((i<3&&tag==int(Local))||(i>=3&&tag==int(RemoteHead)))
+ if (e==nil)!=want || b.Valid()!=want {t.Fatalf("branch matrix repo=%d kind=%d",i,tag)}
+ if !want && b!=(BranchID{}) {t.Fatal("failed branch returned nonzero")}
+ }}
+ for bi,bRepo:=range repos {for ri,rRepo:=range repos {
+  b,_:=NewBranchID(bRepo,Local,"main"); r,_:=NewRevision(rRepo,exact)
+  h,e:=NewAttachedHead(b,r); want:=bi>0&&bi<3&&bi==ri
+  if (e==nil)!=want||h.Valid()!=want {t.Fatalf("attached scope matrix: %d/%d",bi,ri)}
+  p,_:=NewPRID(bRepo,42);x,e:=NewPullRequestTarget(p,r);want=bi>=3&&ri>=3
+  if (e==nil)!=want||x.Valid()!=want {t.Fatalf("PR fork scope matrix: %d/%d",bi,ri)}
+  if want {actual,_:=x.PullRequest();if actual.Repository()!=bRepo||x.ExpectedRevision().Repository()!=rRepo {t.Fatal("PR base/head scope substitution")}}
+ }}
+}
+func TestReviewOIDAllBytePositions(t *testing.T) {
+ cases:=0
+ for _,n:=range []int{40,64} {for pos:=0;pos<n;pos++ {for b:=0;b<256;b++ {
+  input:=[]byte(strings.Repeat("a",n));input[pos]=byte(b);s:=string(input);v,e:=NewOID(s)
+  want:=b>='0'&&b<='9'||b>='a'&&b<='f'||b>='A'&&b<='F';cases++
+  if (e==nil)!=want ||v.Valid()!=want {t.Fatalf("OID length=%d position=%d byte=%d validation",n,pos,b)}
+  if want {if v.String()!=strings.ToLower(s) {t.Fatal("OID canonical bytes changed")}; buf:=v.Bytes();for i:=range buf {buf[i]=0};if v.String()!=strings.ToLower(s) {t.Fatal("OID exposed backing bytes")}} else if v!=(OID{}) {t.Fatal("invalid parse returned partial OID")}
+ }};if _,e:=NewOID(strings.Repeat("0",n));e==nil {t.Fatal("null OID accepted")}}
+ t.Logf("validated %d byte-position OID controls",cases)
+}
+func TestReviewLaunchCartesianFraming(t *testing.T) {
+ w:=reviewMust(NewWorktreeID(reviewMust(NewRepositoryID(LocalCommon,"repo")),"primary"))
+ parts:=[]string{"","a","b","ab","0","1","10",":","a:","a/b","/","\x00","\xff","枝"," ","1:a0:"}
+ seen:=map[LaunchPointID][3]string{};keys:=map[string][3]string{}
+ for _,p:=range parts {for _,r:=range parts {for _,m:=range parts {
+  id,e:=NewLaunchPointID(w,p,r,m);want:=p!=""&&m!=""
+  if (e==nil)!=want||id.Valid()!=want {t.Fatal("launch validation")}
+  if !want {if id!=(LaunchPointID{}) {t.Fatal("failed launch nonzero")};continue}
+  tuple:=[3]string{p,r,m};if previous,ok:=seen[id];ok&&previous!=tuple {t.Fatalf("identity collision %q / %q",previous,tuple)};seen[id]=tuple
+  if previous,ok:=keys[id.Key()];ok&&previous!=tuple {t.Fatalf("key collision %q / %q",previous,tuple)};keys[id.Key()]=tuple
+  remaining:=id.Key()
+  for _,part:=range tuple {colon:=strings.IndexByte(remaining,':');if colon<1 {t.Fatal("missing length")};size,e:=strconv.Atoi(remaining[:colon]);if e!=nil||size!=len(part)||size>len(remaining)-colon-1 {t.Fatal("invalid byte length")};if remaining[colon+1:colon+1+size]!=part {t.Fatal("framing lost input bytes")};remaining=remaining[colon+1+size:]}
+  if remaining!="" {t.Fatal("extra frame bytes")}
+ }}}
+ t.Logf("validated %d unique launch triples",len(seen))
+}
+func TestReviewBoundaryMagnitudeAndIdentity(t *testing.T) {
+ for _,n:=range []uint64{1,1<<31,1<<32,1<<63,^uint64(0)} {v,e:=NewSessionID(n);if e!=nil||v.Value()!=n||!v.Valid() {t.Fatalf("session magnitude %d",n)}}
+ if v,e:=NewSessionID(0);e==nil||v!=(SessionID{}) {t.Fatal("zero SessionID")}
+ for _,text:=range []string{"refs/heads/main","main","HEAD","@","-topic","a./b","é","é","a\xffb"} {v,e:=NewBranchID(reviewMust(NewRepositoryID(LocalCommon,"repo")),Local,text);if e!=nil||v.Name()!=text {t.Fatalf("stored identity changed %q",text)}}
+}

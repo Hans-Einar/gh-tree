@@ -3,8 +3,8 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-03 - complete refactor implementation
-Active gate: M2 - Domain foundation (#58)
-All SLC-01..13 selected; active Domain contribution supplies shared foundations.
+Active gate: M2 - API/ports (#59) and State-owned viewmodel (#60)
+All SLC-01..13 selected; active parallel leaves supply API/ports and presentation values.
 
 ## I-01 contract
 
@@ -247,7 +247,7 @@ sources/results/CI/native evidence is in M1-Review--002 and its archive. Worker
 corrects these three before a new exact-source re-review/CI; no integration or
 baseline finding/Slice closure. All143 baseline findings remain open.
 
-## I-03 / M2 active Domain contract
+## I-03 / M2 completed Domain contribution
 
 M1 COMPLETE at accepted source/review/integration
 05982a4adb35e39d7b7ba371e0d16d83b2b3674c. Independent M1-Review--003 accepts
@@ -260,3 +260,18 @@ and bounded Domain/M2--001.md report. All13 Slices selected; Domain is a shared
 foundation and completes no Slice. Separate fresh exact-source review and current
 CI precede Master serial integration, then separate API/ports and viewmodel Issues.
 No legacy/other-layer/module/frozen-contract/program metadata edit by the worker.
+
+## I-03 / M2 active parallel leaves
+
+Domain #58 COMPLETE: independent ACCEPT at6113ca55b57cb628b016c483070dbb52cd5dd79a,
+source CI34033181820 and canonical integration CI34033772732 passed18 applicable
+jobs each plus explicit M3skip. All13 Slices and143 open baseline findings retained.
+Current contract SDP/Implementation/CR-#21/M2-Surfaces--001.md; full Issues59/60.
+
+Fresh Application worker owns new api/ports only on layer-application-api; fresh
+State-viewmodel worker owns only tuistate/viewmodel on layer-tuistate-viewmodel.
+Both start from the Master kickoff after Domain integration. Shared Domain values
+are the only product dependency of viewmodel; it cannot import API or State parent.
+Each source freezes for separate fresh review/current CI; Master integrates API/
+ports then viewmodel serially and verifies integrated CI before declaring M2 done.
+No workflow/reducer/renderer/adapter/legacy/module/frozen-contract edits delegated.

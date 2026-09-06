@@ -1,6 +1,6 @@
 # Implementation plan — complete v0.4 refactor
 
-State: ACTIVE, I-03 / M2. Authority: #21 and active Domain contribution #58.
+State: ACTIVE, I-03 / M2. Authority: #21 and active API/ports #59 and State-viewmodel #60 contributions.
 M1 #57 is complete; its original contribution contract remains below as history.
 Integration branch: codereview-21/refactor.
 Integration base: 97cc0d8257603766dd741b49b7d8005857b421a9.
@@ -61,5 +61,6 @@ evidence. A failing frozen boundary triggers BC-CHANGE before affected work proc
 M1 completion: independent ACCEPT/source/integration05982a4; source CI34031420582
 and canonical integration CI34031833446 passed18 applicable jobs each, with explicit
 M3 helper skip. All six M1 review findings resolved; all143 baseline findings open.
-Active M2 Domain contract: [M2-Domain--001](M2-Domain--001.md) / #58. API/ports and
-State-owned viewmodel Issues follow reviewed Domain integration.
+M2 Domain #58 is accepted/integrated at6113ca5 with source/canonical CI18/1skip.
+Active parallel surface contract: [M2-Surfaces--001](M2-Surfaces--001.md), #59/#60.
+API-Inventory--001 is the independent completeness aid; full frozen BCs govern.

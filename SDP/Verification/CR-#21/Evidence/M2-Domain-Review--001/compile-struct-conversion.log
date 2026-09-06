@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/domain_test [github.com/Hans-Einar/gh-tree/internal/domain.test]
+.\compile-struct-conversion.go:3:29: cannot convert struct{scope domain.RepositoryScope; token string}{…} (value of type struct{scope domain.RepositoryScope; token string}) to type domain.RepositoryID
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain [build failed]
+FAIL

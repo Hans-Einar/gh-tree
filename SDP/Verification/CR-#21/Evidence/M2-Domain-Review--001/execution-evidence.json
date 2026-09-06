@@ -1,0 +1,39 @@
+{
+  "sourceHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+  "base": "75a214200d1ab192f491e11c7165e1d5def4712d",
+  "sourceWorktree": "C:/Users/hanse/GIT/gh-tree-wt/domain-implementation",
+  "reviewer": "m2_domain_review",
+  "toolchain": "go1.25.0 windows/amd64",
+  "candidateChecks": [
+    {
+      "command": "go test ./internal/domain -count=1 -cover",
+      "exit": 0,
+      "result": "PASS,100.0% statement coverage"
+    },
+    {
+      "command": "go test -race ./internal/domain -count=1",
+      "exit": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "go test ./... -count=1; go vet ./internal/domain",
+      "exit": 0,
+      "finalOutputChunk": "ok  \tgithub.com/Hans-Einar/gh-tree/internal/composition/architecture\t46.941s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/config\t0.689s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/diff\t0.467s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/domain\t0.764s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/github\t0.651s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/graph\t0.599s\n?   \tgithub.com/Hans-Einar/gh-tree/internal/graphui\t[no test files]\nok  \tgithub.com/Hans-Einar/gh-tree/internal/launch\t1.157s\n?   \tgithub.com/Hans-Einar/gh-tree/internal/process\t[no test files]\nok  \tgithub.com/Hans-Einar/gh-tree/internal/terminal\t0.700s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/tree\t0.461s\nok  \tgithub.com/Hans-Einar/gh-tree/internal/tui\t0.685s\n?   \tgithub.com/Hans-Einar/gh-tree/internal/version\t[no test files]\nok  \tgithub.com/Hans-Einar/gh-tree/internal/worktree\t28.527s\n"
+    },
+    {
+      "command": "go run ./internal/composition/architecture",
+      "exit": 0,
+      "finalOutputChunk": "architecture: linux/386 (staged)\narchitecture: linux/amd64 (staged)\narchitecture: linux/arm (staged)\narchitecture: linux/arm64 (staged)\narchitecture: windows/386 (staged)\narchitecture: windows/amd64 (staged)\narchitecture: windows/arm64 (staged)\narchitecture: PASS, 12 target selections; 61 exact legacy/shared-entry allowances used; ownership review still required\n"
+    },
+    {
+      "command": "git diff --check 75a2142..6113ca5",
+      "exit": 0,
+      "result": "PASS"
+    }
+  ],
+  "limits": [
+    "Configured source-branch CI is a separate Master gate",
+    "No full Slice,Runtime allocator or native Git adapter proof",
+    "Mutation and compiler control snippets are isolated reviewer probes, not product edits"
+  ]
+}

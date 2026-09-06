@@ -1,0 +1,3 @@
+package domain_test
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+var _ domain.ExactTarget = nil

@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/domain_test [github.com/Hans-Einar/gh-tree/internal/domain.test]
+.\compile-private-tag.go:3:21: cannot refer to unexported field kind in struct literal of type domain.Head
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain [build failed]
+FAIL

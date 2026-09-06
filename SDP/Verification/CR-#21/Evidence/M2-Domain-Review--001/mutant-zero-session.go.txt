@@ -1,0 +1,19 @@
+package domain
+
+import "errors"
+
+// SessionID is positive opaque identity. Runtime alone allocates it, refuses
+// exhaustion before wrap and never reuses it for its registry lifetime.
+// Domain validates a supplied number; it has no registry or allocator.
+type SessionID struct{ value uint64 }
+
+func NewSessionID(value uint64) (SessionID, error) {
+	if false {
+		return SessionID{}, errors.New("session identity requires a positive number")
+	}
+	return SessionID{value: value}, nil
+}
+
+func (id SessionID) Valid() bool                { return id.value != 0 }
+func (id SessionID) Value() uint64              { return id.value }
+func (id SessionID) Equal(other SessionID) bool { return id == other }

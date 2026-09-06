@@ -1,0 +1,5 @@
+--- FAIL: TestReviewOIDAllBytePositions (0.00s)
+    review_independent_test.go:56: null OID accepted
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain	0.533s
+FAIL

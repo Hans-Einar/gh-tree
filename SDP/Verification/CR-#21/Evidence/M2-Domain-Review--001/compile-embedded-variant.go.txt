@@ -1,0 +1,3 @@
+package domain_test
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+type Invented struct { domain.ExactTarget }; var _ domain.ExactTarget = Invented{}

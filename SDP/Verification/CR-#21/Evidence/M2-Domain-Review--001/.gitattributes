@@ -1,0 +1,4 @@
+# Preserve native source/overlay/log/result evidence bytes.
+* -text whitespace=cr-at-eol
+# Exact captured final blank lines are evidence, not source formatting.
+run-review.ps1.txt whitespace=cr-at-eol,-blank-at-eof

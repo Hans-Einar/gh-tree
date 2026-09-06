@@ -1,0 +1,7 @@
+--- FAIL: TestReviewClosedFamiliesExhaustive (0.00s)
+    review_independent_test.go:20: constructor set omitted/added allowed states: heads=8 targets=12
+--- FAIL: TestReviewPublicScopeMatrix (0.00s)
+    review_independent_test.go:45: PR fork scope matrix: 3/4
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain	0.529s
+FAIL

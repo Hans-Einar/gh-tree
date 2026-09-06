@@ -1,0 +1,5 @@
+--- FAIL: TestReviewBoundaryMagnitudeAndIdentity (0.00s)
+    review_independent_test.go:77: zero SessionID
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain	0.532s
+FAIL

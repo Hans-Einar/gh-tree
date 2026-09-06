@@ -278,6 +278,37 @@
         "SLC-12",
         "SLC-13"
       ]
+    },
+    {
+      "from": "IMPL58",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+      "head": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+      "state": "accepted"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "depends_on",
+      "to": "IMPL58"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "depends_on",
+      "to": "IMPL58"
+    },
+    {
+      "from": "M2",
+      "relation": "accepts",
+      "to": [
+        "IMPL59",
+        "IMPL60"
+      ]
+    },
+    {
+      "from": "IMPL59",
+      "relation": "inventoried_by",
+      "to": "SDP/Implementation/CR-#21/API-Inventory--001.md",
+      "state": "preparation_only"
     }
   ],
   "errata": [

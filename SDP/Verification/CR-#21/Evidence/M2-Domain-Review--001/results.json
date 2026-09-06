@@ -1,0 +1,204 @@
+[
+  {
+    "name": "independent-unit",
+    "arguments": [
+      "test",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1",
+      "-v"
+    ],
+    "exit": 0,
+    "expectedPass": true,
+    "expectedDiagnostic": "",
+    "passed": true
+  },
+  {
+    "name": "independent-race",
+    "arguments": [
+      "test",
+      "-race",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1",
+      "-v"
+    ],
+    "exit": 0,
+    "expectedPass": true,
+    "expectedDiagnostic": "",
+    "passed": true
+  },
+  {
+    "name": "mutant-branch-scope",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-branch-scope.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "constructor set|branch matrix|scope matrix",
+    "passed": true
+  },
+  {
+    "name": "mutant-null-oid",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-null-oid.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "null OID accepted",
+    "passed": true
+  },
+  {
+    "name": "mutant-pr-base",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-pr-base.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "constructor set|PR fork scope matrix",
+    "passed": true
+  },
+  {
+    "name": "mutant-unborn-revision",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-unborn-revision.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "Head admitted constructor-inaccessible combination",
+    "passed": true
+  },
+  {
+    "name": "mutant-launch-framing",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-launch-framing.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "missing length|invalid byte length|collision",
+    "passed": true
+  },
+  {
+    "name": "mutant-zero-session",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\mutant-zero-session.json",
+      "./internal/domain",
+      "-run",
+      "TestReview",
+      "-count=1"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "zero SessionID",
+    "passed": true
+  },
+  {
+    "name": "compile-positive",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\compile-positive.json",
+      "./internal/domain",
+      "-run",
+      "^$"
+    ],
+    "exit": 0,
+    "expectedPass": true,
+    "expectedDiagnostic": "",
+    "passed": true
+  },
+  {
+    "name": "compile-private-tag",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\compile-private-tag.json",
+      "./internal/domain",
+      "-run",
+      "^$"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "unexported field kind",
+    "passed": true
+  },
+  {
+    "name": "compile-struct-conversion",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\compile-struct-conversion.json",
+      "./internal/domain",
+      "-run",
+      "^$"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "cannot convert",
+    "passed": true
+  },
+  {
+    "name": "compile-embedded-variant",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\compile-embedded-variant.json",
+      "./internal/domain",
+      "-run",
+      "^$"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "cannot use",
+    "passed": true
+  },
+  {
+    "name": "compile-nil-target",
+    "arguments": [
+      "test",
+      "-overlay",
+      "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m2-review-f4d212e199fe419e9b3c1cb03d7126db\\compile-nil-target.json",
+      "./internal/domain",
+      "-run",
+      "^$"
+    ],
+    "exit": 1,
+    "expectedPass": false,
+    "expectedDiagnostic": "cannot use nil",
+    "passed": true
+  }
+]

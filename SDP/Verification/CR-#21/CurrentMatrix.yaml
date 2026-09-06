@@ -11,21 +11,60 @@
   "checks": [
     {
       "id": "V-DOM-01",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "partial",
+      "evidence": [
+        {
+          "kind": "accepted_Domain_foundation",
+          "sourceHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "integrationHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "review": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+          "sourceCiRun": "34033181820",
+          "integrationCiRun": "34033772732",
+          "result": "ACCEPT_18success_1explicitM3skip",
+          "scope": "Pure identity/constructor/copy/closed-value evidence; observing native adapters and Runtime allocation/whole Slice proof remain later"
+        }
+      ],
+      "limits": [
+        "No native object existence/physical repo identity, Runtime allocator/exhaustion or full vertical integration is proved by Domain value tests."
+      ]
     },
     {
       "id": "V-DOM-02",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "partial",
+      "evidence": [
+        {
+          "kind": "accepted_Domain_foundation",
+          "sourceHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "integrationHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "review": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+          "sourceCiRun": "34033181820",
+          "integrationCiRun": "34033772732",
+          "result": "ACCEPT_18success_1explicitM3skip",
+          "scope": "Pure identity/constructor/copy/closed-value evidence; observing native adapters and Runtime allocation/whole Slice proof remain later"
+        }
+      ],
+      "limits": [
+        "No native object existence/physical repo identity, Runtime allocator/exhaustion or full vertical integration is proved by Domain value tests."
+      ]
     },
     {
       "id": "V-DOM-03",
-      "state": "not_executed",
-      "evidence": [],
-      "limits": []
+      "state": "partial",
+      "evidence": [
+        {
+          "kind": "accepted_Domain_foundation",
+          "sourceHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "integrationHead": "6113ca55b57cb628b016c483070dbb52cd5dd79a",
+          "review": "SDP/Verification/CR-#21/M2-Domain-Review--001.md",
+          "sourceCiRun": "34033181820",
+          "integrationCiRun": "34033772732",
+          "result": "ACCEPT_18success_1explicitM3skip",
+          "scope": "Pure identity/constructor/copy/closed-value evidence; observing native adapters and Runtime allocation/whole Slice proof remain later"
+        }
+      ],
+      "limits": [
+        "No native object existence/physical repo identity, Runtime allocator/exhaustion or full vertical integration is proved by Domain value tests."
+      ]
     },
     {
       "id": "V-APP-01",

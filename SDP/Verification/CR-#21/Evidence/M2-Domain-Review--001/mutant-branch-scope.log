@@ -1,0 +1,7 @@
+--- FAIL: TestReviewClosedFamiliesExhaustive (0.00s)
+    review_independent_test.go:20: constructor set omitted/added allowed states: heads=10 targets=15
+--- FAIL: TestReviewPublicScopeMatrix (0.00s)
+    review_independent_test.go:37: branch matrix repo=3 kind=1
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain	0.515s
+FAIL

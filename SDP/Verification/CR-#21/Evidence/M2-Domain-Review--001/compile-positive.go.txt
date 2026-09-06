@@ -1,0 +1,3 @@
+package domain_test
+import "github.com/Hans-Einar/gh-tree/internal/domain"
+func probe() { r, _ := domain.NewRepositoryID(domain.LocalCommon, "repo"); o, _ := domain.NewOID("1234567890123456789012345678901234567890"); v, _ := domain.NewRevision(r,o); h, _ := domain.NewDetachedHead(v); target, _ := domain.NewCommitTarget(v); var _ = map[domain.Head]domain.ExactTarget{h:target} }

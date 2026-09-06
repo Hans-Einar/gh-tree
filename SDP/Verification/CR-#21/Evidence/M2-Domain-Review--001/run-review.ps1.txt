@@ -1,0 +1,58 @@
+$ErrorActionPreference='Stop'
+$reviewRoot=$PSScriptRoot
+$goBin='C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin'
+$env:Path=$goBin+';'+$env:Path
+$goExe=Join-Path $goBin 'go.exe'
+$utf8=[System.Text.UTF8Encoding]::new($false)
+Set-Location -LiteralPath $reviewRoot
+$results=@()
+function Invoke-Case([string]$name,[string[]]$arguments,[bool]$expectedPass,[string]$expectedDiagnostic) {
+ $capture=& $goExe @arguments 2>&1
+ $actualExit=$LASTEXITCODE
+ $body=$capture | Out-String
+ [System.IO.File]::WriteAllText((Join-Path $reviewRoot ($name+'.log')),$body,$utf8)
+ $ok=if($expectedPass){$actualExit -eq 0}else{$actualExit -ne 0 -and $body -match $expectedDiagnostic}
+ $script:results += [pscustomobject]@{name=$name;arguments=$arguments;exit=$actualExit;expectedPass=$expectedPass;expectedDiagnostic=$expectedDiagnostic;passed=$ok}
+ Write-Output "$name exit=$actualExit expected-control=$ok"
+ if(-not $ok) {Write-Output $body}
+}
+Invoke-Case 'independent-unit' @('test','./internal/domain','-run','TestReview','-count=1','-v') $true ''
+Invoke-Case 'independent-race' @('test','-race','./internal/domain','-run','TestReview','-count=1','-v') $true ''
+$mutations=@(
+ @{name='mutant-branch-scope';file='branch.go';old='kind == Local && repository.Scope() == LocalCommon ||';new='kind == Local ||';diagnostic='constructor set|branch matrix|scope matrix'},
+ @{name='mutant-null-oid';file='oid.go';old='return nonzero';new='_ = nonzero; return true';diagnostic='null OID accepted'},
+ @{name='mutant-pr-base';file='target.go';old='return t.pr.Valid() && t.expected.Repository().Scope() == Remote && t.branch == (BranchID{})';new='return t.pr.Valid() && t.expected.Repository().Scope() == Remote && t.pr.Repository() == t.expected.Repository() && t.branch == (BranchID{})';diagnostic='constructor set|PR fork scope matrix'},
+ @{name='mutant-unborn-revision';file='head.go';old='return h.branch.Valid() && h.branch.Kind() == Local && h.revision == (Revision{})';new='return h.branch.Valid() && h.branch.Kind() == Local';diagnostic='Head admitted constructor-inaccessible combination'},
+ @{name='mutant-launch-framing';file='launch.go';old='key := keyPart(provider) + keyPart(project) + keyPart(member)';new='key := provider + "/" + project + "/" + member';diagnostic='missing length|invalid byte length|collision'},
+ @{name='mutant-zero-session';file='session.go';old='if value == 0 {';new='if false {';diagnostic='zero SessionID'}
+)
+foreach($m in $mutations) {
+ $original=Join-Path $reviewRoot ('internal/domain/'+$m.file)
+ $source=[System.IO.File]::ReadAllText($original).Replace([string][char]13,'')
+ if(([regex]::Matches($source,[regex]::Escape($m.old))).Count -ne 1){throw "Mutation expected unique text: $($m.name)"}
+ $mutantPath=Join-Path $reviewRoot ($m.name+'.go')
+ [System.IO.File]::WriteAllText($mutantPath,$source.Replace($m.old,$m.new),$utf8)
+ $overlay=Join-Path $reviewRoot ($m.name+'.json')
+ $replace=@{};$replace[$original]=$mutantPath
+ [System.IO.File]::WriteAllText($overlay,(@{Replace=$replace}|ConvertTo-Json -Depth 5),$utf8)
+ Invoke-Case $m.name @('test','-overlay',$overlay,'./internal/domain','-run','TestReview','-count=1') $false $m.diagnostic
+}
+$compiler=@(
+ @{name='compile-positive';body='func probe() { r, _ := domain.NewRepositoryID(domain.LocalCommon, "repo"); o, _ := domain.NewOID("1234567890123456789012345678901234567890"); v, _ := domain.NewRevision(r,o); h, _ := domain.NewDetachedHead(v); target, _ := domain.NewCommitTarget(v); var _ = map[domain.Head]domain.ExactTarget{h:target} }';pass=$true;diagnostic=''},
+ @{name='compile-private-tag';body='var _ = domain.Head{kind: domain.Unborn}';pass=$false;diagnostic='unexported field kind'},
+ @{name='compile-struct-conversion';body='var _ = domain.RepositoryID(struct { scope domain.RepositoryScope; token string }{domain.LocalCommon,"repo"})';pass=$false;diagnostic='cannot convert'},
+ @{name='compile-embedded-variant';body='type Invented struct { domain.ExactTarget }; var _ domain.ExactTarget = Invented{}';pass=$false;diagnostic='cannot use'},
+ @{name='compile-nil-target';body='var _ domain.ExactTarget = nil';pass=$false;diagnostic='cannot use nil'}
+)
+foreach($c in $compiler){
+ $source=[string]::Join([char]10,@('package domain_test','import "github.com/Hans-Einar/gh-tree/internal/domain"',$c.body,''))
+ $probePath=Join-Path $reviewRoot ($c.name+'.go')
+ [System.IO.File]::WriteAllText($probePath,$source,$utf8)
+ $overlay=Join-Path $reviewRoot ($c.name+'.json')
+ $replace=@{};$replace[(Join-Path $reviewRoot 'internal/domain/review_independent_test.go')]=$probePath
+ [System.IO.File]::WriteAllText($overlay,(@{Replace=$replace}|ConvertTo-Json -Depth 5),$utf8)
+ Invoke-Case $c.name @('test','-overlay',$overlay,'./internal/domain','-run','^$') $c.pass $c.diagnostic
+}
+[System.IO.File]::WriteAllText((Join-Path $reviewRoot 'results.json'),($results|ConvertTo-Json -Depth 8),$utf8)
+if(@($results|Where-Object {-not $_.passed}).Count -ne 0){exit 1}
+

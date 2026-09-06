@@ -1,0 +1,93 @@
+package domain
+
+import "errors"
+
+type TargetKind uint8
+
+const (
+	CommitTarget TargetKind = iota + 1
+	BranchTarget
+	PullRequestTarget
+)
+
+func (k TargetKind) Valid() bool {
+	return k == CommitTarget || k == BranchTarget || k == PullRequestTarget
+}
+
+// ExactTarget is the closed CommitTarget, BranchTarget, PullRequestTarget
+// family. Every valid alternative retains an immutable expected Revision.
+// Mutable locator resolution cannot replace that expectation.
+type ExactTarget struct {
+	kind     TargetKind
+	expected Revision
+	branch   BranchID
+	pr       PRID
+}
+
+func NewCommitTarget(revision Revision) (ExactTarget, error) {
+	t := ExactTarget{kind: CommitTarget, expected: revision}
+	if !t.Valid() {
+		return ExactTarget{}, errors.New("commit target requires an exact revision")
+	}
+	return t, nil
+}
+
+func NewBranchTarget(branch BranchID, expected Revision) (ExactTarget, error) {
+	t := ExactTarget{kind: BranchTarget, branch: branch, expected: expected}
+	if !t.Valid() {
+		return ExactTarget{}, errors.New("branch target requires a branch and exact revision in the same repository")
+	}
+	return t, nil
+}
+
+func NewPullRequestTarget(pr PRID, expectedHead Revision) (ExactTarget, error) {
+	t := ExactTarget{kind: PullRequestTarget, pr: pr, expected: expectedHead}
+	if !t.Valid() {
+		return ExactTarget{}, errors.New("pull request target requires a valid PR and exact remote head revision")
+	}
+	return t, nil
+}
+
+func (t ExactTarget) Valid() bool {
+	if !t.expected.Valid() {
+		return false
+	}
+	switch t.kind {
+	case CommitTarget:
+		return t.branch == (BranchID{}) && t.pr == (PRID{})
+	case BranchTarget:
+		return t.branch.Valid() && t.branch.Repository() == t.expected.Repository() && t.pr == (PRID{})
+	case PullRequestTarget:
+		// PRID is in its base repository. Expected head retains its own explicit
+		// remote scope; a fork is not rewritten or constrained to the base.
+		return t.pr.Valid() && t.expected.Repository().Scope() == Remote && t.pr.Repository() == t.expected.Repository() && t.branch == (BranchID{})
+	default:
+		return false
+	}
+}
+
+func (t ExactTarget) Kind() TargetKind             { return t.kind }
+func (t ExactTarget) Equal(other ExactTarget) bool { return t == other }
+
+// ExpectedRevision returns the exact expected commit (the expected head for a
+// PR). An invalid target returns invalid zero, never a latest-ref substitute.
+func (t ExactTarget) ExpectedRevision() Revision {
+	if !t.Valid() {
+		return Revision{}
+	}
+	return t.expected
+}
+
+func (t ExactTarget) Branch() (BranchID, bool) {
+	if t.Valid() && t.kind == BranchTarget {
+		return t.branch, true
+	}
+	return BranchID{}, false
+}
+
+func (t ExactTarget) PullRequest() (PRID, bool) {
+	if t.Valid() && t.kind == PullRequestTarget {
+		return t.pr, true
+	}
+	return PRID{}, false
+}

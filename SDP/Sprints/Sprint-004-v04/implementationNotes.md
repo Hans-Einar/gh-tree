@@ -256,3 +256,14 @@ integration CI34031833446 also passed18/1skip. M1-Review--003 preserves acceptan
 and5 exact source/result captures. No product Runtime or whole Slice proof implied.
 Opened #58 for M2 Domain; new contract/index/relations/matrix/ledger precede fresh
 worker dispatch. All143 baseline findings remain open; seven BCs stay FROZEN1.0.0.
+
+Domain #58 COMPLETE at6113ca55b57cb628b016c483070dbb52cd5dd79a, source/review/
+integration identical. Independent ACCEPT without findings; constructor/value/
+mutation/compiler probes and53-entry/12-source-copy hashes verified and archived
+in M2-Domain-Review--001. Source CI34033181820 and canonical push CI34033772732
+passed18 applicable jobs each/oneM3skip. No baseline finding/full Slice closed.
+Read-only API inventory review found no material contradiction:5 Client methods,
+28 commands,13 queries,6 events,7 ports/48 methods. API-Inventory--001 records the
+checklist under frozen authority, not implementation acceptance. Opened59/60 for
+independent API/ports and State-viewmodel leaves; M2-Surfaces/index/relations/matrix/
+ledger kickoff is recorded before fresh worker dispatch. Master retains shared scope.

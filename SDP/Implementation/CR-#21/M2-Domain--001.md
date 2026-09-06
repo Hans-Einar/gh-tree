@@ -1,6 +1,9 @@
 # M2 Domain contribution contract
 
-State: ACTIVE kickoff, I-03 / M2. Authority: #58 under #21.
+State: COMPLETE contribution, I-03 / M2. Authority: #58 under #21.
+Accepted source/review/integration6113ca55b57cb628b016c483070dbb52cd5dd79a;
+source CI34033181820 and integration CI34033772732 passed18 applicable jobs each.
+M2-Domain-Review--001 records independent ACCEPT; no whole Slice/finding closure.
 Predecessor: M1 #57, accepted source/review/integration
 05982a4adb35e39d7b7ba371e0d16d83b2b3674c. Source CI34031420582 and canonical
 integration CI34031833446 each passed18 applicable jobs; M3 helper explicitly

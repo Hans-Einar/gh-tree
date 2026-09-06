@@ -1,0 +1,4 @@
+# github.com/Hans-Einar/gh-tree/internal/domain_test [github.com/Hans-Einar/gh-tree/internal/domain.test]
+.\compile-embedded-variant.go:3:73: cannot use Invented{} (value of struct type Invented) as domain.ExactTarget value in variable declaration
+FAIL	github.com/Hans-Einar/gh-tree/internal/domain [build failed]
+FAIL
