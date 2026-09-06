@@ -26,6 +26,13 @@ with bounded pages whose authenticated cursors bind repository, full root OID,
 traversal and shallow/graft source context. MergeBase returns Unique,
 NoCommonAncestor or every ambiguous candidate. Neither read joins GitHub facts.
 
+ListRefs preserves literal branch suffixes, native tag object versus peeled
+commit, symbolic targets and cached-remote freshness. Mutable pages require the
+returned source-bound cursor. ResolveExact checks full commit identity, selected
+branch/ref equality and original remote/configuration binding. Equal OID bytes
+without an observed mapping do not establish a remote association. Private fetch
+root registration remains part of the upcoming Fetch implementation.
+
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
 `birth-filetime:<decimal uint64>`. Aligned native storage is required; a raw byte
