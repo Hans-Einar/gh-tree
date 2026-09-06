@@ -20,6 +20,17 @@ type nativeStoreLock = unixStoreLock
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return unixLock(ctx, parent, basename, wait)
 }
+func nativeLockForStore(ctx context.Context, parent *nativeObject, basename string, wait time.Duration, userOnly bool) (*nativeStoreLock, error) {
+	mode := uint32(0666)
+	if userOnly {
+		mode = 0600
+	}
+	return unixLockPermissions(ctx, parent, basename, wait, true, mode)
+}
+func nativeLinkCount(object *nativeObject) (uint64, error) {
+	v, err := unixObserve(object.fd())
+	return uint64(v.stat.Nlink), err
+}
 func nativeExistingLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return unixLockMode(ctx, parent, basename, wait, false)
 }

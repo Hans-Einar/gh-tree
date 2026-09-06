@@ -18,6 +18,21 @@ type nativeStoreLock = winStoreLock
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return winLock(ctx, parent, basename, wait)
 }
+func nativeLockForStore(ctx context.Context, parent *nativeObject, basename string, wait time.Duration, userOnly bool) (*nativeStoreLock, error) {
+	var security *windows.SECURITY_DESCRIPTOR
+	var err error
+	if userOnly {
+		security, err = winUserSecurity()
+		if err != nil {
+			return nil, err
+		}
+	}
+	return winLockSecurity(ctx, parent, basename, wait, true, security)
+}
+func nativeLinkCount(object *nativeObject) (uint64, error) {
+	v, err := winObserve(object.handle())
+	return uint64(v.basic.NumberOfLinks), err
+}
 func nativeExistingLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return winLockMode(ctx, parent, basename, wait, false)
 }

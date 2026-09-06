@@ -269,6 +269,9 @@ func winLock(ctx context.Context, parent *winObject, basename string, budget tim
 	return winLockMode(ctx, parent, basename, budget, true)
 }
 func winLockMode(ctx context.Context, parent *winObject, basename string, budget time.Duration, create bool) (_ *winStoreLock, resultErr error) {
+	return winLockSecurity(ctx, parent, basename, budget, create, nil)
+}
+func winLockSecurity(ctx context.Context, parent *winObject, basename string, budget time.Duration, create bool, security *windows.SECURITY_DESCRIPTOR) (_ *winStoreLock, resultErr error) {
 	if !singleName(basename) || budget <= 0 || budget > 5*time.Second {
 		return nil, errors.New("invalid lock parameters")
 	}
@@ -280,7 +283,7 @@ func winLockMode(ctx context.Context, parent *winObject, basename string, budget
 	if create {
 		disposition = windows.FILE_OPEN_IF
 	}
-	object, err := winOpen(parent.handle(), basename+".lock", windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, disposition, windows.FILE_NON_DIRECTORY_FILE)
+	object, err := winOpenWithSecurity(parent.handle(), basename+".lock", windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, disposition, windows.FILE_NON_DIRECTORY_FILE, security)
 	if err != nil {
 		return nil, err
 	}

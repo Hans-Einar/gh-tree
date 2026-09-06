@@ -283,6 +283,9 @@ func unixLock(ctx context.Context, parent *unixObject, basename string, budget t
 	return unixLockMode(ctx, parent, basename, budget, true)
 }
 func unixLockMode(ctx context.Context, parent *unixObject, basename string, budget time.Duration, create bool) (_ *unixStoreLock, resultErr error) {
+	return unixLockPermissions(ctx, parent, basename, budget, create, 0600)
+}
+func unixLockPermissions(ctx context.Context, parent *unixObject, basename string, budget time.Duration, create bool, mode uint32) (_ *unixStoreLock, resultErr error) {
 	if !singleName(basename) || budget <= 0 || budget > 5*time.Second {
 		return nil, errors.New("invalid lock parameters")
 	}
@@ -294,7 +297,7 @@ func unixLockMode(ctx context.Context, parent *unixObject, basename string, budg
 	if create {
 		flags |= unix.O_CREAT
 	}
-	object, err := unixOpen(parent.fd(), basename+".lock", flags, 0600, false)
+	object, err := unixOpen(parent.fd(), basename+".lock", flags, mode, false)
 	if err != nil {
 		return nil, err
 	}

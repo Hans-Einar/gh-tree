@@ -369,6 +369,39 @@ That path still requires explicit native controls and independent review.
 
 ## Exact successor work
 
+P3h EXPLICIT PARTIAL/FAILING-REGRESSION CHECKPOINT (this commit): new per-user
+permanent locks receive protected current-user Windows ACLs at native creation;
+project locks retain inherited native creation access (Unix0666 plus umask,
+user locks0600). Final lock checks also reject newly added hardlinks. The native
+Windows test inspects every newly created user document/recovery/lock ACL and
+passes, as do existing complete protocol tests and vet before adding the next
+longer control. These permission changes do not alter native publication.
+
+UNRESOLVED WINDOWS NATIVE FINDING: new
+`TestWindowsPublicCommitAndLoadsReleaseAllRequestHandles` attempts12 successive
+same-byte commits/loads to count real process handles, but fails at iteration2
+(the third load). A retained payload's complete FileIdInfo FileID remains equal
+while its birth-filetime changes, e.g. recorded134332040472441372 becomes
+134332040472230048. The test retains a bounded diagnostic of actual native IDs/
+stamps; it is deliberately failing, not skipped or marked passing. Resource-count
+acceptance has therefore NOT been reached. This newly exposed existing protocol
+defect must be fixed before accepting the Windows profile.
+
+Microsoft's [FileRenameInformation algorithm](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fsa/87f86c9b-6c2a-4803-84b7-131a74a434fa)
+explicitly transfers a matching cached creation time during rename. A deleted
+expected-absence target name may have such a cache too; simply copying the known
+present original timestamp would not establish the complete crash/recovery case.
+No timestamp-writing workaround, case-sensitivity/global setting, native fallback
+or dropped incarnation check has been implemented. Resolve through actual native
+own-effect evidence and recorded recovery observations; never infer causality
+from equal current bytes or silently equate changed identities.
+
+Latest inspected pushed91acac5 CI34061085782 failed only Native FreeBSD amd64;
+all other applicable jobs succeeded, with the explicit Runtime helper skip.
+FreeBSD's ordinary system-EA Operation-not-permitted remains in its actual log,
+and positive Persistence cases fail. Earlier Native Windows CI did not exercise
+the newly failing12-commit control. No complete native/CI gate is claimed.
+
 P3g recovery observation correction (this commit) distinguishes a later write to
 the proved retained payload inode from replacement of that artifact. Payload
 RecoveryID and historical shared Record remain unchanged; Identity reflects the

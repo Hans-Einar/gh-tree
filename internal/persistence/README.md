@@ -1,10 +1,12 @@
 # Persistence
 
 Issue #63 implements the FROZEN Application--Persistence 1.0.0 boundary in
-isolated milestones. Current milestones supply private schema/document/version
-primitives, native Windows/Unix mechanisms, an explicit-location constructor and
-three typed load paths. Public commits and manifest recovery are still pending;
-this package is not connected to the product entry point.
+isolated milestones. All six Storage methods now exist: an explicit-location
+constructor, typed loads and versioned native commits with retained originals,
+bounded append-only manifest facts and stable recovery IDs. The package is not
+connected to the product entry point and is not yet accepted. The worker report
+records remaining native/fault/profile gates and the newly exposed Windows
+creation-time tunneling regression during repeated publication/recovery.
 
 The codec maps all specified schema0/schema1 user configuration, preferences,
 and run configuration fields to the accepted immutable API documents. Only

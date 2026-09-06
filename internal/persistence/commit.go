@@ -252,7 +252,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		}
 	}
 	stage = "lock"
-	lock, err = nativeLock(ctx, c.parent(), name, s.options.LockWait)
+	lock, err = nativeLockForStore(ctx, c.parent(), name, s.options.LockWait, proposed.family != api.RunConfig)
 	if err != nil {
 		return result, err
 	}
@@ -614,6 +614,13 @@ func verifyPermanentLock(parent *nativeObject, basename string, lock *nativeStor
 	defer func() { resultErr = errors.Join(resultErr, object.close()) }()
 	if !nativeSameObject(object, lock.object) {
 		return errBindingChanged
+	}
+	links, err := nativeLinkCount(object)
+	if err != nil {
+		return err
+	}
+	if links != 1 {
+		return errors.Join(errBindingChanged, errors.New("permanent lock acquired additional links"))
 	}
 	return nil
 }
