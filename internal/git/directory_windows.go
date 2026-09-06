@@ -20,7 +20,11 @@ type nativeDirectory struct {
 }
 
 func acquireDirectory(expected directoryObservation) (*nativeDirectory, error) {
-	name, err := windows.UTF16PtrFromString(expected.path)
+	path, err := nativeWindowsPath(expected.path)
+	if err != nil {
+		return nil, err
+	}
+	name, err := windows.UTF16PtrFromString(path)
 	if err != nil {
 		return nil, err
 	}

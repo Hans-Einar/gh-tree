@@ -5,6 +5,7 @@ package git
 import (
 	"errors"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -21,7 +22,11 @@ func observeDirectory(path string) (directoryObservation, error) {
 	if !utf8.ValidString(path) {
 		return directoryObservation{}, errors.New("unsupported non-UTF-8 Windows directory locator")
 	}
-	p, err := windows.UTF16PtrFromString(path)
+	absolute, err := nativeWindowsPath(path)
+	if err != nil {
+		return directoryObservation{}, err
+	}
+	p, err := windows.UTF16PtrFromString(absolute)
 	if err != nil {
 		return directoryObservation{}, err
 	}
@@ -60,4 +65,21 @@ func observeDirectory(path string) (directoryObservation, error) {
 	stamp := "birth-filetime:" + strconv.FormatUint(uint64(info.CreationTime.HighDateTime)<<32|uint64(info.CreationTime.LowDateTime), 10)
 	id, err := api.NewDirectoryIdentity(api.DirectoryWindows, nativeID.Volume, file, stamp)
 	return directoryObservation{path: final, identity: id}, err
+}
+
+func nativeWindowsPath(path string) (string, error) {
+	if !utf8.ValidString(path) {
+		return "", errors.New("unsupported non-UTF-8 Windows path")
+	}
+	absolute, err := filepath.Abs(path)
+	if err != nil {
+		return "", err
+	}
+	if strings.HasPrefix(absolute, `\\?\`) {
+		return absolute, nil
+	}
+	if strings.HasPrefix(absolute, `\\`) {
+		return `\\?\UNC\` + strings.TrimPrefix(absolute, `\\`), nil
+	}
+	return `\\?\` + absolute, nil
 }

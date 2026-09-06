@@ -101,3 +101,30 @@ func TestNativeDirectoryJunctionRefusesWithoutSymlinkPrivilege(t *testing.T) {
 		t.Fatal("junction target changed", err)
 	}
 }
+
+func TestNativeDirectoryLongUnicodeLocator(t *testing.T) {
+	root := t.TempDir()
+	for len(root) < 320 {
+		root = filepath.Join(root, "long-é-directory-component")
+	}
+	if err := os.MkdirAll(root, 0700); err != nil {
+		t.Fatal(err)
+	}
+	observed, err := observeDirectory(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	directory, err := acquireDirectory(observed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer directory.close()
+	f, err := directory.createPrivate("é payload")
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.Close()
+	if _, err := os.Stat(filepath.Join(root, "é payload")); err != nil {
+		t.Fatal(err)
+	}
+}
