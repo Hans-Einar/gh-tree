@@ -235,6 +235,13 @@
       "to": "SDP/Verification/CR-#21/M1-Review--001.md",
       "head": "6685b4f76ca071be0125289925e7c9aa466dc10a",
       "state": "changes_required"
+    },
+    {
+      "from": "IMPL57",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M1-Review--002.md",
+      "head": "b1f533e062c8ab94b81e9309aaffadee096a5c7d",
+      "state": "changes_required"
     }
   ],
   "errata": [

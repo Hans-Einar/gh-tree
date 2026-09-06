@@ -1,0 +1,25 @@
+$ErrorActionPreference='Stop'
+$reviewRoot='C:/Users/hanse/AppData/Local/Temp/gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781/rereview-b1f533e'
+$env:PATH='C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin;' + $env:PATH
+$utf8=[Text.UTF8Encoding]::new($false)
+$fixture=Join-Path $reviewRoot 'child-junction-fixture'
+$outside=Join-Path $reviewRoot 'child-junction-outside'
+[IO.Directory]::CreateDirectory("$fixture/internal/git") | Out-Null
+[IO.Directory]::CreateDirectory("$fixture/SDP/Design/CR-#21") | Out-Null
+[IO.Directory]::CreateDirectory($outside) | Out-Null
+[IO.File]::WriteAllText("$fixture/go.mod", "module example.test/probe`n`ngo 1.25.0`n", $utf8)
+Copy-Item -LiteralPath "$reviewRoot/frozen/SDP/Design/CR-#21/MigrationMap.yaml" -Destination "$fixture/SDP/Design/CR-#21/MigrationMap.yaml"
+Copy-Item -LiteralPath "$reviewRoot/frozen/SDP/Design/CR-#21/Verification--001.md" -Destination "$fixture/SDP/Design/CR-#21/Verification--001.md"
+[IO.File]::WriteAllText("$fixture/internal/git/git.go", "package git`nimport `"example.test/probe/internal/git/native`"`nfunc Value() string{return native.Value}`n", $utf8)
+[IO.File]::WriteAllText("$outside/native.go", "package native`nconst Value = `"outside physically owned repository`"`n", $utf8)
+New-Item -ItemType Junction -Path "$fixture/internal/git/native" -Target $outside | Out-Null
+$out=& "$reviewRoot/architecture.exe" -root $fixture -target windows/amd64 2>&1
+$code=$LASTEXITCODE
+$rootAlias=Join-Path $reviewRoot 'selected-root-junction'
+New-Item -ItemType Junction -Path $rootAlias -Target (Join-Path $reviewRoot 'pure-methods-and-private-value') | Out-Null
+$aliasOut=& "$reviewRoot/architecture.exe" -root $rootAlias -target windows/amd64 2>&1
+$aliasCode=$LASTEXITCODE
+@(
+ [pscustomobject]@{Case='outside-source-child-junction';Expected='REJECT';Exit=$code;Fixture=$fixture;OutsideSource=$outside;Output=($out -join "`n")},
+ [pscustomobject]@{Case='selected-root-junction';Expected='PASS';Exit=$aliasCode;Output=($aliasOut -join "`n")}
+) | ConvertTo-Json | Tee-Object -FilePath "$reviewRoot/path-results.json"

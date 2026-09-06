@@ -1,0 +1,2 @@
+# Preserve exact native review source/results, including CRLF.
+* -text whitespace=cr-at-eol

@@ -1,0 +1,39 @@
+$ErrorActionPreference = 'Stop'
+$reviewRoot = 'C:/Users/hanse/AppData/Local/Temp/gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781/rereview-b1f533e'
+$candidate = Join-Path $reviewRoot 'frozen'
+$env:PATH = 'C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin;' + $env:PATH
+$utf8 = [Text.UTF8Encoding]::new($false)
+function Write-Probe($root, $rel, $text) {
+  $dest = Join-Path $root $rel
+  [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($dest)) | Out-Null
+  [IO.File]::WriteAllText($dest, $text, $utf8)
+}
+function New-Probe($name, $files) {
+  $root = Join-Path $reviewRoot $name
+  [IO.Directory]::CreateDirectory($root) | Out-Null
+  Write-Probe $root 'go.mod' "module example.test/probe`n`ngo 1.25.0`n"
+  Write-Probe $root 'SDP/Design/CR-#21/MigrationMap.yaml' ([IO.File]::ReadAllText((Join-Path $candidate 'SDP/Design/CR-#21/MigrationMap.yaml')))
+  Write-Probe $root 'SDP/Design/CR-#21/Verification--001.md' ([IO.File]::ReadAllText((Join-Path $candidate 'SDP/Design/CR-#21/Verification--001.md')))
+  foreach ($rel in $files.Keys) { Write-Probe $root $rel $files[$rel] }
+  return $root
+}
+$cases = @(
+ @{Name='nested-callback-slice'; Want='REJECT'; Files=@{'internal/application/api/result.go'="package api`ntype Result struct { Callbacks []func() }`n"}},
+ @{Name='nested-callback-map-result'; Want='REJECT'; Files=@{'internal/application/api/result.go'="package api`nfunc Callbacks() map[string]func() { return nil }`n"}},
+ @{Name='private-native-helper'; Want='PASS'; Files=@{'internal/git/native/lock.go'="package native`nimport `"os`"`nfunc OpenLock(path string) (*os.File,error) { return os.OpenFile(path,os.O_CREATE|os.O_RDWR,0600) }`n"; 'internal/git/git.go'="package git`nimport `"example.test/probe/internal/git/native`"`nfunc Lock(path string) error { f,err:=native.OpenLock(path); if err!=nil{return err}; return f.Close() }`n"}},
+ @{Name='windows-arm-callback'; Want='REJECT'; Target='windows/arm64'; Files=@{'internal/application/api/result_windows.go'="package api`ntype Result struct { Callbacks []func() }`n"}},
+ @{Name='private-native-wrapper-escapes-git'; Want='REJECT'; Files=@{'internal/git/native/lock.go'="package native`nimport `"os`"`ntype Result struct { File *os.File }`n"; 'internal/git/git.go'="package git`nimport `"example.test/probe/internal/git/native`"`nfunc Open() native.Result {return native.Result{}}`n"}},
+ @{Name='private-callback-wrapper-escapes-git'; Want='REJECT'; Files=@{'internal/git/native/lock.go'="package native`ntype Result struct { Callbacks []func() }`n"; 'internal/git/git.go'="package git`nimport `"example.test/probe/internal/git/native`"`nfunc Open() native.Result {return native.Result{}}`n"}},
+ @{Name='private-native-wrapper-escapes-runtime'; Want='REJECT'; Files=@{'internal/runtime/broker/engine_windows.go'="package broker`nimport `"os`"`ntype Result struct { File *os.File }`n"; 'internal/runtime/runtime_windows.go'="package runtime`nimport `"example.test/probe/internal/runtime/broker`"`nfunc Open() broker.Result {return broker.Result{}}`n"}},
+ @{Name='private-callback-wrapper-escapes-runtime'; Want='REJECT'; Files=@{'internal/runtime/broker/engine_windows.go'="package broker`ntype Result struct { Callbacks []func() }`n"; 'internal/runtime/runtime_windows.go'="package runtime`nimport `"example.test/probe/internal/runtime/broker`"`nfunc Open() broker.Result {return broker.Result{}}`n"}},
+ @{Name='private-native-wrapper-escapes-application'; Want='REJECT'; Files=@{'internal/application/usecases/native/lock.go'="package native`nimport `"os`"`ntype Result struct { File *os.File }`n"; 'internal/application/application.go'="package application`nimport `"example.test/probe/internal/application/usecases/native`"`nfunc Open() native.Result {return native.Result{}}`n"}},
+ @{Name='pure-methods-and-private-value'; Want='PASS'; Files=@{'internal/application/api/api.go'="package api`nimport (`"context`"; `"time`")`ntype Value struct { N int }`nfunc (v Value) Get() int {return v.N}`ntype Client interface { Do(context.Context,Value,time.Time) (Value,error) }`n"; 'internal/git/native/lock.go'="package native`ntype Value struct { N int }`nfunc(v Value) Get() int{return v.N}`n"; 'internal/git/git.go'="package git`nimport `"example.test/probe/internal/git/native`"`nfunc Value() native.Value {return native.Value{}}`n"}}
+)
+$results = foreach ($case in $cases) {
+ $root=New-Probe $case.Name $case.Files
+ $target = if ($case.Target) {$case.Target} else {'windows/amd64'}
+ $output = & (Join-Path $reviewRoot 'architecture.exe') -root $root -target $target 2>&1
+ $status = $LASTEXITCODE
+ [pscustomobject]@{Name=$case.Name;Expected=$case.Want;Exit=$status;Output=($output -join "`n")}
+}
+$results | ConvertTo-Json -Depth 4 | Tee-Object -FilePath (Join-Path $reviewRoot 'probe-results.json')
