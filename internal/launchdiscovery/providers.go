@@ -206,7 +206,7 @@ func parseMake(ctx context.Context, b []byte, maxLine int) (parsed, error) {
 			b = nil
 		}
 		if len(line) > maxLine {
-			return p, errors.New("Make line limit")
+			return p, fmt.Errorf("%w: Make line limit", errLimit)
 		}
 		line = strings.TrimSuffix(line, "\r")
 		if strings.HasPrefix(line, "\t") {

@@ -288,7 +288,11 @@ func (s *scan) walk(ctx context.Context, dir *directory, parts []string) error {
 			s.notice(dir.path, n.Data().Code, n.Data().Reason)
 		}
 		if e != nil {
-			s.notice(dir.path+"/"+providerKey(p), codeFor(e), "provider-observation-failed")
+			reason := "provider-observation-failed"
+			if errors.Is(e, errLimit) {
+				reason = "manifest-or-line-limit"
+			}
+			s.notice(dir.path+"/"+providerKey(p), codeFor(e), reason)
 			if ctx.Err() != nil {
 				return ctx.Err()
 			}
@@ -461,6 +465,9 @@ func (d *Adapter) project(ctx context.Context, scope api.WorktreeScope, dir *dir
 		}
 		parsed, err = parseMake(ctx, manifest.data, d.limits.MakeLineBytes)
 		if err != nil {
+			if errors.Is(err, errLimit) {
+				return nil, nil, err
+			}
 			if ctx.Err() != nil {
 				return nil, nil, ctx.Err()
 			}

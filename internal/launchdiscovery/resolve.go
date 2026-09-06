@@ -176,6 +176,16 @@ func (d *Adapter) observeSaved(ctx context.Context, scope api.WorktreeScope, ent
 		data.Diagnostics = []api.Diagnostic{diagnostic(codeFor(e), "saved-launch-unavailable")}
 	} else {
 		first := defs[0]
+		if len(defs) > 1 {
+			fd := first.Data()
+			execution := fd.EffectiveExecutable.Data()
+			execution.Arguments = []string{"-f", fd.ProjectSource.Data().ManifestLocator}
+			for _, def := range defs {
+				execution.Arguments = append(execution.Arguments, def.Data().Member)
+			}
+			fd.EffectiveExecutable, _ = api.NewArgvExecution(execution)
+			first, _ = api.NewLaunchDefinition(fd)
+		}
 		data.LaunchPointID = api.Some(first.Data().LaunchPointID)
 		data.Definition = api.Some(first)
 		data.SourceVersion = api.Some(first.Data().ProjectSource.Data().Content)

@@ -31,7 +31,7 @@ func TestUnixNativeProfileAndMovedObject(t *testing.T) {
 		t.Fatal(e)
 	}
 	id := p.last().identity
-	fileID:=id.FileID()
+	fileID := id.FileID()
 	if id.Device() != uint64(st.Dev) || binary.LittleEndian.Uint64(fileID[:8]) != uint64(st.Ino) {
 		t.Fatal("native identity mismatch")
 	}

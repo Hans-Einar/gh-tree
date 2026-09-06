@@ -201,6 +201,13 @@ func TestSavedOverridesUnknownAndOrderedBinding(t *testing.T) {
 	}
 	for _, i := range []int{0, 1} {
 		o := r.Saved[i].Data()
+		if i == 1 {
+			definition, _ := o.Definition.Value()
+			args := definition.Data().EffectiveExecutable.Data().Arguments
+			if len(args) != 4 || args[2] != "clean" || args[3] != "all" {
+				t.Fatal("saved observation lost complete order", args)
+			}
+		}
 		id, _ := o.LaunchPointID.Value()
 		source, _ := o.SourceVersion.Value()
 		selection := must(api.NewSavedLaunch(api.SavedLaunchData{Alias: o.Alias, LaunchPointID: id, StorageVersion: o.StorageVersion, SourceExpectation: source}))
