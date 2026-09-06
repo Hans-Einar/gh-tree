@@ -45,7 +45,7 @@
       "originalFreezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
       "originalEffectiveMerge": "97cc0d8257603766dd741b49b7d8005857b421a9",
       "proposalHead": "980513b2b126842ab1d50558931a84441c253172",
-      "freezeCommitLocator": "commit adding M3-Status-BC-Review--001 and Git1.1.0"
+      "freezeHead": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39"
     },
     {
       "id": "BC--Application--GitHub",
@@ -633,7 +633,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "f51f4e6c8965030d75a1f85a78331777b385921d",
+      "lastCheckpoint": "941aad55b443a14e9210a3f7298189a6a6b3ac21",
       "checkpointScope": "partial, not accepted/integrated",
       "blockedScope": "ObserveStatus/dependent status work pending #67 reviewed API implementation; Git contract1.1.0 frozen"
     },
@@ -641,7 +641,7 @@
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "correction_in_progress",
+      "state": "accepted_candidate_held_for_git",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -666,13 +666,14 @@
       "integrationHead": null,
       "worktreeCreated": true,
       "lastCheckpoint": "926b2b70900fa5f0c2277b086fda0d9b6aad1194",
-      "checkpointScope": "frozen candidate, not accepted/integrated",
+      "checkpointScope": "accepted source candidate; no canonical integration",
       "sourceCI": {
-        "run": 34054297560,
+        "run": 34055294036,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "reviewHead": "9096fa564faf275499b80bda10e530a1fab5d580",
-      "reviewDisposition": "CHANGES_REQUIRED: M3GH-R01 malformed UTF8 sibling retention"
+      "reviewHead": "ccbc8430618c24fd2e490d7f7c6565063dd35bbe",
+      "reviewDisposition": "ACCEPT; M3GH-R01 resolved by bounded independent re-review",
+      "sourceHead": "738261756b86930a5f2d7c8374f5eaf3deb56bf0"
     },
     {
       "id": "IMPL63",
@@ -703,7 +704,13 @@
       "integrationHead": null,
       "worktreeCreated": true,
       "lastCheckpoint": "4c5e5bed6b38860dc7a823780475e264605cbf26",
-      "checkpointScope": "partial, not accepted/integrated"
+      "checkpointScope": "private codecs/acquisition/locks verified; public methods/metadata/publication/recovery incomplete",
+      "sourceCI": {
+        "run": 34054966709,
+        "head": "4c5e5bed6b38860dc7a823780475e264605cbf26",
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "activeWorker": "m3_persistence_publication_worker"
     },
     {
       "id": "IMPL64",
@@ -772,7 +779,7 @@
       "id": "BC-CHANGE-67",
       "kind": "boundary_contract_change",
       "issue": 67,
-      "state": "contract_frozen_api_queued",
+      "state": "api_implementation_in_progress",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "affects": [
         "IMPL61",
@@ -782,7 +789,11 @@
       "scope": "Application--Git G3 independent status causes and bounded pure API correction",
       "version": "1.1.0",
       "review": "SDP/Implementation/CR-#21/Application/M3-Status-BC-Review--001.md",
-      "proposalHead": "980513b2b126842ab1d50558931a84441c253172"
+      "proposalHead": "980513b2b126842ab1d50558931a84441c253172",
+      "freezeHead": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39",
+      "branch": "codex/cr21-status-api",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/status-api",
+      "workerBase": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39"
     }
   ],
   "productFindings": [

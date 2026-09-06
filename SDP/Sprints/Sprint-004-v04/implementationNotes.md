@@ -395,3 +395,9 @@ review ACCEPT at980513b2. Master freezes only Git status representation1.1.0;
 API correction/source review and native status proof remain pending. Existing
 M3 record/review carry details. GitHub review requests one bounded UTF8 retention
 fix; native controls/CI pass. Other adapter milestones remain partial and pushed.
+
+GitHub candidate #62 technical7382617/reviewccbc843 now independently ACCEPTED;
+exact CI34055294036 passes18/helper skip, held for Git-first integration. Root
+verified review-head delta is report-only. Persistence4c5e5be passes native
+CI34054966709; fresh successor owns remaining publication work. #67 API authoring
+uses codex/cr21-status-api from frozen contract10f687e. No adapter integrated.
