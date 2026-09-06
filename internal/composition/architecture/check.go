@@ -377,6 +377,9 @@ func symbolPolicy(info *types.Info, r role) error {
 			continue
 		}
 		path, name := obj.Pkg().Path(), obj.Name()
+		if path == "encoding/json" && r == api && name != "Valid" {
+			return fmt.Errorf("API permits only the pure json.Valid predicate for OpaqueJSON, not json.%s", name)
+		}
 		if path == "fmt" && (strings.Contains(name, "Print") && !strings.HasPrefix(name, "S") || strings.Contains(name, "Scan")) {
 			return fmt.Errorf("pure layer forbids I/O symbol fmt.%s", name)
 		}

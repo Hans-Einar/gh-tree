@@ -144,6 +144,11 @@ func externalAllowed(r role, path string, standard, test bool) bool {
 		return standard
 	}
 	if isPure(r) {
+		// The frozen Storage BC requires API-owned OpaqueJSON validation.
+		// Only json.Valid's in-memory predicate is admitted by symbolPolicy.
+		if r == api && path == "encoding/json" {
+			return true
+		}
 		if pureStandard[path] {
 			return true
 		}

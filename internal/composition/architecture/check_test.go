@@ -173,6 +173,22 @@ func TestRuntimePrerequisites(t *testing.T) {
 	}
 }
 
+func TestOpaqueJSONValidationAndCallbackBoundary(t *testing.T) {
+	c := fixture(t)
+	writeFixture(t, c.root, "internal/application/api/opaque.go", "package api\nimport \"encoding/json\"\ntype OpaqueJSON struct { raw []byte }\nfunc Valid(b []byte) bool { return json.Valid(b) }\ntype Recursive *Recursive\n")
+	if err := c.inventory(); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.checkTarget(targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH}); err != nil {
+		t.Fatal(err)
+	}
+	writeFixture(t, c.root, "internal/application/api/callback.go", "package api\nfunc Bad(callback func()) {}\n")
+	err := c.checkTarget(targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH})
+	if err == nil || !strings.Contains(err.Error(), "callback argument/result") {
+		t.Fatalf("callback boundary passed: %v", err)
+	}
+}
+
 func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
 	root, err := filepath.Abs("../../..")
 	if err != nil {

@@ -54,7 +54,9 @@ remain independently owned; neither may call Runtime or the other adapter.
 API/ports, Domain, State/viewmodel/View and version use a bounded pure standard
 library list. `time` is limited to supplied values and deterministic operations;
 clock/lifecycle/environment symbols, operational fmt calls, OS I/O, channels and
-goroutine starts fail. Domain also rejects JSON tags. Rendering libraries are
+goroutine starts fail. Domain also rejects JSON tags. API may use only the pure
+`json.Valid` predicate to implement the frozen Storage BC's OpaqueJSON validation;
+the JSON naming/encoding schema stays Persistence-owned. Rendering libraries are
 explicitly listed; automatic/global Lip Gloss renderer configuration is rejected.
 New dependencies or policy changes need the applicable Issue/BC authority and
 independent review, not an in-source suppression comment.
