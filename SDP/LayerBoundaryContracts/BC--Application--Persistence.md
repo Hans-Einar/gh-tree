@@ -1,8 +1,10 @@
 # BC--Application--Persistence
 
-State: DRAFT
+State: FROZEN
 
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 
 Parent Issue: #55, under #21; accepted design #52 / PR #54
 
@@ -571,3 +573,7 @@ annex set at exact HEAD, correction/re-review, explicit metadata freeze review a
 configured green CI. Substantive accepted-design conflicts return through
 design/BC-CHANGE. After freeze only Master-coordinated reviewed/refrozen changes
 may alter this boundary, with affected workers notified and verification rerun.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

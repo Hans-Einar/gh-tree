@@ -13,51 +13,65 @@
     {
       "id": "BC--TUIState--TUIView",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--TUIState--Application",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--Application--Git",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--Application--GitHub",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--Application--Runtime",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--Application--LaunchDiscovery",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     },
     {
       "id": "BC--Application--Persistence",
       "version": "1.0.0",
-      "state": "DRAFT",
+      "state": "FROZEN",
       "issue": 55,
-      "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md"
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md",
+      "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "effectiveAfter": "PR56 accepted metadata merge"
     }
   ],
   "productFindingsState": "all_unresolved",
@@ -305,14 +319,19 @@
       "id": "BC55",
       "kind": "boundary_contract_gate",
       "issue": 55,
-      "state": "correction_awaiting_rereview",
+      "state": "frozen_metadata_awaiting_review_merge",
       "branch": "codex/cr21-boundary-contracts",
       "base": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
-      "doc": "SDP/LayerBoundaryContracts/BCReview--002.md",
+      "doc": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
       "reviewedHead": "c291606c2ecfaae15f1bef7b5155d82aa6966712",
-      "disposition": "CHANGES_REQUIRED",
-      "findings": ["BC55-TYPES-01", "BC55-TYPES-02"],
-      "sharedTypes": "SDP/LayerBoundaryContracts/BoundaryTypes--001.md"
+      "disposition": "ACCEPT",
+      "findings": [],
+      "sharedTypes": "SDP/LayerBoundaryContracts/BoundaryTypes--001.md",
+      "acceptedTechnicalHead": "7685494e45c0ef44fbccf9b49a589a90a78026d0",
+      "ciRuns": [
+        "34027057276",
+        "34027058992"
+      ]
     },
     {
       "id": "G-08",

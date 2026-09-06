@@ -1,7 +1,9 @@
 # BoundaryTypes--001 — shared v0.4 contract vocabulary
 
-State: DRAFT
+State: FROZEN
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 Authority: #55 under #21; accepted design #52, merged4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 This annex is part of the seven-BC set, not an additional layer or adapter.
 No implementation authority exists before the whole-set freeze gate.
@@ -271,3 +273,7 @@ interchanged. Formatters never repair invalid semantics into a plausible fact.
 
 1.0.0 DRAFT: shared vocabulary specialized from accepted REFDES/API under #55.
 Only the independently reviewed whole-set freeze changes implementation authority.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

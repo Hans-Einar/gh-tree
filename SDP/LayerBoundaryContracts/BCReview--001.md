@@ -1,6 +1,7 @@
 # BCReview--001 — whole-set review candidate
 
-State: DRAFT; independent exact-HEAD review pending.
+State: historical DRAFT candidate; actual reviews and freeze follow in
+BCReview--002 and BCFreeze--001.
 Authority: #55/#21; accepted design merge4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 Candidate: seven BCs1.0.0 plus BoundaryTypes--001 and bounded specialization evidence.
 No product implementation, frozen contract or resolved product finding is claimed.

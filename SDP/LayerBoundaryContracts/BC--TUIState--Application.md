@@ -1,7 +1,9 @@
 # BC--TUIState--Application
 
-State: DRAFT
+State: FROZEN
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 Authority: #55 under #21; accepted design #52/PR54, merge4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 Applies to: all UI SLC-01..12 and SLC-13 startup/migration observations.
 Supersedes: none. No implementation authority before whole-set freeze.
@@ -238,3 +240,7 @@ Test denied/consumed confirmations and all accepted operation terminal paths.
 
 1.0.0 DRAFT under #55. Freeze requires whole-set independent review. Later
 incompatible changes require BC-CHANGE, reviewed impact/refreeze and affected tests.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

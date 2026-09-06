@@ -1,11 +1,13 @@
 # BC--Application--Git
 
-State: DRAFT
+State: FROZEN
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 Parent Issue: #55 under #21; accepted design #52 / PR #54
 Applies to: complete v0.4 refactor, SLC-01..08, worktree scope for SLC-09..11 and cancellation in SLC-12
 Design authority: merged `4a42222f7bfedc1d80693effbb25a1a82fcff65e`; technical acceptance `664f0c051344e3abdfd7d3c5698e4fbd3f584a83`
-Supersedes: none. Freeze authority: none while DRAFT.
+Supersedes: none. Freeze authority: BCFreeze--001 under #55.
 
 ## G1. Responsibility and dependency direction
 
@@ -445,7 +447,8 @@ operation under the accepted confirmation protocol.
 
 LocalConfiguration observations contain the exact local BranchID, current
 upstream state/value and configuration SourceVersion using the same typed facts
-as ReadBranches/ReadWorktree; absent/unresolved upstream is explicit. A verified
+as StatusFacts.Upstream and ConfigurationVersion returned by ObserveStatus;
+absent/unresolved upstream is explicit. A verified
 push followed by a refused upstream write reports RemoteRefsPR=AppliedVerified
 and LocalConfiguration=VerifiedNoTargetChange (or NotStarted before its attempt).
 An uncertain configuration write reports that facet Indeterminate without
@@ -883,3 +886,7 @@ review/correction, source/freeze/merge SHA and configured exact-HEAD CI before
 FROZEN. A later insufficient signature/protocol or incompatible capability is
 BC-CHANGE: stop affected work, analyze design impact, independently review,
 refreeze and reverify every affected layer/Slice. No worker workaround.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

@@ -1,7 +1,9 @@
 # BC--TUIState--TUIView
 
-State: DRAFT
+State: FROZEN
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 Authority: #55/#21; accepted REFDES #52/PR54, merge4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 Applies to: presentation and interaction transport of SLC-01..12, version display in13.
 Supersedes: none; no implementation authority before the seven-contract freeze.
@@ -170,3 +172,7 @@ repeat rendering. No substring-only tests substitute for geometry/purity proof.
 
 1.0.0 DRAFT under #55; whole-set independent review precedes freeze. Incompatible
 changes require BC-CHANGE/refreeze and affected conformance verification.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

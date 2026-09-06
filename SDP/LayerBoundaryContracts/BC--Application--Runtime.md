@@ -1,8 +1,10 @@
 # BC--Application--Runtime
 
-State: DRAFT
+State: FROZEN
 
 Version: 1.0.0
+
+Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
 
 Parent Issue: #55, under #21; accepted design #52 / PR #54
 
@@ -533,3 +535,7 @@ annex at exact HEAD, corrections/re-review, explicit metadata freeze review and
 configured green CI. A substantive conflict returns through design/BC-CHANGE.
 After freeze, ordinary layer workers cannot edit this contract; Master must
 assess impact, review/refreeze, notify affected workers and rerun affected proof.
+
+Freeze history: 2026-09-06, whole set independently REVIEWED at
+7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
+BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.

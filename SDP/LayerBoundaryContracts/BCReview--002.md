@@ -1,6 +1,8 @@
 # BCReview--002 — initial review findings and correction
 
-State: CHANGES_REQUIRED at initial candidate; correction awaits exact-HEAD re-review.
+State: historical CHANGES_REQUIRED at initial candidate; corrected technical set
+ACCEPTED at 7685494e45c0ef44fbccf9b49a589a90a78026d0. See BCFreeze--001 for the
+actual acceptance and subsequent freeze-metadata gate.
 Authority: #55/#21; accepted design merge 4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 Reviewed candidate: c291606c2ecfaae15f1bef7b5155d82aa6966712, PR #56.
 Reviewer: fresh independent bc_whole_set_review, read-only; not a contract author.

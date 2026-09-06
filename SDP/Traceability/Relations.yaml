@@ -166,6 +166,12 @@
       "relation": "reviewed_by",
       "to": "SDP/LayerBoundaryContracts/BCReview--002.md",
       "state": "correction_awaiting_rereview"
+    },
+    {
+      "relation": "frozen_by",
+      "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
+      "state": "effective_after_final_metadata_merge",
+      "from": "BC55"
     }
   ],
   "errata": [
