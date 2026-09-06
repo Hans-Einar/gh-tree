@@ -22,6 +22,7 @@ type WindowsConfig struct {
 	SessionID   uint64
 	Spec        StartSpec
 	Image       string
+	Extraction  *WindowsImage
 	Output      func(api.OutputStream, []byte)
 	GracePeriod time.Duration
 	ForcePeriod time.Duration
@@ -78,6 +79,29 @@ type WindowsClient struct {
 
 func StartWindows(ctx context.Context, config WindowsConfig) (*WindowsClient, WindowsStartResult, error) {
 	if ctx == nil || config.SessionID == 0 || config.Image == "" || config.Output == nil || !config.Spec.valid() {
+		return nil, WindowsStartResult{}, ErrProtocol
+	}
+	if config.Extraction != nil {
+		if config.Extraction.Path() != config.Image || config.Extraction.guard == nil {
+			return nil, WindowsStartResult{}, ErrProtocol
+		}
+	} else {
+		current, err := os.Executable()
+		if err != nil {
+			return nil, WindowsStartResult{}, err
+		}
+		if config.Image != current {
+			return nil, WindowsStartResult{}, ErrProtocol
+		}
+	}
+	native, embedded, routeErr := MachineRoute()
+	if routeErr != nil {
+		return nil, WindowsStartResult{}, routeErr
+	}
+	if embedded && config.Extraction == nil {
+		return nil, WindowsStartResult{}, ErrProtocol
+	}
+	if config.Extraction != nil && config.Extraction.machine != native {
 		return nil, WindowsStartResult{}, ErrProtocol
 	}
 	if err := ctx.Err(); err != nil {
@@ -521,6 +545,11 @@ func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) 
 	c.outputDone.Wait()
 	for i := range c.outputFiles {
 		if err := closeFile(&c.outputFiles[i]); err != nil {
+			return err
+		}
+	}
+	if c.config.Extraction != nil {
+		if err := c.config.Extraction.Cleanup(); err != nil {
 			return err
 		}
 	}

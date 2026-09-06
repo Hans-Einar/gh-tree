@@ -24,7 +24,12 @@ func TestMain(m *testing.M) {
 	if len(os.Args) > 1 && os.Args[1] == WindowsPrivateMode {
 		os.Exit(RunWindowsPrivate())
 	}
-	os.Exit(m.Run())
+	code := m.Run()
+	if err := cleanupBuiltFixtures(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		code = 1
+	}
+	os.Exit(code)
 }
 
 func TestWindowsOwnedUserFixture(t *testing.T) {
@@ -111,7 +116,14 @@ func TestWindowsBrokerClientLifecycle(t *testing.T) {
 			var output bytes.Buffer
 			ctx, cancel := context.WithTimeout(context.Background(), 12*time.Second)
 			defer cancel()
-			client, started, err := StartWindows(ctx, WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(_ api.OutputStream, data []byte) { mu.Lock(); output.Write(data); mu.Unlock() }})
+			config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(_ api.OutputStream, data []byte) { mu.Lock(); output.Write(data); mu.Unlock() }}
+			if _, embedded, e := MachineRoute(); e != nil {
+				t.Fatal(e)
+			} else if embedded {
+				config.Extraction = extractedNativeFixture(t)
+				config.Image = config.Extraction.Path()
+			}
+			client, started, err := StartWindows(ctx, config)
 			if client != nil {
 				defer func() {
 					client.Stop()

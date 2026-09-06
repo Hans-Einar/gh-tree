@@ -83,3 +83,23 @@ Incomplete gates remain: reviewed helper generation/extraction, native WOW64 and
 ARM64/emulation, comprehensive fault/cancel/resources/TLS/DLL/debug-heap controls,
 all twelve builds, independent review and parent adapter integration. No M1 helper
 or full native acceptance is claimed.
+
+## Partial checkpoint 4
+
+Native extraction now accepts independently supplied pure image bytes, machine,
+SHA256 and protocol metadata. It validates PE32+/entry/hash, acquires the entire
+temporary-directory chain with handle-relative no-reparse data/list-read handles,
+creates an exclusive nonce directory and image under protected current-user and
+SYSTEM DACLs, fully writes/flushes, reopens a READ-share-only image guard and checks
+the full original FileIdInfo/hash again. The client retains that guard through
+broker/outer cleanup, then removes only the exact image and empty owned directory.
+Replacement identity and unexpected entries preserve residuals. No broker source
+imports brokerassets; the separate #70 worker owns pure generated data/build code.
+
+Native amd64 tests pass protected ACL inspection, write/delete interlocks, exact
+cleanup, preservation of an unexpected file, rejection/preservation of a replaced
+image, and a real extracted test broker's root-first lifecycle through final
+directory removal. Full broker tests pass. Test-only cross-ABI executable builders
+now exist for upcoming native386/WOW64/ARM64 controls; their implementation is
+excluded from ordinary product startup. They build only this owned test package,
+and remove only the exact generated executables/empty fixture directory.
