@@ -241,3 +241,10 @@ work. The external hold remains on the failed Git review and its dependent seria
 integration; independent authorized M3 work can proceed. #64 review of the separate
 frozen passive Discovery adapter is dispatched without changing/retrying the Git
 audit or substituting for its required verdict. No model/access controls changed.
+
+Independent #63 proposal assessment may also proceed: native owned-artifact
+ObjectID/FileIdInfo probes at699a69f (platform selection corrected6fc6c2c), actual
+frozen artifact identity contract and unchanged class65/class11 publication.
+This is separate from the blocked Git audit. Product adoption remains withheld
+until the private protocol's scope, negative controls and crash association are
+reviewed; no directory convention, timestamp repair or original-ID mutation waiver.
