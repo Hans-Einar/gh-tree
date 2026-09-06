@@ -1,0 +1,18 @@
+import pathlib,subprocess,json,hashlib,struct,sys,platform
+root=pathlib.Path(r'C:\Users\hanse\.codex\tmp\cr52-cwd-broker-feasibility')
+commands=[('parent386-native64-conpty-embedded',[str(root/'parent-386-embedded.exe'),'parent-embedded']),('parent386-native64-conpty-outer-abort',[str(root/'parent-386-embedded.exe'),'parent-abort',str(root/'payload'/'broker-amd64.exe')]),('parent64-native64-conpty',[str(root/'payload'/'broker-amd64.exe'),'parent',str(root/'payload'/'broker-amd64.exe')])]
+rows=[]
+for name,args in commands:
+ p=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=35)
+ row={'case':name,'command':args,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
+ if p.returncode==0:row['parsed']=json.loads(p.stdout)
+ rows.append(row);(root/(name+'.json')).write_text(json.dumps(row,indent=2))
+ print(json.dumps({'case':name,'returncode':p.returncode,'inner':row.get('parsed',{}).get('quiescent'),'finalOuterActive':row.get('parsed',{}).get('outerActiveFinal')}))
+(root/'results.json').write_text(json.dumps(rows,indent=2))
+metadata={}
+for name in ['payload/broker-amd64.exe','broker-amd64-rebuild.exe','broker-arm64.exe','parent-386-embedded.exe']:
+ b=(root/name).read_bytes();pe=struct.unpack_from('<I',b,0x3c)[0];machine=struct.unpack_from('<H',b,pe+4)[0]
+ metadata[name]={'bytes':len(b),'machine':hex(machine),'sha256':hashlib.sha256(b).hexdigest()}
+metadata['nativeEnvironment']={'windows':platform.version(),'python':sys.version,'nativeArm64Executed':False}
+metadata['amd64Reproducible']=metadata['payload/broker-amd64.exe']['sha256']==metadata['broker-amd64-rebuild.exe']['sha256']
+(root/'build-metadata.json').write_text(json.dumps(metadata,indent=2))

@@ -1,0 +1,8 @@
+//go:build windows && 386 && !runtimebroker
+
+package main
+
+import _ "embed"
+
+//go:embed payload/broker-amd64.exe
+var embeddedHelper []byte

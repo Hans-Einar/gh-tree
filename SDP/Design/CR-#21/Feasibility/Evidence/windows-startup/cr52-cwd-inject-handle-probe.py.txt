@@ -1,0 +1,61 @@
+import ctypes,ctypes.wintypes as w,os,pathlib,struct,subprocess,sys,tempfile,json
+k=ctypes.WinDLL('kernel32',use_last_error=True)
+class SI(ctypes.Structure):
+ _fields_=[('cb',w.DWORD),('reserved',w.LPWSTR),('desktop',w.LPWSTR),('title',w.LPWSTR),('x',w.DWORD),('y',w.DWORD),('cx',w.DWORD),('cy',w.DWORD),('xc',w.DWORD),('yc',w.DWORD),('fill',w.DWORD),('flags',w.DWORD),('show',w.WORD),('cb2',w.WORD),('reserved2',ctypes.c_void_p),('stdin',w.HANDLE),('stdout',w.HANDLE),('stderr',w.HANDLE)]
+class PI(ctypes.Structure):_fields_=[('process',w.HANDLE),('thread',w.HANDLE),('pid',w.DWORD),('tid',w.DWORD)]
+k.CreateFileW.argtypes=[w.LPCWSTR,w.DWORD,w.DWORD,ctypes.c_void_p,w.DWORD,w.DWORD,w.HANDLE];k.CreateFileW.restype=w.HANDLE
+k.CreateProcessW.argtypes=[w.LPCWSTR,w.LPWSTR,ctypes.c_void_p,ctypes.c_void_p,w.BOOL,w.DWORD,ctypes.c_void_p,w.LPCWSTR,ctypes.POINTER(SI),ctypes.POINTER(PI)];k.CreateProcessW.restype=w.BOOL
+k.CloseHandle.argtypes=[w.HANDLE];k.CloseHandle.restype=w.BOOL
+k.ResumeThread.argtypes=[w.HANDLE];k.ResumeThread.restype=w.DWORD
+k.WaitForSingleObject.argtypes=[w.HANDLE,w.DWORD];k.WaitForSingleObject.restype=w.DWORD
+k.TerminateProcess.argtypes=[w.HANDLE,w.UINT];k.TerminateProcess.restype=w.BOOL
+k.DeviceIoControl.argtypes=[w.HANDLE,w.DWORD,ctypes.c_void_p,w.DWORD,ctypes.c_void_p,w.DWORD,ctypes.POINTER(w.DWORD),ctypes.c_void_p];k.DeviceIoControl.restype=w.BOOL
+INVALID=ctypes.c_void_p(-1).value
+with tempfile.TemporaryDirectory(prefix='cr52-cwd-suspended-') as temporary:
+ root=pathlib.Path(temporary);target=root/'target';target.mkdir();outside=root/'outside';outside.mkdir();(outside/'marker').write_text('other-directory');output=root/'result.json'
+ anchor=k.CreateFileW(str(target/'anchor'),0x80000000|0x10000,3,None,1,0x04000102,None)
+ if anchor==INVALID:raise ctypes.WinError(ctypes.get_last_error())
+ pi=PI();si=SI();si.cb=ctypes.sizeof(si)
+ code="import os,json\nr={'cwd':os.getcwd()}\ntry:r['marker']=open('marker').read()\nexcept OSError as e:r['markerError']=type(e).__name__\nopen("+repr(str(output))+",'w').write(json.dumps(r))"
+ command=ctypes.create_unicode_buffer(subprocess.list2cmdline([sys.executable,'-c',code]))
+ try:
+  if not k.CreateProcessW(sys.executable,command,None,None,False,0x08000004,None,str(target),ctypes.byref(si),ctypes.byref(pi)):raise ctypes.WinError(ctypes.get_last_error())
+  n=ctypes.WinDLL('ntdll',use_last_error=True)
+  n.NtQueryInformationProcess.argtypes=[w.HANDLE,w.ULONG,ctypes.c_void_p,w.ULONG,ctypes.POINTER(w.ULONG)];n.NtQueryInformationProcess.restype=w.LONG
+  k.ReadProcessMemory.argtypes=[w.HANDLE,ctypes.c_void_p,ctypes.c_void_p,ctypes.c_size_t,ctypes.POINTER(ctypes.c_size_t)];k.ReadProcessMemory.restype=w.BOOL
+  def memory(address,length):
+   buffer=ctypes.create_string_buffer(length);got=ctypes.c_size_t()
+   if not k.ReadProcessMemory(pi.process,address,buffer,length,ctypes.byref(got)):raise ctypes.WinError(ctypes.get_last_error())
+   assert got.value==length
+   return buffer.raw
+  assert ctypes.sizeof(ctypes.c_void_p)==8
+  basic=ctypes.create_string_buffer(48);used=w.ULONG();assert n.NtQueryInformationProcess(pi.process,0,basic,48,ctypes.byref(used))==0
+  peb=struct.unpack_from('<Q',basic.raw,8)[0];parameters=struct.unpack('<Q',memory(peb+0x20,8))[0];cwdHandle=struct.unpack('<Q',memory(parameters+0x48,8))[0]
+  print(json.dumps(dict(suspendedPEB=hex(peb),processParameters=hex(parameters),currentDirectoryHandleBeforeResume=hex(cwdHandle))))
+  k.DuplicateHandle.argtypes=[w.HANDLE,w.HANDLE,w.HANDLE,ctypes.POINTER(w.HANDLE),w.DWORD,w.BOOL,w.DWORD];k.DuplicateHandle.restype=w.BOOL
+  k.GetCurrentProcess.argtypes=[];k.GetCurrentProcess.restype=w.HANDLE
+  k.WriteProcessMemory.argtypes=[w.HANDLE,ctypes.c_void_p,ctypes.c_void_p,ctypes.c_size_t,ctypes.POINTER(ctypes.c_size_t)];k.WriteProcessMemory.restype=w.BOOL
+  directory=k.CreateFileW(str(target),0x80000000|0x20,3,None,3,0x02200000,None)
+  assert directory!=INVALID
+  remote=w.HANDLE()
+  assert k.DuplicateHandle(k.GetCurrentProcess(),directory,pi.process,ctypes.byref(remote),0,False,2)
+  k.CloseHandle(directory)
+  value=ctypes.c_uint64(remote.value);got=ctypes.c_size_t()
+  assert k.WriteProcessMemory(pi.process,parameters+0x48,ctypes.byref(value),8,ctypes.byref(got));assert got.value==8
+  print(json.dumps(dict(injectedCurrentDirectoryHandle=hex(remote.value))))
+  k.CloseHandle(anchor);anchor=None
+  setter=k.CreateFileW(str(target),0x100,7,None,3,0x02200000,None)
+  if setter==INVALID:raise ctypes.WinError(ctypes.get_last_error())
+  try:
+   sub=('\\??\\'+str(outside)).encode('utf-16-le');pr=str(outside).encode('utf-16-le');names=sub+b'\0\0'+pr+b'\0\0';data=struct.pack('<IHHHHHH',0xA0000003,8+len(names),0,0,len(sub),len(sub)+2,len(pr))+names;buf=ctypes.create_string_buffer(data);used=w.DWORD()
+   ok=k.DeviceIoControl(setter,0x900a4,buf,len(data),None,0,ctypes.byref(used),None);err=0 if ok else ctypes.get_last_error()
+  finally:k.CloseHandle(setter)
+  assert k.ResumeThread(pi.thread)!=0xffffffff
+  if k.WaitForSingleObject(pi.process,10000)!=0:
+   k.TerminateProcess(pi.process,88);k.WaitForSingleObject(pi.process,10000);raise AssertionError('owned child timeout')
+  print(json.dumps(dict(reparseAfterCreateBeforeResume=bool(ok),reparseError=err,child=json.loads(output.read_text()))))
+ finally:
+  if anchor:k.CloseHandle(anchor)
+  if pi.thread:k.CloseHandle(pi.thread)
+  if pi.process:k.CloseHandle(pi.process)
+

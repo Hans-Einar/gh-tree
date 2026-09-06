@@ -1,0 +1,92 @@
+import ctypes, ctypes.wintypes as w, json, os, pathlib, struct, tempfile
+
+k=ctypes.WinDLL('kernel32',use_last_error=True)
+n=ctypes.WinDLL('ntdll')
+INVALID=ctypes.c_void_p(-1).value
+k.CreateFileW.argtypes=[w.LPCWSTR,w.DWORD,w.DWORD,ctypes.c_void_p,w.DWORD,w.DWORD,w.HANDLE];k.CreateFileW.restype=w.HANDLE
+k.CloseHandle.argtypes=[w.HANDLE];k.CloseHandle.restype=w.BOOL
+k.DeviceIoControl.argtypes=[w.HANDLE,w.DWORD,ctypes.c_void_p,w.DWORD,ctypes.c_void_p,w.DWORD,ctypes.POINTER(w.DWORD),ctypes.c_void_p];k.DeviceIoControl.restype=w.BOOL
+k.DeleteFileW.argtypes=[w.LPCWSTR];k.DeleteFileW.restype=w.BOOL
+k.RemoveDirectoryW.argtypes=[w.LPCWSTR];k.RemoveDirectoryW.restype=w.BOOL
+k.ReadFile.argtypes=[w.HANDLE,ctypes.c_void_p,w.DWORD,ctypes.POINTER(w.DWORD),ctypes.c_void_p];k.ReadFile.restype=w.BOOL
+k.WriteFile.argtypes=k.ReadFile.argtypes;k.WriteFile.restype=w.BOOL
+class UnicodeString(ctypes.Structure): _fields_=[('Length',w.USHORT),('MaximumLength',w.USHORT),('Buffer',ctypes.c_void_p)]
+class ObjAttrs(ctypes.Structure): _fields_=[('Length',w.ULONG),('RootDirectory',w.HANDLE),('ObjectName',ctypes.POINTER(UnicodeString)),('Attributes',w.ULONG),('SecurityDescriptor',ctypes.c_void_p),('SecurityQualityOfService',ctypes.c_void_p)]
+class IOSB(ctypes.Structure): _fields_=[('Status',ctypes.c_void_p),('Information',ctypes.c_size_t)]
+class NameInfo(ctypes.Structure): _fields_=[('Flags',w.ULONG),('RootDirectory',w.HANDLE),('FileNameLength',w.ULONG),('FileName',w.WCHAR*1)]
+n.NtSetInformationFile.argtypes=[w.HANDLE,ctypes.POINTER(IOSB),ctypes.c_void_p,w.ULONG,w.ULONG];n.NtSetInformationFile.restype=w.LONG
+n.NtCreateFile.argtypes=[ctypes.POINTER(w.HANDLE),w.ULONG,ctypes.POINTER(ObjAttrs),ctypes.POINTER(IOSB),ctypes.c_void_p,w.ULONG,w.ULONG,w.ULONG,w.ULONG,ctypes.c_void_p,w.ULONG];n.NtCreateFile.restype=w.LONG
+
+def native_status(status):return hex(status&0xffffffff)
+def opened(path,access,share=7,disposition=3,directory=False):
+    h=k.CreateFileW(str(path),access,share,None,disposition,0x00200000|(0x02000000 if directory else 0),None)
+    return h,0 if h!=INVALID else ctypes.get_last_error()
+def relative(parent,name,access=0x40000000,share=7,disposition=2,directory=False):
+    text=ctypes.create_unicode_buffer(name);u=UnicodeString(len(name.encode('utf-16-le')),ctypes.sizeof(text),ctypes.cast(text,ctypes.c_void_p));a=ObjAttrs(ctypes.sizeof(ObjAttrs),parent,ctypes.pointer(u),0x1000,None,None);h=w.HANDLE()
+    st=n.NtCreateFile(ctypes.byref(h),access|0x100000,ctypes.byref(a),ctypes.byref(IOSB()),None,0x80,share,disposition,0x20|0x200000|(1 if directory else 0x40),None,0)
+    return h.value,st
+def nameinfo(handle,parent,name,flags=3,kind=65):
+    name=name.encode('utf-16-le');b=ctypes.create_string_buffer(NameInfo.FileName.offset+len(name)+8);p=NameInfo.from_buffer(b);p.Flags=flags;p.RootDirectory=parent;p.FileNameLength=len(name);ctypes.memmove(ctypes.addressof(b)+NameInfo.FileName.offset,name,len(name))
+    return n.NtSetInformationFile(handle,ctypes.byref(IOSB()),b,NameInfo.FileName.offset+len(name),kind)
+def disposition(handle,flags):
+    f=w.ULONG(flags);return n.NtSetInformationFile(handle,ctypes.byref(IOSB()),ctypes.byref(f),4,64)
+def reparse(handle,outside):
+    substitute=('\\??\\'+str(outside)).encode('utf-16-le');display=str(outside).encode('utf-16-le');names=substitute+b'\0\0'+display+b'\0\0'
+    data=struct.pack('<IHHHHHH',0xA0000003,8+len(names),0,0,len(substitute),len(substitute)+2,len(display))+names;b=ctypes.create_string_buffer(data);used=w.DWORD()
+    ok=k.DeviceIoControl(handle,0x900A4,b,len(data),None,0,ctypes.byref(used),None);return dict(ok=bool(ok),error=0 if ok else ctypes.get_last_error())
+def write(handle,data):
+    b=ctypes.create_string_buffer(data);used=w.DWORD();ok=k.WriteFile(handle,b,len(data),ctypes.byref(used),None);assert ok and used.value==len(data),(ok,ctypes.get_last_error(),used.value)
+def read_relative(parent,name):
+    h,st=relative(parent,name,0x80000000,7,1);assert st==0,native_status(st)
+    try:
+        b=ctypes.create_string_buffer(1024);used=w.DWORD();assert k.ReadFile(h,b,1024,ctypes.byref(used),None),ctypes.get_last_error();return b.raw[:used.value].decode()
+    finally:k.CloseHandle(h)
+
+rows=[]
+with tempfile.TemporaryDirectory(prefix='gh-tree-per52-anchor-') as temp:
+    base=pathlib.Path(temp);outside=base/'outside';outside.mkdir();(outside/'marker').write_text('OUTSIDE')
+    for anchor_kind in ['file','directory']:
+        for share in [0,1,3]:
+            target=base/f'{anchor_kind}-{share}';target.mkdir();anchor=target/'anchor'
+            if anchor_kind=='directory':anchor.mkdir()
+            else:anchor.write_text('ORIGINAL')
+            handles=[]
+            try:
+                parent,e=opened(target,0x20|0x80|0x100000,3,directory=True);assert not e;handles.append(parent)
+                guard,e=opened(anchor,0x80|0x100000,share,directory=anchor_kind=='directory');assert not e;handles.append(guard)
+                setter,e=opened(target,0x100,7,directory=True);assert not e;handles.append(setter)
+                row=dict(case='anchor',kind=anchor_kind,share=share,initial_reparse=reparse(setter,outside))
+                deleter,e=opened(anchor,0x10000,7,directory=anchor_kind=='directory');row['delete_handle_open_error']=e
+                if not e: row['disposition_from_attacker']=native_status(disposition(deleter,0x1|0x2|0x10));k.CloseHandle(deleter)
+                row['disposition_without_delete_access']=native_status(disposition(guard,0x1|0x2|0x10))
+                replacement=base/f'replacement-{anchor_kind}-{share}'
+                if anchor_kind=='directory':replacement.mkdir()
+                else:replacement.write_text('REPLACEMENT')
+                rh,e=opened(replacement,0x10000,7,directory=anchor_kind=='directory');assert not e;handles.append(rh)
+                st=nameinfo(rh,parent,'anchor',3);row['posix_replace']=native_status(st)
+                if st==0:
+                    k.CloseHandle(rh);handles.remove(rh)
+                    ok=(k.RemoveDirectoryW if anchor_kind=='directory' else k.DeleteFileW)(str(anchor));row['remove_replacement']=dict(ok=bool(ok),error=0 if ok else ctypes.get_last_error())
+                    row['reparse_after_replace_delete']=reparse(setter,outside)
+                row['final_names']=os.listdir(target)
+                rows.append(row)
+            finally:
+                for h in reversed(handles):k.CloseHandle(h)
+    # Converted parent: perform all new leaf operations relative to the retained object.
+    target=base/'converted-parent';target.mkdir();parent,e=opened(target,0x20|0x80|0x100000,3,directory=True);assert not e
+    setter,e=opened(target,0x100,7,directory=True);assert not e
+    try:
+        rp=reparse(setter,outside);assert rp['ok'],rp
+        row=dict(case='converted-parent-relative-io',reparse=rp)
+        h,st=relative(parent,'created-relative',0x40000000|0x10000,7,2);row['relative_create']=native_status(st)
+        if st==0:
+            try:write(h,b'ORIGINAL-DIRECTORY-OBJECT')
+            finally:k.CloseHandle(h)
+        source=base/'prepared-payload';source.write_text('PREPARED')
+        h,e=opened(source,0x10000,7);assert not e
+        try:row['relative_rename']=native_status(nameinfo(h,parent,'renamed-relative',0))
+        finally:k.CloseHandle(h)
+        row.update(path_based_names=os.listdir(target),outside_names=os.listdir(outside),outside_untouched=not(outside/'renamed-relative').exists() and not(outside/'created-relative').exists())
+        rows.append(row)
+    finally:k.CloseHandle(setter);k.CloseHandle(parent)
+print(json.dumps(dict(pointer_bits=ctypes.sizeof(ctypes.c_void_p)*8,rows=rows),indent=2))

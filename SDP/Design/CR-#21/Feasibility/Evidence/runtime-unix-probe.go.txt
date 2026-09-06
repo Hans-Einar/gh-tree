@@ -1,0 +1,152 @@
+//go:build linux || darwin || freebsd
+
+// Disposable, bounded mechanism probe. Fixture-only self modes are not a product API.
+package main
+
+import (
+ "bufio"
+ "crypto/rand"
+ "encoding/hex"
+ "encoding/json"
+ "errors"
+ "fmt"
+ "io"
+ "os"
+ "os/exec"
+ "os/signal"
+ "path/filepath"
+ "strconv"
+ "strings"
+ "syscall"
+ "time"
+ "github.com/creack/pty"
+ "golang.org/x/sys/unix"
+)
+
+type frame struct { Version int; Nonce,Kind string; Parent,SID,PGID,Signal,Foreign int; PTY bool }
+type proc struct {pid,ppid,pgid,sid int; state byte}
+var exe string
+var departing *exec.Cmd
+func check(e error){if e!=nil{panic(e)}}
+func nonce()string{b:=make([]byte,32);_,e:=rand.Read(b);check(e);return hex.EncodeToString(b)}
+func sid()int{n,e:=unix.Getsid(0);check(e);return n}
+func census(want int)[]proc{
+ entries,e:=os.ReadDir("/proc");check(e);out:=[]proc{}
+ for _,d:=range entries{pid,e:=strconv.Atoi(d.Name());if e!=nil{continue};b,e:=os.ReadFile("/proc/"+d.Name()+"/stat");if e!=nil{if os.IsNotExist(e){continue};panic(e)};last:=strings.LastIndexByte(string(b),')');if last<0{panic("bad stat")};f:=strings.Fields(string(b)[last+1:]);if len(f)<4{panic("short stat")};pp,e:=strconv.Atoi(f[1]);check(e);pg,e:=strconv.Atoi(f[2]);check(e);ss,e:=strconv.Atoi(f[3]);check(e);if ss==want{out=append(out,proc{pid,pp,pg,ss,f[0][0]})}}
+ return out
+}
+func live(want int)[]proc{out:=[]proc{};for _,p:=range census(want){if p.state!='Z'&&p.state!='X'{out=append(out,p)}};return out}
+func groups(want int)[]int{m:=map[int]bool{};out:=[]int{};for _,p:=range live(want){if p.pgid!=want&&!m[p.pgid]{m[p.pgid]=true;out=append(out,p.pgid)}};return out}
+func until(d time.Duration,f func()bool){end:=time.Now().Add(d);for !f(){if time.Now().After(end){panic("bounded wait expired")};time.Sleep(10*time.Millisecond)}}
+func send(f *os.File,v frame){check(json.NewEncoder(f).Encode(v))}
+func recv(f *os.File)frame{check(f.SetReadDeadline(time.Now().Add(3*time.Second)));var v frame;check(json.NewDecoder(bufio.NewReader(f)).Decode(&v));return v}
+func isPipe(f *os.File)bool{s,e:=f.Stat();return e==nil&&s.Mode()&os.ModeNamedPipe!=0}
+func inherited(fd int,name string)*os.File{check(syscall.SetNonblock(fd,true));return os.NewFile(uintptr(fd),name)}
+func helper(){
+ ctl:=inherited(3,"private-control");ack:=inherited(4,"private-ack");defer ctl.Close();defer ack.Close()
+ if !isPipe(ctl)||!isPipe(ack){os.Exit(120)}
+ r:=recv(ctl)
+ if r.Version!=1||r.Kind!="prepare"||len(r.Nonce)!=64||r.Parent!=os.Getppid()||r.Parent!=sid()||r.SID!=sid()||r.PGID!=unix.Getpgrp()||r.PGID<=1||r.PGID==r.SID {os.Exit(121)}
+ switch syscall.Signal(r.Signal){case syscall.SIGTERM,syscall.SIGSTOP,syscall.SIGCONT,syscall.SIGKILL:default:os.Exit(122)}
+ signal.Ignore(syscall.SIGTERM,syscall.SIGHUP,syscall.SIGINT)
+ send(ack,frame{Version:1,Kind:"joined",Nonce:r.Nonce,SID:sid(),PGID:unix.Getpgrp()})
+ var commit frame
+ e:=json.NewDecoder(ctl).Decode(&commit)
+ if e!=nil {return}
+ if commit.Kind!="commit"||commit.Version!=1||commit.Nonce!=r.Nonce {os.Exit(123)}
+ check(unix.Kill(0,syscall.Signal(r.Signal)))
+ if syscall.Signal(r.Signal)==syscall.SIGSTOP {time.Sleep(15*time.Second)}
+}
+func pulse(group int,sig syscall.Signal,action string)(*exec.Cmd,error){
+ cr,cw,e:=os.Pipe();check(e);ar,aw,e:=os.Pipe();check(e);defer cr.Close();defer cw.Close();defer ar.Close();defer aw.Close()
+ c:=exec.Command(exe,"signal-helper");c.Stderr=os.Stderr;c.ExtraFiles=[]*os.File{cr,aw};c.SysProcAttr=&syscall.SysProcAttr{Setpgid:true,Pgid:group}
+ if e=c.Start();e!=nil{return nil,e};cr.Close();aw.Close()
+ n:=nonce();send(cw,frame{Version:1,Kind:"prepare",Nonce:n,Parent:os.Getpid(),SID:sid(),PGID:group,Signal:int(sig)})
+ r:=recv(ar);if r.Kind!="joined"||r.Nonce!=n||r.SID!=sid()||r.PGID!=group {return c,errors.New("invalid helper acknowledgment")}
+ if action=="depart" {check(departing.Process.Kill());_=departing.Wait()}
+ if action=="cancel" {cw.Close();return c,c.Wait()}
+ if action=="badnonce"{n=nonce()}
+ send(cw,frame{Version:1,Kind:"commit",Nonce:n});cw.Close()
+ if action=="badnonce"{e=c.Wait();var ee *exec.ExitError;if errors.As(e,&ee)&&ee.ExitCode()==123{return c,nil};return c,fmt.Errorf("bad nonce not rejected: %v",e)}
+ if sig==syscall.SIGSTOP {end:=time.Now().Add(time.Second);for{found:=false;for _,p:=range census(sid()){if p.pid==c.Process.Pid{found=p.state=='T'}};if found{return c,nil};if time.Now().After(end){return c,fmt.Errorf("STOP helper %d not stopped; census %+v",c.Process.Pid,census(sid()))};time.Sleep(10*time.Millisecond)}}
+ e=c.Wait();if sig==syscall.SIGKILL {var ee *exec.ExitError;if errors.As(e,&ee)&&ee.Sys().(syscall.WaitStatus).Signal()==syscall.SIGKILL{return c,nil};return c,fmt.Errorf("helper not killed as expected: %v",e)}
+ return c,e
+}
+func cleanup(){for round:=0;round<20;round++{g:=groups(sid());if len(g)==0{return};for _,pg:=range g{_,_=pulse(pg,syscall.SIGKILL,"")};time.Sleep(10*time.Millisecond)};panic("cleanup residual")}
+func hold(mode string){
+ signal.Ignore(syscall.SIGTERM,syscall.SIGHUP,syscall.SIGINT)
+ if mode=="root"||mode=="earlyroot"||mode=="branch"{
+  childMode:="branch";if mode=="branch"{childMode="hold"}
+  c:=exec.Command(exe,childMode);c.SysProcAttr=&syscall.SysProcAttr{Setpgid:mode!="branch"};check(c.Start())
+  if mode=="earlyroot" {time.Sleep(200*time.Millisecond);return}
+  defer func(){_=c.Process.Kill();_=c.Wait()}()
+ }
+ fmt.Println("own fixture",mode,os.Getpid(),unix.Getpgrp(),sid())
+ time.Sleep(15*time.Second)
+}
+func supervisor(){
+ ctl:=inherited(3,"private-control");ack:=inherited(4,"private-ack");defer ctl.Close();defer ack.Close()
+ if !isPipe(ctl)||!isPipe(ack)||sid()!=os.Getpid()||unix.Getpgrp()!=os.Getpid(){os.Exit(124)}
+ var init frame;if e:=json.NewDecoder(ctl).Decode(&init);e!=nil{return}
+ if init.Version!=1||len(init.Nonce)!=64||init.Parent!=os.Getppid(){os.Exit(125)}
+ if init.Kind=="abort"{send(ack,frame{Kind:"aborted",Nonce:init.Nonce,SID:sid()});return}
+ defer cleanup()
+ // The rejected foreign group is an owned fixture in a different SID.
+ if _,e:=pulse(init.Foreign,syscall.SIGTERM,"");e==nil{panic("foreign SID joined")}
+ // A group that disappeared before helper spawn must fail before helper exec.
+ gone:=exec.Command(exe,"exit");gone.SysProcAttr=&syscall.SysProcAttr{Setpgid:true};check(gone.Start());pg:=gone.Process.Pid;check(gone.Wait())
+ if _,e:=pulse(pg,syscall.SIGTERM,"");e==nil{panic("disappeared group joined unexpectedly")}
+ departing=exec.Command(exe,"hold");departing.SysProcAttr=&syscall.SysProcAttr{Setpgid:true};check(departing.Start())
+ if _,e:=pulse(departing.Process.Pid,syscall.SIGKILL,"depart");e!=nil{panic(e)}
+ mode:="root";if init.Kind=="earlyroot"{mode="earlyroot"}
+ root:=exec.Command(exe,mode)
+ root.SysProcAttr=&syscall.SysProcAttr{Setpgid:true}
+ if init.PTY {
+  root=exec.Command("/bin/bash","--noprofile","--norc","-i")
+  root.Env=append(os.Environ(),"HISTFILE=/dev/null","PROMPT_COMMAND=","PS1=probe> ")
+  root.Stdin=os.Stdin;root.Stdout=os.Stdout;root.Stderr=os.Stderr
+  root.SysProcAttr=&syscall.SysProcAttr{Setpgid:true,Foreground:true,Ctty:0}
+ }
+ check(root.Start());rootDone:=make(chan error,1);go func(){rootDone<-root.Wait()}()
+ send(ack,frame{Kind:"started",Nonce:init.Nonce,SID:sid(),PGID:root.Process.Pid})
+ request:=recv(ctl);if request.Nonce!=init.Nonce||request.Kind!="stop"{panic("bad supervisor stop")}
+ minimum:=2;if init.Kind=="earlyroot"{minimum=1};until(2*time.Second,func()bool{return len(groups(sid()))>=minimum})
+ g:=groups(sid());_,e:=pulse(g[0],syscall.SIGTERM,"badnonce");check(e);_,e=pulse(g[0],syscall.SIGTERM,"cancel");check(e)
+ before:=len(live(sid()));for _,pg:=range groups(sid()){_,_=pulse(pg,syscall.SIGTERM,"")};time.Sleep(80*time.Millisecond)
+ stopped:=[]*exec.Cmd{}
+ for _,pg:=range groups(sid()){c,e:=pulse(pg,syscall.SIGSTOP,"");if e!=nil{panic(e)};stopped=append(stopped,c)}
+ // Joining a stopped group does not stop the new helper; it can deliver SIGCONT.
+ if len(stopped)>0{group,e:=unix.Getpgid(stopped[0].Process.Pid);check(e);_,e=pulse(group,syscall.SIGCONT,"");check(e)}
+ cleanup()
+ for _,c:=range stopped{_=c.Wait()}
+ select{case <-rootDone:case <-time.After(2*time.Second):panic("root waiter not joined")}
+ if len(live(sid()))!=1{panic("live process remains beside supervisor")}
+ send(ack,frame{Kind:"cleaned",Nonce:init.Nonce,SID:sid(),Signal:before})
+}
+func scenario(kind string,tty bool,foreign int){
+ cr,cw,e:=os.Pipe();check(e);ar,aw,e:=os.Pipe();check(e);defer cr.Close();defer cw.Close();defer ar.Close();defer aw.Close()
+ c:=exec.Command(exe,"supervisor");c.Stderr=os.Stderr;c.ExtraFiles=[]*os.File{cr,aw};c.SysProcAttr=&syscall.SysProcAttr{Setsid:true}
+ var master,slave *os.File;var readDone chan struct{}
+ if tty{master,slave,e=pty.Open();check(e);defer master.Close();defer slave.Close();check(pty.Setsize(master,&pty.Winsize{Rows:24,Cols:80}));c.Stdin=slave;c.Stdout=slave;c.Stderr=slave;c.SysProcAttr.Setctty=true;c.SysProcAttr.Ctty=0;readDone=make(chan struct{});go func(){_,_=io.Copy(io.Discard,master);close(readDone)}()}
+ check(c.Start());cr.Close();aw.Close();if tty{slave.Close()}
+ n:=nonce();send(cw,frame{Version:1,Kind:kind,Nonce:n,Parent:os.Getpid(),Foreign:foreign,PTY:tty})
+ ready:=recv(ar);if ready.Nonce!=n||ready.SID!=c.Process.Pid{panic("bad supervisor identity")}
+ if kind=="abort"{if ready.Kind!="aborted"{panic("abort failed")};check(c.Wait());fmt.Println("abort-before-user-start PASS");return}
+ if ready.Kind!="started"{panic("not started")}
+ if kind=="earlyroot" {until(2*time.Second,func()bool{for _,p:=range live(ready.SID){if p.pid==ready.PGID{return false}};return len(groups(ready.SID))>0})}
+ if tty{
+  cmd:="'"+exe+"' hold | '"+exe+"' hold &\n'"+exe+"' hold\n";_,e=master.Write([]byte(cmd));check(e)
+  until(2*time.Second,func()bool{n,e:=unix.IoctlGetInt(int(master.Fd()),unix.TIOCGPGRP);return e==nil&&n!=ready.PGID&&n!=0})
+  check(pty.Setsize(master,&pty.Winsize{Rows:30,Cols:100}))
+ }
+ minimum:=2;if kind=="earlyroot"{minimum=1};until(2*time.Second,func()bool{return len(groups(ready.SID))>=minimum})
+ send(cw,frame{Kind:"stop",Nonce:n});finished:=recv(ar);if finished.Kind!="cleaned"||finished.Nonce!=n{panic("not cleaned")};check(c.Wait())
+ if len(live(ready.SID))!=0{panic("residual after supervisor exit")}
+ if tty{master.Close();select{case <-readDone:case <-time.After(time.Second):panic("PTY reader not joined")}}
+ fmt.Printf("kind=%s pty=%v sid=%d foreign-refused=true missing-group-refused=true helper-pins-empty-group=true nonce-refused=true cancel-before-signal=true term-stop-cont-kill=true supervisor-last=true live_after=0\n",kind,tty,ready.SID)
+}
+func main(){var e error;exe,e=os.Executable();check(e);exe,e=filepath.Abs(exe);check(e);if len(os.Args)>1{switch os.Args[1]{case "signal-helper":helper();case "supervisor":supervisor();case "exit":return;default:hold(os.Args[1])};return}
+ foreign:=exec.Command(exe,"hold");foreign.SysProcAttr=&syscall.SysProcAttr{Setsid:true};check(foreign.Start());defer func(){_=foreign.Process.Kill();_=foreign.Wait()}()
+ for _,s:=range []struct{k string;t bool}{{"abort",false},{"normal",false},{"earlyroot",false},{"normal",true}}{scenario(s.k,s.t,foreign.Process.Pid);if e:=foreign.Process.Signal(syscall.Signal(0));e!=nil{panic("foreign fixture affected")}}
+ fmt.Println("ALL PASS; foreign fixture still alive and then directly reaped by owner")
+}

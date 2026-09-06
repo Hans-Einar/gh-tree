@@ -1,0 +1,30 @@
+[
+  {
+    "file": "go.mod",
+    "sha256": "9bcfa656db0fc67d1b2878fbffb712b01214d6aa7b9d8c57bc65692290dbf005"
+  },
+  {
+    "file": "go.sum",
+    "sha256": "8636998393adc6606e3d7fcff44b7be8b73925f3ef8d2cd17339dd02adbbcc17"
+  },
+  {
+    "file": "probe_windows_test.go",
+    "sha256": "99c65593214f28aadc7f72f6c5e5caaa184943b8d3b49707339d1178753578d6"
+  },
+  {
+    "file": "windows-results.txt",
+    "sha256": "596daf1edca06fbb438c4aad56075e55490ae4eadceeba4967cf192e57dff721"
+  },
+  {
+    "file": "probe_linux.py",
+    "sha256": "6c2fc0b763ba5ff474003826a8004c157500dc91beb2c5d9227d6213d313745f"
+  },
+  {
+    "file": "linux-results.json",
+    "sha256": "d9b9f907dcdcf44b2050c5bcb88f9b01a56db23c5b7555d2088fb0ce98b96874"
+  },
+  {
+    "file": "Persistence-proposed.md",
+    "sha256": "d70b4d36682dee3904598afd368546e7d2771341840ce8a62bde38ea974ca87d"
+  }
+]

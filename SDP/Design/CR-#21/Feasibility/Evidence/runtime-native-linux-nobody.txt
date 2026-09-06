@@ -1,0 +1,5 @@
+abort-before-user-start PASS
+kind=normal pty=false sid=27 foreign-refused=true missing-group-refused=true helper-pins-empty-group=true nonce-refused=true cancel-before-signal=true term-stop-cont-kill=true supervisor-last=true live_after=0
+kind=earlyroot pty=false sid=113 foreign-refused=true missing-group-refused=true helper-pins-empty-group=true nonce-refused=true cancel-before-signal=true term-stop-cont-kill=true supervisor-last=true live_after=0
+kind=normal pty=true sid=183 foreign-refused=true missing-group-refused=true helper-pins-empty-group=true nonce-refused=true cancel-before-signal=true term-stop-cont-kill=true supervisor-last=true live_after=0
+ALL PASS; foreign fixture still alive and then directly reaped by owner

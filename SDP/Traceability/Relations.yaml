@@ -144,6 +144,12 @@
       "from": "G-07",
       "relation": "accepts",
       "to": "REFDES52"
+    },
+    {
+      "from": "REFDES52",
+      "relation": "plans_disposition_of",
+      "to": "SDP/Design/CR-#21/FindingDisposition.yaml",
+      "state": "draft_all_product_findings_open"
     }
   ],
   "errata": [

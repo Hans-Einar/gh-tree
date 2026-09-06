@@ -1,0 +1,37 @@
+{
+  "platform": [
+    "Linux",
+    "OpticStudio",
+    "6.18.33.2-microsoft-standard-WSL2",
+    "#1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026",
+    "x86_64"
+  ],
+  "uid": 65534,
+  "results": [
+    {
+      "name": "nofollow-refuses-external-child",
+      "errno": 20
+    },
+    {
+      "name": "pinned-object-never-follows-substitution-but-move-changes-path",
+      "observed_drift": true
+    },
+    {
+      "name": "rename-visibility-directory-fsync-mode-retained-object",
+      "observations": 212465,
+      "errors": []
+    },
+    {
+      "name": "cross-process-flock-and-crash-release",
+      "passed": true
+    },
+    {
+      "name": "process-exit-before-rename",
+      "target": "old"
+    },
+    {
+      "name": "process-exit-after-rename",
+      "target": "new"
+    }
+  ]
+}

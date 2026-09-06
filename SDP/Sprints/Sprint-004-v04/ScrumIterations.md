@@ -134,3 +134,28 @@ evidence, correction and re-review, design-only diff and green configured CI.
 Completion: explicit Master design acceptance/merge. Only then authorize required
 BC creation/review/freeze at G-08. Product implementation remains gated until
 design and required BCs are accepted/frozen; no implementation Slice is active.
+
+Current design draft: REFDES/API, MigrationMap (70 exact baseline paths and 90
+test functions), Slices--001 (all 13 capabilities), Verification--001 and complete
+FindingDisposition (143 open IDs). DesignReview--001 records independent early
+DES52-H01/H02 corrections and seven migration completeness inputs. Git scratch
+publication and Unix supervisor corrections are incorporated, supported by bounded
+native probes with source/log snapshots retained in Feasibility/Evidence. The
+complete frozen-HEAD review is next. No product finding is closed by this progress.
+
+Initial complete review of PR #54 at f1dec60cbd3892f068410f2d7f3caa7f855ba52e
+returned two HIGH/two MEDIUM corrections, detailed in DesignReview--002. Proposed
+Storage/cwd/native-evidence and API read/event-transfer corrections are complete;
+the corrected exact HEAD must be independently re-reviewed. The initial 18 CI
+checks passed, but G-07 remains incomplete until substantive acceptance and merge.
+
+Correction re-review at8c109b1 resolved H03/M01/M02 at design level; H04 remains
+pending a complete native startup correction. WindowsBroker--001 now supplies
+native-bitness helper delivery, actual cwd breakpoint/identity, ConPTY and final
+outer-Job barriers with bounded evidence. Review the new exact committed draft;
+do not infer acceptance from its author or earlier18 successful CI checks.
+
+Complete technical design independently ACCEPTED at
+664f0c051344e3abdfd7d3c5698e4fbd3f584a83, all18 CI checks successful. G-07 awaits
+only final acceptance-metadata exact-HEAD review/CI and PR54 merge. G-08 BC authority
+is opened after that merge; no implementation Slice is active yet.

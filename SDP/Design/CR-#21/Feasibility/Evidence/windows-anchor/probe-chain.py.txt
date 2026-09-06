@@ -1,0 +1,25 @@
+exec(open('probe.py',encoding='utf-8').read().split('rows=[]')[0])
+rows=[]
+with tempfile.TemporaryDirectory(prefix='gh-tree-per52-chain-') as temp:
+    base=pathlib.Path(temp);outside=base/'outside';outside.mkdir();(outside/'marker').write_text('OUTSIDE')
+    root=base/'root';root.mkdir();cwd=root/'cwd';cwd.mkdir()
+    hs=[]
+    try:
+        for p in [root,cwd]:
+            h,e=opened(p,0x80000000,3,directory=True);assert not e;hs.append(h)
+        parent=hs[-1]
+        anchor,st=relative(parent,'exclusive-anchor',0x80000000|0x40000000|0x10000,3,2);assert st==0,native_status(st);hs.append(anchor);write(anchor,b'owned-anchor')
+        for p in [root,cwd]:
+            setter,e=opened(p,0x100,7,directory=True);assert not e
+            try:
+                deleter,e=opened(p,0x10000,7,directory=True)
+                if not e:k.CloseHandle(deleter)
+                rows.append(dict(path=p.name,delete_handle_open_error=e,reparse=reparse(setter,outside)))
+            finally:k.CloseHandle(setter)
+        # A real path-based CreateProcess while anchor and guards remain held.
+        import subprocess,sys
+        child=subprocess.run([sys.executable,'-c',"import os,json;print(json.dumps(dict(cwd=os.getcwd(),names=os.listdir('.'))))"],cwd=str(cwd),stdout=subprocess.PIPE,check=True,text=True)
+        rows.append(dict(case='create-process-with-exclusive-anchor',child=json.loads(child.stdout)))
+    finally:
+        for h in reversed(hs):k.CloseHandle(h)
+print(json.dumps(rows,indent=2))

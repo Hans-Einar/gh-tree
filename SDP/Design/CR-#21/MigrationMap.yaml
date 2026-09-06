@@ -1,0 +1,1561 @@
+{
+  "schemaVersion": 1,
+  "state": "accepted_design_effective_after_pr54_merge",
+  "issue": 52,
+  "parentIssue": 21,
+  "baseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
+  "ownerDefinition": {
+    "MC": "Master-managed Composition/shared contribution, explicitly delegated to a fresh worker and independently reviewed. Master does not implement product code."
+  },
+  "rules": [
+    "Every old physical path has exactly one edit owner MC. New layer workers create only new files in their assigned layer; they cannot move/edit/delete old paths.",
+    "New production code may not call/import legacy implementations. No compatibility shims are authorized.",
+    "The two legacy GitHub parent files remain unchanged; the new final GitHub implementation is internal/github/adapter and never imports its parent.",
+    "Temporary architecture allowances match exact old Go path and baseline blob, never directory prefixes. M1/M6 authorized shared-path rewrites receive explicit strict-policy classification.",
+    "Before M7, each listed baseline test case and its meaningful assertions requires new test path/name and exact passing evidence, or independently accepted obsolete/unsafe assertion rationale. Pending entries prevent retirement.",
+    "Layer workers request shared go.mod/go.sum/CI edits; only one explicitly delegated MC writer edits them at a time.",
+    "Final legacy allowance is empty. Historical release docs are retained as history, not rewritten into new release claims."
+  ],
+  "targetLayers": {
+    "Domain": "internal/domain",
+    "Application": "internal/application",
+    "Git": "internal/git",
+    "GitHub": "internal/github/adapter",
+    "Runtime": "internal/runtime",
+    "Launch Discovery": "internal/launchdiscovery",
+    "Persistence": "internal/persistence",
+    "TUI State": "internal/tuistate",
+    "TUI View": "internal/tuiview",
+    "Composition": "internal/composition"
+  },
+  "temporaryLegacyAllowance": [
+    {
+      "path": "internal/app/service.go",
+      "baselineBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa"
+    },
+    {
+      "path": "internal/app/v3.go",
+      "baselineBlob": "3ae53d4c928a4f5dbada19c9558e31c7fad51dd4"
+    },
+    {
+      "path": "internal/app/v312.go",
+      "baselineBlob": "41be4088b60720f8df844aa59c7bf4a2557f878b"
+    },
+    {
+      "path": "internal/app/v313.go",
+      "baselineBlob": "12c3948177a8bff2f946a05224762a17ef1b826c"
+    },
+    {
+      "path": "internal/app/v314.go",
+      "baselineBlob": "a5de8fb609962d7069457587fea7b643f576e635"
+    },
+    {
+      "path": "internal/config/config.go",
+      "baselineBlob": "f5457d7af16b17f60980a6605980fac7b37c30df"
+    },
+    {
+      "path": "internal/config/config_test.go",
+      "baselineBlob": "45e717369d3eca9a11606b3810808001ec12808e"
+    },
+    {
+      "path": "internal/diff/reader.go",
+      "baselineBlob": "8bd7c0295f5846a86747b44aba6164ef2e1199ea"
+    },
+    {
+      "path": "internal/diff/reader_test.go",
+      "baselineBlob": "f69a6c533c921e5ed2bb87d51714558a80b8fd0b"
+    },
+    {
+      "path": "internal/github/client.go",
+      "baselineBlob": "9cc8d3d4611f0917f5b659ffc5caf8634a1e8428"
+    },
+    {
+      "path": "internal/github/client_test.go",
+      "baselineBlob": "11fffd8376284677f7a61409d8f1359bba1a1d34"
+    },
+    {
+      "path": "internal/graph/graph.go",
+      "baselineBlob": "ee1ab7a86b6db18c496200de08bcdf4aad21e6e5"
+    },
+    {
+      "path": "internal/graph/graph_test.go",
+      "baselineBlob": "21dd21596710bb1484d985820647e4671c912495"
+    },
+    {
+      "path": "internal/graph/rows.go",
+      "baselineBlob": "78e65a9289d3d51b311acba61a1ad0e59c645091"
+    },
+    {
+      "path": "internal/graph/rows_test.go",
+      "baselineBlob": "22bc24522333690e159f3968f4da3a07d2b9ad42"
+    },
+    {
+      "path": "internal/graphui/model.go",
+      "baselineBlob": "8d6fb4a1add2321fae022464227444796b2032a2"
+    },
+    {
+      "path": "internal/launch/config.go",
+      "baselineBlob": "905af2c93be4b14301b8f48f62410dbff326a3ce"
+    },
+    {
+      "path": "internal/launch/launch_test.go",
+      "baselineBlob": "47b11798412e60fedfe675ee2e880fc22c1eaddd"
+    },
+    {
+      "path": "internal/launch/make.go",
+      "baselineBlob": "f5260ed03f62da7a613ae348f9b11271e7647078"
+    },
+    {
+      "path": "internal/launch/make_test.go",
+      "baselineBlob": "29c6e6a9f2b0297230f3302b3e5bbf9dcbd97db0"
+    },
+    {
+      "path": "internal/launch/npm.go",
+      "baselineBlob": "b0522a542b15e2bbf550a0612d279f32a35b211a"
+    },
+    {
+      "path": "internal/launch/session.go",
+      "baselineBlob": "b1fd2c68267af33ff46e99a20860717913874899"
+    },
+    {
+      "path": "internal/launch/session_test.go",
+      "baselineBlob": "2cfc6c34b089cdb6b924f8d72424906a5aa50b3d"
+    },
+    {
+      "path": "internal/launch/types.go",
+      "baselineBlob": "205b3f448244b6bcf617d1d16741f16c341c19d2"
+    },
+    {
+      "path": "internal/process/process.go",
+      "baselineBlob": "d3162aaeb466b8e2db754177c0952955e2e82505"
+    },
+    {
+      "path": "internal/terminal/session.go",
+      "baselineBlob": "1df4843f3476f5fd40552c3f7341f5d4b425cdf5"
+    },
+    {
+      "path": "internal/terminal/shell.go",
+      "baselineBlob": "3b978cd884807431565d82e1f4108fbd321fab88"
+    },
+    {
+      "path": "internal/terminal/terminal_test.go",
+      "baselineBlob": "0f8b2ebe5d1324a99585049c9cc1d9ddf6f4e880"
+    },
+    {
+      "path": "internal/tree/tree.go",
+      "baselineBlob": "c53ef94fbd44847e0800dddb69b6a6b8dfe2738f"
+    },
+    {
+      "path": "internal/tree/tree_test.go",
+      "baselineBlob": "676e6032b600151a82f21496dab7734a18399b47"
+    },
+    {
+      "path": "internal/tui/model.go",
+      "baselineBlob": "a574a0a57fb15af092078506a53dad74cd4e66cb"
+    },
+    {
+      "path": "internal/tui/model_test.go",
+      "baselineBlob": "e62b247b621b5f4ea7733fb12704b14eb30abad1"
+    },
+    {
+      "path": "internal/tui/model_v2_test.go",
+      "baselineBlob": "8d2981e7599a5939136e798104ae206be453f0df"
+    },
+    {
+      "path": "internal/tui/model_v3_test.go",
+      "baselineBlob": "857673d56d9d6ef2d1efd3ff82e0f70c11333a97"
+    },
+    {
+      "path": "internal/tui/runtime_v0310.go",
+      "baselineBlob": "7793ecb40f7c60c2af65e932b11124ce28cdd0a2"
+    },
+    {
+      "path": "internal/tui/runtime_v0310_test.go",
+      "baselineBlob": "e96681e132d673e9b8e6ddf3ee0f7f77778bad09"
+    },
+    {
+      "path": "internal/tui/runtime_v0311.go",
+      "baselineBlob": "d472c8f97cd1e32a7fecbf68d6b28390b8bb9b38"
+    },
+    {
+      "path": "internal/tui/runtime_v0311_test.go",
+      "baselineBlob": "33a265467a56902b28f27d05ba4321c856928471"
+    },
+    {
+      "path": "internal/tui/runtime_v0312.go",
+      "baselineBlob": "250bfa48baa66ec70ffe8534c507c268e1b77bbc"
+    },
+    {
+      "path": "internal/tui/runtime_v0312_test.go",
+      "baselineBlob": "0d52ee5aa124b1c4ab9c759224dad7715c05b3c3"
+    },
+    {
+      "path": "internal/tui/runtime_v0313.go",
+      "baselineBlob": "bd155f9278750a206b4ad9bd42f5139ab97d7831"
+    },
+    {
+      "path": "internal/tui/runtime_v0313_test.go",
+      "baselineBlob": "dbc8f4f036de245f35acb7e27ad75d13ee11db9c"
+    },
+    {
+      "path": "internal/tui/runtime_v0314.go",
+      "baselineBlob": "33e4acf8e788ac499b23bc8d755136008c3737e5"
+    },
+    {
+      "path": "internal/tui/runtime_v039.go",
+      "baselineBlob": "c7a2eb61c70553543bdda9831241f697dcff68ff"
+    },
+    {
+      "path": "internal/tui/runtime_v039_test.go",
+      "baselineBlob": "b71c6e9c4bfc23a520951253ae185281b75c5026"
+    },
+    {
+      "path": "internal/tui/view.go",
+      "baselineBlob": "de8639a4ec42f696ab0627e2fd25230c39b84dee"
+    },
+    {
+      "path": "internal/worktree/branch.go",
+      "baselineBlob": "43b4dc41ebf6d28b9f6057d928485229c7b52651"
+    },
+    {
+      "path": "internal/worktree/cleanup.go",
+      "baselineBlob": "40e6302c2fc9adf294c0e7600d7274fe0d7b34d1"
+    },
+    {
+      "path": "internal/worktree/cleanup_test.go",
+      "baselineBlob": "0c60a833006ee3001a3651d9574a0630c9ea5cb6"
+    },
+    {
+      "path": "internal/worktree/history.go",
+      "baselineBlob": "a817bb3c9df9ea8e1e722b69084e7e332635b2b4"
+    },
+    {
+      "path": "internal/worktree/ops.go",
+      "baselineBlob": "56885992b608afffd03609cd71316c8ff0dde949"
+    },
+    {
+      "path": "internal/worktree/ops_test.go",
+      "baselineBlob": "15974bd7a15171a08cd40d30ea4bab5931f0f9b8"
+    },
+    {
+      "path": "internal/worktree/pr.go",
+      "baselineBlob": "e58003735adcb6f307d4fd1fefc86ce226cb701a"
+    },
+    {
+      "path": "internal/worktree/pr_v2_test.go",
+      "baselineBlob": "27827a44d3cff927dd7de176cb39dc89fd00b3e1"
+    },
+    {
+      "path": "internal/worktree/staging.go",
+      "baselineBlob": "a86959b8b55bf1a915f785ae4f484ee0e1a751bc"
+    },
+    {
+      "path": "internal/worktree/staging_test.go",
+      "baselineBlob": "af8029c375725bab3f832c9b0bbd803d8c808d5e"
+    },
+    {
+      "path": "internal/worktree/stash.go",
+      "baselineBlob": "ef3ad6fa8cd9c5ae0bff302b1052afe1eee3f536"
+    },
+    {
+      "path": "internal/worktree/stash_test.go",
+      "baselineBlob": "82a93ac266d700eef32c4ebf322b243ea80dcdea"
+    },
+    {
+      "path": "internal/worktree/worktree.go",
+      "baselineBlob": "a77115c55bb25fb470b0d07a9a015f96fea560f7"
+    },
+    {
+      "path": "internal/worktree/worktree_test.go",
+      "baselineBlob": "4531b7e52d3048a0140b809a92181f54c58dcf3e"
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "kind": "shared",
+      "baselineBlob": "55ceef2b00c3b5c5408d0b3e6b3468365a6a92be",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC serial rewrite at M1; retain Windows/Linux/macOS test/vet/build and race, expand twelve cross-builds and new-branch push evidence, staged then strict dependency/API/package checks.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "kind": "shared",
+      "baselineBlob": "7e1f4548b86294df922d2ddec19ed5b71f8c5558",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC disable unsafe automatic bootstrap publication at M1; replace publication with exact source/version/tag/evidence/staged-assets gate at M8. No clobber.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": ".gitignore",
+      "kind": "shared",
+      "baselineBlob": "29ec6e751d2e910f844ae77fffe10581f34ed4e6",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC retain; revise only for reviewed build/staging output location, with no ignored source/verification evidence.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "README.md",
+      "kind": "shared",
+      "baselineBlob": "20a7c0e75d370aa83227633d049ae076010ae06a",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC revise at M6/M8 to actual accepted keymap/diff source/safety/limits/version/install guarantees; every existing capability maps below.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "cmd/gh-tree/main.go",
+      "kind": "production_go",
+      "baselineBlob": "bdf26cbbaad849700a3c8ed06f4534eeb66caa85",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC rewrite: tiny entry/exit; constructor/flags/context/root lifecycle to internal/composition; input/event transport to restricted composition/host.",
+      "capabilityGate": "M6; SLC-01/03/12/13",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "docs/interactive-console.md",
+      "kind": "shared",
+      "baselineBlob": "3f4c43cd6909e802723604e63aee1d8fd9b215ac",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC retain historical v0.3.13 record; current README/new release documentation describes v0.4 shell/input/output/cleanup accurately. If updated, label historical versus current behavior explicitly.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "docs/v0.3.14.md",
+      "kind": "shared",
+      "baselineBlob": "fc3780554b38c8e66edb6e96cd0ce450e0358076",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC retain historical release record; do not rewrite old release facts into v0.4 claims. Current docs explicitly explain safe activity semantics and selection/deploy/activation.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "go.mod",
+      "kind": "shared",
+      "baselineBlob": "02f76de07dc0ae03e39a1de9965bb8fc1aff6525",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC retain/serial dependency edits; layer workers request reviewed additions. Preserve Go/toolchain/platform support and remove obsolete PTY dependencies only after both new Runtime and legacy cutover compile on every target.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "go.sum",
+      "kind": "shared",
+      "baselineBlob": "d4ba0e7bfc7493390a2246cc7c8c03c6f2202e65",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC synchronized with reviewed go.mod/toolchain resolution; keep integrity and exact dependency evidence. Never independent tidy commits from multiple workers.",
+      "capabilityGate": null,
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/app/service.go",
+      "kind": "production_go",
+      "baselineBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application repository/graph/worktree/PR use cases and API; concrete construction to Composition; Git/GitHub mechanics behind ports. No Service facade retained.",
+      "capabilityGate": "M7; SLC-01..08",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/app/v3.go",
+      "kind": "production_go",
+      "baselineBlob": "3ae53d4c928a4f5dbada19c9558e31c7fad51dd4",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application graph/diff/launch/stash orchestration; View graph decoration/label prose; Discovery resolution; Persistence launch bytes; Runtime lifecycle.",
+      "capabilityGate": "M7; SLC-03/06/07/09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/app/v312.go",
+      "kind": "production_go",
+      "baselineBlob": "41be4088b60720f8df844aa59c7bf4a2557f878b",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application launch/session/shutdown workflows; Runtime one registry; selected console entirely State. Remove two-manager routing and SelectConsole.",
+      "capabilityGate": "M7; SLC-09/10/12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/app/v313.go",
+      "kind": "production_go",
+      "baselineBlob": "12c3948177a8bff2f946a05224762a17ef1b826c",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application terminal start/input/resize by explicit Runtime capability, no membership/provider routing.",
+      "capabilityGate": "M7; SLC-11/12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/app/v314.go",
+      "kind": "production_go",
+      "baselineBlob": "a5de8fb609962d7069457587fea7b643f576e635",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application stash/deploy use cases; Git exact primitives. Preserve selected Revision/StashID in new API.",
+      "capabilityGate": "M7; SLC-05/06",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/config/config.go",
+      "kind": "production_go",
+      "baselineBlob": "f5457d7af16b17f60980a6605980fac7b37c30df",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Persistence codecs/state/config keys/bytes; Composition lazy default/override selection; Application namespace/default/active intent and configured-target interpretation. Domain receives identities only.",
+      "capabilityGate": "M7; SLC-01/04/05/09",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/config/config_test.go",
+      "kind": "test_go",
+      "baselineBlob": "45e717369d3eca9a11606b3810808001ec12808e",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; Persistence missing/default/explicit-empty/case/order/legacy codec tests; App durable folder/worktree scope and publication tests. Do not retain owner/name as universal active-worktree identity.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestLoadMissingConfigUsesDefaults",
+        "TestLoadHonorsExplicitEmptyPrefixOverride",
+        "TestTargetsAreCaseInsensitiveAndSorted",
+        "TestStateStorePersistsLastFolderAndWorktreePerRepository"
+      ],
+      "plannedVerification": [
+        "V-PER-01",
+        "V-PER-02",
+        "V-PER-03",
+        "V-APP-04"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/diff/reader.go",
+      "kind": "production_go",
+      "baselineBlob": "8bd7c0295f5846a86747b44aba6164ef2e1199ea",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git diff source/file/stat/patch primitives; API semantic diff facts; View source labels/truncation notice.",
+      "capabilityGate": "M7; SLC-03/07",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/diff/reader_test.go",
+      "kind": "test_go",
+      "baselineBlob": "f69a6c533c921e5ed2bb87d51714558a80b8fd0b",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; Git NUL rename parsing, bounded patch/stats, first-parent/root semantics; View renders separate truncation/source facts.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestParseNameStatusRename",
+        "TestReaderBoundsPatchAndStats",
+        "TestCommitUsesFirstParent"
+      ],
+      "plannedVerification": [
+        "V-GIT-10",
+        "V-VIEW-02"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/github/client.go",
+      "kind": "production_go",
+      "baselineBlob": "9cc8d3d4611f0917f5b659ffc5caf8634a1e8428",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire after coexistence: new internal/github/adapter transport/repository/PR/branch/error mapping owned by GitHub; Domain scoped IDs and Application facts through ports.",
+      "capabilityGate": "M7; SLC-01/02/03/08; no new parent-package symbols",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/github/client_test.go",
+      "kind": "test_go",
+      "baselineBlob": "11fffd8376284677f7a61409d8f1359bba1a1d34",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; GitHub adapter parsing/required exact identities/bounded pages/auth-context/argv tests; App host/fork creation binding. Current test forbidding all pagination becomes bounded-completeness evidence, not a legacy invariant.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestParsePullRequests",
+        "TestParsePullRequestsRejectsMissingDeploymentIdentity",
+        "TestListBranchesUsesBoundedAPIRequest",
+        "TestResolveRepositoryUsesGhAuthenticationContext",
+        "TestCreatePullRequestUsesArgumentSafeGhInvocation"
+      ],
+      "plannedVerification": [
+        "V-GH-01",
+        "V-GH-02",
+        "V-GH-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/graph/graph.go",
+      "kind": "production_go",
+      "baselineBlob": "ee1ab7a86b6db18c496200de08bcdf4aad21e6e5",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git commits/parents/refs/HEAD reads; Application PR/worktree joins/completeness; API graph projection; View human freshness/labels.",
+      "capabilityGate": "M7; SLC-02/03",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/graph/graph_test.go",
+      "kind": "test_go",
+      "baselineBlob": "21dd21596710bb1484d985820647e4671c912495",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Git graph/ref/HEAD limits/classification tests; App remote/worktree annotation tests; composition full graph fixture.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestLoadBuildsStructuredGraphAndAnnotations",
+        "TestLoadIsBoundedAndReportsMore",
+        "TestClassifyRef"
+      ],
+      "plannedVerification": [
+        "V-GIT-10",
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/graph/rows.go",
+      "kind": "production_go",
+      "baselineBlob": "78e65a9289d3d51b311acba61a1ad0e59c645091",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: pure accumulated-DAG lane formatting in tuiview; no Git/GitHub imports or rewritten commit messages.",
+      "capabilityGate": "M7; SLC-03",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/graph/rows_test.go",
+      "kind": "test_go",
+      "baselineBlob": "22bc24522333690e159f3968f4da3a07d2b9ad42",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; View merge/multiple-root/lane tests against immutable graph DTOs and accumulated page boundaries.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestRowsTracksBranchesAndMerges"
+      ],
+      "plannedVerification": [
+        "V-GIT-10",
+        "V-APP-05",
+        "V-VIEW-02"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/graphui/model.go",
+      "kind": "production_go",
+      "baselineBlob": "8d6fb4a1add2321fae022464227444796b2032a2",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: common State graph navigation/generations, View graph rendering and Composition initial graph mode/host.",
+      "capabilityGate": "M7 only after both entry modes at M6; SLC-03",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/config.go",
+      "kind": "production_go",
+      "baselineBlob": "905af2c93be4b14301b8f48f62410dbff326a3ce",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Persistence run.json paths/codecs/read/write/version; Discovery provider validation/intent resolution; Application SaveCandidate alias/default workflow.",
+      "capabilityGate": "M7; SLC-09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/launch_test.go",
+      "kind": "test_go",
+      "baselineBlob": "47b11798412e60fedfe675ee2e880fc22c1eaddd",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Discovery exact colon script/nested manifest/root-lock-only/cwd/provider-grammar tests; Persistence run.json round-trip; App save/default/reopen/invalid intent.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestNPMDiscoveryKeepsColonScriptAsOneInvocation",
+        "TestRegistryDiscoversNestedNPMProjectAndIgnoresRootLockOnly",
+        "TestRunConfigRoundTripAndDefault",
+        "TestLaunchConfigRejectsEscapingDirectory",
+        "TestNPMConfigRejectsTargetStack"
+      ],
+      "plannedVerification": [
+        "V-LCH-01",
+        "V-LCH-02",
+        "V-LCH-03",
+        "V-PER-01",
+        "V-RUN-01",
+        "V-RUN-06"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/make.go",
+      "kind": "production_go",
+      "baselineBlob": "f5260ed03f62da7a613ae348f9b11271e7647078",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: launchdiscovery private passive Make provider, ordered compatible members and exact selected file binding.",
+      "capabilityGate": "M7; SLC-09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/make_test.go",
+      "kind": "test_go",
+      "baselineBlob": "29c6e6a9f2b0297230f3302b3e5bbf9dcbd97db0",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Discovery simple targets/native ordered stack/selected manifest; Persistence serialized ordered targets; App named saved Make default.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestMakeDiscoveryAndNativeOrderedStack",
+        "TestMakeConfigRoundTrip"
+      ],
+      "plannedVerification": [
+        "V-LCH-01",
+        "V-LCH-02",
+        "V-LCH-03",
+        "V-PER-01",
+        "V-RUN-01",
+        "V-RUN-06"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/npm.go",
+      "kind": "production_go",
+      "baselineBlob": "b0522a542b15e2bbf550a0612d279f32a35b211a",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: launchdiscovery private npm/pnpm/yarn provider, exact scripts/command override/manager policy.",
+      "capabilityGate": "M7; SLC-09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/session.go",
+      "kind": "production_go",
+      "baselineBlob": "b1fd2c68267af33ff46e99a20860717913874899",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: Runtime registry/resources/output/lifecycle; API session facts; no manager-current-session selection retained.",
+      "capabilityGate": "M7; SLC-10/12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/session_test.go",
+      "kind": "test_go",
+      "baselineBlob": "2cfc6c34b089cdb6b924f8d72424906a5aa50b3d",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; Runtime bounded-output/exit/failure/concurrent launch tests using owned helper processes, strengthened to descendants/barriers/idempotent Stop rather than root-only stopped flag.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestHelperProcess",
+        "TestSessionCapturesBoundedLogsAndExit",
+        "TestSessionReportsFailureExitCode",
+        "TestSessionStopsAttachedProcess",
+        "TestSessionManagerAllowsConcurrentConsoleSessions"
+      ],
+      "plannedVerification": [
+        "V-LCH-01",
+        "V-LCH-02",
+        "V-LCH-03",
+        "V-PER-01",
+        "V-RUN-01",
+        "V-RUN-06"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/launch/types.go",
+      "kind": "production_go",
+      "baselineBlob": "205b3f448244b6bcf617d1d16741f16c341c19d2",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Discovery registry/private provider records; API/ports definitions and execution specifications; Domain LaunchPointID only. Do not move Candidate/Invocation wholesale into Domain.",
+      "capabilityGate": "M7; SLC-09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/process/process.go",
+      "kind": "production_go",
+      "baselineBlob": "d3162aaeb466b8e2db754177c0952955e2e82505",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire: separate private bounded short-command transports in Git and GitHub, Runtime private native session creation. Do not recreate generic shared process layer or call old ExecRunner.",
+      "capabilityGate": "M7 after all old importers removed; SLC-01..03/05..08/10..12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/terminal/session.go",
+      "kind": "production_go",
+      "baselineBlob": "1df4843f3476f5fd40552c3f7341f5d4b425cdf5",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Runtime unified PTY/ConPTY resource ownership/byte transport; View pure CR/backspace/control interpretation; host owns disposable presentation cache.",
+      "capabilityGate": "M7; SLC-10/11/12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/terminal/shell.go",
+      "kind": "production_go",
+      "baselineBlob": "3b978cd884807431565d82e1f4108fbd321fab88",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: Runtime private shell/ancestry/environment selection; preserve override/fallback; Composition supplies environment/start context only.",
+      "capabilityGate": "M7; SLC-11",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/terminal/terminal_test.go",
+      "kind": "test_go",
+      "baselineBlob": "0f8b2ebe5d1324a99585049c9cc1d9ddf6f4e880",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; View CR/backspace/control parser tests; Runtime environment replacement and GH_TREE_SHELL override; native PTY/ConPTY lifecycle tests newly required.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestTerminalLinesHandlesCarriageReturnAndBackspace",
+        "TestSetEnvReplacesExistingValue",
+        "TestDetectShellHonorsOverride"
+      ],
+      "plannedVerification": [
+        "V-RUN-03",
+        "V-RUN-04",
+        "V-RUN-05",
+        "V-VIEW-02"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tree/tree.go",
+      "kind": "production_go",
+      "baselineBlob": "c53ef94fbd44847e0800dddb69b6a6b8dfe2738f",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Application namespace/strip-prefix/durable fallback policy; State pure immediate hierarchy/filter/selection; View leaf labels. No Domain namespace tree.",
+      "capabilityGate": "M7; SLC-01/02",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tree/tree_test.go",
+      "kind": "test_go",
+      "baselineBlob": "676e6032b600151a82f21496dab7734a18399b47",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; App strip-prefix/default/namespace intent tests; State hierarchy/filter/nearest permitted ancestor tests using complete versus incomplete projection.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestNormalizeBranch",
+        "TestEntriesBuildImmediateHierarchy",
+        "TestResolveFolderFallsBackToNearestExistingAncestor"
+      ],
+      "plannedVerification": [
+        "V-APP-05",
+        "V-STATE-01"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/model.go",
+      "kind": "production_go",
+      "baselineBlob": "a574a0a57fb15af092078506a53dad74cd4e66cb",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State navigation/search/forms/correlation; Application every product workflow/persistence change; View formatting; host Tea decoding/effect execution.",
+      "capabilityGate": "M7; SLC-01..12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/model_test.go",
+      "kind": "test_go",
+      "baselineBlob": "e62b247b621b5f4ea7733fb12704b14eb30abad1",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; State namespace/search/mode tests; App confirmation/exact deployment tests; View full 40/64-hex detail tests; composition retained configured-target flow.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestModelRestoresAndNavigatesNamespace",
+        "TestModelModeAndSearchTransitions",
+        "TestModelRequiresConfirmationAndReportsExactDeployment",
+        "TestViewNeverEllipsizesExactSHA"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/model_v2_test.go",
+      "kind": "test_go",
+      "baselineBlob": "8d2981e7599a5939136e798104ae206be453f0df",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; State history focus/interactive-worktree fallback/pull key; App scoped exact PR/worktree association; View dirty/upstream/narrow layout with unknown facts.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestCommitModeTabTogglesOnlyListAndDetails",
+        "TestDeployWithoutLegacyTargetsEntersInteractiveWorktreeFlow",
+        "TestWorktreePullKeyDoesNotSwitchToPRMode",
+        "TestWorktreeStatusViewShowsRemoteSHAAndDirtyCounts",
+        "TestPRWorktreeStatusAssociatesByExactHeadSHA",
+        "TestNarrowLayoutStacksNavigatorWorktreesAndStatus"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/model_v3_test.go",
+      "kind": "test_go",
+      "baselineBlob": "857673d56d9d6ef2d1efd3ff82e0f70c11333a97",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; State ordered Make selection and diff return; Discovery compatibility validation; View file/patch/help tests from actual action keymap.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestV3MakeLaunchStackPreservesSelectionOrder",
+        "TestV3DiffViewRendersFilesAndPatch",
+        "TestV3FooterAdvertisesLaunchKeys",
+        "TestV3DiffEscapeReturnsToPreviousMode"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0310.go",
+      "kind": "production_go",
+      "baselineBlob": "7793ecb40f7c60c2af65e932b11124ce28cdd0a2",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State Branch/Commits/Message focus and dirty-path selection; App branch relations/history/restore/checkout; View direction/status/detail formatting.",
+      "capabilityGate": "M7; SLC-02/03/05/07",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0310_test.go",
+      "kind": "test_go",
+      "baselineBlob": "e96681e132d673e9b8e6ddf3ee0f7f77778bad09",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; App scoped PR head/base direction; State branch subpane cycling; View commit message/dirty-cause rendering.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestV310PRDirectionRelativeToBranch",
+        "TestV310BranchContextRendersCommitMessage",
+        "TestV310ShiftTabCyclesBranchSubpaneOnly",
+        "TestV310ChangeStateExplainsDirtyCause"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0311.go",
+      "kind": "production_go",
+      "baselineBlob": "d472c8f97cd1e32a7fecbf68d6b28390b8bb9b38",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State active chooser/mnemonics/root-to-launch transitions; App discovery/activation; View headings/overlay/layout.",
+      "capabilityGate": "M7; SLC-02/04/09",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0311_test.go",
+      "kind": "test_go",
+      "baselineBlob": "33a265467a56902b28f27d05ba4321c856928471",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; View cell-bounded overlay and heading/mnemonic tests; State Alt+C/M and active-worktree chooser.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestOverlay311CentersDialogWithoutGrowingScreen",
+        "TestHeading311PreservesWholeTitleAndMnemonic",
+        "TestAltCAndAltMSelectVisibleBranchSubpanes",
+        "TestAltAEnterOpensWorktreeChooserModal"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0312.go",
+      "kind": "production_go",
+      "baselineBlob": "250bfa48baa66ec70ffe8534c507c268e1b77bbc",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State console tabs/input focus and conditional follow; App lifecycle/event projection; View tabs/activity; host disposable timer.",
+      "capabilityGate": "M7; SLC-10/12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0312_test.go",
+      "kind": "test_go",
+      "baselineBlob": "0d52ee5aa124b1c4ab9c759224dad7715c05b3c3",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; State Alt+O/Ctrl+C exit modal/root-to-launch/Alt-number selection; View console tabs/supplied activity frames, no provider-inferred working/idle.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestV312AltOFocusesConsole",
+        "TestV312CtrlCOutsideConsoleAsksBeforeExit",
+        "TestV312DownFromActiveRootMovesToLaunch",
+        "TestV312AltNumberSelectsConsoleTab",
+        "TestV312ConsoleRendersTabsAndRollingState"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0313.go",
+      "kind": "production_go",
+      "baselineBlob": "bd155f9278750a206b4ad9bd42f5139ab97d7831",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State terminal input authority; host key bytes/measurement dispatch; App terminal commands; View version/console layout and shared measurement.",
+      "capabilityGate": "M7; SLC-11/12/13",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0313_test.go",
+      "kind": "test_go",
+      "baselineBlob": "dbc8f4f036de245f35acb7e27ad75d13ee11db9c",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Composition host key-byte and Alt-number decoding tests; View version display; Composition noninteractive binary version test compared to release identity.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestTerminalKeyBytes313",
+        "TestV313HeaderShowsVersion",
+        "TestParseAltNumber313"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v0314.go",
+      "kind": "production_go",
+      "baselineBlob": "33e4acf8e788ac499b23bc8d755136008c3737e5",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State single stash/deploy modal/selection; App exact deploy/stash/activation and relations; View panel/help/confirmation/stash/output.",
+      "capabilityGate": "M7; SLC-02/04/05/06/09/10",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v039.go",
+      "kind": "production_go",
+      "baselineBlob": "c7a2eb61c70553543bdda9831241f697dcff68ff",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: State create-review/edit and ordered launch selection; App/Discovery compatibility validation; View create/launch picker appearance.",
+      "capabilityGate": "M7; SLC-05/09",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/runtime_v039_test.go",
+      "kind": "test_go",
+      "baselineBlob": "b71c6e9c4bfc23a520951253ae185281b75c5026",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; State create review `e` editing and Make group selection; View bounded create dialog/project labels; App/Discovery enforce cross-project refusal independently of cursor UX.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestV039CreateWorktreeReviewUsesEToEdit",
+        "TestV039CreateWorktreeReplacesLowerPane",
+        "TestV039MakeStackDoesNotCrossProjectRoots",
+        "TestV039LaunchPickerShowsProjectRoot"
+      ],
+      "plannedVerification": [
+        "V-STATE-01",
+        "V-STATE-02",
+        "V-STATE-03",
+        "V-STATE-04",
+        "V-VIEW-01",
+        "V-VIEW-02",
+        "V-VIEW-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/tui/view.go",
+      "kind": "production_go",
+      "baselineBlob": "de8639a4ec42f696ab0627e2fd25230c39b84dee",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: tuiview render/theme/layout/dialog/diff/text; semantic relations to App and intent to State; remove Model receiver/backend access.",
+      "capabilityGate": "M7; SLC-01..12",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/version/version.go",
+      "kind": "production_go",
+      "baselineBlob": "da6146d9fff5c977f944d55b50d49076e1fdd321",
+      "physicalEditOwner": "MC",
+      "action": "retain_or_rewrite_serially",
+      "retirementGate": null,
+      "replacementResponsibilities": "MC retain path/rewrite: one Composition build/version identity with noninteractive output; value included in tested release commit.",
+      "capabilityGate": "M6/M8; SLC-13",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/branch.go",
+      "kind": "production_go",
+      "baselineBlob": "43b4dc41ebf6d28b9f6057d928485229c7b52651",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git exact fetch/resolve/branch transition mechanics; App source/target choice and creation/checkout workflow. Existing local branch is never an exact-target shortcut.",
+      "capabilityGate": "M7; SLC-02/05/08",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/cleanup.go",
+      "kind": "production_go",
+      "baselineBlob": "40e6302c2fc9adf294c0e7600d7274fe0d7b34d1",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC rebuild/delete: Git confirmed tracked restore/recovery; App prepares/consumes confirmation; State/View prompt identity.",
+      "capabilityGate": "M7; SLC-07",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/cleanup_test.go",
+      "kind": "test_go",
+      "baselineBlob": "0c60a833006ee3001a3651d9574a0630c9ea5cb6",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; Git tracked restore-from-index/untracked refusal with post-confirm edit, captured-original and retained-recovery cases; App single-use confirmation test.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestRestorePathsDiscardsTrackedWorkingTreeEdit",
+        "TestRestorePathsRefusesUntrackedDeletion"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/history.go",
+      "kind": "production_go",
+      "baselineBlob": "a817bb3c9df9ea8e1e722b69084e7e332635b2b4",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: App PR/branch source resolution; Git explicit pinned history primitive.",
+      "capabilityGate": "M7; SLC-02/03",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/ops.go",
+      "kind": "production_go",
+      "baselineBlob": "56885992b608afffd03609cd71316c8ff0dde949",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git status/upstream/create/checkout/fetch/stage/commit/push/pull/history mechanics; Domain exact types; API/ports facts; App sequencing.",
+      "capabilityGate": "M7; SLC-02..05/07/08",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/ops_test.go",
+      "kind": "test_go",
+      "baselineBlob": "15974bd7a15171a08cd40d30ea4bab5931f0f9b8",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Git status/history/upstream/create/retarget mechanics; App PR prepare/create/reuse and source-versus-target branch workflows; real composition worktree fixtures.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestStatusAndCommitHistory",
+        "TestCreateAndRetargetWorktree",
+        "TestPreparePullRequestAndCreatePRWorktree",
+        "TestCheckoutRefReusesBranchForNewPRHead",
+        "TestCreateBranchWorktreeAsAvoidsPrimaryBranchConflict",
+        "TestParseBranchStatus"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/pr.go",
+      "kind": "production_go",
+      "baselineBlob": "e58003735adcb6f307d4fd1fefc86ce226cb701a",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git generic exact ref fetch/verify/guarded branch transition; App PR scope/private-ref choice/deploy/worktree workflow.",
+      "capabilityGate": "M7; SLC-03/05/08",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/pr_v2_test.go",
+      "kind": "test_go",
+      "baselineBlob": "27827a44d3cff927dd7de176cb39dc89fd00b3e1",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC retire; Git exact guarded fast-forward and refusal to lose local commits; App expected-selected-PR propagation.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestCheckoutRefRefusesToLoseLocalCommits"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/staging.go",
+      "kind": "production_go",
+      "baselineBlob": "a86959b8b55bf1a915f785ae4f484ee0e1a751bc",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git status path parsing/index/stash mechanics; App stage-all/commit and stash operation sequencing.",
+      "capabilityGate": "M7; SLC-06/07",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/staging_test.go",
+      "kind": "test_go",
+      "baselineBlob": "af8029c375725bab3f832c9b0bbd803d8c808d5e",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Git selective staging/unstaging/exact path grammar/stash contents and index restoration; App stash sequencing/effect classification.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestSelectiveStageAndUnstage",
+        "TestStashPushAndPopPreservesChanges",
+        "TestStageRejectsEscapingPath"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/stash.go",
+      "kind": "production_go",
+      "baselineBlob": "ef3ad6fa8cd9c5ae0bff302b1052afe1eee3f536",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git exact stash facts, legacy metadata codec and safe mutation/recovery; Domain scoped StashID; App confirmation/read model. Positional ref and metadata stay nonauthoritative.",
+      "capabilityGate": "M7; SLC-06",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/stash_test.go",
+      "kind": "test_go",
+      "baselineBlob": "82a93ac266d700eef32c4ebf322b243ea80dcdea",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Git managed-metadata compatibility/parser tests and positional-locator display validation; Domain StashID tests; actual destructive authority tested by OID after reflog reorder.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestManagedStashMessageRoundTrip",
+        "TestValidateStashRef"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/worktree.go",
+      "kind": "production_go",
+      "baselineBlob": "a77115c55bb25fb470b0d07a9a015f96fea560f7",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/rebuild/delete: Git inventory/root/common identity/path/ref/dirty/history guards; Domain values; App configured-target and general deploy sequencing; API outcomes.",
+      "capabilityGate": "M7; SLC-01/04/05",
+      "baselineTestCases": [],
+      "plannedVerification": [],
+      "replacementEvidenceState": "not_applicable",
+      "replacementEvidence": []
+    },
+    {
+      "path": "internal/worktree/worktree_test.go",
+      "kind": "test_go",
+      "baselineBlob": "4531b7e52d3048a0140b809a92181f54c58dcf3e",
+      "physicalEditOwner": "MC",
+      "action": "split_rebuild_then_retire",
+      "retirementGate": "M7",
+      "replacementResponsibilities": "MC split/retire; Git porcelain/clean/dirty/primary/current/occupancy/detached-history/exact-fetch guards; App configured target deploy workflow; composition real exact deployment. Replace reset/force compatibility assertions with documented safe fast-forward/new-branch/detached outcomes.",
+      "capabilityGate": null,
+      "baselineTestCases": [
+        "TestDeployMovesCleanTestWorktreeOnly",
+        "TestDeployRefusesDirtyWorktreeWithoutDataLoss",
+        "TestDeployMigratesCleanDetachedTargetToConfiguredBranch",
+        "TestDeployRefusesUnreferencedDetachedCommit",
+        "TestDeployRefusesTargetBranchCheckedOutElsewhere",
+        "TestDeployRejectsChangedPRBeforeMovingTarget",
+        "TestDeployRefusesPrimaryWorktree",
+        "TestParsePorcelain"
+      ],
+      "plannedVerification": [
+        "V-GIT-01",
+        "V-GIT-02",
+        "V-GIT-04",
+        "V-GIT-05",
+        "V-GIT-06",
+        "V-GIT-07",
+        "V-GIT-08",
+        "V-GIT-09",
+        "V-APP-03"
+      ],
+      "replacementEvidenceState": "pending_implementation",
+      "replacementEvidence": []
+    }
+  ],
+  "plannedRuntimePrivateInputs": {
+    "state": "design_only",
+    "owner": "Runtime",
+    "sourcePackages": [
+      "internal/runtime/broker",
+      "internal/runtime/broker/cmd",
+      "internal/runtime/cmd/helpergen"
+    ],
+    "generatedInputs": [
+      "internal/runtime/brokerassets/broker-amd64.gz",
+      "internal/runtime/brokerassets/broker-arm64.gz",
+      "internal/runtime/brokerassets/manifest.json"
+    ],
+    "contract": "WindowsBroker--001.md",
+    "integrationGate": "M3 Runtime after independent source/image reproducibility and native review",
+    "ciInvocationOwner": "MC Composition",
+    "publicReleaseAssetCount": 12
+  },
+  "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83"
+}

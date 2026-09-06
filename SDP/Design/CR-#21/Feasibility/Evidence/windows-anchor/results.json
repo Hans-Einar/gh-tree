@@ -1,0 +1,165 @@
+{
+  "pointer_bits": 64,
+  "rows": [
+    {
+      "case": "anchor",
+      "kind": "file",
+      "share": 0,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "anchor",
+      "kind": "file",
+      "share": 1,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "anchor",
+      "kind": "file",
+      "share": 3,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "anchor",
+      "kind": "directory",
+      "share": 0,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "anchor",
+      "kind": "directory",
+      "share": 1,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "anchor",
+      "kind": "directory",
+      "share": 3,
+      "initial_reparse": {
+        "ok": false,
+        "error": 145
+      },
+      "delete_handle_open_error": 0,
+      "disposition_from_attacker": "0x0",
+      "disposition_without_delete_access": "0xc0000022",
+      "posix_replace": "0x0",
+      "remove_replacement": {
+        "ok": true,
+        "error": 0
+      },
+      "reparse_after_replace_delete": {
+        "ok": true,
+        "error": 0
+      },
+      "final_names": [
+        "marker"
+      ]
+    },
+    {
+      "case": "converted-parent-relative-io",
+      "reparse": {
+        "ok": true,
+        "error": 0
+      },
+      "relative_create": "0xc0000280",
+      "relative_rename": "0xc0000280",
+      "path_based_names": [
+        "marker"
+      ],
+      "outside_names": [
+        "marker"
+      ],
+      "outside_untouched": true
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "source": "go.sum",
+    "sha256": "ab549e242f2dcb3a76a05fda8f483c8552298fb5a396c46695c3afc5d9c92812",
+    "archivedAs": "go.sum.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "go.mod",
+    "sha256": "3c70b4798db6c53536179fdd3d5f2cfbd24fca0031c94d107a01f0e0775a3e03",
+    "archivedAs": "go.mod.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent386-native64-conpty-outer-abort.json",
+    "sha256": "5b0f296e493882bd625e84d1baf7454f1295c53bb9be34ac31587c402d6eb038",
+    "archivedAs": "parent386-native64-conpty-outer-abort.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "environment-cleanup.json",
+    "sha256": "551a799a1f792d247b515436527b9aa74d2332947b582ab33d47722cccb76712",
+    "archivedAs": "environment-cleanup.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "build-metadata.json",
+    "sha256": "088c03eec5ab5f52ef65ce4d93450fcb5a90f716c8a7a34c18404beb9ea2fbd1",
+    "archivedAs": "build-metadata.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "embedded_386.go",
+    "sha256": "ddec0152b8e8734ffb8b05f0178aefb3325d388e820b050ac59bfdcdbf183e40",
+    "archivedAs": "embedded_386.go.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "results.json",
+    "sha256": "3bbf251aff9931f70bd4ae90c92f0e22302afb8b1f1bd93872a4a29133146003",
+    "archivedAs": "results.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "broker-arm64.exe",
+    "sha256": "1653d7711cb5baf02ba60cb36207fe8e40949274c2e42aaed90cc7008324ed99",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "embedded_other.go",
+    "sha256": "b1a7c9fb8aabfcea6c1787cd3fffdc051b82983c3c4c47658c4c0c8c3689fea4",
+    "archivedAs": "embedded_other.go.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "broker-amd64.exe",
+    "sha256": "afeaff437c9f9b07ff1654616ec10fd1ba52460cff6c23ed626c6c16a67caada",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "parent64-native64-conpty.json",
+    "sha256": "b89015f12a8fc5998fe6f55fa065c7f0ab2cd65c30f10050094061fc1af962f1",
+    "archivedAs": "parent64-native64-conpty.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "capture.py",
+    "sha256": "7b2697d4ca4dbd647784025e27208341b6bcad640a48e9da54c55f290544e43f",
+    "archivedAs": "capture.py.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent-386-embedded.exe",
+    "sha256": "84cbdb27ee5492b6b39e67f920672eb946e475fdfb32d15343ef8825cf9dca60",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "payload\\broker-amd64.exe",
+    "sha256": "8e4ac278df353aaa965ac8dcb99e5b7609fd3352fbd53e6be0fb335cb89e7b44",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "parent386-native64-conpty-embedded.json",
+    "sha256": "6bcb4905e1430affa64347f581381ac6f622627e2af97d6643028f791c4a2b76",
+    "archivedAs": "parent386-native64-conpty-embedded.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "probe.go",
+    "sha256": "c9166415652787a6df15b97487b8edf2e1443d949fc840e7ce8ea9ec1ae6e5f9",
+    "archivedAs": "probe.go.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent-386.exe",
+    "sha256": "160b605bf088c5b491d4865892279571dfbb67dd151d84a99f545383e8c4e13e",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "broker-amd64-rebuild.exe",
+    "sha256": "8e4ac278df353aaa965ac8dcb99e5b7609fd3352fbd53e6be0fb335cb89e7b44",
+    "archivedAs": null,
+    "role": "temporary_build_output_not_committed"
+  },
+  {
+    "source": "Findings.md",
+    "sha256": "901ea15a84c4019fdb545d63aeda4df09ee4e7e9dd952f268d2b8b21f2424496",
+    "archivedAs": "Findings.md",
+    "role": "source_or_report"
+  }
+]

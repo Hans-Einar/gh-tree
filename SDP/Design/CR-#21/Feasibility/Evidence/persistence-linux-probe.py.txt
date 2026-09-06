@@ -1,0 +1,69 @@
+import fcntl, json, os, pathlib, stat, subprocess, sys, tempfile, threading
+
+results=[]
+def record(name, **kwargs): results.append(dict(name=name, **kwargs))
+with tempfile.TemporaryDirectory(prefix='gh-tree-per52-', dir='/tmp') as base:
+    root=pathlib.Path(base)/'root'; outside=pathlib.Path(base)/'outside'
+    root.mkdir(); outside.mkdir(); (root/'.gh-tree').symlink_to(outside, target_is_directory=True)
+    rfd=os.open(root, os.O_RDONLY|os.O_DIRECTORY|os.O_CLOEXEC)
+    try:
+        os.open('.gh-tree',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=rfd)
+        raise AssertionError('symlink followed')
+    except OSError as e: record('nofollow-refuses-external-child', errno=e.errno)
+    (root/'.gh-tree').unlink(); (root/'.gh-tree').mkdir()
+    pfd=os.open('.gh-tree',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=rfd)
+    identity=os.fstat(pfd)
+    os.rename(root/'.gh-tree', outside/'moved-original')
+    (root/'.gh-tree').symlink_to(outside, target_is_directory=True)
+    fd=os.open('object-probe',os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_CLOEXEC,0o600,dir_fd=pfd)
+    os.write(fd,b'authorized-original-object');os.close(fd)
+    assert (outside/'moved-original'/'object-probe').read_bytes()==b'authorized-original-object'
+    assert not (outside/'object-probe').exists()
+    assert (os.stat('.gh-tree',dir_fd=rfd,follow_symlinks=False).st_dev,os.stat('.gh-tree',dir_fd=rfd,follow_symlinks=False).st_ino)!=(identity.st_dev,identity.st_ino)
+    record('pinned-object-never-follows-substitution-but-move-changes-path', observed_drift=True)
+    (root/'.gh-tree').unlink();os.rename(outside/'moved-original',root/'.gh-tree')
+    def payload(name, data):
+        f=os.open(name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_CLOEXEC|os.O_NOFOLLOW,0o600,dir_fd=pfd)
+        os.write(f,data);os.fchmod(f,0o640);os.fsync(f);os.close(f)
+    payload('run.json',b'A'*8192)
+    old=os.open('run.json',os.O_RDWR|os.O_CLOEXEC|os.O_NOFOLLOW,dir_fd=pfd)
+    os.link('run.json','retained-original',src_dir_fd=pfd,dst_dir_fd=pfd,follow_symlinks=False)
+    os.fsync(pfd)
+    stop=threading.Event(); observations=[]; errors=[]
+    def reader():
+        while not stop.is_set():
+            try:
+                f=os.open('run.json',os.O_RDONLY|os.O_CLOEXEC|os.O_NOFOLLOW,dir_fd=pfd)
+                b=os.read(f,16384);os.close(f)
+                assert b in (b'A'*8192,b'B'*8192)
+                observations.append(len(b))
+            except Exception as e: errors.append(repr(e))
+    thread=threading.Thread(target=reader);thread.start()
+    for n in range(100):
+        payload('temporary-'+str(n), b'B'*8192)
+        os.rename('temporary-'+str(n),'run.json',src_dir_fd=pfd,dst_dir_fd=pfd)
+        os.fsync(pfd)
+    stop.set();thread.join();assert not errors, errors
+    os.write(old,b'late');os.close(old)
+    assert (root/'.gh-tree'/'retained-original').read_bytes().startswith(b'late')
+    assert stat.S_IMODE(os.stat('run.json',dir_fd=pfd).st_mode)==0o640
+    record('rename-visibility-directory-fsync-mode-retained-object',observations=len(observations),errors=errors)
+    lock=os.open('run.json.lock',os.O_CREAT|os.O_RDWR|os.O_CLOEXEC|os.O_NOFOLLOW,0o600,dir_fd=pfd)
+    fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    code='import os,fcntl,sys; f=os.open(sys.argv[1],os.O_RDWR); fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB); os._exit(0)'
+    lockpath=str(root/'.gh-tree'/'run.json.lock')
+    proc=subprocess.run([sys.executable,'-c',code,lockpath],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert proc.returncode!=0
+    fcntl.flock(lock,fcntl.LOCK_UN)
+    proc=subprocess.run([sys.executable,'-c',code,lockpath],stdout=subprocess.PIPE,stderr=subprocess.PIPE);assert proc.returncode==0
+    fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    fcntl.flock(lock,fcntl.LOCK_UN);os.close(lock)
+    record('cross-process-flock-and-crash-release',passed=True)
+    for stage in ['before','after']:
+        (root/'.gh-tree'/'crash.json').write_bytes(b'old')
+        code='import os,sys; p=sys.argv[1];f=os.open(p+"/crash.tmp",os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600);os.write(f,b"new");os.fsync(f);os.close(f);\nif sys.argv[2]=="after":os.rename(p+"/crash.tmp",p+"/crash.json")\nos._exit(29)'
+        proc=subprocess.run([sys.executable,'-c',code,str(root/'.gh-tree'),stage]);assert proc.returncode==29
+        got=(root/'.gh-tree'/'crash.json').read_bytes();assert got==(b'old' if stage=='before' else b'new')
+        if stage=='before': (root/'.gh-tree'/'crash.tmp').unlink()
+        record('process-exit-'+stage+'-rename',target=got.decode())
+    os.close(pfd);os.close(rfd)
+print(json.dumps(dict(platform=os.uname()._asdict() if hasattr(os.uname(),'_asdict') else list(os.uname()),uid=os.getuid(),results=results),indent=2))

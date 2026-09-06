@@ -1,0 +1,6 @@
+{
+  "case": "parent32-cmd64-nondebug-control",
+  "returncode": 0,
+  "stdout": "{\n  \"PEB\": \"8d276d0000\",\n  \"beforeResumeHandle\": 0,\n  \"controlWithoutDebug\": true,\n  \"events\": null,\n  \"expectedIdentity\": \"2df043f60544f64a607d260000000d000000000000000000\",\n  \"output\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-debug32-2423038305\\\\target\\r\\n\",\n  \"parentArch\": \"386\",\n  \"target64\": true\n}\n",
+  "stderr": ""
+}

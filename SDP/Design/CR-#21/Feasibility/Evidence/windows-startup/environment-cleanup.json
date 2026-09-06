@@ -1,0 +1,8 @@
+{
+  "os": "Microsoft Windows NT 10.0.26200.0",
+  "python": "Python 3.14.0",
+  "go": "go version go1.25.0 windows/amd64",
+  "native386ProbeSha256": "18536234BDB6ABDE9A2D445399074A51D06AABF46067EDFA08762A4DE83B2391",
+  "residualProbeProcesses": [],
+  "residualProbeTempDirectories": []
+}

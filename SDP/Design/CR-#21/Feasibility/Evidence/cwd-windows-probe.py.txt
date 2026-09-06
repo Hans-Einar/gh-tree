@@ -1,0 +1,26 @@
+import ctypes,ctypes.wintypes as w,os,pathlib,subprocess,sys,tempfile,json
+k=ctypes.WinDLL('kernel32',use_last_error=True)
+k.CreateFileW.argtypes=[w.LPCWSTR,w.DWORD,w.DWORD,ctypes.c_void_p,w.DWORD,w.DWORD,w.HANDLE];k.CreateFileW.restype=w.HANDLE
+k.CloseHandle.argtypes=[w.HANDLE];k.CloseHandle.restype=w.BOOL
+INVALID=ctypes.c_void_p(-1).value
+handles=[]
+with tempfile.TemporaryDirectory(prefix='cr52-cwd-win-') as temporary:
+    root=pathlib.Path(temporary);project=root/'project';project.mkdir();(project/'marker').write_text('selected-original')
+    try:
+        # Pin absolute physical components, including project and ancestors.
+        for path in list(reversed(project.parents))+[project]:
+            h=k.CreateFileW(str(path),0x80|0x20|0x100000,3,None,3,0x02000000|0x00200000,None)
+            if h==INVALID:raise ctypes.WinError(ctypes.get_last_error())
+            handles.append(h)
+        blocked=[]
+        for path in [project,root]:
+            try:os.rename(str(path),str(path)+'-moved')
+            except OSError as exc:
+                assert exc.winerror==32,(path,exc);blocked.append(str(path.name))
+            else:raise AssertionError('directory moved despite guard')
+        # Native CreateProcess path resolution now occurs while effective guards remain.
+        child=subprocess.run([sys.executable,'-c',"import json,os;print(json.dumps(dict(marker=open('marker').read(),cwd=os.getcwd())))"],cwd=str(project),stdout=subprocess.PIPE,check=True,universal_newlines=True)
+        result=json.loads(child.stdout);assert result['marker']=='selected-original'
+        print(json.dumps(dict(platform=sys.platform,guardShare='READ|WRITE without DELETE',directory_and_ancestor_replace_refused=True,native_child_marker=result['marker'],result='PASS')))
+    finally:
+        for handle in reversed(handles):assert k.CloseHandle(handle)

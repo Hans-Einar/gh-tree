@@ -1,0 +1,13 @@
+compiler=go1.25.0 os=windows arch=amd64
+terminal=false abort=false before_resume_active=1 user_cpu_ticks=0
+terminal=false abort=false members=5 after_terminate_active=0 all_handles_signaled=true exit=7 pty_reader_joined=false
+terminal=false abort=true before_resume_active=1 user_cpu_ticks=0
+terminal=false abort=true members=1 after_terminate_active=0 all_handles_signaled=true exit=7 pty_reader_joined=false
+terminal=true abort=false before_resume_active=1 user_cpu_ticks=0
+terminal_output_marker_captured=true
+terminal=true abort=false members=5 after_terminate_active=0 all_handles_signaled=true exit=7 pty_reader_joined=true
+terminal=true abort=true before_resume_active=1 user_cpu_ticks=0
+terminal_output_marker_captured=false
+terminal=true abort=true members=1 after_terminate_active=0 all_handles_signaled=true exit=7 pty_reader_joined=true
+blocked_pipe_write=false close_joined=true
+blocked_pipe_write=true close_joined=true

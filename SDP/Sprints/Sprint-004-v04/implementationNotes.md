@@ -112,3 +112,53 @@ All ten focused reviews are accepted/merged; I-01 is complete. Refactor Design
 Issue #52 authorizes I-02/G-07. No product refactor or v0.4 verification has begun,
 and no BC is frozen. Required design resolves APIs, physical ownership, full Slice
 and compatibility plan, verification and safe twelve-target release gates.
+
+I-02 checkpoint #53 merged reviewed source
+d62d112bd897f63dd14b186356335b3d65170b33 at
+58f1cb9eda941db0941cbb8e04e6a0559a3ca896. Remote PR metadata rechecked:
+CI runs 34002140473/34002264047 have all 18 checks successful.
+
+Design #52: Master reread all accepted reports afresh. Bounded separate reviewers
+examined Git/Runtime feasibility, actual migration ownership and early safety.
+Early design findings DES52-H01/H02 reject precheck-only live Git overwrites and
+numeric Unix signal revalidation. Detailed correction/evidence state is in
+SDP/Design/CR-#21/DesignReview--001.md and its feasibility appendices.
+Normative drafts now cover API/ports, all 70 old physical files, 90 baseline test
+functions, 13 vertical capabilities, the complete platform/verification/release
+contract and all 143 planned finding dispositions. Every product finding remains
+open; all implementation/review/integration evidence fields remain empty.
+
+Master has made governance/design edits only. No product implementation, BC
+freeze, product integration branch, tag or release mutation has occurred. Final
+design review must inspect an exact complete committed HEAD after both safety
+protocols are reconciled; bounded probe results are not v0.4 product verification.
+
+PR #54 initial design HEAD f1dec60cbd3892f068410f2d7f3caa7f855ba52e passed
+all 18 CI checks in runs 34005955138/34005970811. Fresh full independent review
+returned 2 HIGH/2 MEDIUM design findings (DES52-H03/H04/M01/M02), while accepting
+the earlier H01/H02 mechanism directions. DesignReview--002 preserves the findings.
+Master added selected native Persistence protocol/schema migration, cwd identity
+through child acquisition, missing exact PR/stash reads and bounded reliable
+Runtime-to-App cleanup transfer. Separate Persistence feasibility source/logs and
+Root native Windows/Linux cwd experiments are archived. Corrected exact HEAD
+review/CI is next; no product finding closed, no BC frozen, no product code changed.
+
+Re-review of8c109b1e4308eb301d7c1418292044d714c2f33b accepted design H03/M01/M02
+but retained H04 HIGH. Native FSCTL reparse worked through metadata/share guards;
+CreateProcess returned before actual cwd acquisition. Strong data-read anchors
+and a target-specific initial-breakpoint/FileIdInfo barrier were then proved.
+Direct386-to-native64 debug creation fails50, so the complete proposed correction
+uses an embedded native Runtime broker, preserving capability and12 public assets.
+Actual386 -> extracted amd64 broker -> amd64 user/descendant with ConPTY, input/
+resize, normal/forced outer Job0 and deterministic helper rebuild passed bounded
+native probes. Native ARM64 implementation/emulation remains required, now with
+the documented windows-11-arm hosted CI route. Full source/log reports are archived;
+WindowsBroker--001 specifies the final topology/protocol/build contract. Fresh
+exact-HEAD review must accept this correction before any design/BC/product gate.
+
+Fresh independent complete design ACCEPT at
+664f0c051344e3abdfd7d3c5698e4fbd3f584a83; H04 and prior design findings resolved
+at design level. All18 CI checks pass in runs34022527812/34022530503. Master posted
+technical acceptance on #52 and recorded DesignReview--004. Acceptance labels
+become effective after final metadata exact-HEAD review/CI and PR54 merge. The next
+authorized program gate is separate BC review/freeze; product findings stay open.

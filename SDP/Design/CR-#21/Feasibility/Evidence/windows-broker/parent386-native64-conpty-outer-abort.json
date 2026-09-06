@@ -1,0 +1,38 @@
+{
+  "case": "parent386-native64-conpty-outer-abort",
+  "command": [
+    "C:\\Users\\hanse\\.codex\\tmp\\cr52-cwd-broker-feasibility\\parent-386-embedded.exe",
+    "parent-abort",
+    "C:\\Users\\hanse\\.codex\\tmp\\cr52-cwd-broker-feasibility\\payload\\broker-amd64.exe"
+  ],
+  "returncode": 0,
+  "stdout": "{\n  \"beforeResumeBrokerUserCpuTicks\": 0,\n  \"beforeResumeOuterActive\": 1,\n  \"brokerExitCode\": 55,\n  \"exercised\": {\n    \"anchorVisible\": false,\n    \"debuggerVisible\": false,\n    \"innerActiveWithDescendant\": 2,\n    \"inputOutputResize\": true,\n    \"output\": \"\\u001b[?9001h\\u001b[?1004h\\u001b[?25l\\u001b[2J\\u001b[m\\u001b[HUSER_READY debugged=false anchor=false cwd=C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-broker-4093269384\\\\target\\r\\n\\u001b]0;C:\\\\Users\\\\hanse\\\\.codex\\\\tmp\\\\cr52-cwd-broker-feasibility\\\\payload\\\\broker-amd64.exe\\u0007\\u001b[?25h\\u001b[8;30;100t\\u001b[?25l\\u001b[HUSER_READY debugged=false anchor=false cwd=C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-broker-4093269384\\\\target\\u001b[K\\r\\nprobe-input\\u001b[K\\r\\nUSER_INPUT probe-input SIZE 100 30\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\r\\n\\u001b[K\\u001b[5;1H\\u001b[?25h\"\n  },\n  \"forcedOuterCleanup\": true,\n  \"helper\": \"C:\\\\Users\\\\hanse\\\\.codex\\\\tmp\\\\cr52-cwd-broker-feasibility\\\\payload\\\\broker-amd64.exe\",\n  \"outerActiveBeforeAbort\": 5,\n  \"outerActiveFinal\": 0,\n  \"parentArch\": \"386\",\n  \"started\": {\n    \"acquiredCwdHandle\": 88,\n    \"acquiredFileId\": \"2df043f60544f64a001d2500000010000000000000000000\",\n    \"beforeResumeCwdHandle\": 0,\n    \"beforeResumeInnerActive\": 1,\n    \"beforeResumeUserCpuTicks\": 0,\n    \"brokerArch\": \"amd64\",\n    \"events\": 5,\n    \"userOutputBeforeBarrier\": false\n  }\n}\n",
+  "stderr": "",
+  "parsed": {
+    "beforeResumeBrokerUserCpuTicks": 0,
+    "beforeResumeOuterActive": 1,
+    "brokerExitCode": 55,
+    "exercised": {
+      "anchorVisible": false,
+      "debuggerVisible": false,
+      "innerActiveWithDescendant": 2,
+      "inputOutputResize": true,
+      "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[HUSER_READY debugged=false anchor=false cwd=C:\\Users\\hanse\\AppData\\Local\\Temp\\cr52-cwd-broker-4093269384\\target\r\n\u001b]0;C:\\Users\\hanse\\.codex\\tmp\\cr52-cwd-broker-feasibility\\payload\\broker-amd64.exe\u0007\u001b[?25h\u001b[8;30;100t\u001b[?25l\u001b[HUSER_READY debugged=false anchor=false cwd=C:\\Users\\hanse\\AppData\\Local\\Temp\\cr52-cwd-broker-4093269384\\target\u001b[K\r\nprobe-input\u001b[K\r\nUSER_INPUT probe-input SIZE 100 30\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\r\n\u001b[K\u001b[5;1H\u001b[?25h"
+    },
+    "forcedOuterCleanup": true,
+    "helper": "C:\\Users\\hanse\\.codex\\tmp\\cr52-cwd-broker-feasibility\\payload\\broker-amd64.exe",
+    "outerActiveBeforeAbort": 5,
+    "outerActiveFinal": 0,
+    "parentArch": "386",
+    "started": {
+      "acquiredCwdHandle": 88,
+      "acquiredFileId": "2df043f60544f64a001d2500000010000000000000000000",
+      "beforeResumeCwdHandle": 0,
+      "beforeResumeInnerActive": 1,
+      "beforeResumeUserCpuTicks": 0,
+      "brokerArch": "amd64",
+      "events": 5,
+      "userOutputBeforeBarrier": false
+    }
+  }
+}

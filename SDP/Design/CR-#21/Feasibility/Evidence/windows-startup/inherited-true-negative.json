@@ -1,0 +1,6 @@
+{
+  "case": "inherited-true-negative",
+  "returncode": 0,
+  "stdout": "{\"suspendedPEB\": \"0xda40df2000\", \"processParameters\": \"0x2b1c5e70000\", \"currentDirectoryHandleBeforeResume\": \"0x0\"}\n{\"reparseAfterCreateBeforeResume\": true, \"reparseError\": 0, \"child\": {\"cwd\": \"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\cr52-cwd-suspended-7hz3azbp\\\\target\", \"marker\": \"other-directory\"}}\n",
+  "stderr": ""
+}

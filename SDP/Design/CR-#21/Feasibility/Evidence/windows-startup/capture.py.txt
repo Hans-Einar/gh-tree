@@ -1,0 +1,11 @@
+import pathlib,subprocess,json,hashlib,sys
+root=pathlib.Path(r'C:\Users\hanse\.codex\tmp\cr52-cwd-startup-feasibility')
+rows=[]
+commands=[('python64-reparse',[sys.executable,str(root/'cr52-cwd-debug-probe.py'),'python-reparse']),('python64-immediate-chdir',[sys.executable,str(root/'cr52-cwd-debug-probe.py'),'python-chdir']),('parent64-cmd32',[sys.executable,str(root/'cr52-cwd-debug-probe.py'),'cmd32']),('parent64-cmd64',[sys.executable,str(root/'cr52-cwd-debug-probe.py'),'cmd64']),('parent32-cmd32',[r'C:\Users\hanse\.codex\tmp\cr52-cwd-debug32-probe.exe','32']),('parent32-cmd64-unsupported',[r'C:\Users\hanse\.codex\tmp\cr52-cwd-debug32-probe.exe','64']),('parent32-cmd64-nondebug-control',[r'C:\Users\hanse\.codex\tmp\cr52-cwd-debug32-probe.exe','64-control']),('inherited-true-negative',[sys.executable,str(root/'cr52-cwd-inherit-true-probe.py')]),('injected-raw-handle-negative',[sys.executable,str(root/'cr52-cwd-inject-handle-probe.py')])]
+for name,args in commands:
+ p=subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,timeout=35)
+ row={'case':name,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr};rows.append(row)
+ (root/(name+'.json')).write_text(json.dumps(row,indent=2))
+(root/'results.json').write_text(json.dumps(rows,indent=2))
+(root/'SHA256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.name!='SHA256.json'},indent=2))
+print(json.dumps([{'case':r['case'],'exit':r['returncode']} for r in rows],indent=2))

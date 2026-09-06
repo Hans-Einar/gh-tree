@@ -1,0 +1,200 @@
+import os, pathlib, tempfile, subprocess, shutil, json, hashlib, ctypes
+
+ROOT=pathlib.Path(__file__).parent
+RUN=pathlib.Path(tempfile.mkdtemp(prefix='scratch-',dir=ROOT))
+BASE=dict(os.environ,GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=str(RUN/'no-config'),GIT_TERMINAL_PROMPT='0',GIT_OPTIONAL_LOCKS='0')
+RESULTS=[]
+def git(p,*args,env=None,data=None,ok=True):
+    r=subprocess.run(['git','-C',str(p),*args],input=data,env=env or BASE,capture_output=True)
+    if ok and r.returncode:raise RuntimeError((str(p),args,r.returncode,r.stderr.decode(errors='replace')))
+    return r
+def text(p,*args,env=None):return git(p,*args,env=env).stdout.decode().strip()
+def init(name,fmt='sha1'):
+    p=RUN/name;p.mkdir();git(p,'init','-q','--initial-branch=main','--object-format='+fmt)
+    git(p,'config','user.name','ScratchProbe');git(p,'config','user.email','scratch@example.invalid');git(p,'config','core.autocrlf','false');git(p,'config','gc.auto','0')
+    (p/'f').write_bytes(b'A\n');(p/'.gitignore').write_bytes(b'ignored\n');git(p,'add','.');git(p,'commit','-qm','base');return p
+def files(p):
+    return {x.relative_to(p).as_posix():x.read_bytes() for x in p.rglob('*') if x.is_file() and '.git' not in x.relative_to(p).parts}
+def snap(p):return dict(files=files(p),index=(p/'.git/index').read_bytes(),head=text(p,'rev-parse','HEAD'))
+def scratch(p,label):
+    s=RUN/(p.name+'-'+label);s.mkdir();fmt=text(p,'rev-parse','--show-object-format');git(s,'init','-q','--object-format='+fmt)
+    env=dict(BASE,GIT_ALTERNATE_OBJECT_DIRECTORIES=str(p/'.git/objects'))
+    empty=s/'.git/empty-hooks';empty.mkdir();git(s,'config','core.hooksPath',str(empty),env=env)
+    for key,val in [('user.name','ScratchProbe'),('user.email','scratch@example.invalid'),('core.autocrlf','false'),('core.filemode','false'),('gc.auto','0')]:git(s,'config',key,val,env=env)
+    git(s,'update-ref','--no-deref','HEAD',text(p,'rev-parse','HEAD'),env=env)
+    for name,content in files(p).items():
+        dst=s/name;dst.parent.mkdir(parents=True,exist_ok=True);dst.write_bytes(content)
+    shutil.copyfile(p/'.git/index',s/'.git/index')
+    git(s,'update-index','--really-refresh',env=env,ok=False)
+    return s,env
+def transferred(p,s,env,roots):
+    pack=git(s,'pack-objects','--stdout','--revs',env=env,data=('\n'.join(roots)+'\n').encode()).stdout
+    git(p,'index-pack','--stdin',data=pack)
+    return len(pack)
+def publication_index(s,env):
+    entries=git(s,'ls-files','--stage','-z',env=env).stdout
+    dst=s/'.git/publish-index';e=dict(env,GIT_INDEX_FILE=str(dst));git(s,'read-tree','--empty',env=e);git(s,'update-index','-z','--index-info',env=e,data=entries)
+    return dst.read_bytes()
+def publish(p,before,s,env,*,replace_index=True,inject=None):
+    # Minimal ordinary-file feasibility model. Production path/format/journal/
+    # crash/permission checks are deliberately outside this temporary probe.
+    desired=files(s);changed=sorted(k for k in before['files'].keys()|desired.keys() if before['files'].get(k)!=desired.get(k))
+    recovery=pathlib.Path(tempfile.mkdtemp(prefix=p.name+'-publication-',dir=RUN))
+    idx=p/'.git/index';lock=p/'.git/index.lock';captured=[];installed=[]
+    fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY|getattr(os,'O_BINARY',0))
+    image=publication_index(s,env) if replace_index else b''
+    os.write(fd,image);os.fsync(fd);os.close(fd)
+    def finish(status,**extra):
+        if lock.exists():lock.unlink()
+        return dict(status=status,recovery=str(recovery),captured=captured,installed=installed,**extra)
+    if idx.read_bytes()!=before['index']:return finish('index-stale')
+    if inject:inject('locked',None,recovery)
+    for n,name in enumerate(changed):
+        path=p/name;expected=before['files'].get(name)
+        if expected is None:continue
+        if inject:inject('before-capture',name,recovery)
+        saved=recovery/('original-'+str(n));os.rename(path,saved);captured.append((name,str(saved)))
+        if saved.read_bytes()!=expected:
+            for oldname,oldpath in captured:
+                try:os.link(oldpath,p/oldname)
+                except FileExistsError:pass
+            return finish('captured-stale')
+    if replace_index:
+        savedidx=recovery/'original-index';os.rename(idx,savedidx)
+        if savedidx.read_bytes()!=before['index']:
+            try:os.link(savedidx,idx)
+            except FileExistsError:pass
+            for oldname,oldpath in captured:
+                try:os.link(oldpath,p/oldname)
+                except FileExistsError:pass
+            return finish('captured-index-stale')
+    if inject:inject('captured',None,recovery)
+    for n,name in enumerate(changed):
+        if name not in desired:continue
+        payload=recovery/('installed-'+str(n));payload.write_bytes(desired[name]);(p/name).parent.mkdir(parents=True,exist_ok=True)
+        if inject:inject('before-install',name,recovery)
+        try:os.link(payload,p/name)
+        except FileExistsError:
+            if replace_index and not idx.exists():os.link(recovery/'original-index',idx)
+            return finish('destination-collision')
+        installed.append((name,str(payload)))
+        if inject:inject('installed',name,recovery)
+    if replace_index:
+        os.link(lock,recovery/'installed-index')
+        try:os.link(lock,idx)
+        except FileExistsError:return finish('index-destination-collision')
+    return finish('published')
+def result(name,**details):RESULTS.append(dict(probe=name,**details))
+
+for fmt in ['sha1','sha256']:
+    p=init('stash-push-'+fmt,fmt);(p/'f').write_bytes(b'B-staged\n');git(p,'add','f');(p/'f').write_bytes(b'C-working\n');(p/'u').write_bytes(b'U-untracked\n');(p/'ignored').write_bytes(b'I-ignored\n')
+    before=snap(p);s,e=scratch(p,'prepare');git(s,'stash','push','--include-untracked','-m','scratch-stash',env=e);oid=text(s,'rev-parse','refs/stash',env=e)
+    assert text(s,'show',oid+'^2:f',env=e)=='B-staged';assert text(s,'show',oid+':f',env=e)=='C-working';assert text(s,'show',oid+'^3:u',env=e)=='U-untracked'
+    assert snap(p)==before
+    size=transferred(p,s,e,[oid]);git(p,'stash','store','-m','published-exact',oid)
+    out=publish(p,before,s,e);assert out['status']=='published'
+    assert (p/'f').read_bytes()==b'A\n' and not (p/'u').exists() and (p/'ignored').read_bytes()==b'I-ignored\n'
+    assert text(p,'status','--porcelain=v1')=='' and text(p,'rev-parse','refs/stash')==oid
+    assert any(pathlib.Path(saved).read_bytes()==b'C-working\n' for _,saved in out['captured'])
+    result('scratch-stash-push-'+fmt,native_three_parent_semantics=True,real_unchanged_during_prepare=True,pack_bytes=size,published=True,ignored_preserved=True)
+    before=snap(p);s2,e2=scratch(p,'apply');git(s2,'stash','apply','--index',oid,env=e2);assert snap(p)==before
+    out=publish(p,before,s2,e2);assert out['status']=='published'
+    assert (p/'f').read_bytes()==b'C-working\n' and (p/'u').read_bytes()==b'U-untracked\n' and text(p,'show',':f')=='B-staged'
+    assert text(p,'rev-parse','refs/stash')==oid
+    result('scratch-stash-apply-'+fmt,staged_and_worktree_versions_preserved=True,untracked_restored=True,stash_retained=True)
+
+p=init('hook-race');(p/'f').write_bytes(b'confirmed\n');(p/'u').write_bytes(b'confirmed-untracked\n');before=snap(p);s,e=scratch(p,'prepare');git(s,'stash','push','-u','-m','hook-stash',env=e);oid=text(s,'rev-parse','refs/stash',env=e);transferred(p,s,e,[oid])
+hook=p/'.git/hooks/reference-transaction';hook.write_bytes(b'#!/bin/sh\nif test "$1" = committed; then\n  while read old new ref; do\n    if test "$ref" = refs/stash; then\n      printf "hook-late-tracked\\n" > f\n      printf "hook-late-untracked\\n" > hook-new\n    fi\n  done\nfi\n')
+hook.chmod(0o755);git(p,'stash','store','-m','real-native-store',oid)
+assert (p/'f').read_bytes()==b'hook-late-tracked\n';out=publish(p,before,s,e)
+assert out['status']=='captured-stale' and (p/'f').read_bytes()==b'hook-late-tracked\n' and (p/'hook-new').read_bytes()==b'hook-late-untracked\n' and (p/'u').read_bytes()==b'confirmed-untracked\n'
+result('real-reference-hook-race',status=out['status'],hook_tracked_and_new_untracked_preserved=True,stash_exists=True)
+
+p=init('checkout');old=text(p,'rev-parse','HEAD');git(p,'switch','-qc','target');(p/'f').write_bytes(b'T\n');(p/'added').write_bytes(b'added\n');git(p,'add','.');git(p,'commit','-qm','target');target=text(p,'rev-parse','HEAD');git(p,'switch','-q','main');before=snap(p)
+s,e=scratch(p,'prepare');git(s,'switch','--no-overwrite-ignore','--detach',target,env=e);assert snap(p)==before
+out=publish(p,before,s,e);assert out['status']=='published';git(p,'update-ref','--no-deref','HEAD',target,old)
+assert text(p,'rev-parse','HEAD')==target and text(p,'status','--porcelain=v1')==''
+result('scratch-checkout',real_unchanged_during_native_switch=True,exact_detached_head=True,native_index_clean=True)
+
+p=init('ff');old=text(p,'rev-parse','HEAD');git(p,'switch','-qc','source');(p/'f').write_bytes(b'FF\n');git(p,'commit','-qam','ff');target=text(p,'rev-parse','HEAD');git(p,'switch','-q','main');before=snap(p);s,e=scratch(p,'prepare');git(s,'read-tree','-m','-u',old,target,env=e);assert snap(p)==before
+cmd=subprocess.Popen(['git','-C',str(p),'update-ref','--stdin'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=BASE)
+cmd.stdin.write(('start\nupdate refs/heads/main '+target+' '+old+'\nprepare\n').encode());cmd.stdin.flush();assert cmd.stdout.readline().strip()==b'start: ok';assert cmd.stdout.readline().strip()==b'prepare: ok'
+out=publish(p,before,s,e);assert out['status']=='published';cmd.stdin.write(b'commit\n');cmd.stdin.flush();cmd.stdin.close();assert cmd.stdout.readline().strip()==b'commit: ok';assert cmd.wait()==0
+assert text(p,'symbolic-ref','HEAD')=='refs/heads/main' and text(p,'rev-parse','HEAD')==target and text(p,'status','--porcelain=v1')==''
+result('scratch-prepared-fastforward',no_live_read_tree=True,exact_attached_head=True,clean=True)
+
+p=init('index-contention');(p/'f').write_bytes(b'B\n');git(p,'add','f');(p/'f').write_bytes(b'C\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e)
+def contention(phase,name,recovery):
+    if phase=='locked':
+        r=git(p,'add','f',ok=False);assert r.returncode!=0;result('native-index-contention',git_add_exit=r.returncode)
+out=publish(p,before,s,e,replace_index=False,inject=contention);assert out['status']=='published' and (p/'f').read_bytes()==b'B\n' and (p/'.git/index').read_bytes()==before['index']
+result('scratch-index-restore',restores_index_B_not_HEAD_A=True,index_bytes_unchanged=True)
+
+p=init('late-before-capture');(p/'f').write_bytes(b'confirmed\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e)
+def late(phase,name,recovery):
+    if phase=='before-capture' and name=='f':(p/'f').write_bytes(b'late-before-capture\n')
+out=publish(p,before,s,e,replace_index=False,inject=late);assert out['status']=='captured-stale' and (p/'f').read_bytes()==b'late-before-capture\n'
+result('last-check-edit',status=out['status'],late_bytes_preserved=True)
+
+p=init('late-after-install');(p/'f').write_bytes(b'confirmed\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e)
+def after_install(phase,name,recovery):
+    if phase=='installed' and name=='f':(p/'f').write_bytes(b'edited-installed\n')
+out=publish(p,before,s,e,replace_index=False,inject=after_install);assert out['status']=='published'
+retained=pathlib.Path(out['installed'][0][1]);assert retained.read_bytes()==b'edited-installed\n'
+retry=publish(p,before,s,e,replace_index=False);assert retry['status']=='captured-stale' and (p/'f').read_bytes()==b'edited-installed\n' and retained.read_bytes()==b'edited-installed\n'
+result('installed-edit-and-stale-retry',installed_inode_retained=True,retry_status=retry['status'],edited_bytes_preserved=True)
+
+p=init('new-destination');(p/'f').write_bytes(b'confirmed\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e)
+def collision(phase,name,recovery):
+    if phase=='before-install' and name=='f':(p/'f').write_bytes(b'external-new-destination\n')
+out=publish(p,before,s,e,replace_index=False,inject=collision);assert out['status']=='destination-collision' and (p/'f').read_bytes()==b'external-new-destination\n'
+assert pathlib.Path(out['captured'][0][1]).read_bytes()==b'confirmed\n'
+result('recreated-destination',status=out['status'],both_objects_retained=True)
+
+p=init('apply-conflict');(p/'f').write_bytes(b'stash-side\n');git(p,'stash','push','-m','conflict');oid=text(p,'rev-parse','refs/stash');(p/'f').write_bytes(b'current-side\n');git(p,'commit','-qam','current');before=snap(p);s,e=scratch(p,'prepare');r=git(s,'stash','apply','--index',oid,env=e,ok=False);assert r.returncode and git(s,'ls-files','-u','-z',env=e).stdout
+assert snap(p)==before;out=publish(p,before,s,e);assert out['status']=='published' and git(p,'ls-files','-u','-z').stdout and b'<<<<<<<' in (p/'f').read_bytes()
+assert text(p,'rev-parse','refs/stash')==oid
+result('scratch-conflict-publication',native_apply_exit=r.returncode,unmerged_index_preserved=True,markers_published=True,stash_retained=True)
+
+p=init('index-stale');(p/'f').write_bytes(b'B\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e);git(p,'add','f');new_index=(p/'.git/index').read_bytes()
+out=publish(p,before,s,e,replace_index=False);assert out['status']=='index-stale' and (p/'f').read_bytes()==b'B\n' and (p/'.git/index').read_bytes()==new_index and not out['captured']
+result('real-index-changed-after-prepare',status=out['status'],file_and_new_staging_unchanged=True)
+
+p=init('scratch-ignored-collision');git(p,'switch','-qc','target');(p/'ignored').write_bytes(b'tracked-target\n');git(p,'add','-f','ignored');git(p,'commit','-qm','track');target=text(p,'rev-parse','HEAD');git(p,'switch','-q','main');(p/'ignored').write_bytes(b'ignored-user\n');before=snap(p);s,e=scratch(p,'prepare');r=git(s,'switch','--no-overwrite-ignore','--detach',target,env=e,ok=False)
+assert r.returncode and snap(p)==before
+result('scratch-ignored-collision',prepare_exit=r.returncode,real_ignored_user_data_untouched=True)
+
+mingit=ROOT/'MinGit-2.48.1/cmd/git.exe'
+if mingit.exists():
+    p=init('native-symref');old=text(p,'rev-parse','HEAD');git(p,'switch','-qc','source');(p/'f').write_bytes(b'new-branch\n');git(p,'commit','-qam','new');target=text(p,'rev-parse','HEAD');git(p,'switch','-q','main');before=snap(p);s,e=scratch(p,'prepare');git(s,'switch','--no-overwrite-ignore','--detach',target,env=e)
+    git(p,'update-ref','refs/heads/new',target,'0'*len(target))
+    cmd=subprocess.Popen([str(mingit),'-C',str(p),'update-ref','--stdin','--no-deref','--create-reflog','-m','scratch publication'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=BASE)
+    cmd.stdin.write(('start\nsymref-update HEAD refs/heads/new ref refs/heads/main\nverify refs/heads/new '+target+'\nprepare\n').encode());cmd.stdin.flush()
+    assert cmd.stdout.readline().strip()==b'start: ok';reply=cmd.stdout.readline().strip();assert reply==b'prepare: ok',(reply,cmd.stderr.read())
+    oldguard=p/'.git/refs/heads/main.lock';guardfd=os.open(oldguard,os.O_CREAT|os.O_EXCL|os.O_WRONLY|getattr(os,'O_BINARY',0));os.close(guardfd)
+    assert text(p,'symbolic-ref','HEAD')=='refs/heads/main' and text(p,'rev-parse','refs/heads/main')==old
+    blocked=git(p,'update-ref','refs/heads/main',target,old,ok=False);assert blocked.returncode
+    out=publish(p,before,s,e);assert out['status']=='published';cmd.stdin.write(b'commit\n');cmd.stdin.flush();cmd.stdin.close();assert cmd.stdout.readline().strip()==b'commit: ok';assert cmd.wait()==0;oldguard.unlink()
+    assert text(p,'symbolic-ref','HEAD')=='refs/heads/new' and text(p,'rev-parse','HEAD')==target and text(p,'status','--porcelain=v1')==''
+    assert text(p,'rev-parse','HEAD@{0}')==target and text(p,'rev-parse','HEAD@{1}')==old
+    result('native-symbolic-HEAD-and-new-branch-transaction',git='2.48.1.windows.1',exact_new_branch=True,clean=True,native_head_reflog_retained=True,old_branch_verify_only_lock_blocks_updates=True)
+    git(p,'branch','same-oid-other',target);git(p,'symbolic-ref','HEAD','refs/heads/same-oid-other');r=subprocess.run([str(mingit),'-C',str(p),'update-ref','--stdin','--no-deref'],input=('start\nsymref-update HEAD refs/heads/source ref refs/heads/new\nverify refs/heads/source '+target+'\nprepare\n').encode(),env=BASE,capture_output=True)
+    assert r.returncode and text(p,'symbolic-ref','HEAD')=='refs/heads/same-oid-other'
+    result('native-symbolic-HEAD-CAS-same-OID',git='2.48.1.windows.1',exit=r.returncode,changed_branch_identity_refused=True)
+
+if os.name=='nt':
+    from ctypes import wintypes
+    k=ctypes.WinDLL('kernel32',use_last_error=True);k.CreateFileW.argtypes=[wintypes.LPCWSTR,wintypes.DWORD,wintypes.DWORD,ctypes.c_void_p,wintypes.DWORD,wintypes.DWORD,wintypes.HANDLE];k.CreateFileW.restype=wintypes.HANDLE
+    k.SetFilePointer.argtypes=[wintypes.HANDLE,wintypes.LONG,ctypes.c_void_p,wintypes.DWORD];k.WriteFile.argtypes=[wintypes.HANDLE,ctypes.c_void_p,wintypes.DWORD,ctypes.POINTER(wintypes.DWORD),ctypes.c_void_p];k.SetEndOfFile.argtypes=[wintypes.HANDLE];k.CloseHandle.argtypes=[wintypes.HANDLE]
+    p=init('open-original-handle');(p/'f').write_bytes(b'confirmed\n');before=snap(p);s,e=scratch(p,'restore');git(s,'restore','--worktree','--','f',env=e)
+    h=k.CreateFileW(str(p/'f'),0x40000000,0x7,None,3,0x80,None);assert h!=ctypes.c_void_p(-1).value
+    def write_late(phase,name,recovery):
+        if phase=='installed' and name=='f':
+            data=b'late-via-original-handle\n';n=wintypes.DWORD();assert k.SetFilePointer(h,0,None,0)!=0xffffffff;assert k.WriteFile(h,data,len(data),ctypes.byref(n),None);assert k.SetEndOfFile(h)
+    try:out=publish(p,before,s,e,replace_index=False,inject=write_late)
+    finally:k.CloseHandle(h)
+    assert out['status']=='published' and (p/'f').read_bytes()==b'A\n' and pathlib.Path(out['captured'][0][1]).read_bytes()==b'late-via-original-handle\n'
+    result('open-handle-after-capture',live_result_correct=True,late_original_inode_bytes_retained=True)
+
+data=dict(run=str(RUN),git_version=text(RUN,'--version'),results=RESULTS)
+(ROOT/'scratch-results.json').write_text(json.dumps(data,indent=2));print(json.dumps(data,indent=2))

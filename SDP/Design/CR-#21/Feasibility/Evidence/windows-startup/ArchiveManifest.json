@@ -1,0 +1,104 @@
+[
+  {
+    "source": "injected-raw-handle-negative.json",
+    "sha256": "c0c2a60f75149760c5f9c1bfad4f5344fc968677f37421e9383ebcbb5d8e1470",
+    "archivedAs": "injected-raw-handle-negative.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "cr52-cwd-debug-probe.py",
+    "sha256": "c96cddb0a9bcee3e0ad112aecdaaf3036eee53d9615969f2e952d5a7ef9472d0",
+    "archivedAs": "cr52-cwd-debug-probe.py.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent32-cmd32.json",
+    "sha256": "9d511cb31026c837f4df49aadf637a6e67cc136b79eb8ecba3fa95400939e336",
+    "archivedAs": "parent32-cmd32.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "Findings.md",
+    "sha256": "bc6a6bdce6d953d781916a8bc458a9255ee93fd64381e678234901070ba777b0",
+    "archivedAs": "Findings.md",
+    "role": "source_or_report"
+  },
+  {
+    "source": "capture.py",
+    "sha256": "f293875553c4b3bb765d75fb9bfb94ae4c1e1732cdb7d9c91c37ee4a40226752",
+    "archivedAs": "capture.py.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent32-cmd64-unsupported.json",
+    "sha256": "b49cacc4f3026b1101534ed7697060b2a160e430214f64c944fe3aeb06a0e34e",
+    "archivedAs": "parent32-cmd64-unsupported.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "cr52-cwd-inject-handle-probe.py",
+    "sha256": "a53b22272c3c015aeecf0bcd7e34279542dde14e646d9fe71f7db65b12b77927",
+    "archivedAs": "cr52-cwd-inject-handle-probe.py.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "environment-cleanup.json",
+    "sha256": "c7a4d933eb3165308107d51965bfffacb2968404b1d399cb5ab0ceeb2dba8a02",
+    "archivedAs": "environment-cleanup.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent64-cmd64.json",
+    "sha256": "5ace8fba1f84139e5d038de04ac856194d58d7a20bd20e37868872e056f425c7",
+    "archivedAs": "parent64-cmd64.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "cr52-cwd-inherit-true-probe.py",
+    "sha256": "14678b38088997838f780752fc6576dc707b7dfe4900791c6f146b3b0f20c4cc",
+    "archivedAs": "cr52-cwd-inherit-true-probe.py.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "cr52-cwd-debug32-probe.go",
+    "sha256": "41d7070c1659c549601bae3760119c8709241189b98effa465a321afc6a5b5da",
+    "archivedAs": "cr52-cwd-debug32-probe.go.txt",
+    "role": "source_or_report"
+  },
+  {
+    "source": "python64-immediate-chdir.json",
+    "sha256": "3143073d6312f95f8a66c0fb0004c5292100052609eddceff625c287a5ffbc88",
+    "archivedAs": "python64-immediate-chdir.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent32-cmd64-nondebug-control.json",
+    "sha256": "652d19cf7a943d77e5ba8611a3655b3935997e626fd69570766dce44b0596d8f",
+    "archivedAs": "parent32-cmd64-nondebug-control.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "python64-reparse.json",
+    "sha256": "daa0fa0f299fcf6714b5b3c7d8f04bfc3eb9587a0ea64a6eaf53f13799481706",
+    "archivedAs": "python64-reparse.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "results.json",
+    "sha256": "c6fdea4d174536de2e73edfaa03335cfb791b609d957716df1b8b1217942f01a",
+    "archivedAs": "results.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "inherited-true-negative.json",
+    "sha256": "282b4b7e8a349aec908e8927bf7d32931dbc525de7b207e185c9a59f705040e7",
+    "archivedAs": "inherited-true-negative.json",
+    "role": "source_or_report"
+  },
+  {
+    "source": "parent64-cmd32.json",
+    "sha256": "22084f0e198f0344159b8c2b45090d66aca5a7344cc78d44091f34271a1e1c59",
+    "archivedAs": "parent64-cmd32.json",
+    "role": "source_or_report"
+  }
+]
