@@ -47,6 +47,7 @@ type Adapter struct {
 	mu           sync.Mutex
 	repositories map[domain.RepositoryID]repository
 	plans        *planRegistry
+	mutations    mutationScheduler
 }
 
 type repository struct {

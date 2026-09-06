@@ -1,8 +1,8 @@
 # Git adapter — M3 in progress
 
-Issue #61 owns this folder under Application--Git and BoundaryTypes FROZEN 1.0.0.
-The current checkpoint supplies ResolveLocal/ListWorktrees, private bounded command
-transport, physical common/administrative identities and scoped remote mappings.
+Issue #61 owns this folder under Application--Git1.1.0 and BoundaryTypes1.0.0.
+The current checkpoint supplies all11 GitFacts methods, ReleasePlan, private
+bounded transport, physical identities, native directory and common-scope guards.
 It is not a complete GitFacts/GitMutations candidate. No legacy package is called
 and no live rewrite path exists. Remaining ports and native publication follow.
 
@@ -64,6 +64,16 @@ Head-to-index comparisons with source revalidation and independent file/byte bou
 HeadVersion comes from the selected WorktreeFacts.Observation.Version; index and
 worktree versions come from StatusFacts. A changed source refuses its old comparison.
 Native GitMutations operations remain to be implemented before adapter acceptance.
+
+Private mutation coordination reserves at most64 waiting/active calls per adapter,
+serializes linked worktrees by LocalCommon and adds a permanent native common-dir
+guard. Windows LockFileEx/Unix flock acquires nonblockingly; Windows denies delete
+sharing. The file is never unlinked/truncated, and malformed/unfinished markers
+refuse safely. Native locks end on owned-handle close/process death. This guard is
+acquired only for execution and never replaces native index/ref interlocks.
+Required order is scheduler/common guard, native prepared ref/departure guards,
+then index interlock; additional guards are nonblocking. Actual retained publisher
+and operation assembly are still outstanding.
 
 Private native-directory acquisition now validates supplied physical identity and
 opens/creates one literal child relative to the held directory. Unix uses
