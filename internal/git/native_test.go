@@ -11,7 +11,11 @@ import (
 
 func nativeFixture(t *testing.T, format string) (string, *Adapter) {
 	t.Helper()
-	git, err := exec.LookPath("git")
+	name := os.Getenv("GH_TREE_TEST_GIT")
+	if name == "" {
+		name = "git"
+	}
+	git, err := exec.LookPath(name)
 	if err != nil {
 		t.Skip("native Git unavailable")
 	}
@@ -22,7 +26,12 @@ func nativeFixture(t *testing.T, format string) (string, *Adapter) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	r := a.command(context.Background(), root, true, "init", "--object-format="+format, "--initial-branch=main", ".")
+	args := []string{"init", "--object-format=" + format, "--initial-branch=main"}
+	if storage := os.Getenv("GH_TREE_TEST_REF_STORAGE"); storage != "" {
+		args = append(args, "--ref-format="+storage)
+	}
+	args = append(args, ".")
+	r := a.command(context.Background(), root, true, args...)
 	if r.err != nil {
 		t.Fatalf("Git init %s: %v", format, r.err)
 	}

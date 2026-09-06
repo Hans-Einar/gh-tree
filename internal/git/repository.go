@@ -59,9 +59,7 @@ func (s *readSession) observation(repo domain.RepositoryID, w api.Optional[domai
 	return api.NewGitObservation(api.GitObservationData{ID: id, Repository: repo, Worktree: w, Interval: interval(s.started), Version: version, Completeness: complete})
 }
 
-func line(bytes []byte) string {
-	return strings.TrimSuffix(strings.TrimSuffix(string(bytes), "\n"), "\r")
-}
+func line(bytes []byte) string { return strings.TrimSuffix(string(bytes), "\n") }
 
 func directoryKey(d directoryObservation) string {
 	return fmt.Sprintf("%s\x00%d\x00%x", d.path, d.identity.Device(), d.identity.FileID())
@@ -463,6 +461,26 @@ func administrativeRoots(common string) (map[string]string, error) {
 
 func (s *readSession) readHead(repo repository, admin string) (domain.Head, error) {
 	raw, err := readSmallFile(filepath.Join(admin, "HEAD"), 4096)
+	if repo.backend != api.FilesRefs {
+		// Reftable owns pseudo-refs too; its compatibility HEAD file is not
+		// authority. symbolic-ref is read-only here, never an attachment writer.
+		q := s.command(repo.common.path, "--git-dir="+admin, "symbolic-ref", "--quiet", "HEAD")
+		if q.err == nil {
+			raw = []byte("ref: " + line(q.stdout))
+			err = nil
+		} else {
+			exit, p := q.transport.Data().ExitCode.Value()
+			if !p || exit != 1 {
+				return domain.Head{}, q.err
+			}
+			q = s.command(repo.common.path, "--git-dir="+admin, "rev-parse", "--verify", "--end-of-options", "HEAD^{commit}")
+			if q.err != nil {
+				return domain.Head{}, q.err
+			}
+			raw = []byte(line(q.stdout))
+			err = nil
+		}
+	}
 	if err != nil {
 		return domain.Head{}, err
 	}

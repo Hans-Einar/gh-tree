@@ -33,6 +33,15 @@ branch/ref equality and original remote/configuration binding. Equal OID bytes
 without an observed mapping do not establish a remote association. Private fetch
 root registration remains part of the upcoming Fetch implementation.
 
+ListStashes binds full stash OID and the observed reflog occurrence independently
+of display position. It validates native base/index/untracked parents and retains
+duplicate occurrences instead of coalescing OIDs. Files refs use bounded original
+log bytes; reftable uses native read-only reflog metadata and native pseudo-HEAD
+queries. Legacy managed metadata remains descriptive. Actual Git2.43 files and
+Git2.48.1 reftable controls pass for SHA-1/SHA-256; this proves no stash deletion.
+Tests optionally select an explicit executable/ref backend with GH_TREE_TEST_GIT
+and GH_TREE_TEST_REF_STORAGE, with no developer-local path in source.
+
 Physical Windows observation uses a fully shared read-attributes handle, native
 final path, full FileIdInfo uint64 volume/native16 file ID and creation stamp
 `birth-filetime:<decimal uint64>`. Aligned native storage is required; a raw byte
