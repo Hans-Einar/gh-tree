@@ -295,6 +295,19 @@ const (
 
 func (v ChangeKind) Valid() bool { return v >= Added && v <= Unmerged }
 
+// ChangeCause identifies the comparison or native status cause of one change.
+// Current index and filesystem facts alone cannot establish this distinction.
+type ChangeCause uint8
+
+const (
+	IndexChangeCause     ChangeCause = 1
+	WorktreeChangeCause  ChangeCause = 2
+	UntrackedChangeCause ChangeCause = 3
+	ConflictChangeCause  ChangeCause = 4
+)
+
+func (v ChangeCause) Valid() bool { return v >= IndexChangeCause && v <= ConflictChangeCause }
+
 type FetchFreshnessKind uint8
 
 const (

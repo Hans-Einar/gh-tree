@@ -28,10 +28,31 @@ do not recopy them. M259/M260 implementation findings are resolved.
 M3 Issues61 Git,62 GitHub,63 Persistence,64 Discovery,65 Runtime remain the exact
 work contracts. Read M3-Adapters--001.md, M3-Assignments.json, the complete Issue/#21,
 frozen referenced authority and actual M2 code. First authors: Git/GitHub/Persistence;
-Discovery/Runtime queued. Worktrees/actual bases are recorded at dispatch. Workers
+Discovery/Runtime queued. All five worker branches/worktrees are created/pushed at
+base412f33e477cec03cb6eafe7b846c9bcdd02c0a25; exact paths are in M3-Assignments. Workers
 own only their adapter folder/tests/bounded report; no legacy, shared workflow/module
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
+
+Current pushed milestones: Gitde9b2c8 (nine read methods/native foundations,
+no mutations); GitHub technical7382617/reviewccbc843 independently ACCEPTED,
+CI34055294036 passes18/helper skip, held for Git-first integration. Persistence
+c146bb5 has private native publication primitives/Windows metadata; latest verified
+CI34055865289 at0630ded passes18/helper skip. Public Storage/Unix metadata/recovery
+remain in progress. #66 FreeBSD worker branch codex/cr21-freebsd-ci is ready at
+base22217f9, worktree C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci.
+
+#67 API correction technical675dfff/review0bb8f28 independently ACCEPTED and source
+CI34055882003 passes18/helper skip. It is being integrated into canonical with
+this status record; exact integrated CI must pass before the clean Git branch
+receives that prerequisite. Git status contract1.1.0 froze at10f687e. No M3 adapter
+is integrated and no full Slice closed. Authority/interop links: M3-Adapters--001.
+
+Local-only test residue: Persistence report atc146bb5 records the owned Windows
+metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's
+Local/Temp directory; automatic approval review rejected its ACL restoration/
+removal as blocked by policy. Preserve it; do not retry/bypass. It is test data,
+not unpushed product source. Current later tests clean through retained handles.
 
 No M3 product work existed at resume. Before the next substantial step ensure the
 previous milestone is verified, committed and pushed. A partial recovery checkpoint

@@ -1,8 +1,8 @@
 {
   "stage": "M3",
-  "state": "resumed_before_dispatch",
+  "state": "dispatch_ready",
   "resumeRequiresExplicitUserInstruction": false,
-  "workerBranchesOrWorktreesCreated": false,
+  "workerBranchesOrWorktreesCreated": true,
   "implementationAgentsStarted": false,
   "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
   "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
@@ -123,5 +123,6 @@
       ],
       "dispatch": "queued"
     }
-  ]
+  ],
+  "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25"
 }

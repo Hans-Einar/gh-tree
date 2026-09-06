@@ -1,7 +1,8 @@
 # Application semantic values
 
-Issue #59 supplies the complete M2 API leaf under all seven FROZEN 1.0.0
-boundaries and BoundaryTypes--001. It imports the accepted Domain foundation
+Issue #59 supplies the complete M2 API leaf under the seven frozen boundaries
+and BoundaryTypes--001. Issue #67 applies Application--Git 1.1.0's bounded status
+cause correction; the other boundaries remain 1.0.0. It imports the accepted Domain foundation
 directly. It performs no orchestration, allocation, observation, clock read,
 filesystem access, process execution, or network activity.
 
@@ -106,3 +107,22 @@ index and a later unstarted commit-index step can coexist, while typed children
 retain their exact operation/subject/step provenance. Thus a terminal cannot erase
 an applied child or replace it with NotStarted/Partial/Indeterminate. Identical
 facts may coalesce; differing factual states/stages remain visible.
+
+Each ChangeFact requires a ChangeCause: IndexChangeCause describes HEAD-to-index
+(unborn HEAD compares with the empty tree), WorktreeChangeCause describes
+index-to-filesystem, and UntrackedChangeCause/ConflictChangeCause retain separate
+native causes. Kind and optional OldPath describe that cause, while IndexEntries
+and WorktreeState always describe current observed facts. Renamed/Copied require
+an exact, different OldPath; ordinary causes permit only stage 0 or no entry,
+Untracked permits no entry, and Conflict requires a nonempty subset of stages 1..3.
+
+StatusFacts rejects duplicate (Path, Cause), conflict coexistence at the same exact
+Path, and contradictory current facts for that Path. Index stages and semantic
+flags compare without order; every file identity/content/mode/link/parent fact
+compares exactly. Inputs and returned row order remain intact. Staged deletion
+with an untracked replacement and staged rename with a later edit/deletion or
+rename remain representable. Deleted does not imply an absent current file, and
+a rename destination need not be indexed. No cause is inferred from opaque
+versions. Partial/Unknown empty observations retain their completeness and never
+become Complete through admission. Native status truth and lossless Application/
+State projection remain the Git #61 and M4/M5 verification responsibilities.

@@ -98,3 +98,74 @@ implementationNotes/Handoff/CurrentIndex/Relations/append-only Ledger. No produc
 PR, entry cutover, legacy retirement, main merge, tag or release is authorized by
 these adapter Issues. M3 ends only after all five contribution gates pass; the
 full M4..M8 objective and all13 Slices remain afterward.
+
+## Native value interoperability conventions
+
+Implementation detail within frozen B3/Cwd/remote scope semantics, coordinated
+between the emitting and consuming workers; no new layer or authority is added.
+- Remote RepositoryID: domain.Remote with lowercase DNS-host/owner/name token,
+  e.g. github.com/hans-einar/gh-tree. Transport .git normalization is separate;
+  adapters still verify/register associations, never decode tokens into authority.
+- Windows DirectoryIdentity: DirectoryWindows; full FileIdInfo uint64 volume and
+  native16 FileID bytes; stamp birth-filetime:<unsigned CreationTime FILETIME>.
+  Use native aligned storage and verified ABI; legacy64 file IDs are insufficient.
+- Unix: DirectoryUnix; native device as uint64, inode uint64 little-endian in
+  FileID bytes0..7 and zero bytes8..15. Prefer proved-available birth:<signed-sec>:<nsec>;
+  otherwise explicitly use change:<signed-sec>:<nsec>. Decimal is canonical without
+  padding, nsec0..999999999. Never fabricate availability or a clock stamp.
+- Consumers compare the supplied stamp profile, without silently upgrading it or
+  ignoring drift. Birth stamps remain stable under child creation; change fallback
+  is short-lived and must honor frozen stale/held-object/own-effect rules. Test
+  child creation/rename versus replacement and unsupported/unavailable profiles.
+
+Value vectors: Unix device42/inode0x0102030405060708 has FileID
+08070605040302010000000000000000 and stamp birth:1:2 (or explicitly change:1:2).
+Windows device42/FileID000102030405060708090a0b0c0d0e0f uses the same16 native bytes
+and stamp birth-filetime:116444736000000000. These are layout vectors, not native
+proof. Native observation, nofollow acquisition and process/resource gates remain.
+
+Shared CI support is queued under#66 (Composition). Existing Linux/macOS/Windows/
+ARM64 jobs and x/sys0.44.0 already support native milestones;#66 adds reviewed
+FreeBSD execution/evidence without changing adapter ownership or release behavior.
+
+## BC-CHANGE-67: independent status causes (FROZEN 1.1.0, #67)
+
+Concrete G3/API omission: one Kind without a cause cannot carry separate staged,
+unstaged/untracked/conflict changes from current index/filesystem facts. The full
+DRAFT and impact proposal is preserved at980513b2b126842ab1d50558931a84441c253172.
+Fresh independent [review](Application/M3-Status-BC-Review--001.md) ACCEPTS it,
+with no blocking findings and explicit legitimate-case/API/native/projection tests.
+Master freezes the corresponding [Git G3](../../LayerBoundaryContracts/BC--Application--Git.md)
+delta as1.1.0 in the commit adding this decision. Required cause-tagged rows retain
+per-cause kind/rename identity and consistent current facts; other contracts and
+all native mutation protocols remain1.0.0/unchanged. The original whole-set freeze
+history stays in BCFreeze--001; this bounded correction does not reopen that set.
+
+Pure API correction and independent exact-source review are next under#67;
+ObserveStatus/dependent Git work remains paused until that prerequisite is
+integrated and pushed. Independent Git reads continue. Impact remains only
+Application--Git G3, API value/consistency/tests/README; no port, Domain, adapter,
+viewmodel or legacy change. M4/M5 must preserve causes in public/presentation
+projection. The freeze is contract authority, not implementation acceptance.
+
+## Windows storage security profile interpretation (#63)
+
+Master read frozen Persistence404..412 with accepted Feasibility/Persistence148..155:
+its bounded profile excludes audit-SACL/security-policy replication and requires
+an explicitly supported profile for custom audit-preservation requirements.
+The BC's explicit refusal/profile evidence obligation does not claim that limited
+READ_CONTROL queries prove full audit-SACL absence. Ordinary profile preserves/
+verifies owner/group/ordered DACL/protection/inheritance and supported label/
+resource security; unsupported or unreadable access-affecting policy still refuses.
+Never infer absent audit data, full descriptor equality or an unsupported security
+policy from those limited observations. No automatic privilege changes or new
+public configuration/API authority are introduced. Any access-affecting SACL class
+that cannot be detected must be raised before the affected publication proceeds.
+
+[Microsoft's query-rights table](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-information)
+and [GetSecurityInfo](https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-getsecurityinfo)
+confirm READ_CONTROL for owner/group/DACL/label/resource/CAP queries versus
+ACCESS_SYSTEM_SECURITY for audit-SACL. Adapter code/report/native tests must state
+the selected profile and its limits, and the critical independent review must
+check both preservation and refusal. This is an interpretation of existing
+bounded authority, not native proof, a contract relaxation or adapter acceptance.

@@ -1,13 +1,13 @@
 # BC--Application--Git
 
 State: FROZEN
-Version: 1.0.0
+Version: 1.1.0
 
-Freeze: [BCFreeze--001](BCFreeze--001.md); effective after reviewed PR #56 merge.
+Freeze: 1.0.0 history in [BCFreeze--001](BCFreeze--001.md); 1.1.0 status-cause correction under #67 is frozen by Master in the commit adding the accepted review and this delta.
 Parent Issue: #55 under #21; accepted design #52 / PR #54
 Applies to: complete v0.4 refactor, SLC-01..08, worktree scope for SLC-09..11 and cancellation in SLC-12
 Design authority: merged `4a42222f7bfedc1d80693effbb25a1a82fcff65e`; technical acceptance `664f0c051344e3abdfd7d3c5698e4fbd3f584a83`
-Supersedes: none. Freeze authority: BCFreeze--001 under #55.
+Supersedes: 1.0.0 only for the G3 status-cause representation. All other clauses remain unchanged. Review: [M3-Status-BC-Review--001](../Implementation/CR-%2321/Application/M3-Status-BC-Review--001.md); current decision/impact in [M3-Adapters--001](../Implementation/CR-%2321/M3-Adapters--001.md#bc-change-67-independent-status-causes-frozen-110-67).
 
 ## G1. Responsibility and dependency direction
 
@@ -120,7 +120,7 @@ generic `Execute(string, any)`, and result loss on error are forbidden.
 | GitPath | exact worktree-relative path bytes with validating constructor; no empty/NUL/rooted/traversal or escaping components. Spaces, colon, leading dash, non-ASCII and permitted newline bytes remain literal. Full path operands use literal/NUL-safe native forms, never trimming or shell interpolation. |
 | FileState | `Path: GitPath`, `State: Absent/Present`, and for Present `ObjectIdentity: SourceVersion`, `Kind: Regular/Symlink/Directory/Other`, `Mode: uint32`, `Content: SourceVersion`, `LinkTarget: Optional<string>`, `ParentIdentity: SourceVersion`. Content digest covers full bytes; identity covers the actual filesystem object/parent, not size/mtime alone. |
 | IndexEntryFact | `Path: GitPath`, `Stage: uint8`, `Object: domain.OID`, `Mode: uint32`, `SemanticFlags: []IndexFlag`; supported flags/extension state is explicit. Null protocol OIDs are represented by an absent entry, never Domain zero Revision. |
-| ChangeFact | `Path: GitPath`, `OldPath: Optional<GitPath>`, `Kind: Added/Modified/Deleted/Renamed/Copied/TypeChanged/Untracked/Unmerged`, `IndexEntries: []IndexEntryFact`, `WorktreeState: FileState`; rename old/new identities remain bound. |
+| ChangeFact | `Cause: ChangeCause`, `Path: GitPath`, `OldPath: Optional<GitPath>`, `Kind: Added/Modified/Deleted/Renamed/Copied/TypeChanged/Untracked/Unmerged`, `IndexEntries: []IndexEntryFact`, `WorktreeState: FileState`; rename old/new identities remain bound. |
 | StatusFacts | `Worktree: WorktreeFacts`, `Changes: []ChangeFact`, `IndexVersion: SourceVersion`, `WorktreeVersion: SourceVersion`, `ConfigurationVersion: SourceVersion`, `Upstream: UpstreamFact`, `Observation: GitObservation`; staged, unstaged, untracked and conflicted causes remain separate, never one clean boolean. |
 | UpstreamFact | closed None, NotApplicable, Gone(binding/ref/evidence), Unresolved(binding/ref/diagnostic), or Resolved(binding/remote-branch/cached-local-ref/exact-local-endpoints/comparison/freshness). NotApplicable covers detached/unborn where comparison requires an established local commit. Gone requires conclusive scoped evidence; failed lookup is Unresolved. |
 | RevisionComparison | `Left: domain.Revision`, `Right: domain.Revision`, `Ahead: Optional<uint64>`, `Behind: Optional<uint64>`, `Observation: GitObservation`; endpoints are exact verified commits in one local object scope. Counts are both present only when proven, never default zero on failure. |
@@ -130,6 +130,36 @@ generic `Execute(string, any)`, and result loss on error are forbidden.
 | RefFact | `Locator: GitRefLocator`, `Revision: Optional<domain.Revision>`, `SymbolicTarget: Optional<GitRefLocator>`, `Freshness: Optional<FetchFreshness>`, `Observation: GitObservation`; annotated tag identity and peeled commit are distinguished; unresolvable/missing object is explicit. |
 | ExactLocalResolution | `Requested: domain.ExactTarget`, `Local: domain.Revision`, `Locator: Optional<GitRefLocator>`, `Binding: Optional<RemoteBinding>`, `ObservedRemote: Optional<domain.Revision>`, `Observation: GitObservation`; remote-to-local association is verified and retained, never created from equal OID bytes alone. |
 | StashFact | `ID: domain.StashID`, `Parents: []domain.OID`, `Occurrence: SourceVersion`, `DisplayPosition: uint64`, `Message: string`, `Origin: Optional<StashOrigin>`, `Observation: GitObservation`; StashOrigin has descriptive worktree/branch/legacy managed metadata. Position, label, timestamp and managed marker are never destructive authority. |
+
+
+ChangeCause is required, closed Index/Worktree/Untracked/Conflict; zero/unknown
+values are invalid. Index compares observed HEAD with index (unborn: empty tree),
+Worktree compares index with filesystem; each admits Added/Modified/Deleted/
+Renamed/Copied/TypeChanged. Untracked requires Kind Untracked; Conflict requires
+Kind Unmerged. Each ChangeFact describes one cause, not an aggregate display kind.
+
+StatusFacts has at most one row per exact (Path,Cause); differing causes at one
+Path are allowed and unordered. OldPath is required only for Renamed/Copied and
+must differ from Path. Each row's IndexEntries and WorktreeState are the current
+observed facts, not HEAD entries or an inferred before-image. Entries have unique
+stages: ordinary rows permit stage0 or absence, Untracked has none, Conflict has
+a nonempty subset of stages1..3 and no stage0. Missing conflict sides are absent.
+Conflict excludes other causes at the same exact Path. Rows for the same Path
+must agree on current facts; compare entries by stage and semantic flags without
+inventing differences from order. Drift yields incomplete/diagnostic observations,
+not contradictory rows or guessed clean status.
+
+Staged deletion plus untracked replacement is valid: Index/Deleted and
+Untracked/Untracked can both have no current index entry and the same present
+filesystem object. Kind Deleted does not require absent WorktreeState. A staged
+rename A-to-B plus a worktree edit/deletion at B has two cause-tagged rows; a
+subsequent observed worktree rename B-to-C has its own Path C/OldPath B. A rename
+destination need not have a current index entry. Literal source/destination bytes
+remain independent per cause. Consumers must preserve both causes when grouping.
+No cause may be inferred from row order, opaque content tokens, or omission from
+a partial observation. Complete clean status has no rows; empty Partial/Unknown
+is not clean. Missing mandatory current facts omit that row with explicit
+incompleteness/diagnostic evidence, never fabricate a FileState/index entry.
 
 Domain ExactTarget denotes the accepted CommitTarget(Revision),
 BranchTarget(BranchID, ExpectedRevision), PullRequestTarget(PRID,
@@ -890,3 +920,10 @@ refreeze and reverify every affected layer/Slice. No worker workaround.
 Freeze history: 2026-09-06, whole set independently REVIEWED at
 7685494e45c0ef44fbccf9b49a589a90a78026d0, then marked FROZEN 1.0.0 by Master.
 BCFreeze--001 governs effective authority after final metadata review/CI/PR56 merge.
+
+Freeze history: #67 independently accepts the bounded cause-tagged status
+proposal at980513b2b126842ab1d50558931a84441c253172, reviewed by
+m3_status_contract_review (M3-Status-BC-Review--001). Master freezes this
+corresponding G3 delta as1.1.0. API constructor/consistency implementation,
+independent source review, native Git status and M4/M5 projection verification
+remain required; this freeze claims no product contribution or Slice completion.

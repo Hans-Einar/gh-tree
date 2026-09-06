@@ -617,6 +617,7 @@ type ChangeFact struct {
 type ChangeFactData struct {
 	Path          GitPath
 	OldPath       Optional[GitPath]
+	Cause         ChangeCause
 	Kind          ChangeKind
 	IndexEntries  []IndexEntryFact
 	WorktreeState FileState
@@ -663,7 +664,7 @@ func (d ChangeFactData) validate() error {
 			return invalid("index path")
 		}
 	}
-	return nil
+	return consistentChangeFact(d)
 }
 
 // StatusFacts is an immutable semantic boundary value. Its zero is invalid.
