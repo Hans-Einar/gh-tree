@@ -65,7 +65,7 @@ conversion followed by retained-parent relative refusal, independent handle/
 store lock exclusion, cancellation and killed-process kernel lock release.
 Empty directory conversion can succeed while its directory guard is held;
 relative operations then refuse, preserving the accepted storage limitation.
-Windows ARM64 currently has compile-only evidence for these helpers.
+Windows ARM64 also executed these helpers in exact-source CI34054966709.
 
 Unix acquisition uses no-follow, close-on-exec, nonblocking Openat descriptors
 and native Fstat/statx or BSD birth observations; nonblocking opens let special
@@ -82,7 +82,17 @@ file. Context/timeout/error exits close resources before releasing local ownersh
 Native unprivileged WSL Linux/ext4 tests execute read/absence, noninheritance,
 FIFO/link refusal, moved-object/path distinction, concurrent handle/store locks,
 cancellation, mutex-map release and killed-process kernel lock release. All nine
-Unix architecture test binaries compile; macOS/FreeBSD execution remains pending.
+Unix architecture test binaries compile. CI34054966709 at P2b source4c5e5be
+executed the package on macOS26 ARM64, Linux/race, Windows amd64/ARM64 with18
+SUCCESS jobs and the sole pre-Runtime helper skip. FreeBSD execution remains pending.
+
+Private publication primitives now select class65/class11 with pointer-aligned
+native layouts on Windows, and Renameat/Linkat on Unix. They require the future
+request owner to complete metadata, version and manifest barriers before use.
+Native Windows amd64/386 and unprivileged Linux/ext4 tests prove no-replace
+competitor refusal, retained-object late writes alongside an unchanged raw
+backup, and complete fresh-reader visibility during repeated replacement.
+These mechanism tests do not establish a complete Storage commit/recovery path.
 
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing

@@ -62,7 +62,7 @@ implemented by these private primitives. P2a is a recoverable source checkpoint.
 
 ## Milestone P2b — Unix descriptor acquisition and flock
 
-Source is the commit adding this subsection, exact SHA reported after push.
+Source: `4c5e5bed6b38860dc7a823780475e264605cbf26`, pushed/clean at P2b handoff.
 `acquire_unix.go`, platform profile helpers and native tests implement no-follow
 Openat/Fstat/statx/BSD birth observations, no inherited descriptors, bounded
 double-read consistency, missing-anchor observation, explicit moved-object versus
@@ -111,8 +111,41 @@ x/sys0.44.0 is sufficient to begin native helpers, and current shared CI provide
 Linux, macOS ARM64, Windows amd64/ARM64 and Linux race. No workflow/module edit
 was made here. Native evidence is distinct from architecture cross-builds.
 
+## Milestone P2c — selected native publication and retention primitives
+
+Exact source is the commit adding this subsection, reported after push. This is
+a private mechanism checkpoint; no public Storage commit path is claimed.
+Windows class65 rename/class11 no-replace hardlink use retained handles and
+pointer-aligned native layouts, with explicit386/amd64 offsets. Unix selects
+Renameat for presence and Linkat for absence. A successful absence Linkat leaves
+the owned payload name so subsequent cleanup cannot erase the known commit point.
+No replacement fallback, replay, truncate or retention deletion is implemented.
+
+Native author tests: Windows amd64 complete Persistence package and vet PASS;
+native386/WOW64 selected publication tests PASS; WSL Linux/ext4 UID/GID65534
+selected publication tests PASS. Cases cover existing-absence competitor refusal,
+no-replace original retention, late writes through an old held handle versus the
+independent raw backup, and three fresh native readers through30 replacements.
+The initial Windows test used an ordinary Go reader that did not share DELETE;
+its actual sharing failure was corrected to the required native reader profile,
+without changing the publication primitive. Linux file/parent fsync executed.
+Windows namespace power-loss durability and full request outcomes remain unproved.
+Bounded test staging: Windows temporary `gh-tree-persistence-p2c-27053b08c0d844bc9c1fb47731ec1c76`;
+Linux `/tmp/gh-tree-persistence-p2c.iVD5TK`, all fixtures owned under its tmp folder.
+
+P2b CI correction: actual4c5e5be CI34054966709 passed18 SUCCESS jobs and the sole
+pre-Runtime helper skip, executing this package on Windows amd64/ARM64,
+macOS26 ARM64, Linux and Linux/race. That source CI proves P1/P2a/P2b, not these
+new publication primitives or pending metadata/recovery. FreeBSD remains pending.
+
+Master confirmed the already accepted bounded Windows security profile excludes
+audit-only SACL replication; READ_CONTROL queries must never claim audit absence.
+Owner/group/ordered DACL/protection/inheritance and access-affecting label/resource/
+CAP queries/copy/refusal remain mandatory before public publication. No new public
+option, privilege escalation or contract change is introduced by this clarification.
+
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: commit/push P2b; request existing platform CI execution for the new Unix
-tests, then complete constructor/port wiring and metadata/publication/recovery;
+NEXT: commit/push P2c; complete native metadata and constructor/port wiring with
+version/manifest/retention/admission/restart barriers around these primitives;
 freeze the complete adapter later for independent review and full native gates.
