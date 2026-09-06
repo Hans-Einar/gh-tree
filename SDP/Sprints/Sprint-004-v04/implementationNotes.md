@@ -428,3 +428,16 @@ jobs/helper bytes remain unchanged; new ordinary-user FreeBSD job is native
 infrastructure, not adapter proof. Exact integrated CI next, then coordinated
 adoption by active adapter branches. Mutable VM dependencies/system-EA EPERM
 and trusted runner/controller boundary remain explicit in independent report.
+
+Shared CI exact integrationd5eeaac CI34058149301 passes19/helper skip; #66 complete.
+Clean Gitd539a73/Persistence8a8a987/Discovery4bfcf7f adoptions preserve owned source
+and pass compile compatibility. #68 now adopted by Git. Corrected Git and macOS
+metadata CI pass; FreeBSD/no-birth protocol issues remain. Recovery checkpoint
+m3-shared-prerequisites/20260906-2046Z marks current state, not M3/Slice completion.
+
+External hold: required Git foundation review failed with a cybersecurity service
+content/access block, no accepted report. Authors stopped clean/pushed: Git25240dd,
+Persistence6fc6c2c, Discovery8e2d2d1 already frozen. Shared prerequisites/M1/M2 remain
+accepted; full refactor remains incomplete. All26 worktrees clean, no stashes or
+unpublished branch commits after fetch. Exact continuation and local residue are
+in current Handoff. Recovery tag m3-access-hold/20260906-2225Z does not waive gates.

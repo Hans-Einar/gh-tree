@@ -1,94 +1,124 @@
-# Program handoff
+# Program handoff — independent M3 work; Git review blocked
 
-ACTIVE: Sprint-004-v04 / I-03 / M3. Explicit user resumption supersedes the pause.
+Sprint-004-v04 / I-03 / M3. The full Issue#21 v0.4 objective remains unchanged.
 Repo Hans-Einar/gh-tree; canonical worktree C:/Users/hanse/GIT/gh-tree-wt/refactor,
-branch codereview-21/refactor. Follow the resumed policy in UserRunContract.md:
-coherent verified commits pushed promptly, targeted tests, strong independent
-critical review, concise traceability and no duplicate evidence archives.
+branch codereview-21/refactor. Latest recovery tag:
+checkpoint/m3-access-hold/20260906-2225Z (the commit adding this status).
+This is a recovery marker, not adapter/Slice/stage/release completion.
 
-## Verified baseline
+## Why work stopped
 
-Recovery commit3e259652797295504e34bafe2063a8022a503965 and annotated tag
-checkpoint/gh-tree-m3-preparation/20260906-1725Z matched local/origin at resume.
-All16 worktrees were clean and remote heads matched the checkpoint inventory;
-M3 Issue bodies were unchanged. Main remains97cc0d8. Historical checkpoint801280a
-is already pushed on codex/cr21-checkpoints. Earlier pause/inventory details remain
-in the immutable recovery tag and existing checkpoint evidence archive.
+The required independent Git foundation reviewer failed with the service message
+"This content was flagged for possible cybersecurity risk" and a Trusted Access
+for Cyber link. No completed review/acceptance was produced. Active authors then
+stopped at coherent clean pushed boundaries. No bypass, model switch, rephrased
+review or recovery of withheld output was attempted. The repository authorization
+still exists; the external review access/false-positive issue must be resolved.
+OpenAI guidance: https://learn.chatgpt.com/docs/cyber-safety . Use only the approved
+identity/workspace/model/surface; /feedback can report suspected false positives.
+Local default configuration observed gpt-6-astra; account provisioning and this
+run's effective entitlement could not be verified. No local model settings changed.
 
-M0: ten focused reviews, accepted design #52/PR54 and seven BCs/shared types
-FROZEN1.0.0 (#55/PR56, effective97cc0d8). M1 #57 accepted05982a4. M2 #58 Domain6113ca5,
-#59 API finald4c3bfd/technical6e289c4 and #60 viewmodeld279c3f are accepted and closed.
-API integrationecf12e9 CI34046178481 and combined M2 integrationd60afe8 CI34046727344
-passed18 applicable jobs plus explicit pre-Runtime helper skip. Checkpoint3e25965
-CI34050258198 also passed. Full review histories/evidence are already indexed;
-do not recopy them. M259/M260 implementation findings are resolved.
+## Current continuation
 
-## Current work
+The next goal turn verified the unchanged6b9f69e checkpoint/tag and terminal
+Persistence CI34063842833:16 success, Windows amd64/ARM64 and FreeBSD failures,
+plus helper skip. The test-selection compile defect is resolved; native gates
+remain. Previous turn was concrete progress, not completion.
 
-M3 Issues61 Git,62 GitHub,63 Persistence,64 Discovery,65 Runtime remain the exact
-work contracts. Read M3-Adapters--001.md, M3-Assignments.json, the complete Issue/#21,
-frozen referenced authority and actual M2 code. First authors: Git/GitHub/Persistence;
-Discovery/Runtime queued. All five worker branches/worktrees are created/pushed at
-base412f33e477cec03cb6eafe7b846c9bcdd02c0a25; exact paths are in M3-Assignments. Workers
-own only their adapter folder/tests/bounded report; no legacy, shared workflow/module
-or frozen-contract edits without Master coordination. Separate reviewers inspect
-frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
+The blanket hold is narrowed to the blocked Git review and dependent serial
+integration. Already-authorized independent M3 work may continue. Launch Discovery
+review now uses its frozen2a18fdd/report8e2d2d1 candidate under#64. It reviews only
+that passive adapter and is not a retry, relabeling or substitute for the failed
+Git review. No model/permission change or withheld-output retrieval is authorized.
+The Git gate remains open; all original M3..M8 requirements remain.
+Runtime#65 also starts independently from26d5f4f after its accepted M2/frozen
+prerequisites and shared CI were verified; its authoring does not depend on Git
+review. Discovery M364-M01 correction20bd8ac/review4e9f479 is independently ACCEPTED,
+CI34065291612 19PASS/helper skip, held for serial integration. Persistence proposal
+assessment M3-Identity-Review--001 accepts the bounded private native mechanism;
+Master authorizes fresh implementation within its constraints, not adapter acceptance.
 
-Git adopted #67 at775121d (source tree unchanged on adoption). Native branch
-CI34056687102 FAILED Linux race positive-transport timeout and both Windows ACL
-assertions; correctionee42b1b is pushed and CI34057368746 pending. Author continues
-status/general diff. Nine
-read methods/native foundations existed before status; mutations remain pending.
-GitHub technical7382617/reviewccbc843 remains ACCEPTED, held for Git-first.
-Persistence87506ee includes native primitives/metadata and three public loads.
-Fresh successor must complete three commits/manifests/recovery. macOS failure
-34056596058 has a kernel-semantics-based correction awaiting exact new native CI.
-FreeBSD#66 ordinary-user probe confirms system namespace EPERM, never empty.
+## Durable state
 
-#66 source489a731 CI34056731199 passes19/helper skip, including actual FreeBSD15
-amd64 Go1.25 uid1001 guest-native tests and expected failure propagation. Only M2
-leaves exist at that source, all absent adapters explicitly NOT RUN. Independent
-reviewbe94b44 ACCEPTS infrastructure only; integrated by this record commit.
-Exact canonical CI must pass before adapter branches consume the new job.
+M0/M1/M2 remain accepted (earlier full history is in checkpoint3e259652797295504e34bafe2063a8022a503965
+and checkpoint/gh-tree-m3-preparation/20260906-1725Z). Main remains97cc0d8257603766dd741b49b7d8005857b421a9;
+CLI/install still legacy. All13 Slices and143 baseline findings remain in scope.
+Shared prerequisites are COMPLETE: #67 Git status contract/API, #68 readable plan
+digest and #66 native FreeBSD CI. Last integrated executable head is
+d5eeaac4acb11894bbb2209aa7e04104ee634f1d; CI34058149301 passes19/helper skip.
+Git1.1.0 froze10f687e; other boundary contracts/shared types remain1.0.0.
+Current status-only commits do not change that verified product tree.
 
-#67 complete: contract10f687e, API675dfff/review0bb8f28, integrated4d1b548;
-source/integration CI34055882003/34056365373 pass18/helper skip. #68 mechanical
-ports accessor70d1719/review736129a independently ACCEPTED, source CI34057016256
-passes18/helper skip. Exact integration396a629 CI34057368177 passes18/helper skip and local ports
-race/vet/windows architecture pass; #68 is complete, clean Git adoption next.
-Discovery#64 now starts on planned base412f33e/branch from M3-Assignments; Runtime
-remains queued. No adapter/full Slice completion.
+| Contribution | Pushed branch | Exact held HEAD | State / evidence |
+|---|---|---|---|
+| Git#61 | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | technical8c2584b; 11 facts, registry/ReleasePlan, scheduler/native locks; CI34063202321 19PASS/helper skip; review blocked, mutations incomplete |
+| GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
+| Persistence#63 | codereview-21/layer-persistence | 6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12 | all6 methods unaccepted; ObjectID probe699a69f only, product adoption pending; Windows regression/FreeBSD and full profile/fault gates remain |
+| Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
+| Runtime#65 | codereview-21/layer-runtime | 412f33e477cec03cb6eafe7b846c9bcdd02c0a25 | queued; no implementation |
 
-Local-only test residue: Persistence report atc146bb5 records the owned Windows
-metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's
-Local/Temp directory; automatic approval review rejected its ACL restoration/
-removal as blocked by policy. Preserve it; do not retry/bypass. It is test data,
-not unpushed product source. Current later tests clean through retained handles.
+Exact implementation worktrees are in M3-Assignments/CurrentIndex. All five live
+branches match origin. All26 registered worktrees were clean, stash count0, and
+all local branch commits were reachable from origin after fetch. The resumed
+program had73 unique commits before this final status commit. Two detached review
+snapshots (Git855a144 and Persistence91acac5) are already reachable in pushed
+branch history. No unpushed product work or uncommitted implementation remains.
 
-No M3 product work existed at resume. Before the next substantial step ensure the
-previous milestone is verified, committed and pushed. A partial recovery checkpoint
-is not completion. Canonical docs-only commits may skip CI; executable/build changes
-and meaningful acceptance/integration gates keep the required verification.
+## Verification and unresolved work
 
-## Required continuation
+Git completed facts/native registry/scheduler tests on Windows amd64/386 and
+ordinary-user Linux; current full source CI passes. WSL Git2.35.3 linked-fixture
+failure remains distinct from Git2.43/native CI proof. Failed foundation review's
+already-delivered provisional observations are in M3-Foundation-Review--001;
+revalidate them, do not treat that status note as an accepted review.
 
-All13 Slices/all143 baseline findings remain selected/open. CLI still uses legacy.
-After M3: M4 Application/State/View, M5 real new-stack harness, M6 host/cutover,
-M7 mapped retirement/strict tree, M8 full native/platform/E2E/product PR/main/
-twelve assets/controlled install-upgrade/release gates. No scope reduction or
-completion inferred from adapter folders. Original conditional release authority
-remains governed by the complete verification contract.
+Persistence early audit's3 findings are independently resolved at91acac5 with
+native Windows/Linux controls (M3-Protocol-Review--001). New repeated Windows
+commit/load control at a147 fails because NTFS transfers CreationTime while full
+FileID stays the same. Native owned-artifact ObjectID probes pass amd64/386,
+including present/cached-absence, kill-before-outcome and same-byte replacement;
+ObjectID alone is demonstrably insufficient. Product adoption remains pending.
+No timestamp repair, original-ID mutation or identity-check waiver is approved.
+CI34063088464 at699a69f failed6 jobs: Windows regression plus accidental Unix
+selection of Windows tests. Mechanical6fc6c2c fixes only platform filenames, all12
+test binaries compile; CI34063842833 completed16 success/3 native failures
+(Windows amd64/ARM64 and FreeBSD), plus helper skip. FreeBSD
+system-EA EPERM, no-birth restart/source-name interval and full fault/resource/
+security/admission guarantees remain. Never treat unsupported metadata as absent.
 
-Runtime helper interface: go run ./internal/runtime/cmd/helpergen -check on native
-Windows/amd64 Go1.25.0; brokerassets/broker-amd64.gz, broker-arm64.gz and manifest.json,
-with broker/ including broker/cmd/ and cmd/helpergen/ source closure. First Runtime
-input makes missing prerequisites fail. No runtime compiler/download/extra asset.
-Tooling-Preparation--001 and native feasibility are inputs, not product proof.
-FreeBSD read-only action source is preserved in checkpoint evidence, not executed
-or accepted CI. Shared native CI requirements are Master-coordinated.
+## Exact next permitted action
 
-Go1.25 executable: C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe.
-Use explicit UTF-8 and task workdirs. Original temporary fixtures/keys/tools/caches
-remain local, inventoried at checkpoint; no unpushed product work at resume.
-No technical external blocker is known. Consult CurrentIndex and ledger for exact
-new source/dispatch/integration SHAs rather than narrative history.
+After approved review access is resolved, verify tag/ref/worktree state, then
+complete the independent Git foundation review at855a144 using actual current
+source/evidence and revalidate its preliminary observations. Resume Git mutation
+author from25240dd: all8 Prepare methods, ExecutePrepared, Fetch/Reconcile and
+complete G8/G8a/G9/G10 protected publication/signing/stash protocols remain.
+In parallel, obtain independent Discovery review and assess/implement the strictly
+private Persistence identity proposal only after its safe scope/proof is accepted;
+then complete remaining native/fault/profile gates. Do not bypass the blocked gate.
+Serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
+Then M4 Application/State/View, M5 real new-stack harness, M6 cutover, M7 mapped
+retirement and M8 full native/E2E/product PR/main/release gates. No full Slice or
+baseline finding is closed by current adapter foundations or CI infrastructure.
+
+## Local-only state
+
+Ordinary compiler/module caches, owned native fixtures/test binaries and WSL/tmp
+runs remain local; reports preserve commands/hashes and important small proof files
+are already in existing Verification/Evidence as non-build .go.txt/logs. Do not
+copy whole historical source/evidence archives. Incomplete Git reviewer temporary
+probes/logs were not accessed/exported after the service block; no full report
+exists. They are not accepted evidence needed to reconstruct the intended source.
+
+The owned denied-ACL test directory
+C:/Users/hanse/AppData/Local/Temp/TestWindowsNativeMetadataCopy2880129540/001
+(copy-d/source-d) remains untouched. Automatic approval review rejected its ACL
+restoration/removal as "blocked by policy"; do not retry/bypass. No user data is in
+that fixture. It is documented local test residue, not unpushed implementation.
+
+Go1.25: C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe.
+Use explicit UTF-8, exact workdirs and existing resumed durable-milestone policy.
+Runtime helper interface remains native Windows/amd64 Go1.25.0 helpergen -check
+with broker-amd64.gz, broker-arm64.gz, manifest.json and actual source closure.
+No product PR, main merge, release/tag-v0.4 or installed extension change occurred.

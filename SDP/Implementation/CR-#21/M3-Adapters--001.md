@@ -124,9 +124,9 @@ Windows device42/FileID000102030405060708090a0b0c0d0e0f uses the same16 native b
 and stamp birth-filetime:116444736000000000. These are layout vectors, not native
 proof. Native observation, nofollow acquisition and process/resource gates remain.
 
-Shared CI support is queued under#66 (Composition). Existing Linux/macOS/Windows/
-ARM64 jobs and x/sys0.44.0 already support native milestones;#66 adds reviewed
-FreeBSD execution/evidence without changing adapter ownership or release behavior.
+Shared CI #66 (Composition) is accepted/integrated atd5eeaac, CI34058149301
+passes19/helper skip. Native FreeBSD supplements existing Linux/macOS/Windows/
+ARM64 and all12 architecture/build jobs; no adapter proof from absent sources.
 
 ## BC-CHANGE-67: independent status causes (FROZEN 1.1.0, #67)
 
@@ -188,5 +188,94 @@ Current dispatch: Discovery#64 starts on its already-pushed planned base412f33e
 and owned branch/worktree from M3-Assignments; unchanged Discovery/Runtime/shared
 contracts and current native identity conventions apply. Persistence successor
 starts from pushed87506ee, three public loads present; three commits/recovery
-protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED with native CI19PASS,
-awaiting canonical integration. No adapter integration or complete Slice claim.
+protocol remains. #66 source489a731/reviewbe94b44 is ACCEPTED and integrated atd5eeaac with
+source/integrated CI19PASS. Active Git/Persistence/Discovery branches adopted it
+at clean boundaries, preserving their owned source. No adapter integration or
+complete Slice claim.
+
+Recovery identity interpretation: frozen Persistence392..395 does not require a
+manifest to embed its own final ctime. Stable persisted RecoveryID is distinct
+from mutable artifact observation SourceVersion (468..480); DirectoryIdentity
+is short-lived (BoundaryTypes103..105). Reobserve current facts and preserve
+proven store/artifact association without equating changed observations or
+waiving replacement checks. No-birth profiles still need actual restart proof;
+unknown association cannot become authority to adopt/replay/delete an artifact.
+
+Git constructor wiring for M4/Composition: create one immutable coordinator
+ports.ApprovalIssuer and supply the same value to coordinator and Git
+Options.ApprovalAuthority. Git verifies both Issued and ValidFor; it never issues
+approvals. Zero authority provides facts only and cannot prepare executable plans.
+This implements existing G5 ownership, not a new boundary API or confirmation rule.
+
+Persistence early audit findings M363-PR01/02/03 are independently resolved at
+91acac5 in bounded native controls; complete acceptance remains pending. New actual
+Windows12-cycle regression at a147a1d shows the same FileIdInfo file ID with a changed
+CreationTime after native replacement, consistent with MS-FSA FileRenameInformation
+tunneling. A file creation timestamp cannot silently be treated as immutable.
+No timestamp-writing workaround, identity-check removal, or selected native
+primitive change is accepted. Fresh finishing worker must establish a safe native
+profile and crash/restart association; any frozen primitive change needs BC review.
+Shared DirectoryIdentity conventions concern directories and remain unchanged.
+
+## External review-access hold
+
+Required Git foundation review stopped with a service cybersecurity content/access
+block. M3-Foundation-Review--001 is a Master incomplete-status record, not an
+acceptance. Active authors stopped at clean pushed boundaries; no retry/rephrased
+review/model switch or withheld-output recovery was attempted. No additional
+implementation begins until the approved review access/surface is resolved.
+All original scope and engineering gates remain; the program is not complete.
+
+Git technical8c2584b/report25240dd adds verified common scheduling/permanent locks,
+with CI34063202321 19PASS/helper skip, but no native mutation assembly. Persistence
+mechanism699a69f/report3a5a8e7 proves owned Windows ObjectID/FileIdInfo behavior,
+including negative ID-transfer and pre-outcome process-death controls; proposal
+remains unadopted in product. Its Windows failing regression remains, FreeBSD
+profile is unresolved. Mechanical6fc6c2c only repairs native test file selection,
+with all12 test binaries compiling; no native/full-matrix acceptance implied.
+Discovery2a18fdd/report8e2d2d1 is frozen with successful source CI, review pending.
+Current exact refs and next steps are in Handoff/CurrentIndex and worker reports.
+
+Continuation clarification: current goal instruction requires taking available safe
+work. The external hold remains on the failed Git review and its dependent serial
+integration; independent authorized M3 work can proceed. #64 review of the separate
+frozen passive Discovery adapter is dispatched without changing/retrying the Git
+audit or substituting for its required verdict. No model/access controls changed.
+
+Independent #63 proposal assessment may also proceed: native owned-artifact
+ObjectID/FileIdInfo probes at699a69f (platform selection corrected6fc6c2c), actual
+frozen artifact identity contract and unchanged class65/class11 publication.
+This is separate from the blocked Git audit. Product adoption remains withheld
+until the private protocol's scope, negative controls and crash association are
+reviewed; no directory convention, timestamp repair or original-ID mutation waiver.
+
+#65 Runtime dispatch is independent of concrete adapter implementation: the Issue
+requires accepted M2 values/ports and frozen Runtime authority, already present.
+Its clean planned branch was fast-forwarded to26d5f4f (verified executable baseline
+d5eeaac and current shared native CI/governance), then pushed before authoring.
+Fresh worker owns only Runtime and its report. No Git-review retry/substitution,
+serial integration, concrete adapter coupling or native safety waiver occurs.
+The first Runtime input activates the existing helper conformance gate; incomplete
+checkpoints remain explicit. No permanent placeholder implementation is accepted.
+
+## Reviewed Windows artifact identity adoption (#63)
+
+Master accepts M3-Identity-Review--001's bounded proposal assessment at6fc6c2c:
+full volume/128-bit FileIdInfo plus all64 native ObjectID-buffer bytes for newly
+and exclusively FILE_CREATE-created regular artifacts. CREATE_OR_GET precedes
+first journal/data flush; all later validation is GET-only and profile-directed.
+Existing originals never receive an ID for proof; only exact missing-ID errno2
+permits initial strict birth selection. Recorded ObjectID profiles never fall
+back, and old birth manifests stay exact without automatic upgrade. Directory,
+lock, root/Expected-anchor, whole-version, class65/class11, byte/security and
+outcome rules remain unchanged. See the independent report's complete adoption
+and product-verification requirements. No frozen BC change is needed or made.
+
+A fresh bounded worker may implement this private correction under#63. Native
+mechanism acceptance is not product acceptance: public repeated commit/recovery,
+process-death/error/mismatch/legacy profiles, native amd64/386/ARM64 and full
+required gates still need proof and a separate fresh implementation review.
+Git review remains blocked; no serial integration is authorized by this decision.
+
+Discovery20bd8ac/review4e9f479 is independently ACCEPTED, M364-M01 resolved,
+CI34065291612 19PASS/helper skip. Candidate remains held for prior serial gates.

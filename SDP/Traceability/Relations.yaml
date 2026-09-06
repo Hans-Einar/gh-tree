@@ -513,6 +513,25 @@
         "IMPL64",
         "IMPL65"
       ]
+    },
+    {
+      "from": "IMPL66",
+      "relation": "integrated_at",
+      "to": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
+      "ci": 34058149301
+    },
+    {
+      "from": "IMPL61",
+      "relation": "review_blocked_by",
+      "to": "external_review_access",
+      "doc": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
+    },
+    {
+      "from": "IMPL64",
+      "relation": "source_accepted",
+      "to": "20bd8acf3576ca19f08b68205289f25cfe9dd3d9",
+      "reviewHead": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
+      "ci": 34065291612
     }
   ],
   "errata": [

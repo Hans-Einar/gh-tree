@@ -5,7 +5,7 @@
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
   "activeGate": "M3",
-  "executionState": "active",
+  "executionState": "active_independent_m3_git_review_blocked",
   "resumeRequiresExplicitUserInstruction": false,
   "checkpointTag": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
   "checkpointPurpose": "recovery_only_not_completion",
@@ -603,7 +603,7 @@
       "id": "IMPL61",
       "kind": "implementation_contribution",
       "issue": 61,
-      "state": "implementation_in_progress",
+      "state": "held_external_review_access",
       "layer": "Git",
       "slices": [
         "SLC-01",
@@ -633,15 +633,19 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "ee42b1b0f48421e9b2faf8da5ab254380c5d01d1",
-      "checkpointScope": "partial, not accepted/integrated",
-      "blockedScope": "Digest #68 ready; clean-branch adoption will be grouped with verified shared CI #66",
+      "lastCheckpoint": "25240dd2acc40cb93003674844c248cdceac5920",
+      "checkpointScope": "11 facts, registry/ReleasePlan, common scheduler/permanent locks; all8 Prepare/ExecutePrepared/Fetch/Reconcile/native mutations incomplete",
+      "blockedScope": null,
       "sourceCI": {
-        "run": 34056687102,
-        "head": "775121dd856bced37d8627a1f0615d33612464d9",
-        "result": "FAILED Linux race positive transport timeout and Windowsamd64/ARM64 ACL assertion; author correcting"
+        "run": 34063202321,
+        "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "pendingCI": 34057368746
+      "pendingCI": 34057368746,
+      "sharedPrerequisiteAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc",
+      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
+      "activeWorker": "m3_git_mutation_worker",
+      "sourceHead": "8c2584bff7c1f04461cd2f519bc3f6d5921360db",
+      "foundationReview": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
     },
     {
       "id": "IMPL62",
@@ -685,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "implementation_in_progress",
+      "state": "private_identity_adoption_dispatch_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -709,21 +713,43 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "87506ee56c63a8be6dbece4e2b364a1c6cbd3e21",
-      "checkpointScope": "private native mechanisms/metadata + three public loads; three commits/manifests/recovery still incomplete",
+      "lastCheckpoint": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
+      "checkpointScope": "all6 methods present but unaccepted; native ObjectID mechanism probes only, product adoption pending; Windows repeated-publication, FreeBSD/no-birth/source-name/fault/profile gates remain",
       "sourceCI": {
-        "run": 34055865289,
-        "head": "0630ded502b2a086768459e475f83111f1fe4e9a",
-        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+        "run": 34063088464,
+        "result": "FAILED 6 jobs: Windows tunneling regression and non-Windows test selection; latter fixed by6fc6c2c, all12 test binaries compile"
       },
-      "activeWorker": "m3_persistence_commit_worker",
-      "pendingNativeFinding": "macOS metadata query indicates unavailable extended security; CI34056596058 failed, worker inspecting native no-ACL semantics; FreeBSD system namespace EPERM confirmed by #66 probe"
+      "activeWorker": "m3_persistence_finish_worker",
+      "pendingNativeFinding": "Native Windows repeated-commit recovery fails when NTFS rename transfers CreationTime with same full FileID; failing12-cycle control preserved. FreeBSD system-EA profile and no-birth/source-name interval proof remain.",
+      "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
+      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
+      "earlyProtocolReview": {
+        "source": "5e8aaebce381b92856b1abb837443de0ce1c0728",
+        "report": "SDP/Implementation/CR-#21/Persistence/M3-Protocol-Review--001.md",
+        "findings": [
+          "M363-PR01",
+          "M363-PR02",
+          "M363-PR03"
+        ],
+        "correctionCandidate": "ca758efafec7cdbfb5ca6d838b56772bf4cabae9",
+        "state": "three_bounded_findings_resolved",
+        "confirmedSource": "91acac5ecff941f95dbdaf00c86e9ced64b2a76f",
+        "scope": "bounded confirmation only; full candidate not accepted"
+      },
+      "sourceHead": "699a69f2735106d1a06ea9c703a7f0eaa5ff930b",
+      "latestVerification": {
+        "head": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
+        "run": 34063842833,
+        "result": "16 SUCCESS, 3 FAILURE (Windows amd64/ARM64 and native FreeBSD), helper skip; test-selection compilation failure resolved"
+      },
+      "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
+      "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending"
     },
     {
       "id": "IMPL64",
       "kind": "implementation_contribution",
       "issue": 64,
-      "state": "implementation_in_progress",
+      "state": "accepted_candidate_held_for_serial_integration",
       "layer": "Launch Discovery",
       "slices": [
         "SLC-09",
@@ -744,13 +770,24 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "activeWorker": "m3_discovery_worker"
+      "activeWorker": "m3_discovery_worker",
+      "lastCheckpoint": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
+      "sharedPrerequisiteAdoption": "4bfcf7fa20657556f13d9b53f4a65d1e83992dc8",
+      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
+      "checkpointScope": "complete candidate; no independent acceptance/integration",
+      "sourceHead": "20bd8acf3576ca19f08b68205289f25cfe9dd3d9",
+      "sourceCI": {
+        "run": 34065291612,
+        "result": "19 SUCCESS; expected pre-Runtime helper skip"
+      },
+      "reviewHead": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
+      "reviewDisposition": "ACCEPT; M364-M01 resolved"
     },
     {
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "authorized_queued",
+      "state": "implementation_in_progress",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -766,22 +803,24 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
       "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
-      "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25",
+      "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2",
       "requiredChecks": [
         "V-RUN-01..08"
       ],
       "integrationHead": null,
-      "worktreeCreated": true
+      "worktreeCreated": true,
+      "activeWorker": "m3_runtime_worker",
+      "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d"
     },
     {
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "integrated_ci_pending",
+      "state": "complete",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
-      "integrationHead": null,
+      "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
       "branch": "codex/cr21-freebsd-ci",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci",
       "workerBase": "22217f9c31b33ab78f030a8dd36bd3624bcf7485",
@@ -793,7 +832,12 @@
       },
       "nativeJob": 101549884000,
       "reviewHead": "be94b447fd69529daa1cf3f780ada7ea4d8fbcf6",
-      "reviewDisposition": "ACCEPT; infrastructure only, native adapter proof not claimed"
+      "reviewDisposition": "ACCEPT; infrastructure only, native adapter proof not claimed",
+      "integrationCI": {
+        "run": 34058149301,
+        "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "nativeIntegratedJob": 101553737521
     },
     {
       "id": "BC-CHANGE-67",
@@ -852,7 +896,8 @@
         "run": 34057368177,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "localIntegrationChecks": "ports race/vet/windows architecture and exact accepted source tree match PASS"
+      "localIntegrationChecks": "ports race/vet/windows architecture and exact accepted source tree match PASS",
+      "gitAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc"
     }
   ],
   "productFindings": [
@@ -1927,16 +1972,25 @@
     "SLC-13"
   ],
   "activeContribution": "M3-ADAPTERS",
-  "integrationHead": "396a62999ff991889bf1b468e2abeba84cc38045",
+  "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL61",
     "IMPL63",
-    "IMPL64"
+    "IMPL65"
   ],
   "pausedInitialContributions": [
     "IMPL61",
     "IMPL62",
     "IMPL63"
   ],
-  "resumedFrom": "3e259652797295504e34bafe2063a8022a503965"
+  "resumedFrom": "3e259652797295504e34bafe2063a8022a503965",
+  "latestCheckpointTag": "checkpoint/m3-access-hold/20260906-2225Z",
+  "latestCheckpointPurpose": "External review-access hold; all code and current reports pushed; recovery marker only",
+  "externalBlocker": {
+    "kind": "review_service_content_access",
+    "stage": "required Git independent foundation review",
+    "message": "This content was flagged for possible cybersecurity risk.",
+    "reviewSource": "855a144689dae3ce69fdc6bb1fa2d303c7e27da0",
+    "reviewStatus": "incomplete_no_acceptance",
+    "next": "Use confirmed approved identity/workspace/model/surface or resolve false positive; then resume from durable refs without bypassing safeguards"
+  }
 }
