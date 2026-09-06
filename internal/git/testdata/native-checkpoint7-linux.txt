@@ -1,0 +1,32 @@
+Source: 6c234b3cf27b22af602431adcf1965e64fc47cbf
+Build: Go1.25.0 Windows cross-compiler, linux/amd64 CGO_ENABLED=0 test executable
+Execution: existing WSL Linux6.18.33.2, UID65534, native Git2.35.3; targeted primitive/read controls only
+Command: git-native-linux-amd64.test -test.run=TestNativeDirectory|TestTransport|TestCommandEnvironment|TestDirectoryObservation|TestNativeReadDoesNotRefreshIndex -test.v
+=== RUN   TestNativeDirectoryAcquisitionAndExclusivePrivateFiles
+--- PASS: TestNativeDirectoryAcquisitionAndExclusivePrivateFiles (0.01s)
+=== RUN   TestNativeDirectoryRejectsReplacementBeforeAcquisition
+--- PASS: TestNativeDirectoryRejectsReplacementBeforeAcquisition (0.00s)
+=== RUN   TestNativeDirectoryChildRedirectRefuses
+--- PASS: TestNativeDirectoryChildRedirectRefuses (0.00s)
+=== RUN   TestNativeReadDoesNotRefreshIndex
+=== RUN   TestNativeReadDoesNotRefreshIndex/sha1
+    native_test.go:80: native profile: git version 2.35.3; object format sha1
+=== RUN   TestNativeReadDoesNotRefreshIndex/sha256
+    native_test.go:80: native profile: git version 2.35.3; object format sha256
+--- PASS: TestNativeReadDoesNotRefreshIndex (0.03s)
+    --- PASS: TestNativeReadDoesNotRefreshIndex/sha1 (0.02s)
+    --- PASS: TestNativeReadDoesNotRefreshIndex/sha256 (0.01s)
+=== RUN   TestTransportLiteralBoundsAndCopy
+--- PASS: TestTransportLiteralBoundsAndCopy (0.00s)
+=== RUN   TestTransportLimitCancelsAndReaps
+--- PASS: TestTransportLimitCancelsAndReaps (0.00s)
+=== RUN   TestTransportCancellationBeforeAndAfterStart
+--- PASS: TestTransportCancellationBeforeAndAfterStart (0.05s)
+=== RUN   TestTransportDescendantHeldPipeIsExplicitResidual
+--- PASS: TestTransportDescendantHeldPipeIsExplicitResidual (0.52s)
+=== RUN   TestCommandEnvironmentScopeOverridesAreRemoved
+--- PASS: TestCommandEnvironmentScopeOverridesAreRemoved (0.00s)
+=== RUN   TestDirectoryObservationBindsPhysicalObject
+--- PASS: TestDirectoryObservationBindsPhysicalObject (0.00s)
+PASS
+Exit: 0
