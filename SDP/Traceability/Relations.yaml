@@ -352,6 +352,13 @@
       "to": "SDP/Verification/CR-#21/M2-API-Review--002.md",
       "head": "246e2a6b02e6812cc7579770e5aac973e19b3073",
       "state": "changes_required"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "correction_review_candidate",
+      "to": "6e289c4b47a7816493f376c886c00bf0df4835e8",
+      "priorReviewedHead": "246e2a6b02e6812cc7579770e5aac973e19b3073",
+      "state": "independent_rereview"
     }
   ],
   "errata": [

@@ -321,3 +321,14 @@ corrects existing groups with no-op/compound/complementary-subject controls befo
 new frozen re-review/currentCI. Missing-parent anchor interpretation is no finding;
 original Expected remains in native manifest, guarded Original may use actual parent.
 No API/VM integration or M2/full Slice/baseline/native/release closure.
+
+Successor6e289c4b47a7816493f376c886c00bf0df4835e8 is frozen/pushed for independent
+re-review of M02/M03/M04/M05/M06. Root verified the20-file API/ports-only diff and
+whitespace; product authoring stopped, only the bounded report was dirty. Both
+primary and separate Runtime/Storage reviewers reopen immutable source, old/new
+probes and legitimate no-op/partial/compound/complementary-subject controls.
+CI34044482946 and full author gates/report were pending at dispatch. Standalone
+partial Push may retain unassociated remote recovery; supplied request/summary/
+returned bindings must match known repository/branch facts without mutating them.
+Primary resolved this under existing B5/G6/G11; no token decoding or BC change.
+Known findings remain unresolved until actual re-review. No M2 or Slice closure.

@@ -59,7 +59,7 @@ No adapter work before required M2 surfaces; a faulty BC triggers BC-CHANGE.
 
 ## Traceability and remaining scope
 
-CurrentIndex/Relations/Ledger through48 record accepted predecessors, M2
+CurrentIndex/Relations/Ledger through49 record accepted predecessors, M2
 correction/acceptance states and bounded native tool preparation. CurrentMatrix has65 accepted checks; M1 and Domain
 contributions are partial evidence for full clauses. It does not close a Slice,
 Runtime allocator/exhaustion or native Git identity requirement. Original failed
@@ -96,9 +96,14 @@ is CHANGES_REQUIRED. Original26 malformed cases/226 copy controls pass; M259-M01
 M07/M08 resolved. M02/M03/M04/M05/M06 retain9 invalid admissions and1 false refusal.
 Full primary/bounded evidence and verified88/66 exact blobs are in M2-API-Review--002.
 SourceCI34041943143 at246e and34041668920 at prior4700 each passed18/M3skip; findings
-still block acceptance. Worker is correcting existing groups in its own worktree,
-which may be dirty/newer than this rejected snapshot. Require a new frozen source,
-independent review, product-identical report checkpoint and currentCI before merge.
+still block acceptance. Successor6e289c4b47a7816493f376c886c00bf0df4835e8 is now
+frozen/pushed; both independent reviewers inspect its actual20-file API/ports-only
+correction. Only the bounded worker report was dirty at dispatch, product authoring
+stopped. CurrentCI34044482946/full author gates/report were pending. Require actual
+independent acceptance, product-identical report checkpoint and currentCI before
+merge; any product change needs new exact review. Standalone unknown Push remote
+recovery is preserved without association claims; known request/summary/returned
+bindings are checked without changing retained facts (existing B5/G6/G11).
 Preserve valid no-op/compound/partial outcomes and complementary recovery subjects;
 missing-parent Expected-anchor interpretation is explicitly not a finding.
 
