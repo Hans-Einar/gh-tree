@@ -411,3 +411,9 @@ is ready for fresh CI worker. No adapter/full Slice acceptance is implied.
 and CI34056365373 (18/helper skip); prerequisite complete, native Git adoption next.
 #68 records missing readable issued-plan digest (existing frozen approval semantics,
 no contract change); bounded ports worker/reviewer queued. #66 CI author active.
+
+#68 getter70d1719/review736129a ACCEPT, source CI34057016256 passes18/helper skip;
+integrated by this commit, exact integrated gate next. #66 native infrastructure
+source489a731 passes19/helper skip, independent review pending. Git775121d CI
+findings and Persistence macOS metadata failure are explicit in Handoff/CurrentIndex;
+no failing adapter is integrated. #67 adoption preserved Git source unchanged.

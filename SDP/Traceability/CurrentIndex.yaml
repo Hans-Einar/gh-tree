@@ -633,9 +633,14 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "de9b2c898e0c14ce2301fd7d9bdf9725c74ba848",
+      "lastCheckpoint": "775121dd856bced37d8627a1f0615d33612464d9",
       "checkpointScope": "partial, not accepted/integrated",
-      "blockedScope": "Native status/general diff can resume after clean-branch adoption of integrated #67; #68 plan-digest accessor queued for approvals"
+      "blockedScope": "Only #68 approval digest pending integrated gate; status adoption done",
+      "sourceCI": {
+        "run": 34056687102,
+        "head": "775121dd856bced37d8627a1f0615d33612464d9",
+        "result": "FAILED Linux race positive transport timeout and Windowsamd64/ARM64 ACL assertion; author correcting"
+      }
     },
     {
       "id": "IMPL62",
@@ -703,14 +708,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "c146bb5cf399105ef9de21956483a87e7dae9670",
-      "checkpointScope": "private codecs/acquisition/locks/publication primitives and Windows metadata; public methods/Unix metadata/recovery incomplete",
+      "lastCheckpoint": "cb1f62526d1f868b2afea00de06a765d02496e46",
+      "checkpointScope": "private codecs/acquisition/locks/publication/metadata; public loads pending checkpoint, public commits/recovery incomplete",
       "sourceCI": {
         "run": 34055865289,
         "head": "0630ded502b2a086768459e475f83111f1fe4e9a",
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "activeWorker": "m3_persistence_publication_worker"
+      "activeWorker": "m3_persistence_publication_worker",
+      "pendingNativeFinding": "macOS metadata query indicates unavailable extended security; CI34056596058 failed, worker inspecting native no-ACL semantics; FreeBSD system namespace EPERM confirmed by #66 probe"
     },
     {
       "id": "IMPL64",
@@ -769,7 +775,7 @@
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "implementation_in_progress",
+      "state": "independent_review",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
@@ -777,7 +783,13 @@
       "branch": "codex/cr21-freebsd-ci",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci",
       "workerBase": "22217f9c31b33ab78f030a8dd36bd3624bcf7485",
-      "workerReport": "SDP/Implementation/CR-#21/Composition/M3-CI--001.md"
+      "workerReport": "SDP/Implementation/CR-#21/Composition/M3-CI--001.md",
+      "sourceHead": "489a731557ca699992386a0fc07fcbe57e792070",
+      "sourceCI": {
+        "run": 34056731199,
+        "result": "19 applicable SUCCESS; explicit pre-Runtime helper skip"
+      },
+      "nativeJob": 101549884000
     },
     {
       "id": "BC-CHANGE-67",
@@ -810,16 +822,27 @@
         "run": 34056365373,
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
-      "localIntegrationChecks": "Application race/vet, windowsamd64 architecture and exact accepted API tree match PASS"
+      "localIntegrationChecks": "Application race/vet, windowsamd64 architecture and exact accepted API tree match PASS",
+      "gitAdoption": "775121dd856bced37d8627a1f0615d33612464d9"
     },
     {
       "id": "IMPL68",
       "kind": "implementation_prerequisite",
       "issue": 68,
-      "state": "authorized_queued",
+      "state": "integrated_ci_pending",
       "layer": "Application ports",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
-      "scope": "read-only issued PlanSummaryDigest accessor and bounded validation/approval tests; no frozen semantics change"
+      "scope": "read-only issued PlanSummaryDigest accessor and bounded validation/approval tests; no frozen semantics change",
+      "branch": "codex/cr21-plan-digest",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/plan-digest",
+      "workerBase": "64750cb26a0b8e3088e82ced57f5a2bf99b3ac1b",
+      "sourceHead": "70d1719d7f0ff834b4d59245ea775ea7b2c2d66c",
+      "reviewHead": "736129aad8d55a906fe706286430fcf18416fc9d",
+      "reviewDisposition": "ACCEPT",
+      "sourceCI": {
+        "run": 34057016256,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      }
     }
   ],
   "productFindings": [

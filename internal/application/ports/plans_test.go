@@ -100,17 +100,24 @@ func TestContinuationGroupStepAndReceipt(t *testing.T) {
 	rootSpec.Summary = must(api.NewMutationPlanSummary(rootSummary))
 	root := must(issuer.IssueCommit(rootSpec))
 	approver := must(ports.NewApprovalIssuer("app"))
-	approval := must(approver.Issue(root, rootSpec.SummaryDigest, api.Proceed, api.Some(must(api.NewConfirmationID("confirmation")))))
+	approval := must(approver.Issue(root, must(ports.PlanSummaryDigest(root)), api.Proceed, api.Some(must(api.NewConfirmationID("confirmation")))))
 	if approval.ValidFor(root) {
 		t.Fatal("sequence root executable")
 	}
 	childSpec := spec(api.StageMutation, "child")
 	childSpec.Origin = api.Some[ports.PreparedGitPlan](root)
 	childSpec.Step = 1
+	childSpec.SummaryDigest = [32]byte{2}
 	data := childSpec.Summary.Data()
 	data.OriginVersion = api.Some(rootSpec.Version)
 	childSpec.Summary = must(api.NewMutationPlanSummary(data))
 	child := must(issuer.IssueStage(childSpec))
+	if must(ports.PlanSummaryDigest(child)) != childSpec.SummaryDigest {
+		t.Fatal("child digest replaced by root digest")
+	}
+	if _, e := approver.Issue(child, must(ports.PlanSummaryDigest(child)), api.Proceed, api.Some(must(api.NewConfirmationID("confirmation")))); e == nil {
+		t.Fatal("child observation granted independent approval")
+	}
 	if !approval.ValidFor(child) {
 		t.Fatal("original approval lost")
 	}
