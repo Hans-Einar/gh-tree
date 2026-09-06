@@ -1,70 +1,70 @@
 # Program handoff
 
-State: ACTIVE — final boundary freeze metadata review; product implementation gated.
-Repository: Hans-Einar/gh-tree. Parent #21 remains open under UserRunContract.md.
-Sprint/iteration/gate: Sprint-004-v04 / I-02 / G-08. Active Issue: #55 / PR #56.
+State: ACTIVE — implementation kickoff. Sprint-004-v04 / I-03 / M1.
+Repository: Hans-Einar/gh-tree; full goal #21 remains open.
+Active contribution: #57, Composition CI/bootstrap-safety prerequisites.
+Canonical branch/worktree: codereview-21/refactor at
+C:/Users/hanse/GIT/gh-tree-wt/refactor.
 
-## Current authoritative evidence
+## Accepted authority
 
-- Product baseline: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-- Main and BC base: 4a42222f7bfedc1d80693effbb25a1a82fcff65e.
-- All ten focused reviews accepted/merged; exact report/merge/CI records are in
-  CurrentIndex.yaml and Ledger.ndjson. All 143 overlapping product findings remain
-  open (36 HIGH, 89 MEDIUM, 18 LOW). No product finding is closed by design/BC work.
-- Complete design #52 / PR54: technical664f0c051344e3abdfd7d3c5698e4fbd3f584a83,
-  final reviewed e63547771d89f892ebe8e13f66a1ed8ef0807ba2, merged at main above.
-  Final18 CI checks SUCCESS in34022968145/34022971176. #52 is closed.
-- BC initial candidate c291606c2ecfaae15f1bef7b5155d82aa6966712 received independent
-  CHANGES_REQUIRED for BC55-TYPES-01/02 (MEDIUM), despite18 successful CI checks.
-  BCReview--002 records the actual findings and corrections.
-- Corrected complete BC technical set independently ACCEPTED at
-  7685494e45c0ef44fbccf9b49a589a90a78026d0. Both findings and the prior LOW prose
-  link resolved. All18 CI checks SUCCESS in34027057276/34027058992.
-- BCFreeze--001 records REVIEWED then FROZEN1.0.0 metadata for seven contracts
-  and BoundaryTypes--001. It becomes implementation authority only after its own
-  exact-HEAD independent metadata review, current CI and PR56 merge. The sole
-  technical-text correction is the reviewer's ObserveStatus/StatusFacts reference.
-- Accepted design, product source and archived mechanism evidence are unchanged.
-  The freeze does not prove implementation, real signing, native platform/fault
-  matrices, package-manager integration or any delivered release.
-- Metadata review at a4d160fe0273f7cdfa75794169a679bbc9321929 found BC55-META-01:
-  initial/current review fields were mixed. BCFreeze--001 records that correction;
-  technical acceptance stands. Re-review corrected metadata and its current CI.
+Product baseline v0.3.14: f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
+All ten focused reviews accepted/merged; all143 overlapping product findings remain
+open (36H/89M/18L). Actual review/design/native evidence is preserved in SDP.
+Design #52 / PR54 merged4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 
-## Exact next action
+BC #55 / PR56 is COMPLETE and closed. Complete technical source independently
+accepted7685494e45c0ef44fbccf9b49a589a90a78026d0; freeze metadata introduced at
+a4d160fe0273f7cdfa75794169a679bbc9321929; final metadata independently accepted
+3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc. All18 final CI checks SUCCESS in
+34027493442/34027495276. Actual expected-HEAD squash merge/main/integration base:
+97cc0d8257603766dd741b49b7d8005857b421a9.
 
-Read AGENTS.md, developmentInstructions.md, full #21/#52/#55, UserRunContract.md,
-accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker/Slices/Verification and the
-seven BCs/shared annex/BCFreeze--001. Repository and exact SHAs are authority.
+All seven BCs and BoundaryTypes--001 are effective FROZEN1.0.0. BCFreeze--001 and
+BCReview--002 preserve initial findings/corrections; BC55-TYPES-01/02 and
+BC55-META-01 resolved through independent re-review. Design/BC acceptance does not
+resolve product findings or prove native implementation/release conformance.
 
-Worktree: C:/Users/hanse/GIT/gh-tree-wt/boundary-contracts.
-Branch: codex/cr21-boundary-contracts. Freeze the metadata commit, request the
-independent reviewer's exact-HEAD metadata inspection, require all configured CI,
-then ready/merge PR56 with expected HEAD. Record source/freeze/actual merge SHAs
-on #55/#21 and next repository checkpoint; close #55 only after the gate passes.
-Do not implement or create the implementation branch before that merge.
+## Continue M1
 
-After merge, create canonical codereview-21/refactor from the actual merge and
-record I-03/M1 with all SLC-01..13 selected. Open the bounded Composition CI/
-bootstrap-safety Issue, explicitly delegate its shared paths to a fresh worker,
-and use a separate reviewer. Establish canonical-branch CI, all twelve builds,
-native Windows ARM64 coverage and staged architecture checks; disable automatic
-bootstrap publication. Exact reviewed branch CI precedes serial integration and
-M2 Domain/API/ports/viewmodel work. Master coordinates; workers implement product
-code. Full M0..M8 and vertical acceptance are in Slices--001, not folder completion.
+Read AGENTS.md, full developmentInstructions.md, #21/#52/#55/#57, UserRunContract,
+accepted design/Slices/Verification/MigrationMap and frozen BCs/shared annex.
+Plan--001 at SDP/Implementation/CR-#21/Plan--001.md is the current implementation
+contract; sprint/index/relations/ledger through34 record kickoff before broad work.
+All SLC-01..13 remain selected; M1 is a build/architecture prerequisite, particularly
+for SLC-13, and completes no vertical Slice.
 
-## Workspace and release limits
+Master dispatches a fresh worker on codereview-21/layer-composition-bootstrap in
+C:/Users/hanse/GIT/gh-tree-wt/composition-bootstrap from this kickoff commit.
+Worker owns only .github/workflows/ci.yml and release.yml, new
+internal/composition/architecture tool/tests/fixtures/README and its bounded
+SDP/Implementation/CR-#21/Composition/M1--001.md report. Master owns program metadata.
+No other old file, frozen BC or accepted design edit; no product PR/tag/publication.
 
-Root worktree C:/Users/hanse/GIT/gh-tree remains on main at the BC base above.
-Review/design worktrees preserve accepted source HEADs. The program-checkpoints
-worktree retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc after PR53; do not
-reset or discard it. Inspect dirty/unpublished state before integration; exact
-current worktree HEADs are discoverable with git worktree list and git status.
+Worker must preserve native test/vet/build and Linux race, add canonical push CI,
+all12 builds/native Windows ARM64 infrastructure, staged exact-path/blob/import/
+public-type/selected-platform checks and meaningful negative fixtures, safe release
+separation and the explicit future M3 Runtime-helper check hook. Missing future
+helper inputs are named prerequisites, not fake passing evidence. Full #57 controls.
 
-No external blocker is known. Native feasibility sources/logs and failed earlier
-assumptions are preserved in design/BC Feasibility; compile evidence is distinct
-from native proof. Windows Go1.25 is available via the toolchain recorded in
-implementationNotes.md. Required native platforms and all12 exact asset names
-are in Verification--001 and CurrentIndex.releaseBaseline, including FreeBSD and
-32-bit/Windows ARM64. Installed gh-tree was observed at v0.3.13 and is unchanged.
-No tag, publication or controlled install/upgrade has occurred in this program.
+Freeze/push worker HEAD, send actual source/tests/contracts to a separate fresh
+reviewer, correct/re-review and obtain all configured exact branch CI. Master then
+serially integrates and records source/review/integration SHAs and real evidence
+before M2 Domain/API/ports/viewmodel. Root Master does not implement product code.
+Full M3..M8 adapters, workflows, UI, native vertical harness, cutover, retirement,
+verification, final PR/main and twelve-asset/install-upgrade release remain ahead.
+
+## Workspace and limits
+
+Root C:/Users/hanse/GIT/gh-tree is clean main at97cc0d8 above. Review/design
+worktrees preserve accepted source HEADs; all11 were audited clean before this
+new integration branch. Program-checkpoints retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc;
+do not reset/discard it. Inspect current dirty/unpublished state and exact HEADs
+before integration; never infer them from this handoff alone.
+
+No external blocker is known. Native mechanism probes under design/BC Feasibility
+are not product evidence; real signing, package-manager, native platform/fault and
+helper reproducibility matrices remain required. Native Windows Go1.25 is available
+as recorded in implementationNotes. All12 exact assets/native platforms are in
+Verification--001 and CurrentIndex.releaseBaseline. Installed extension was
+observed at v0.3.13 and remains unchanged. No release/tag/install-upgrade occurred.

@@ -3,11 +3,11 @@
   "project": "gh-tree",
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
-  "activeIteration": "I-02",
-  "activeGate": "G-08",
-  "implementationSlice": null,
+  "activeIteration": "I-03",
+  "activeGate": "M1",
+  "implementationSlice": "SLC-13",
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+  "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
   "designState": "accepted",
   "boundaryContracts": [
     {
@@ -17,7 +17,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--TUIState--Application",
@@ -26,7 +27,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--Application--Git",
@@ -35,7 +37,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--Application--GitHub",
@@ -44,7 +47,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--Application--Runtime",
@@ -53,7 +57,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--Application--LaunchDiscovery",
@@ -62,7 +67,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     },
     {
       "id": "BC--Application--Persistence",
@@ -71,7 +77,8 @@
       "issue": 55,
       "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md",
       "freezeRecord": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "effectiveAfter": "PR56 accepted metadata merge"
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "effectiveFromMerge": "97cc0d8257603766dd741b49b7d8005857b421a9"
     }
   ],
   "productFindingsState": "all_unresolved",
@@ -319,17 +326,25 @@
       "id": "BC55",
       "kind": "boundary_contract_gate",
       "issue": 55,
-      "state": "corrected_freeze_metadata_awaiting_review_merge",
+      "state": "frozen_accepted_merged",
       "branch": "codex/cr21-boundary-contracts",
       "base": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
       "doc": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
       "initialReviewedHead": "c291606c2ecfaae15f1bef7b5155d82aa6966712",
-      "reviewedHead": "7685494e45c0ef44fbccf9b49a589a90a78026d0",
+      "reviewedHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
       "disposition": "ACCEPT",
       "findings": [],
       "sharedTypes": "SDP/LayerBoundaryContracts/BoundaryTypes--001.md",
       "acceptedTechnicalHead": "7685494e45c0ef44fbccf9b49a589a90a78026d0",
       "ciRuns": [
+        "34027493442",
+        "34027495276"
+      ],
+      "head": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "freezeIntroducedHead": "a4d160fe0273f7cdfa75794169a679bbc9321929",
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "pr": 56,
+      "technicalCiRuns": [
         "34027057276",
         "34027058992"
       ]
@@ -337,11 +352,45 @@
     {
       "id": "G-08",
       "kind": "governance_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "REFDES52",
         "BC55"
       ]
+    },
+    {
+      "id": "M0",
+      "kind": "integration_gate",
+      "state": "complete",
+      "requires": [
+        "REFDES52",
+        "BC55"
+      ],
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "id": "IMPL57",
+      "kind": "implementation_contribution",
+      "issue": 57,
+      "state": "kickoff",
+      "layer": "Composition",
+      "slices": [
+        "SLC-13"
+      ],
+      "supportsAllSelectedSlices": true,
+      "branch": "codereview-21/layer-composition-bootstrap",
+      "base": "97cc0d8257603766dd741b49b7d8005857b421a9",
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
+    },
+    {
+      "id": "M1",
+      "kind": "integration_gate",
+      "state": "active",
+      "requires": [
+        "M0",
+        "IMPL57"
+      ],
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
     }
   ],
   "productFindings": [
@@ -1381,5 +1430,22 @@
     "WindowsBroker--001.md",
     "DesignReview--003.md",
     "DesignReview--004.md"
+  ],
+  "integrationBranch": "codereview-21/refactor",
+  "integrationBase": "97cc0d8257603766dd741b49b7d8005857b421a9",
+  "selectedSlices": [
+    "SLC-01",
+    "SLC-02",
+    "SLC-03",
+    "SLC-04",
+    "SLC-05",
+    "SLC-06",
+    "SLC-07",
+    "SLC-08",
+    "SLC-09",
+    "SLC-10",
+    "SLC-11",
+    "SLC-12",
+    "SLC-13"
   ]
 }

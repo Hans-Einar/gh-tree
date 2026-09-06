@@ -1,4 +1,4 @@
-# Sprint 004 — gh-tree v0.4 architecture program
+# Sprint 004 â€” gh-tree v0.4 architecture program
 
 State: ACTIVE
 Authority: Issues #21 and #35; [full user run contract](UserRunContract.md).
@@ -44,8 +44,9 @@ Acceptance of a review report does not mean its product findings are resolved.
 
 I-01: remaining focused reviews and program checkpoint establishment.
 I-02: reconciled Refactor Design and BC review/freeze.
-Subsequent implementation iterations and vertical Slice contracts are assigned
-only by accepted REFDES; the final iteration verifies, integrates and releases.
+I-03: complete selected refactor implementation, active M1 under #57; contract in
+SDP/Implementation/CR-#21/Plan--001.md follows accepted REFDES/Slices--001.
+The later verification/release iteration executes the full M8 gate.
 
 This is gh-tree-specific process scaffolding. The farmStatistics SDP supplied by
 the user was consulted for sprint/ledger shape only; its product rules do not apply.

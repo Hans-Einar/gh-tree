@@ -178,8 +178,47 @@
     {
       "relation": "frozen_by",
       "to": "SDP/LayerBoundaryContracts/BCFreeze--001.md",
-      "state": "effective_after_final_metadata_merge",
-      "from": "BC55"
+      "state": "effective",
+      "from": "BC55",
+      "freezeHead": "3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc",
+      "merge": "97cc0d8257603766dd741b49b7d8005857b421a9"
+    },
+    {
+      "from": "M0",
+      "relation": "requires",
+      "to": [
+        "REFDES52",
+        "BC55"
+      ]
+    },
+    {
+      "from": "IMPL57",
+      "relation": "depends_on",
+      "to": "M0"
+    },
+    {
+      "from": "M1",
+      "relation": "accepts",
+      "to": "IMPL57"
+    },
+    {
+      "from": "IMPL57",
+      "relation": "build_prerequisite_for",
+      "to": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ]
     }
   ],
   "errata": [

@@ -2,13 +2,13 @@
 
 State: ACTIVE
 Sprint: Sprint-004-v04
-Active iteration: I-02 — Refactor Design and contracts
-Active gate: G-08 — Boundary Contract review/freeze (#55)
+Active iteration: I-02 â€” Refactor Design and contracts
+Active gate: G-08 â€” Boundary Contract review/freeze (#55)
 No implementation Slice is active before design and BC freeze.
 
 ## I-01 contract
 
-State: COMPLETE — all ten focused layer reports accepted and merged.
+State: COMPLETE â€” all ten focused layer reports accepted and merged.
 
 Goal: complete the focused-review inputs required before designing v0.4.
 Kickoff state: Runtime, TUI State, Application and Git were accepted; Domain was
@@ -160,7 +160,7 @@ Complete technical design independently ACCEPTED at
 only final acceptance-metadata exact-HEAD review/CI and PR54 merge. G-08 BC authority
 is opened after that merge; no implementation Slice is active yet.
 
-## I-02 / G-08 active contract
+## I-02 / G-08 completed contract (historical execution below)
 
 State: ACTIVE. Authority: #55 under #21. G-07 is COMPLETE: PR54 final reviewed
 e63547771d89f892ebe8e13f66a1ed8ef0807ba2 merged at
@@ -210,3 +210,21 @@ no implementation branch/Slice is active and all143 product findings stay open.
 Metadata review at a4d160f returned BC55-META-01 (MEDIUM) for mixed initial/current
 review fields. Technical acceptance stands. Corrected index/relations preserve
 both exact review SHAs distinctly; metadata re-review/current CI is next.
+
+## I-03 / M1 active contribution
+
+I-02/G-08 and M0 COMPLETE: BC55/PR56 final independently reviewed freeze
+3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc merged at
+97cc0d8257603766dd741b49b7d8005857b421a9. Final18 CI checks SUCCESS in
+34027493442/34027495276. #55 closed; all seven BCs/shared annex FROZEN1.0.0.
+
+Authority #57 under #21; complete contract in SDP/Implementation/CR-#21/Plan--001.md.
+Canonical codereview-21/refactor starts from actual merge above. Fresh worker on
+codereview-21/layer-composition-bootstrap owns only the two CI/release workflows,
+new internal/composition/architecture tool/tests/README and bounded worker report.
+Master keeps sprint/index/relations/ledger current before broad work and integrates
+only independently reviewed exact sources with passing branch CI. M1 supplies
+SLC-13 build prerequisites; all13 Slices remain selected and none is complete.
+No cmd cutover/legacy retirement/other layer/publication in this contribution.
+Next after M1 acceptance/integration: issue-bounded reviewed Domain/API/ports/
+viewmodel leaves at M2. All143 product findings remain open.
