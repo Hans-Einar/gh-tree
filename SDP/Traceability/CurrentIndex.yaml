@@ -721,7 +721,18 @@
       "activeWorker": "m3_persistence_commit_worker",
       "pendingNativeFinding": "FreeBSD system namespace EPERM blocks ordinary positive write profile; no-birth restart association/own-effect stamps under protocol work",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
-      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending"
+      "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
+      "earlyProtocolReview": {
+        "source": "5e8aaebce381b92856b1abb837443de0ce1c0728",
+        "report": "SDP/Implementation/CR-#21/Persistence/M3-Protocol-Review--001.md",
+        "findings": [
+          "M363-PR01",
+          "M363-PR02",
+          "M363-PR03"
+        ],
+        "correctionCandidate": "ca758efafec7cdbfb5ca6d838b56772bf4cabae9",
+        "state": "three_reproduced_findings_author_corrected_pending_confirmation"
+      }
     },
     {
       "id": "IMPL64",
