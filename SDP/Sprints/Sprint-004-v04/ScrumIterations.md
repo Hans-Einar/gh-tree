@@ -192,3 +192,9 @@ G-08 draft progress: all seven contracts and BoundaryTypes--001 are written,
 including selected commit continuation/hook/index/ref mechanics and explicit
 Windows batch carrier. BCReview--001 records the candidate; full independent
 frozen-HEAD review is next. Every contract remains DRAFT1.0.0.
+
+Initial whole-set review at c291606c2ecfaae15f1bef7b5155d82aa6966712 returned
+CHANGES_REQUIRED: BC55-TYPES-01/02, two MEDIUM vocabulary/recovery findings.
+All18 candidate CI checks passed (34026364910/34026398215). BCReview--002 records
+the actual review and proposed shared/Git/Persistence correction. Exact corrected-
+HEAD re-review is next; all seven contracts stay DRAFT1.0.0 until accepted.

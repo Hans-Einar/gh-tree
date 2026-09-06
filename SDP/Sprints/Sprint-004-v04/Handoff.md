@@ -74,6 +74,11 @@ All seven drafts plus BoundaryTypes--001 now exist. BCReview--001 records the
 whole-set candidate and mechanical specializations, including25 temporary native
 commit cases and Windows batch argv evidence. Next: exact committed candidate
 independent review, corrections and re-review; no BC is frozen yet.
+Initial review of c291606c2ecfaae15f1bef7b5155d82aa6966712 is now complete:
+CHANGES_REQUIRED for BC55-TYPES-01/02, two MEDIUM effect/recovery vocabulary gaps.
+BCReview--002 contains the actual review and proposed correction. All18 candidate
+CI checks passed in34026364910/34026398215. Current permitted action is independent
+exact-HEAD re-review of the correction, not first review or product implementation.
 No product implementation before
 both gates. Master owns metadata/contracts/integration and delegates bounded
 product work to fresh workers with separate reviewers when implementation begins.

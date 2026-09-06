@@ -208,7 +208,10 @@ type FacetEffect struct {
 ```
 
 EffectFacet is ObjectAcquisition, Recovery, WorktreeBytes, Index, LocalRefsHead,
-RemoteRefsPR, Storage or RuntimeResources. EffectState is NotStarted,
+LocalConfiguration, RemoteRefsPR, Storage or RuntimeResources. LocalConfiguration
+classifies Git-owned repository configuration, including upstream setup; it is
+independent of local refs, remote refs and Persistence-owned document Storage.
+EffectState is NotStarted,
 VerifiedNoTargetChange, AppliedVerified, Partial or Indeterminate. They are closed
 semantic values, not sortable progress levels. Each post-observation/recovery ID
 must reference the corresponding typed returned facts/RecoveryRecord; it cannot
@@ -219,8 +222,14 @@ RecoveryRecord contains opaque RecoveryID, kind, responsible layer, exact subjec
 IDs, safe locator, original/proposed versions and conservative next-action text.
 It contains no executable recovery callback. Captured objects/bytes/refs survive
 unknown outcomes; a notice is not permission to overwrite a current destination.
-Operation-level recovery lists are the union of referenced family records, not
-another competing recovery authority.
+Original/proposed versions retain their declared family type (SourceVersion or
+StorageVersion); they are not cast into another version domain. Family wrappers
+may carry a shared RecoveryRecord plus typed family detail. In that case every
+RecoveryID resolves to the wrapper's shared record, and normalization copies that
+record and preserves the family detail without inventing a second ID. Operation-
+level recovery lists are the union by RecoveryID of referenced family records, not
+another competing recovery authority. Repeated IDs must describe the same retained
+artifact/owner; inconsistent duplicates are a diagnostic, not last-writer-wins.
 
 A port's nonnil error supplements its typed result. App must inspect and preserve
 valid facts, effects, original/recovery identity and mutation receipts first.

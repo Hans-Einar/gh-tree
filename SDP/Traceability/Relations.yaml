@@ -149,7 +149,7 @@
       "from": "REFDES52",
       "relation": "plans_disposition_of",
       "to": "SDP/Design/CR-#21/FindingDisposition.yaml",
-      "state": "draft_all_product_findings_open"
+      "state": "accepted_design_all_product_findings_open"
     },
     {
       "from": "BC55",
@@ -160,6 +160,12 @@
       "from": "G-08",
       "relation": "accepts",
       "to": "BC55"
+    },
+    {
+      "from": "BC55",
+      "relation": "reviewed_by",
+      "to": "SDP/LayerBoundaryContracts/BCReview--002.md",
+      "state": "correction_awaiting_rereview"
     }
   ],
   "errata": [

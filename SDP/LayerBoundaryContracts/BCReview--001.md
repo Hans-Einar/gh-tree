@@ -38,7 +38,7 @@ Important specializations to review:
 
 Master structural checks: exactly seven BCs and one shared annex, all DRAFT1.0.0;
 balanced Go fences and existing local Markdown link targets. A first naive link
-regex treated generic Some[T](value) inside a Go fence as a link; excluding fenced
+regex treated generic `Some[T](value)` inside a Go fence as a link; excluding fenced
 code corrected that checker, not the contract. Full tracked whitespace/scope/hash
 checks accompany the frozen candidate. Accepted design and product code remain
 unchanged. All143 product findings remain open.

@@ -430,12 +430,29 @@ or no intervening changes. Never retry automatically.
 ReconcileRequest contains `Operation: OperationID` for this fresh query,
 `OriginalOperation: OperationID`, `Repository: domain.RepositoryID`, exact
 optional WorktreeID, original typed GitMutationKind/targets, prior EffectReport,
-owned recovery locators and `Facets: []GitEffectFacet`. ReconcileResult returns
-fresh local/remote-ref/status/stash observations per requested facet, unresolved
+owned recovery locators and `Facets: []EffectFacet`. Its validating constructor
+accepts only ObjectAcquisition, Recovery, WorktreeBytes, Index, LocalRefsHead,
+LocalConfiguration and RemoteRefsPR, without duplicates. These are exactly the
+shared B5 values, not a separate GitEffectFacet type. Storage and RuntimeResources
+are invalid for this port. Recovery inspection is limited to Git-owned records;
+RemoteRefsPR here means Git remote-ref facts, never GitHub PR inspection.
+ReconcileResult returns fresh object/recovery, local/remote-ref/status/stash and
+upstream configuration observations per requested facet, unresolved
 diagnostics and command-cleanup facts. It may inspect a journal and classify its
 stage; it cannot replay a mutation, delete recovery, reset files or adopt foreign
 locks. Remediation requiring a changed target/plan/decision is a new explicit
 operation under the accepted confirmation protocol.
+
+LocalConfiguration observations contain the exact local BranchID, current
+upstream state/value and configuration SourceVersion using the same typed facts
+as ReadBranches/ReadWorktree; absent/unresolved upstream is explicit. A verified
+push followed by a refused upstream write reports RemoteRefsPR=AppliedVerified
+and LocalConfiguration=VerifiedNoTargetChange (or NotStarted before its attempt).
+An uncertain configuration write reports that facet Indeterminate without
+downgrading the verified remote effect. Reconcile may read both facets under the
+original explicit binding and report current facts; it cannot configure upstream,
+repeat the push or infer historical causality from equal current values. Verify
+this result-plus-error path under V-GIT-08/09 and V-APP-01/02/05/06.
 
 ## G8. Protected native preparation and live publication
 

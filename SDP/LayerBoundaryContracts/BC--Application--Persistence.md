@@ -451,6 +451,7 @@ type StorageCommitResult struct {
     Diagnostics       []Diagnostic
 }
 type StorageRecovery struct {
+    Record   RecoveryRecord
     Family   StorageFamily
     Locator  string
     Kind     StorageRecoveryKind
@@ -465,6 +466,27 @@ Preferences or RunConfig. RecoveryKind is Manifest, RawOriginal, RetainedOrigina
 or RetainedPayload. Locator is a concrete safe recovery location and identity is
 the recorded observation token; neither authorizes automatic deletion/execution.
 Record association to the bound store is part of the opaque token/manifest.
+
+Record is the shared B5 RecoveryRecord, not a second recovery authority. Persistence
+issues its opaque RecoveryID once for each retained artifact, records it in the
+owned recovery manifest before reporting it, and retains the same ID when loading
+that manifest after restart or returning the artifact again. Distinct artifacts
+(including a manifest and its payload) have distinct IDs; a locator or mutable
+SourceVersion alone cannot supply identity. Record's responsible layer is
+Persistence, kind/locator agree with Kind/Locator, and exact subject identifies
+the physically bound store and Family plus WorktreeID for RunConfig. Its original/
+proposed document versions use StorageVersion, while Identity remains the artifact
+observation SourceVersion. No manufactured repository ID is used for a per-user
+store. All fields and family detail are copied immutable values.
+
+FacetEffect.RecoveryIDs refer to Recovery[i].Record.RecoveryID in this result.
+Application's lossless normalization preserves both the shared Record and its
+StorageRecovery family detail, including Family, Kind, Locator and Identity; the
+operation recovery union deduplicates only equal IDs with consistent records.
+A nonnil error, failed refresh, cancellation or aggregate shutdown cannot discard
+these records or mint replacement IDs. V-PER-02 and V-APP-01/04/06 must cover
+committed-with-error and indeterminate outcomes, multiple artifacts, repeated
+manifest observations and propagation through operation terminal/shutdown results.
 
 ProposedVersion identifies the intended fully encoded document when known;
 CurrentVersion is only the independently observed current version. The two can
