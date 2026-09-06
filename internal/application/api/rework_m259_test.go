@@ -165,3 +165,20 @@ func TestM259RequestResultAndRemoteEvidenceControls(t *testing.T) {
 		t.Fatal("independent unavailable fork retained", e)
 	}
 }
+
+func TestStashDropNarrowRefCleanupAndKnownWholeEffect(t *testing.T) {
+	w := rvWork(rvRepo("cleanup"), "one")
+	stash := rvMust(d.NewStashID(w.Repository(), rvRev(w.Repository(), "1").OID()))
+	cleanup := rvEffect(a.LocalRefsHead, a.NotStarted)
+	drop := rvMust(a.NewStashDropped(a.StashDroppedData{Stash: stash, Occurrence: rvSource("occurrence"), Observation: rvObservation(w), RefCleanup: cleanup}))
+	data := a.GitMutationResultData{Operation: rvMust(a.NewOperationID(1)), Kind: a.StashMutation, PlanVersion: rvSource("plan"), Outcome: drop, Effects: cleanup, Transport: rvTransport()}
+	if _, e := a.NewGitMutationResult(data); e != nil {
+		t.Fatal("narrow ref cleanup mistaken for whole stash deletion", e)
+	}
+	dd := drop.Data()
+	dd.RefCleanup = rvEffects()
+	data.Outcome = rvMust(a.NewStashDropped(dd))
+	if _, e := a.NewGitMutationResult(data); e == nil {
+		t.Fatal("unqualified whole deletion reported unstarted")
+	}
+}

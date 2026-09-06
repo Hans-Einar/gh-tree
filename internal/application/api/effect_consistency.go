@@ -54,3 +54,27 @@ func (e evidenceSet) requireEffects(aggregate EffectReport) error {
 	}
 	return nil
 }
+
+// An omitted facet makes no assertion. Explicit reports cannot characterize a
+// known creation/establishment solely as never started or unchanged. Mixed,
+// partial and unknown stage facts are retained without an ordinal merge.
+func knownChangedFacet(report EffectReport, facet EffectFacet, narrower Optional[EffectReport]) error {
+	reported := false
+	onlyUnchanged := true
+	for _, f := range report.data.Facets {
+		if f.data.Facet != facet {
+			continue
+		}
+		if child, p := narrower.Value(); p && containsFacetFact(child, f) {
+			continue
+		}
+		reported = true
+		if f.data.State != NotStarted && f.data.State != VerifiedNoTargetChange {
+			onlyUnchanged = false
+		}
+	}
+	if reported && onlyUnchanged {
+		return invalid("known outcome reported solely unstarted/unchanged")
+	}
+	return nil
+}

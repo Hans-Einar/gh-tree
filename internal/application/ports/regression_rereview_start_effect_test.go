@@ -1,0 +1,16 @@
+package ports_test
+
+import (
+	. "github.com/Hans-Einar/gh-tree/internal/application/api"
+	"testing"
+)
+
+func TestRCStartExplicitNoEffect(t *testing.T) {
+	for _, state := range []EffectState{NotStarted, VerifiedNoTargetChange} {
+		value, err := NewSessionStartResult(SessionStartResultData{Session: Some(rsSnapshot(rsScope("a", 1), 1, Running)), Established: true, Effects: rsEffects(RuntimeResources, state)})
+		t.Logf("Running established=true explicit RuntimeResources state=%v error=%v valid=%v", state, err, value.Valid())
+		if err == nil {
+			t.Error("established running resources contradict explicit no resource effect")
+		}
+	}
+}

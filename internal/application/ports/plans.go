@@ -355,6 +355,16 @@ func NewExecutedGitMutation(facts api.GitMutationResult, receipt api.Optional[Gi
 				}
 			}
 		}
+		if r.plan.kind == api.PushMutation {
+			binding, bp := summary.PushBinding.Value()
+			destination, dp := summary.Branch.Value()
+			if !bp || !dp {
+				return ExecutedGitMutation{}, invalid("receipt push context")
+			}
+			if err := facts.ValidatePushBinding(binding, destination); err != nil {
+				return ExecutedGitMutation{}, err
+			}
+		}
 		if r.cancellationRequested != f.CancellationRequested {
 			return ExecutedGitMutation{}, invalid("receipt cancellation fact")
 		}

@@ -113,7 +113,7 @@ func consistentTrackedRestored(d TrackedRestoredData) error {
 	if len(d.Paths) == 0 || duplicatePaths(d.Paths) || !successfulStatus(d.Status) {
 		return invalid("restored postconditions")
 	}
-	return recoveryWorktree(d.Recovery, d.Status.data.Worktree.data.ID)
+	return gitRecoverySubjects(d.Recovery, d.Status.data.Worktree.data.ID.Repository(), Some(d.Status.data.Worktree.data.ID), nil, false)
 }
 func recoveryWorktree(records []RecoveryRecord, w domain.WorktreeID) error {
 	for _, r := range records {
@@ -137,6 +137,9 @@ func stashStatus(stash domain.StashID, status StatusFacts, success bool) error {
 }
 func consistentStashCreated(d StashCreatedData) error { return stashStatus(d.Stash, d.Status, true) }
 func consistentStashCreatedCleanupRefused(d StashCreatedCleanupRefusedData) error {
+	if err := gitRecoverySubjects(d.Recovery, d.Stash.Repository(), None[domain.WorktreeID](), nil, false); err != nil {
+		return err
+	}
 	if s, p := d.Status.Value(); p {
 		if err := stashStatus(d.Stash, s, false); err != nil {
 			return err
@@ -152,6 +155,9 @@ func consistentStashApplied(d StashAppliedData) error {
 	return stashStatus(d.Stash, d.Status, true)
 }
 func consistentAppliedWithConflicts(d AppliedWithConflictsData) error {
+	if err := gitRecoverySubjects(d.Recovery, d.Stash.Repository(), None[domain.WorktreeID](), nil, false); err != nil {
+		return err
+	}
 	if len(d.ConflictPaths) == 0 || len(d.IndexEntries) == 0 {
 		return invalid("conflict evidence")
 	}
@@ -296,6 +302,16 @@ func outcomeRepository(v GitMutationOutcome) (domain.RepositoryID, Optional[doma
 	return domain.RepositoryID{}, None[domain.WorktreeID]()
 }
 func consistentGitMutationResult(d GitMutationResultData) error {
+	switch x := d.Outcome.(type) {
+	case BranchCreated, CommitCreated, StashCreated, StashCreatedCleanupRefused:
+		if err := knownChangedFacet(d.Effects, LocalRefsHead, None[EffectReport]()); err != nil {
+			return err
+		}
+	case StashDropped:
+		if err := knownChangedFacet(d.Effects, LocalRefsHead, Some(x.data.RefCleanup)); err != nil {
+			return err
+		}
+	}
 	r, w := outcomeRepository(d.Outcome)
 	if o, p := d.Observation.Value(); p {
 		if r.Valid() && o.data.Repository != r {
@@ -312,10 +328,15 @@ func consistentGitMutationResult(d GitMutationResultData) error {
 			return invalid("step observation scope")
 		}
 	}
-	if a, p := w.Value(); p {
-		return recoveryWorktree(d.Recovery, a)
+	repo, worktree, remotes := mutationRecoveryAssociations(d)
+	subjects := make([]RecoverySubject, 0, len(d.Recovery)+len(d.Steps))
+	for _, r := range d.Recovery {
+		subjects = append(subjects, r.data.Subject)
 	}
-	return nil
+	for _, s := range d.Steps {
+		subjects = append(subjects, s.data.Target)
+	}
+	return gitSubjects(subjects, repo, worktree, remotes, d.Kind == PushMutation)
 }
 
 // Subject returns the independently represented local subject, without deriving

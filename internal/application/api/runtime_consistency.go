@@ -9,6 +9,11 @@ func sameRestartSummary(a, b InvocationSummary) bool {
 	return x.Label == y.Label && x.ExecutableDisplay == y.ExecutableDisplay && sameStrings(x.ArgumentDisplay, y.ArgumentDisplay) && x.Terminal == y.Terminal && sameCwdSubject(x.Cwd, y.Cwd)
 }
 func consistentSessionStartResult(d SessionStartResultData) error {
+	if d.Established {
+		if err := knownChangedFacet(d.Effects, RuntimeResources, None[EffectReport]()); err != nil {
+			return err
+		}
+	}
 	s, p := d.Session.Value()
 	if !p {
 		for _, f := range d.Effects.data.Facets {

@@ -72,10 +72,15 @@ func storageAssociations(versions []StorageVersion, recovery []StorageRecovery) 
 		}
 		family = r.data.Family
 		store = rs
-		if prior, p := subject.Value(); p && prior.data != s.data {
-			return invalid("storage recovery subject association")
+		if prior, p := subject.Value(); p {
+			merged, err := mergeRecoverySubjects(prior, s)
+			if err != nil {
+				return err
+			}
+			subject = Some(merged)
+		} else {
+			subject = Some(s)
 		}
-		subject = Some(s)
 		if v, p := first.Value(); p && !recoveryMatchesVersion(r, v) {
 			return invalid("storage recovery version association")
 		}

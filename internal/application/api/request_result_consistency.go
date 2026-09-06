@@ -15,7 +15,8 @@ func resultWorktree(g GitMutationResult, w domain.WorktreeID) error {
 	if actual, p := id.Value(); p && actual != w {
 		return invalid("result request worktree")
 	}
-	return nil
+	_, _, remotes := mutationRecoveryAssociations(g.data)
+	return gitRecoverySubjects(g.data.Recovery, w.Repository(), Some(w), remotes, g.data.Kind == PushMutation)
 }
 func requestResultSubject(r Request, result Result) error {
 	switch q := r.command.(type) {
@@ -59,6 +60,9 @@ func requestResultSubject(r Request, result Result) error {
 	case PushCommand:
 		g := result.(PushResult).data.Git
 		if err := resultWorktree(g, q.data.WorktreeID); err != nil {
+			return err
+		}
+		if err := g.ValidatePushBinding(q.data.Binding, q.data.Destination); err != nil {
 			return err
 		}
 		if p, ok := g.data.Outcome.(Pushed); ok && (p.data.Source != q.data.Source || p.data.Destination != q.data.Destination) {
@@ -161,9 +165,24 @@ func requestResultSubject(r Request, result Result) error {
 		if result.(GraphResult).data.Repository != q.data.Repository {
 			return invalid("graph query repository")
 		}
+		if !sameRevisions(result.(GraphResult).data.Roots, q.data.Roots) {
+			return invalid("graph query exact roots")
+		}
+	case DiffQuery:
+		if !sameGitComparison(q.data.Comparison, result.(DiffResult).data.Comparison) {
+			return invalid("diff query exact comparison")
+		}
 	case PullRequestDiffQuery:
 		if result.(PullRequestDiffResult).data.Target != q.data.Target {
 			return invalid("PR diff query target")
+		}
+		if !samePRBase(q.data.Base, result.(PullRequestDiffResult).data.RequestedBase) {
+			return invalid("PR diff requested base")
+		}
+		for _, o := range []Optional[ExactLocalResolution]{result.(PullRequestDiffResult).data.Base, result.(PullRequestDiffResult).data.Head} {
+			if v, p := o.Value(); p && v.data.Local.Repository() != q.data.Local {
+				return invalid("PR diff requested local object scope")
+			}
 		}
 	case WorktreeStatusQuery:
 		if result.(WorktreeStatusResult).data.WorktreeID != q.data.WorktreeID {
@@ -176,6 +195,9 @@ func requestResultSubject(r Request, result Result) error {
 	case StashPatchQuery:
 		if result.(StashPatchResult).data.Stash != q.data.Stash {
 			return invalid("stash patch query identity")
+		}
+		if c, p := result.(StashPatchResult).data.Comparison.Value(); p && !sameStashView(q.data.View, c.data.View) {
+			return invalid("stash patch query exact view")
 		}
 	case LaunchPointsQuery:
 		if result.(LaunchPointsResult).data.WorktreeID != q.data.WorktreeID {

@@ -4541,6 +4541,9 @@ func (d GitPreparationResultData) validate() error {
 	if err := validateGitPreparationResultEvidence(d); err != nil {
 		return err
 	}
+	if err := consistentGitPreparationResult(d); err != nil {
+		return err
+	}
 	return validateGitRecovery(d.Effects, d.Recovery)
 }
 
@@ -5402,6 +5405,9 @@ func (d PartialMutationData) validate() error {
 		}
 	}
 
+	if err := consistentPartialMutation(d); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -5452,6 +5458,9 @@ func (d MutationIndeterminateData) validate() error {
 		}
 	}
 
+	if err := consistentMutationIndeterminate(d); err != nil {
+		return err
+	}
 	return nil
 }
 

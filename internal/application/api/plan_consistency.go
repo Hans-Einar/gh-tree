@@ -16,6 +16,9 @@ func consistentMutationPlanSummary(d MutationPlanSummaryData) error {
 	}
 	seen := map[Choice]bool{}
 	for _, c := range d.Choices {
+		if c == StashThenDeploy && d.Kind != RetargetMutation {
+			return invalid("plan choice belongs to retarget/deploy")
+		}
 		if seen[c] {
 			return invalid("duplicate summary choice")
 		}
@@ -100,7 +103,7 @@ func consistentMutationPlanSummary(d MutationPlanSummaryData) error {
 		}
 	case BranchMutation:
 		b, p := d.Branch.Value()
-		if !tp || !p || b.Kind() != domain.Local || b.Repository() != d.Repository {
+		if !tp || !p || b.Kind() != domain.Local || b.Repository() != d.Repository || target.ExpectedRevision().Repository() != d.Repository {
 			return invalid("branch summary intent")
 		}
 	case PushMutation:
@@ -112,6 +115,9 @@ func consistentMutationPlanSummary(d MutationPlanSummaryData) error {
 	}
 	if requireWorktree && (!wp || !hp || !expectedWorktree(d.Expected, w, full)) {
 		return invalid("summary material worktree/preconditions")
+	}
+	if tp && d.Kind != CreateMutation && d.Kind != RetargetMutation && d.Kind != BranchMutation && d.Kind != PushMutation {
+		return invalid("summary foreign exact target")
 	}
 	if d.Kind != CreateMutation && (d.Destination.Present() || d.CreateMode.Present()) || d.Kind != RetargetMutation && d.RetargetMode.Present() || d.Kind != StashMutation && d.StashIntent.Present() || d.Kind != StageMutation && d.StageAction.Present() || d.Kind != CommitMutation && (d.Message.Present() || d.CommitIndexPolicy.Present()) || d.Kind != PushMutation && d.PushBinding.Present() || d.Kind != PushMutation && d.Kind != BranchMutation && d.Branch.Present() {
 		return invalid("summary foreign operation payload")
