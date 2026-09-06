@@ -94,6 +94,19 @@ competitor refusal, retained-object late writes alongside an unchanged raw
 backup, and complete fresh-reader visibility during repeated replacement.
 These mechanism tests do not establish a complete Storage commit/recovery path.
 
+Windows metadata inspection queries owner/group/DACL plus mandatory labels,
+resource attributes, CAP scopes, process trust labels and access filters. Only
+mandatory labels are currently supported among those access-affecting SACL ACEs;
+the other nonempty or unreadable profiles refuse. Ordered complete DACL ACEs,
+protection/inheritance and label policy are copied and independently re-queried.
+Read-only/special attributes, alternate data streams and native EAs refuse.
+Per-user exclusive creation accepts a protected current-user-only ACL before
+writing bytes. These private functions have native amd64/386 evidence including
+actual resource attribute refusal, low-label and deny/allow ordered DACL copies.
+The accepted ordinary-account profile excludes audit-only SACL replication;
+limited READ_CONTROL queries do not prove audit ACE absence or a full security
+descriptor copy. There is no public audit option or privilege escalation.
+
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing
 parent revalidation, exact class65/class11 or Renameat/Linkat publication,

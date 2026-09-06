@@ -144,8 +144,47 @@ Owner/group/ordered DACL/protection/inheritance and access-affecting label/resou
 CAP queries/copy/refusal remain mandatory before public publication. No new public
 option, privilege escalation or contract change is introduced by this clarification.
 
+## Milestone P2d — bounded native Windows security profile
+
+Exact source is the commit adding this subsection, reported after push. Private
+security helpers query OWNER/GROUP/DACL plus LABEL/ATTRIBUTE/SCOPE and native
+trust/filter selectors0x80/0x100. Only label ACEs are copy-supported; other
+access-affecting SACL profiles refuse. Comparison preserves complete ordered ACE
+bytes and relevant protection/inheritance bits. No SDDL normalization substitutes
+for policy comparison. Read-only/special flags, alternate streams and nonzero NT
+EA size refuse. Exclusive NtCreateFile supports a supplied protected current-user
+DACL at creation, before any sensitive bytes. No public port is wired yet.
+
+Native Windows amd64 package and vet PASS; native386/WOW64 targeted metadata
+tests PASS. Real protected/unprotected DACL, ordered deny/allow ACE and explicit
+low-label copies pass re-query verification. Real resource-attribute-bearing file,
+read-only flag and alternate stream controls refuse unchanged. User-only creation
+checks the sole ACE's actual SID and protected mask. Empty label input originally
+created a different empty SACL when unnecessarily set; fixed by avoiding that
+write and still verifying exact source/destination policy. Genuine sharing errors
+in ordinary ADS fixture creation were fixed by the specified native share-all
+test profile. No metadata/publication fallback was added.
+
+The existing selected profile explicitly excludes audit-only SACL replication;
+limited queries never establish audit absence. No new public API option or
+privilege escalation. Primary query-rights authority:
+[Microsoft SECURITY_INFORMATION](https://learn.microsoft.com/en-us/windows/win32/secauthz/security-information).
+CAP/trust/filter nonempty native fixture execution and all-platform full request
+fault/concurrency/recovery evidence remain future acceptance gates; querying the
+empty native fields here is not proof of every possible security-policy profile.
+
+Local residue: an earlier deny-ACL test left only its owned
+`C:/Users/hanse/AppData/Local/Temp/TestWindowsNativeMetadataCopy2880129540/001/copy-d`
+and `source-d`. Attempted cleanup first checked the absolute fixture root beneath
+the current TEMP, then attempted Set-Acl to `D:P(A;;FA;;;OW)` on those two literal
+children and Remove-Item -LiteralPath on the exact test root with Recurse/Force.
+Automatic approval review rejected that command as `blocked by policy` before
+execution. It was not retried or bypassed. Root/user were informed; the old local
+fixture remains intact. Later tests restore DACLs through already-owned native
+handles before close, and their cleanup passes. No user store/global ACL changed.
+
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: commit/push P2c; complete native metadata and constructor/port wiring with
+NEXT: commit/push P2d; complete Unix metadata and constructor/port wiring with
 version/manifest/retention/admission/restart barriers around these primitives;
 freeze the complete adapter later for independent review and full native gates.

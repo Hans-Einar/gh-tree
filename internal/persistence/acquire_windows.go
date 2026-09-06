@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"structs"
@@ -82,6 +83,10 @@ func (o *winObject) close() error           { return o.file.Close() }
 // acquisition alone may use an absolute NT name. Every descendant is one literal
 // basename. No inheritance or ordinary path-based reopen is permitted here.
 func winOpen(parent windows.Handle, name string, access, share, disposition, options uint32) (*winObject, error) {
+	return winOpenWithSecurity(parent, name, access, share, disposition, options, nil)
+}
+
+func winOpenWithSecurity(parent windows.Handle, name string, access, share, disposition, options uint32, security *windows.SECURITY_DESCRIPTOR) (*winObject, error) {
 	if parent != 0 && !singleName(name) {
 		return nil, errors.New("invalid native basename")
 	}
@@ -90,9 +95,11 @@ func winOpen(parent windows.Handle, name string, access, share, disposition, opt
 		return nil, err
 	}
 	a := windows.OBJECT_ATTRIBUTES{RootDirectory: parent, ObjectName: u, Attributes: windows.OBJ_DONT_REPARSE}
+	a.SecurityDescriptor = security
 	a.Length = uint32(unsafe.Sizeof(a))
 	var handle windows.Handle
 	err = windows.NtCreateFile(&handle, access|windows.SYNCHRONIZE, &a, &windows.IO_STATUS_BLOCK{}, nil, windows.FILE_ATTRIBUTE_NORMAL, share, disposition, options|windows.FILE_OPEN_REPARSE_POINT|windows.FILE_SYNCHRONOUS_IO_NONALERT, 0, 0)
+	runtime.KeepAlive(security)
 	if err != nil {
 		if status, ok := err.(windows.NTStatus); ok {
 			err = errors.Join(status, status.Errno())
