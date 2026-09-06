@@ -337,6 +337,14 @@
       "to": "BC--Application--Git",
       "state": "native_tools_only",
       "doc": "SDP/Verification/CR-#21/Tooling-Preparation--001.md"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "correction_review_candidate",
+      "to": "4700ea72f080cae1f0a22cf21e80876d88617754",
+      "productHead": "c96ca9244a30e16808743a0cd3e0b557e75080d7",
+      "state": "independent_rereview",
+      "priorReview": "SDP/Verification/CR-#21/M2-API-Review--001.md"
     }
   ],
   "errata": [

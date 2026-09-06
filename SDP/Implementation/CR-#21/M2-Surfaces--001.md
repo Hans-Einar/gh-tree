@@ -39,3 +39,12 @@ integrates accepted API/ports then viewmodel serially, verifies integrated CI an
 records source/review/integration SHAs before M2 completion and adapter Issues.
 No whole Slice or full V-APP/V-STATE/V-VIEW/native proof follows from leaf tests.
 Any insufficient frozen boundary triggers BC-CHANGE before affected code proceeds.
+
+M2 API correction source frozen for independent re-review:4700ea72f080cae1f0a22cf21e80876d88617754,
+productc96ca9244a30e16808743a0cd3e0b557e75080d7. Master verified clean freeze, permitted
+API/ports/report scope and no product change in the312b534 metadata merge. Worker
+reports full local test/race/vet/build/all12 gates pass; CI34041668920 and bounded
+report were pending at dispatch. Primary and separate Runtime/Storage reviewers
+reopen immutable source, all26 original cases, positive partial/compound controls
+and related new semantics. M259-M01..M08 remain unresolved until actual acceptance;
+viewmodeld279c3f remains held for API-first integration. No M2/Slice/native closure.

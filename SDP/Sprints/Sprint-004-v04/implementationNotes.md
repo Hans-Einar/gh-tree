@@ -301,3 +301,12 @@ Only bounded script/log/result/manifest files are archived; keys remain outside
 the repo. No adapter/bridge/Slice check is satisfied. Canonical checkpoint CI
 34039754376 at04eb90a and34039134247 at5e3aa2e each passed18/explicitM3skip.
 API#59 correction continues; accepted viewmodel remains held for API-first merge.
+
+M2 API correction source frozen for independent re-review:4700ea72f080cae1f0a22cf21e80876d88617754,
+productc96ca9244a30e16808743a0cd3e0b557e75080d7. Master verified clean freeze, permitted
+API/ports/report scope and no product change in the312b534 metadata merge. Worker
+reports full local test/race/vet/build/all12 gates pass; CI34041668920 and bounded
+report were pending at dispatch. Primary and separate Runtime/Storage reviewers
+reopen immutable source, all26 original cases, positive partial/compound controls
+and related new semantics. M259-M01..M08 remain unresolved until actual acceptance;
+viewmodeld279c3f remains held for API-first integration. No M2/Slice/native closure.
