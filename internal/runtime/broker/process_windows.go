@@ -320,11 +320,12 @@ func (p *userProcess) cleanup(ctx context.Context) error {
 	}
 	if p.debug.process.Process != 0 && !p.rootWaited {
 		// Assignment may have failed while the root was still suspended.
+		var terminateErr error
 		state, waitErr := windows.WaitForSingleObject(p.debug.process.Process, 0)
 		if waitErr != nil {
 			result = errors.Join(result, waitErr)
 		} else if state != windows.WAIT_OBJECT_0 {
-			result = errors.Join(result, windows.TerminateProcess(p.debug.process.Process, 1))
+			terminateErr = windows.TerminateProcess(p.debug.process.Process, 1)
 		}
 		if p.debug.attached {
 			result = errors.Join(result, p.debug.continuation(), p.debug.detach())
@@ -333,6 +334,8 @@ func (p *userProcess) cleanup(ctx context.Context) error {
 		if err == nil {
 			p.exit = exit
 			p.rootWaited = true
+		} else {
+			result = errors.Join(result, terminateErr)
 		}
 		result = errors.Join(result, err)
 	}

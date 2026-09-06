@@ -196,6 +196,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		}()
 	}
 	stopping := false
+	gracePeriod, forcePeriod := 2*time.Second, 3*time.Second
 	var stopAfter time.Time
 	ticker := time.NewTicker(20 * time.Millisecond)
 	defer ticker.Stop()
@@ -221,14 +222,21 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 			f := got.frame
 			switch f.Opcode {
 			case Stop, Abort:
-				if len(f.Payload) != 0 {
+				if len(f.Payload) != 0 && (f.Opcode != Stop || len(f.Payload) != 8) {
 					return fail(ErrProtocol)
+				}
+				if len(f.Payload) == 8 {
+					grace, force := binary.BigEndian.Uint32(f.Payload), binary.BigEndian.Uint32(f.Payload[4:])
+					if grace == 0 || force == 0 || grace > 60000 || force > 60000 {
+						return fail(ErrProtocol)
+					}
+					gracePeriod, forcePeriod = time.Duration(grace)*time.Millisecond, time.Duration(force)*time.Millisecond
 				}
 				if !stopping {
 					stopping = true
 					if f.Opcode == Stop && spec.Terminal && !writing {
 						write(f, []byte{3})
-						stopAfter = time.Now().Add(2 * time.Second)
+						stopAfter = time.Now().Add(gracePeriod)
 					}
 				}
 				if f.Opcode == Abort {
@@ -295,8 +303,11 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		<-writes
 		writing = false
 	}
-	if err := boundedCleanup(p); err != nil {
-		return fail(err)
+	cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), forcePeriod)
+	cleanupErr := p.cleanup(cleanupCtx)
+	cleanupCancel()
+	if cleanupErr != nil {
+		return fail(cleanupErr)
 	}
 	exit := binary.BigEndian.AppendUint32(nil, p.exit)
 	if err := sendControl(channel, output, UserExit, exit); err != nil {

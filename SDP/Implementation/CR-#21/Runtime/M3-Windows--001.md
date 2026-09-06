@@ -59,3 +59,27 @@ handles when a transfer message fails.
 
 Validation: Go1.25.0 Windows amd64 broker tests and vet. Build/generator source
 closure remains incomplete and will change during the remaining implementation.
+
+## Partial checkpoint 3
+
+The Windows-only private client now retains the suspended broker, assigns its
+outer kill-on-close Job before resume, authenticates inherited anonymous control
+endpoints plus a retained parent-process capability, receives/ACKs kernel output
+handle transfers, drains copied output independently, and joins broker/outer
+membership/control/output ownership before its final cleanup fact. No outer
+membership-one test precedes Release. Its bounded methods and lifecycle facts
+will be adapted by the original Runtime author; no public Sessions assembly is
+changed. Role-local Stop payloads permit bounded test grace/force periods without
+editing shared wire or StartSpec.
+
+Real amd64 broker-client tests pass pipes, ConPTY input/resize, forced stop with
+an owned child, and root-first exit with a surviving child. All four repeated
+three times passed; full broker tests and vet subsequently pass. The first forced
+stop exposed TerminateProcess racing an already-terminating Job member; cleanup
+now accepts the exact signaled process wait as proof of completion and retains
+termination errors if that proof fails. This does not weaken Job-zero evidence.
+
+Incomplete gates remain: reviewed helper generation/extraction, native WOW64 and
+ARM64/emulation, comprehensive fault/cancel/resources/TLS/DLL/debug-heap controls,
+all twelve builds, independent review and parent adapter integration. No M1 helper
+or full native acceptance is claimed.
