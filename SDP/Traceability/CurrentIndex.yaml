@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "identity_code_review_ready",
+      "state": "bounded_identity_accepted_adapter_open",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,14 +713,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "bfdc79c2289274636f66574a3c86f467bb993615",
-      "checkpointScope": "all6 methods present but unaccepted; native ObjectID mechanism probes only, product adoption pending; Windows repeated-publication, FreeBSD/no-birth/source-name/fault/profile gates remain",
+      "lastCheckpoint": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+      "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
-        "run": 34063088464,
-        "result": "FAILED 6 jobs: Windows tunneling regression and non-Windows test selection; latter fixed by6fc6c2c, all12 test binaries compile"
+        "head": "bfdc79c2289274636f66574a3c86f467bb993615",
+        "run": 34066675310,
+        "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
-      "activeWorker": "m3_persistence_identity_worker",
-      "pendingNativeFinding": "Native Windows repeated-commit recovery fails when NTFS rename transfers CreationTime with same full FileID; failing12-cycle control preserved. FreeBSD system-EA profile and no-birth/source-name interval proof remain.",
+      "activeWorker": null,
+      "pendingNativeFinding": "FreeBSD user scope decision, no-birth association, Unix source-name interval and full fault/resource gates remain",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
       "earlyProtocolReview": {
@@ -736,11 +737,11 @@
         "confirmedSource": "91acac5ecff941f95dbdaf00c86e9ced64b2a76f",
         "scope": "bounded confirmation only; full candidate not accepted"
       },
-      "sourceHead": "699a69f2735106d1a06ea9c703a7f0eaa5ff930b",
+      "sourceHead": "bfdc79c2289274636f66574a3c86f467bb993615",
       "latestVerification": {
-        "head": "6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12",
-        "run": 34063842833,
-        "result": "16 SUCCESS, 3 FAILURE (Windows amd64/ARM64 and native FreeBSD), helper skip; test-selection compilation failure resolved"
+        "head": "bfdc79c2289274636f66574a3c86f467bb993615",
+        "run": 34066675310,
+        "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
       "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
@@ -753,7 +754,10 @@
         "keep FreeBSD part blocked pending decision"
       ],
       "identityTechnicalSource": "0058949bf0f9bdc81021e53e8ef4f9f1e6713968",
-      "identityLocalChecks": "amd64/386 native product and race/vet, all12 builds/test compilation PASS; full source CI/native ARM64 and independent code review pending"
+      "identityLocalChecks": "Independent native Windows amd64/386 and Linux protocol controls PASS; actual native ARM64 CI PASS",
+      "identityCodeReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Code-Review--001.md",
+      "identityCodeReviewHead": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+      "identityDisposition": "ACCEPT bounded correction; no implementation findings; no full adapter or integration acceptance"
     },
     {
       "id": "IMPL64",
@@ -821,7 +825,7 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
+      "lastCheckpoint": "da2956960cbae22d7e4735b6a20896cd018b1bf5",
       "subContributions": [
         "IMPL69"
       ]
@@ -917,12 +921,27 @@
       "id": "IMPL69",
       "kind": "runtime_platform_contribution",
       "issue": 69,
-      "state": "dispatch_ready",
+      "state": "implementation_in_progress",
       "branch": "codex/cr21-runtime-windows",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
-      "scope": "Windows broker files/cmd/assets/helpergen only; shared protocol coordinated",
-      "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md"
+      "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
+      "lastCheckpoint": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
+      "subContributions": [
+        "IMPL70"
+      ]
+    },
+    {
+      "id": "IMPL70",
+      "kind": "runtime_build_contribution",
+      "issue": 70,
+      "state": "dispatch_ready",
+      "branch": "codex/cr21-runtime-helper-assets",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
+      "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
+      "scope": "cmd/helpergen and brokerassets only; no native extraction or broker edits",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets--001.md"
     }
   ],
   "productFindings": [
@@ -1999,8 +2018,9 @@
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL63",
-    "IMPL65"
+    "IMPL65",
+    "IMPL69",
+    "IMPL70"
   ],
   "pausedInitialContributions": [
     "IMPL61",

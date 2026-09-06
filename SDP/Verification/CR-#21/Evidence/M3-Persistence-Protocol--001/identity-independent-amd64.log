@@ -1,0 +1,32 @@
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/original-before-retain
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/original-final
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/payload
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/publication
+--- PASS: TestReviewPinnedArtifactIDLossCannotFallBack (0.08s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/original-before-retain (0.03s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/original-final (0.02s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/payload (0.02s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/publication (0.02s)
+=== RUN   TestReviewLegacyBirthDriftEveryRole
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=1
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=2
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=3
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=4
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=1
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=2
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=3
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=4
+--- PASS: TestReviewLegacyBirthDriftEveryRole (0.22s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=1 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=2 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=3 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=4 (0.02s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=1 (0.02s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=2 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=3 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=4 (0.03s)
+=== RUN   TestReviewFileCounterIncludesGuardsAndLocks
+--- PASS: TestReviewFileCounterIncludesGuardsAndLocks (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.819s

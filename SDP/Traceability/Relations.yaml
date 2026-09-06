@@ -537,6 +537,19 @@
       "from": "IMPL65",
       "relation": "delegates_windows_native_scope",
       "to": "IMPL69"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "bounded_identity_source_accepted",
+      "to": "bfdc79c2289274636f66574a3c86f467bb993615",
+      "reviewHead": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+      "ci": 34066675310,
+      "scope": "Windows identity correction only; aggregate CI fails FreeBSD; full adapter open"
+    },
+    {
+      "from": "IMPL69",
+      "relation": "delegates_helper_build_scope",
+      "to": "IMPL70"
     }
   ],
   "errata": [

@@ -1,0 +1,46 @@
+=== RUN   TestWindowsArtifactIdentityExactNativeResults
+--- PASS: TestWindowsArtifactIdentityExactNativeResults (0.00s)
+=== RUN   TestWindowsArtifactIdentityFullTupleAndReadOnlyProfiles
+--- PASS: TestWindowsArtifactIdentityFullTupleAndReadOnlyProfiles (0.01s)
+=== RUN   TestWindowsArtifactPublicOriginalRemainsUntouched
+=== RUN   TestWindowsArtifactPublicOriginalRemainsUntouched/tagged=false
+=== RUN   TestWindowsArtifactPublicOriginalRemainsUntouched/tagged=true
+--- PASS: TestWindowsArtifactPublicOriginalRemainsUntouched (0.10s)
+    --- PASS: TestWindowsArtifactPublicOriginalRemainsUntouched/tagged=false (0.05s)
+    --- PASS: TestWindowsArtifactPublicOriginalRemainsUntouched/tagged=true (0.05s)
+=== RUN   TestCommitLatePayloadWriteKeepsIDAndAllowsFreshExpectedIntent
+--- PASS: TestCommitLatePayloadWriteKeepsIDAndAllowsFreshExpectedIntent (0.05s)
+=== RUN   TestCommitOutcomeDeliveryPreservesCancellationAndIndependentCurrent
+--- PASS: TestCommitOutcomeDeliveryPreservesCancellationAndIndependentCurrent (0.03s)
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/original-before-retain
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/original-final
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/payload
+=== RUN   TestReviewPinnedArtifactIDLossCannotFallBack/publication
+--- PASS: TestReviewPinnedArtifactIDLossCannotFallBack (0.07s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/original-before-retain (0.01s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/original-final (0.02s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/payload (0.02s)
+    --- PASS: TestReviewPinnedArtifactIDLossCannotFallBack/publication (0.02s)
+=== RUN   TestReviewLegacyBirthDriftEveryRole
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=1
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=2
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=3
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=false/role=4
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=1
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=2
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=3
+=== RUN   TestReviewLegacyBirthDriftEveryRole/journal=true/role=4
+--- PASS: TestReviewLegacyBirthDriftEveryRole (0.21s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=1 (0.05s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=2 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=3 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=false/role=4 (0.03s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=1 (0.02s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=2 (0.02s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=3 (0.02s)
+    --- PASS: TestReviewLegacyBirthDriftEveryRole/journal=true/role=4 (0.02s)
+=== RUN   TestReviewFileCounterIncludesGuardsAndLocks
+--- PASS: TestReviewFileCounterIncludesGuardsAndLocks (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.918s

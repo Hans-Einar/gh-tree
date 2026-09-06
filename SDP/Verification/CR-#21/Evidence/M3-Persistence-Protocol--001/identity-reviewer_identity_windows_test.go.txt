@@ -1,0 +1,153 @@
+package persistence
+
+import (
+ "bytes"
+ "context"
+ "crypto/sha256"
+ "encoding/json"
+ "errors"
+ "fmt"
+ "os"
+ "path/filepath"
+ "runtime/debug"
+ "strings"
+ "testing"
+ "time"
+
+ "github.com/Hans-Einar/gh-tree/internal/application/api"
+ "golang.org/x/sys/windows"
+)
+
+// Delete only a reviewer-owned fixture's ID to simulate an external actor after
+// the product has pinned it. No production source or OS settings are changed.
+func reviewDeleteID(t testing.TB, parent *nativeObject, name string) {
+ t.Helper()
+ o, err := winOpen(parent.handle(), name, windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE,
+  winShareAll, windows.FILE_OPEN, windows.FILE_NON_DIRECTORY_FILE)
+ if err != nil { t.Fatal(err) }
+ defer o.close()
+ if _, err := winArtifactObjectID(o.handle(), windows.FSCTL_GET_OBJECT_ID); err != nil { t.Fatal(err) }
+ var returned uint32
+ if err := windows.DeviceIoControl(o.handle(), windows.FSCTL_DELETE_OBJECT_ID, nil, 0, nil, 0, &returned, nil); err != nil { t.Fatal(err) }
+ if _, err := winArtifactObjectID(o.handle(), windows.FSCTL_GET_OBJECT_ID); err != windows.ERROR_FILE_NOT_FOUND { t.Fatalf("ID was not deleted: %v", err) }
+}
+
+func TestReviewPinnedArtifactIDLossCannotFallBack(t *testing.T) {
+ for _, role := range []string{"original-before-retain", "original-final", "payload", "publication"} {
+  t.Run(role, func(t *testing.T) {
+   root := physicalStoreTemp(t)
+   c, err := nativeAcquire(context.Background(), root)
+   if err != nil { t.Fatal(err) }
+   defer c.close()
+   original, err := nativeCreateFile(c.parent(), "config.json", true)
+   if err != nil { t.Fatal(err) }
+   old := []byte(`{"schemaVersion":1,"stripPrefixes":["old"]}`)
+   if err := writeComplete(context.Background(), original.file, old); err != nil { t.Fatal(err) }
+   if err := original.file.Sync(); err != nil { t.Fatal(err) }
+   policy, err := nativeInspectMetadata(original)
+   if err != nil { t.Fatal(err) }
+   if err := original.close(); err != nil { t.Fatal(err) }
+   s := newTestStore(t, root)
+   loaded, err := s.LoadUserConfig(context.Background())
+   if err != nil { t.Fatal(err) }
+   expected, _ := loaded.Observation().Data().Version.Value()
+   ran := false
+   s.hook = func(stage string) error {
+    desired := "final-check"
+    if role == "original-before-retain" { desired = "prepare.manifest" }
+    if stage != desired { return nil }
+    name := "config.json"
+    if role == "payload" || role == "publication" {
+     entries, err := os.ReadDir(root)
+     if err != nil { t.Fatal(err) }
+     name = ""
+     for _, entry := range entries { if strings.HasSuffix(entry.Name(), "."+role) { name = entry.Name() } }
+     if name == "" { t.Fatal("no fixture artifact") }
+    }
+    reviewDeleteID(t, c.parent(), name)
+    ran = true
+    return nil
+   }
+   r, err := s.CommitUserConfig(context.Background(), userProposal(t, expected, "must refuse"))
+   if !ran || !errors.Is(err, windows.ERROR_FILE_NOT_FOUND) || !r.Valid() || r.Data().Outcome != api.NotCommitted || r.Data().PublicationKnown {
+    t.Fatalf("pinned ID loss admitted or result lost: ran=%v r=%v error=%v", ran, r, err)
+   }
+   current, e := nativeOpenDocument(c.parent(), "config.json")
+   if e != nil { t.Fatal(e) }
+   after, readErr := nativeRead(context.Background(), current)
+   afterPolicy, policyErr := nativeInspectMetadata(current)
+   closeErr := current.close()
+   if readErr != nil || policyErr != nil || closeErr != nil || !bytes.Equal(after, old) || !policy.equal(afterPolicy) { t.Fatal("prepublication refusal altered target bytes/security", readErr, policyErr, closeErr) }
+   for _, facet := range r.Data().Effects.Data().Facets { if facet.Data().Facet == api.Storage && facet.Data().State != api.VerifiedNoTargetChange { t.Fatal("false storage effect") } }
+  })
+ }
+}
+
+func TestReviewLegacyBirthDriftEveryRole(t *testing.T) {
+ for _, journal := range []bool{false, true} {
+  for _, kind := range []api.StorageRecoveryKind{api.Manifest, api.RawOriginal, api.RetainedOriginal, api.RetainedPayload} {
+   t.Run(fmt.Sprintf("journal=%v/role=%v", journal, kind), func(t *testing.T) {
+    root, m := manifestFixture(t)
+    c, err := nativeAcquire(context.Background(), root)
+    if err != nil { t.Fatal(err) }
+    for i := range m.Artifacts {
+     o, err := nativeOpenDocument(c.parent(), m.Artifacts[i].Name)
+     if err != nil { t.Fatal(err) }
+     m.Artifacts[i].Identity = winBirthArtifact(o.observation)
+     if m.Artifacts[i].Kind == kind { m.Artifacts[i].Identity.Stamp += "0" }
+     if err := o.close(); err != nil { t.Fatal(err) }
+    }
+    if err := c.close(); err != nil { t.Fatal(err) }
+    raw, err := json.Marshal(m)
+    if err != nil { t.Fatal(err) }
+    if journal {
+     body := manifestFrameBody{Sequence: 1, Snapshot: m}
+     bodyRaw, err := json.Marshal(body)
+     if err != nil { t.Fatal(err) }
+     frame, err := json.Marshal(manifestFrame{Body: body, Digest: sha256.Sum256(bodyRaw)})
+     if err != nil { t.Fatal(err) }
+     raw = append(append([]byte(manifestJournalMagic), frame...), '\n')
+    }
+    path := filepath.Join(root, m.artifactName(api.Manifest))
+    if err := os.WriteFile(path, raw, 0600); err != nil { t.Fatal(err) }
+    got, err := observedFixture(t, root, m)
+    if !errors.Is(err, errBindingChanged) { t.Fatal("legacy drift accepted", err) }
+    expected := 3
+    if kind == api.Manifest { expected = 0 }
+    if len(got) != expected { t.Fatalf("unrelated retained records lost: %d", len(got)) }
+    for _, record := range got { if record.Data().Kind == kind { t.Fatal("wrong historical ID survived") } }
+    after, err := os.ReadFile(path)
+    if err != nil || !bytes.Equal(raw, after) { t.Fatal("reader changed legacy bytes", err) }
+   })
+  }
+ }
+}
+
+func TestReviewFileCounterIncludesGuardsAndLocks(t *testing.T) {
+ root := physicalStoreTemp(t)
+ reference, err := os.Create(filepath.Join(root, "counter-reference"))
+ if err != nil { t.Fatal(err) }
+ defer reference.Close()
+ gc := debug.SetGCPercent(-1)
+ defer debug.SetGCPercent(gc)
+ count := func() int { return windowsTestFileHandleCount(t, windows.Handle(reference.Fd())) }
+ baseline := count()
+ c, err := nativeAcquire(context.Background(), root)
+ if err != nil { t.Fatal(err) }
+ withGuards := count()
+ if withGuards != baseline + len(c.guards) { t.Fatal("directory guards absent from file counter", baseline, withGuards, len(c.guards)) }
+ lock, err := nativeLock(context.Background(), c.parent(), "counter", time.Second)
+ if err != nil { t.Fatal(err) }
+ if count() != withGuards+1 { t.Fatal("lock absent from file counter") }
+ for _, handle := range []windows.Handle{c.parent().handle(), lock.object.handle()} {
+  before := count()
+  var duplicate windows.Handle
+  if err := windows.DuplicateHandle(windows.CurrentProcess(), handle, windows.CurrentProcess(), &duplicate, 0, false, windows.DUPLICATE_SAME_ACCESS); err != nil { t.Fatal(err) }
+  observed := count()
+  if err := windows.CloseHandle(duplicate); err != nil { t.Fatal(err) }
+  if observed != before+1 || count() != before { t.Fatal("native duplicate leak control not detected") }
+ }
+ if err := lock.close(); err != nil { t.Fatal(err) }
+ if err := c.close(); err != nil { t.Fatal(err) }
+ if count() != baseline { t.Fatal("explicit request closes did not restore baseline") }
+}

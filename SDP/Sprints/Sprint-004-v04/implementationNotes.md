@@ -441,3 +441,10 @@ Persistence6fc6c2c, Discovery8e2d2d1 already frozen. Shared prerequisites/M1/M2 
 accepted; full refactor remains incomplete. All26 worktrees clean, no stashes or
 unpublished branch commits after fetch. Exact continuation and local residue are
 in current Handoff. Recovery tag m3-access-hold/20260906-2225Z does not waive gates.
+
+Current continuation supersedes the blanket hold above: independent Runtime work
+continues; Git review/integration stays held. Identity correction bfdc79c is
+independently accepted by report53de3e1, full Persistence remains open. Runtime
+Unix da29569 and Windows 9c9a2f7 are pushed partial checkpoints. #70 explicitly
+owns only helpergen/assets, starting the actual Windows broker entry. See current
+Handoff/CurrentIndex and original reports; no full Slice or baseline closure.

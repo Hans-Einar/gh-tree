@@ -287,3 +287,25 @@ codex/cr21-runtime-windows at46fe59c. Shared broker/protocol.go/start.go and com
 tests are coordinated interfaces. This explicit Issue ownership exception remains
 inside Runtime; no new layer/BC or neighboring edits. Master integrates only after
 separate Windows review and exact source gates, then verifies combined Runtime.
+
+## Current bounded milestones and helper ownership (#63/#65/#69/#70)
+
+Master accepts the Windows identity correction at bfdc79c, separate review
+53de3e1 / Persistence/M3-Identity-Code-Review--001: no bounded findings. Independent
+Windows amd64/386, Linux protocol reconfirmation and actual native ARM64 CI pass.
+CI34066675310 remains failing only native FreeBSD (18 success, helper skip);
+full #63/no-birth/source-name/fault/resource gates remain open. New small review
+controls/logs are preserved in existing M3-Persistence-Protocol--001 evidence.
+
+Runtime Unix checkpoint da29569 and Windows live-startup checkpoint 9c9a2f7 are
+pushed partial implementations. #70 now owns only cmd/helpergen and brokerassets
+plus M3-HelperAssets--001; #69 retains Windows broker/cmd and native extraction.
+#70 starts the real committed broker.RunWindowsPrivate entry at 9c9a2f7 on
+codex/cr21-runtime-helper-assets. Shared files remain coordinated. Exact pinned
+helper interface/source closure and fresh review are required; ongoing broker
+changes require regeneration. No complete Runtime or serial integration claim.
+
+Before dispatch, untouched #70 base advanced to ab608327 after #69 pushed its
+real parent-client/protocol tests (pipes/ConPTY/force stop/root-first cleanup).
+Broker package must not import assets through client/extraction code; parent
+Runtime supplies private asset values. No native/full candidate acceptance.

@@ -3,7 +3,7 @@
 Sprint-004-v04 / I-03 / M3. The full Issue#21 v0.4 objective remains unchanged.
 Repo Hans-Einar/gh-tree; canonical worktree C:/Users/hanse/GIT/gh-tree-wt/refactor,
 branch codereview-21/refactor. Latest recovery tag:
-checkpoint/m3-access-hold/20260906-2225Z (the commit adding this status).
+checkpoint/m3-access-hold/20260906-2225Z (historical recovery marker).
 This is a recovery marker, not adapter/Slice/stage/release completion.
 
 ## Why work stopped
@@ -54,16 +54,18 @@ Current status-only commits do not change that verified product tree.
 |---|---|---|---|
 | Git#61 | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | technical8c2584b; 11 facts, registry/ReleasePlan, scheduler/native locks; CI34063202321 19PASS/helper skip; review blocked, mutations incomplete |
 | GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
-| Persistence#63 | codereview-21/layer-persistence | 6fc6c2c16f0bf53bcddbb0234a4f3c57ed110f12 | all6 methods unaccepted; ObjectID probe699a69f only, product adoption pending; Windows regression/FreeBSD and full profile/fault gates remain |
+| Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
-| Runtime#65 | codereview-21/layer-runtime | 412f33e477cec03cb6eafe7b846c9bcdd02c0a25 | queued; no implementation |
+| Runtime#65 | codereview-21/layer-runtime | da2956960cbae22d7e4735b6a20896cd018b1bf5 | private registry/protocol and Unix retained native owners; partial, helper prerequisite failing |
+| Windows Runtime#69 | codex/cr21-runtime-windows | 9c9a2f75490b75092b620f3d8dad31413034efb7 | actual amd64 startup/ConPTY tests pass; client/protocol/extraction/native matrix incomplete |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | 9c9a2f75490b75092b620f3d8dad31413034efb7 | initial pushed base; disjoint generator/assets work authorized |
 
-Exact implementation worktrees are in M3-Assignments/CurrentIndex. All five live
-branches match origin. All26 registered worktrees were clean, stash count0, and
-all local branch commits were reachable from origin after fetch. The resumed
-program had73 unique commits before this final status commit. Two detached review
-snapshots (Git855a144 and Persistence91acac5) are already reachable in pushed
-branch history. No unpushed product work or uncommitted implementation remains.
+Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
+table records last verified pushed checkpoints; Runtime authors may have newer
+local changes, so inspect before handoff/integration. At the historical access-hold
+checkpoint all26 worktrees were clean with no stashes/unpublished branch commits.
+Two more separate Runtime worktrees now exist; do not reuse that old clean-state
+claim as current inventory. Root canonical changes remain governance/evidence only.
 
 ## Verification and unresolved work
 
@@ -73,19 +75,15 @@ failure remains distinct from Git2.43/native CI proof. Failed foundation review'
 already-delivered provisional observations are in M3-Foundation-Review--001;
 revalidate them, do not treat that status note as an accepted review.
 
-Persistence early audit's3 findings are independently resolved at91acac5 with
-native Windows/Linux controls (M3-Protocol-Review--001). New repeated Windows
-commit/load control at a147 fails because NTFS transfers CreationTime while full
-FileID stays the same. Native owned-artifact ObjectID probes pass amd64/386,
-including present/cached-absence, kill-before-outcome and same-byte replacement;
-ObjectID alone is demonstrably insufficient. Product adoption remains pending.
-No timestamp repair, original-ID mutation or identity-check waiver is approved.
-CI34063088464 at699a69f failed6 jobs: Windows regression plus accidental Unix
-selection of Windows tests. Mechanical6fc6c2c fixes only platform filenames, all12
-test binaries compile; CI34063842833 completed16 success/3 native failures
-(Windows amd64/ARM64 and FreeBSD), plus helper skip. FreeBSD
-system-EA EPERM, no-birth restart/source-name interval and full fault/resource/
-security/admission guarantees remain. Never treat unsupported metadata as absent.
+Persistence early audit's three findings are independently resolved at91acac5.
+The Windows NTFS tunneling regression preserved at a147 is corrected by0058949
+and independently reviewed at bfdc79c, report53de3e1. Full FileID plus all64 native
+ObjectID bytes, recorded-profile checks and unchanged legacy/original rules are
+accepted only for this private correction. Native amd64/386/ARM64 pass; Linux
+reconfirms all3 earlier fixes. Source CI34066675310 has18 successes, FreeBSD failure
+and helper skip. FreeBSD scope decision, no-birth association, source-name interval
+and complete fault/resource gates remain open. See the reports for exact controls
+and historical failures; no metadata absence, identity or publication waiver.
 
 ## Exact next permitted action
 
@@ -94,9 +92,12 @@ complete the independent Git foundation review at855a144 using actual current
 source/evidence and revalidate its preliminary observations. Resume Git mutation
 author from25240dd: all8 Prepare methods, ExecutePrepared, Fetch/Reconcile and
 complete G8/G8a/G9/G10 protected publication/signing/stash protocols remain.
-In parallel, obtain independent Discovery review and assess/implement the strictly
-private Persistence identity proposal only after its safe scope/proof is accepted;
-then complete remaining native/fault/profile gates. Do not bypass the blocked gate.
+Meanwhile continue the active disjoint Runtime authors: #65 Unix owner and parent
+Sessions, #69 Windows broker/client/native extraction, #70 deterministic embedded
+helper build/check from the real committed entry. Verify and push each meaningful
+checkpoint, obtain separate independent review, then Master combines these Runtime
+contributions. Keep FreeBSD trust/scope question pending and preserve full #63
+remaining gates. Discovery and GitHub accepted candidates stay held.
 Serial adapter integration remains Git→GitHub→Persistence→Discovery→Runtime.
 Then M4 Application/State/View, M5 real new-stack harness, M6 cutover, M7 mapped
 retirement and M8 full native/E2E/product PR/main/release gates. No full Slice or
