@@ -1,8 +1,9 @@
 # Persistence
 
 Issue #63 implements the FROZEN Application--Persistence 1.0.0 boundary in
-isolated milestones. The current milestone supplies private schema/document/
-version primitives. The six-method native Storage adapter is still pending;
+isolated milestones. Current milestones supply private schema/document/version
+primitives and Windows acquisition/read/lock helpers. The six-method Storage
+adapter is still pending;
 this package is not connected to the product entry point.
 
 The codec maps all specified schema0/schema1 user configuration, preferences,
@@ -47,6 +48,24 @@ Tests exercise all nested known/unknown families, exact ordered/whitespace inten
 null/empty/default distinctions, forward/overflow schemas, malformed/reserved
 shapes, escaped duplicate keys, UTF-8/surrogates, limits, lossless retained values,
 copied buffers/concurrency, whole-byte and foreign-store/root versions.
+
+Windows acquisition retains every ancestor with actual directory list/data-read
+access and no-delete sharing, opens descendants through NtCreateFile RootDirectory
+and no-reparse flags, checks native file IDs/reparse attributes, and reports a
+missing anchor without writing. It implements local NTFS selection, bounded
+double-read consistency checks, and permanent LockFileEx byte0/length1 locks
+with context cancellation and at most a five-second retry budget. Read handles
+share deletion; lock and directory handles do not. All resources stay private
+to the request and close explicitly. Exact Git-issued directory identity matches
+the shared native FileIdInfo/birth-filetime convention.
+
+Native Windows amd64 and386 tests exercise real acquisition/absence/read,
+ancestor rename exclusion, actual data-read child protection, in-place junction
+conversion followed by retained-parent relative refusal, independent handle/
+store lock exclusion, cancellation and killed-process kernel lock release.
+Empty directory conversion can succeed while its directory guard is held;
+relative operations then refuse, preserving the accepted storage limitation.
+Windows ARM64 currently has compile-only evidence for these helpers.
 
 Pending native milestones retain the complete selected contract: request-owned
 no-follow acquisition, supported metadata, permanent cooperative locks, missing
