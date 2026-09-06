@@ -22,8 +22,17 @@ the output control exposed an embedded bytes.Buffer ReadFrom bypass; both were
 corrected and the complete targeted command rerun successfully. No live PRs or
 local Git product mutations were used. Source/test references are in this commit.
 
-Remaining: PR facts/endpoint mapping, exact pre/post creation and all six outcomes,
-broader adverse transport/cancellation controls, full configured platform CI,
+Second checkpoint adds all four RemoteFacts methods and CreatePullRequest:
+private fork/base/head/unavailable endpoint mapping, exact expectation comparison,
+qualified literal POST payload, repeated preflight endpoint checks, all six closed
+creation alternatives and independently bounded post-create observation. Known
+creation survives nonzero transport, cancellation and failed refresh; no replay,
+causal adoption, local push/fork or corrective mutation occurs. Nine controlled
+creation scenarios, deleted-fork expectation preservation and concurrent value-copy
+controls pass in the same targeted native Windows command. These are raw transport
+fixtures, not live publication evidence.
+
+Remaining: broader adverse transport/cancellation controls, full configured platform CI,
 independent exact-source review and serial Master integration after accepted Git.
 No Slice or baseline finding is closed. This checkpoint is not an acceptance
 candidate and carries no completion tag.
