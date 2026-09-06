@@ -128,3 +128,46 @@ State/View saved/default/storage roundtrip. Those integration/native/E2E gates,
 all full Slices and baseline program findings remain open. Product source was
 preserved unchanged; only this report is committed/pushed, with no integration,
 release, user-project execution or user-configuration mutation.
+## Bounded correction re-review — 2026-09-07
+
+Current verdict: **ACCEPT — M364-M01 RESOLVED**, no remaining review finding.
+This supersedes the initial technical verdict above without erasing its evidence.
+Corrected technical SHA: `20bd8acf3576ca19f08b68205289f25cfe9dd3d9`.
+Final author/report SHA: `67156305b23d557aad370ad62d6eb0026d298b02`.
+
+Independently inspected the complete correction: only `providers.go` and new
+`make_comments_test.go` changed in product source/tests. The technical-to-final
+delta is author-report-only. Native helpers, Discover/Resolve, dependencies and
+frozen contracts are unchanged, so the initial native/boundary assessment carries
+forward without a redundant full review.
+
+The parser now removes ordinary comment prose before expansion/pattern checks;
+escaped markers remain outside the simple profile. Continuation state skips the
+unsupported logical line and its tails, preserving independent simple rules.
+This respects the GNU distinction between ordinary comment text and an unescaped
+trailing backslash that continues it; see [GNU Makefile contents](https://www.gnu.org/s/make/manual/html_node/Makefile-Contents.html).
+No native Make/provider execution or full Make interpreter is introduced.
+
+Actual independent rerun on the supplied Go1.25.0 Windows/amd64 toolchain:
+`go test -overlay=<original overlay.json> ./internal/launchdiscovery
+-run 'Test(IndependentSimpleCommentOperands|MakeCommentClassification|MakeCommentsDiscoverAndSavedResolve)'
+-count=1 -v` PASS, exit0. The original independent overlay hash is unchanged from
+above; both formerly failing ordinary `$`/`%` comment controls now pass, as do its
+ordinary-comment positive and actual-dynamic-target adverse control. The two new
+15-case tests each pass: ordinary/dollar/percent/backslash prose, paired/comment
+backslashes, escaped markers, actual dynamic/pattern/prerequisite syntax, rule/
+comment/recipe continuations and chained CRLF tails. EOF comment-backslash control
+also passes. Actual Discover/saved tests preserve an independent npm project and
+safe Make rule, resolve ordinary-comment `all` with exact `-f GNUmakefile all`, and
+refuse previously valid saved intent after unsupported source changes.
+
+[CI34065291612](https://github.com/Hans-Einar/gh-tree/actions/runs/34065291612)
+was independently queried at exact `20bd8ac`: COMPLETED/SUCCESS,19 successful jobs
+(native Windows amd64/ARM64, Linux/macOS/FreeBSD, race, inventory and twelve builds)
+and solely expected pre-Runtime helper SKIP. `git diff --check` PASS; source stayed
+unchanged throughout re-review. Only this appended report is committed/pushed.
+
+Master may now assess acceptance from the exact source/report/CI and this independent
+review. Serial integration still requires Git -> GitHub -> Persistence prerequisites;
+no held unrelated review is replaced. Runtime execution, Application/default/storage
+roundtrip, full Slices, baseline finding closure and release remain later gates.
