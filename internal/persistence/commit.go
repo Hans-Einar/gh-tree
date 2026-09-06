@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
-	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -302,7 +301,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			return result, observeErr
 		}
 	}
-	reserve := int64(maxManifestBytes + 2*len(raw) + 2*len(current.raw))
+	reserve := int64(maxManifestJournalBytes + 2*len(raw) + 2*len(current.raw))
 	if records >= s.options.RecoveryMaxRecords || reserve > s.options.RecoveryMaxBytes-retainedBytes {
 		return result, errRecoveryCapacity
 	}
@@ -333,51 +332,102 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err != nil {
 		return result, err
 	}
-	m := recoveryManifest{SchemaVersion: 1, Nonce: nonce, Family: proposed.family, Basename: name, Parent: directoryRecord(parentID), Scope: runScopeRecord(effectiveScope), ExpectedScope: runScopeRecord(scope), Expected: versionRecord(expected), ExpectedAnchor: anchor, ExpectedRemaining: remainder, Original: versionRecord(version), Proposed: versionRecord(proposedVersion)}
-	stage = "prepare"
-	var payload, manifest *nativeObject
-	for _, kind := range []api.StorageRecoveryKind{api.Manifest, api.RetainedPayload, api.RawOriginal, api.RetainedOriginal} {
+	m := recoveryManifest{Preparing: true, SchemaVersion: 1, Nonce: nonce, Family: proposed.family, Basename: name, Parent: directoryRecord(parentID), Scope: runScopeRecord(effectiveScope), ExpectedScope: runScopeRecord(scope), Expected: versionRecord(expected), ExpectedAnchor: anchor, ExpectedRemaining: remainder, Original: versionRecord(version), Proposed: versionRecord(proposedVersion)}
+	for _, kind := range []api.StorageRecoveryKind{api.Manifest, api.RetainedPayload, api.RawOriginal, api.RetainedOriginal, api.RetainedPayload} {
 		if !version.Present() && (kind == api.RawOriginal || kind == api.RetainedOriginal) {
 			continue
 		}
-		if err := s.checkpoint(ctx, stage+artifactSuffix(kind)); err != nil {
+		artifactName := m.artifactName(kind)
+		if kind == api.RetainedPayload && len(m.Artifacts) > 1 {
+			artifactName = m.publicationName()
+		}
+		id, err := operationNonce()
+		if err != nil {
+			return result, err
+		}
+		var content []byte
+		if kind == api.RetainedPayload {
+			content = raw
+		}
+		if kind == api.RawOriginal {
+			content = []byte(current.raw)
+		}
+		m.Artifacts = append(m.Artifacts, diskArtifact{kind, artifactName, id, diskIdentity{}, uint64(len(content)), sha256.Sum256(content)})
+	}
+	stage = "prepare.manifest"
+	if err := s.checkpoint(ctx, stage); err != nil {
+		return result, err
+	}
+	manifest, err := nativeCreateFile(c.parent(), m.artifactName(api.Manifest), proposed.family != api.RunConfig)
+	if err != nil {
+		return result, err
+	}
+	owned = append(owned, manifest)
+	m.Artifacts[0].Identity, err = nativeArtifactIdentity(manifest)
+	if err != nil {
+		return result, err
+	}
+	if err := m.validate(proposed.family, effectiveScope, name, directoryRecord(parentID)); err != nil {
+		return result, err
+	}
+	journal := manifestJournal{object: manifest}
+	if err := journal.append(ctx, m); err != nil {
+		return result, err
+	}
+	manifestRecovery, err := m.recovery(m.Artifacts[0], effectiveScope, locator)
+	if err != nil {
+		return result, err
+	}
+	r.Recovery = append(r.Recovery, manifestRecovery)
+	var payload *nativeObject
+	for i := 1; i < len(m.Artifacts); i++ {
+		artifact := &m.Artifacts[i]
+		stage = "prepare" + artifactSuffix(artifact.Kind)
+		if artifact.Name == m.publicationName() {
+			stage = "prepare.publication"
+		}
+		if err := s.checkpoint(ctx, stage); err != nil {
 			return result, err
 		}
 		var object *nativeObject
-		if kind == api.RetainedOriginal {
-			object, err = nativeRetainOriginal(original, c.parent(), name, m.artifactName(kind))
+		if artifact.Kind == api.RetainedOriginal {
+			object, err = nativeRetainOriginal(original, c.parent(), name, artifact.Name)
+		} else if artifact.Name == m.publicationName() {
+			object, err = nativeRetainOriginal(payload, c.parent(), m.artifactName(api.RetainedPayload), artifact.Name)
 		} else {
-			var initialMetadata *nativeMetadata
-			if original != nil && kind != api.Manifest {
-				initialMetadata = &metadata
+			var initial *nativeMetadata
+			if original != nil {
+				initial = &metadata
 			}
-			object, err = nativeCreateFileMetadata(c.parent(), m.artifactName(kind), proposed.family != api.RunConfig, initialMetadata)
+			object, err = nativeCreateFileMetadata(c.parent(), artifact.Name, proposed.family != api.RunConfig, initial)
 		}
 		if err != nil {
 			return result, err
 		}
 		owned = append(owned, object)
-		if kind != api.Manifest && kind != api.RetainedOriginal && original != nil {
-			if err := nativeApplyMetadata(object, metadata); err != nil {
-				return result, err
-			}
-		}
-		var content []byte
-		if kind == api.RetainedPayload {
-			content = raw
+		if artifact.Name == m.artifactName(api.RetainedPayload) {
 			payload = object
 		}
-		if kind == api.RawOriginal {
-			content = []byte(current.raw)
-		}
-		if kind == api.Manifest {
-			manifest = object
-		}
-		if kind != api.Manifest && kind != api.RetainedOriginal {
+		if artifact.Kind != api.RetainedOriginal && artifact.Name != m.publicationName() {
+			if original != nil {
+				if err := nativeApplyMetadata(object, metadata); err != nil {
+					return result, err
+				}
+			}
+			content := raw
+			if artifact.Kind == api.RawOriginal {
+				content = []byte(current.raw)
+			}
+			if err := s.checkpoint(ctx, stage+".write"); err != nil {
+				return result, err
+			}
 			if err := writeComplete(ctx, object.file, content); err != nil {
 				return result, err
 			}
 			if _, err := nativeInspectMetadata(object); err != nil {
+				return result, err
+			}
+			if err := s.checkpoint(ctx, stage+".flush"); err != nil {
 				return result, err
 			}
 			if err := object.file.Sync(); err != nil {
@@ -388,35 +438,27 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 				return result, errors.Join(err, errors.New("prepared bytes differ"))
 			}
 		}
-		identity, err := nativeArtifactIdentity(object)
+		artifact.Identity, err = nativeArtifactIdentity(object)
 		if err != nil {
 			return result, err
 		}
-		id, err := operationNonce()
+		if err := s.checkpoint(ctx, stage+".journal"); err != nil {
+			return result, err
+		}
+		if err := journal.append(ctx, m); err != nil {
+			return result, err
+		}
+		recovery, err := m.recovery(*artifact, effectiveScope, locator)
 		if err != nil {
 			return result, err
 		}
-		m.Artifacts = append(m.Artifacts, diskArtifact{kind, m.artifactName(kind), id, identity, uint64(len(content)), sha256.Sum256(content)})
-	}
-	// The published name and the durable payload evidence are distinct links
-	// to the same prepared object. Publication can consume its staging name
-	// without losing recovery access to the exact proposal.
-	publicationLink, err := nativeRetainOriginal(payload, c.parent(), m.artifactName(api.RetainedPayload), m.publicationName())
-	if err != nil {
-		return result, err
-	}
-	if err := publicationLink.close(); err != nil {
-		return result, err
+		r.Recovery = append(r.Recovery, recovery)
 	}
 	publisher, err := nativeOpenOriginal(c.parent(), m.publicationName())
 	if err != nil {
 		return result, err
 	}
 	owned = append(owned, publisher)
-	publicationID, err := operationNonce()
-	if err != nil {
-		return result, err
-	}
 	publicationIdentity, err := nativeArtifactIdentity(publisher)
 	if err != nil {
 		return result, err
@@ -425,30 +467,16 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err != nil {
 		return result, err
 	}
-	m.Artifacts = append(m.Artifacts, diskArtifact{api.RetainedPayload, m.publicationName(), publicationID, publicationIdentity, uint64(len(raw)), sha256.Sum256(raw)})
+	m.Preparing = false
 	if err := m.validate(proposed.family, effectiveScope, name, directoryRecord(parentID)); err != nil {
 		return result, err
 	}
-	manifestBytes, err := json.Marshal(m)
-	if err != nil || len(manifestBytes) > maxManifestBytes {
-		return result, errors.Join(err, errors.New("manifest encoding limit"))
-	}
-	if err := writeComplete(ctx, manifest.file, manifestBytes); err != nil {
-		return result, err
-	}
-	if err := manifest.file.Sync(); err != nil {
+	if err := journal.append(ctx, m); err != nil {
 		return result, err
 	}
 	stage = "manifest-flushed"
 	if err := nativeDirectoryBarrier(c.parent()); err != nil {
 		return result, err
-	}
-	for _, artifact := range m.Artifacts {
-		recovery, err := m.recovery(artifact, effectiveScope, locator)
-		if err != nil {
-			return result, err
-		}
-		r.Recovery = append(r.Recovery, recovery)
 	}
 	if err := s.checkpoint(ctx, stage); err != nil {
 		return result, err

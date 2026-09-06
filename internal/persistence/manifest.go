@@ -82,6 +82,7 @@ type diskArtifact struct {
 }
 
 type recoveryManifest struct {
+	Preparing         bool `json:",omitempty"`
 	SchemaVersion     uint32
 	Nonce             string
 	Family            api.StorageFamily
@@ -160,7 +161,8 @@ func (m recoveryManifest) validate(family api.StorageFamily, scope api.WorktreeS
 	seenIDs := map[string]bool{}
 	for _, artifact := range m.Artifacts {
 		validName := artifact.Name == m.artifactName(artifact.Kind) || artifact.Kind == api.RetainedPayload && artifact.Name == m.publicationName()
-		if !artifact.Kind.Valid() || seenNames[artifact.Name] || seenIDs[artifact.ID] || !validName || !singleName(artifact.Name) || !artifact.Identity.valid() {
+		identityValid := artifact.Identity.valid() || m.Preparing && artifact.Identity == (diskIdentity{})
+		if !artifact.Kind.Valid() || seenNames[artifact.Name] || seenIDs[artifact.ID] || !validName || !singleName(artifact.Name) || !identityValid {
 			return errors.New("recovery artifact name, identity or uniqueness mismatch")
 		}
 		// IDs are allocated separately, then persisted; no locator-derived IDs.
@@ -188,6 +190,9 @@ func boolInt(v bool) int {
 	return 0
 }
 func decodeManifest(raw []byte) (recoveryManifest, error) {
+	if bytes.HasPrefix(raw, []byte(manifestJournalMagic)) {
+		return decodeManifestJournal(raw)
+	}
 	var m recoveryManifest
 	if len(raw) > maxManifestBytes {
 		return m, errors.New("recovery manifest size limit")
@@ -269,8 +274,12 @@ func observeManifest(ctx context.Context, parent *nativeObject, name, basename, 
 		return nil, err
 	}
 	m, err := decodeManifest(raw)
-	if err != nil {
+	if err != nil && m.SchemaVersion == 0 {
 		return nil, err
+	}
+	resultErr = errors.Join(resultErr, err)
+	if m.Preparing {
+		resultErr = errors.Join(resultErr, errIncompletePreparation)
 	}
 	parentID, err := nativeDirectoryIdentity(parent)
 	if err != nil {
@@ -289,6 +298,9 @@ func observeManifest(ctx context.Context, parent *nativeObject, name, basename, 
 		}
 	}
 	for _, artifact := range m.Artifacts {
+		if artifact.Identity == (diskIdentity{}) {
+			continue
+		}
 		observed, err := nativeOpenDocument(parent, artifact.Name)
 		if err != nil {
 			// A renamed payload may no longer have its preparation name. This

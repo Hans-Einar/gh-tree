@@ -369,6 +369,23 @@ That path still requires explicit native controls and independent review.
 
 ## Exact successor work
 
+P3d bounded manifest-journal correction (exact source is this commit) persists
+the operation's independent artifact IDs before further file preparation, then
+appends/flushed hash-chained full snapshots as native artifact facts complete.
+A torn trailing append preserves verified earlier records. Unknown/incomplete
+artifact associations are not fabricated; the incomplete notice and independent
+usable current document survive together. Complete final preparation and native
+barriers remain mandatory before publication. The journal permits at most8
+frames/512KiB, counts its actual retained size, and reserves its bounded size in
+admission. No in-place manifest rewrite, target replay or retention eviction.
+
+Windows amd64 complete package/vet PASS. Actual Linux/ext4 UID65534 targeted
+journal cases PASS through existing WSL. Controls stop before publication-link
+creation and reload the same recorded IDs with expected absence plus explicit
+incomplete status; append a torn frame after a known commit and retain the valid
+current document/earlier IDs with a tail diagnostic. These are synchronous fault
+controls; full independent process-kill boundaries remain required below.
+
 This is an explicitly partial protocol checkpoint, not a review-ready contribution.
 Finish native Expected-ancestor/manifest association checks and all partial/crash
 artifact reporting; stable payload/staging late-edit semantics; safe exact cleanup
