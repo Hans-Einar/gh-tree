@@ -1,0 +1,44 @@
+[
+  {
+    "Profile": "text",
+    "CleanBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa",
+    "CheckerExit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 61 exact legacy/shared-entry allowances used; ownership review still required",
+    "FilterMarkerExists": false
+  },
+  {
+    "Profile": "-text",
+    "CleanBlob": "f9c880865942fcf2d20e179bf941f34751b84174",
+    "CheckerExit": 1,
+    "Output": "architecture: legacy allowance changed: internal/app/service.go blob f9c880865942fcf2d20e179bf941f34751b84174, expected 4f8be20c2beff7db3f180a102fe146310c96a3aa",
+    "FilterMarkerExists": false
+  },
+  {
+    "Profile": "-crlf",
+    "CleanBlob": "f9c880865942fcf2d20e179bf941f34751b84174",
+    "CheckerExit": 1,
+    "Output": "architecture: unsupported Git legacy crlf profile for internal/app/service.go: crlf=unset",
+    "FilterMarkerExists": false
+  },
+  {
+    "Profile": "crlf",
+    "CleanBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa",
+    "CheckerExit": 1,
+    "Output": "architecture: unsupported Git legacy crlf profile for internal/app/service.go: crlf=set",
+    "FilterMarkerExists": false
+  },
+  {
+    "Profile": "crlf=input",
+    "CleanBlob": "4f8be20c2beff7db3f180a102fe146310c96a3aa",
+    "CheckerExit": 1,
+    "Output": "architecture: unsupported Git legacy crlf profile for internal/app/service.go: crlf=input",
+    "FilterMarkerExists": false
+  },
+  {
+    "Profile": "filter=reviewprobe",
+    "CleanBlob": "not invoked: avoid filter execution",
+    "CheckerExit": 1,
+    "Output": "architecture: unsupported Git clean profile for internal/app/service.go: filter=reviewprobe (no clean filter is executed)",
+    "FilterMarkerExists": false
+  }
+]

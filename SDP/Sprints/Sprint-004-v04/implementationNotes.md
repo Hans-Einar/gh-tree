@@ -247,3 +247,12 @@ profile remain, and M06 external child-junction source ownership is new. Actual
 sources/results/CI/native evidence is in M1-Review--002 and its archive. Worker
 corrects these three before a new exact-source re-review/CI; no integration or
 baseline finding/Slice closure. All143 baseline findings remain open.
+
+M1 COMPLETE: independent ACCEPT at05982a4adb35e39d7b7ba371e0d16d83b2b3674c;
+all M157-M01..M06 resolved. Master verified raw retained controls, binary/archive
+hashes, bounded Windows386/handle evidence and source CI34031420582 (18success,
+1explicitM3skip). Clean canonical branch fast-forwarded to same SHA; actual push
+integration CI34031833446 also passed18/1skip. M1-Review--003 preserves acceptance
+and5 exact source/result captures. No product Runtime or whole Slice proof implied.
+Opened #58 for M2 Domain; new contract/index/relations/matrix/ledger precede fresh
+worker dispatch. All143 baseline findings remain open; seven BCs stay FROZEN1.0.0.

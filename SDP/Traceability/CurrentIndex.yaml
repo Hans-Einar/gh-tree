@@ -4,8 +4,8 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
-  "activeGate": "M1",
-  "implementationSlice": "SLC-13",
+  "activeGate": "M2",
+  "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
   "mainObserved": "97cc0d8257603766dd741b49b7d8005857b421a9",
   "designState": "accepted",
@@ -373,7 +373,7 @@
       "id": "IMPL57",
       "kind": "implementation_contribution",
       "issue": 57,
-      "state": "second_correction_in_progress",
+      "state": "accepted_integrated",
       "layer": "Composition",
       "slices": [
         "SLC-13"
@@ -383,15 +383,11 @@
       "base": "97cc0d8257603766dd741b49b7d8005857b421a9",
       "doc": "SDP/Implementation/CR-#21/Plan--001.md",
       "kickoffHead": "4c0cee9f6693c4f0ab58a16a7e98299a67a0f76b",
-      "reviewedHead": "b1f533e062c8ab94b81e9309aaffadee096a5c7d",
-      "disposition": "CHANGES_REQUIRED",
-      "findings": [
-        "M157-M03",
-        "M157-M04",
-        "M157-M06"
-      ],
-      "review": "SDP/Verification/CR-#21/M1-Review--002.md",
-      "ciRun": "34030099746",
+      "reviewedHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "disposition": "ACCEPT",
+      "findings": [],
+      "review": "SDP/Verification/CR-#21/M1-Review--003.md",
+      "ciRun": "34031420582",
       "ciSummary": {
         "success": 18,
         "failure": 0,
@@ -400,18 +396,66 @@
       "resolvedImplementationFindings": [
         "M157-M01",
         "M157-M02",
-        "M157-M05"
-      ]
+        "M157-M03",
+        "M157-M04",
+        "M157-M05",
+        "M157-M06"
+      ],
+      "head": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "acceptedSourceHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "integrationHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "integrationCiRun": "34031833446"
     },
     {
       "id": "M1",
       "kind": "integration_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "M0",
         "IMPL57"
       ],
-      "doc": "SDP/Implementation/CR-#21/Plan--001.md"
+      "doc": "SDP/Implementation/CR-#21/Plan--001.md",
+      "head": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "review": "SDP/Verification/CR-#21/M1-Review--003.md"
+    },
+    {
+      "id": "IMPL58",
+      "kind": "implementation_contribution",
+      "issue": 58,
+      "state": "kickoff",
+      "layer": "Domain",
+      "slices": [
+        "SLC-01",
+        "SLC-02",
+        "SLC-03",
+        "SLC-04",
+        "SLC-05",
+        "SLC-06",
+        "SLC-07",
+        "SLC-08",
+        "SLC-09",
+        "SLC-10",
+        "SLC-11",
+        "SLC-12",
+        "SLC-13"
+      ],
+      "branch": "codereview-21/layer-domain",
+      "base": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+      "doc": "SDP/Implementation/CR-#21/M2-Domain--001.md"
+    },
+    {
+      "id": "M2",
+      "kind": "integration_gate",
+      "state": "active",
+      "requires": [
+        "M1",
+        "IMPL58"
+      ],
+      "remainingSurfaces": [
+        "Application API/ports",
+        "State-owned viewmodel"
+      ],
+      "doc": "SDP/Implementation/CR-#21/M2-Domain--001.md"
     }
   ],
   "productFindings": [
@@ -1469,5 +1513,22 @@
     "SLC-12",
     "SLC-13"
   ],
-  "verificationMatrix": "SDP/Verification/CR-#21/CurrentMatrix.yaml"
+  "verificationMatrix": "SDP/Verification/CR-#21/CurrentMatrix.yaml",
+  "implementationSlices": [
+    "SLC-01",
+    "SLC-02",
+    "SLC-03",
+    "SLC-04",
+    "SLC-05",
+    "SLC-06",
+    "SLC-07",
+    "SLC-08",
+    "SLC-09",
+    "SLC-10",
+    "SLC-11",
+    "SLC-12",
+    "SLC-13"
+  ],
+  "activeContribution": "IMPL58",
+  "integrationHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c"
 }

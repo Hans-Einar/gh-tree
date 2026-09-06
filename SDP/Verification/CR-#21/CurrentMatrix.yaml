@@ -287,7 +287,7 @@
     },
     {
       "id": "V-COMP-03",
-      "state": "rework_required",
+      "state": "partial",
       "evidence": [
         {
           "kind": "M1_prerequisite_review_and_ci",
@@ -306,10 +306,20 @@
           "ciRun": "34030099746",
           "result": "CI18success_1M3skip_review_CHANGES_REQUIRED",
           "scope": "M1 infrastructure prerequisite only; no integrated complete-clause/native Runtime/E2E acceptance"
+        },
+        {
+          "kind": "accepted_M1_prerequisite",
+          "sourceHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+          "integrationHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+          "review": "SDP/Verification/CR-#21/M1-Review--003.md",
+          "sourceCiRun": "34031420582",
+          "integrationCiRun": "34031833446",
+          "result": "ACCEPT_18success_1explicitM3skip",
+          "scope": "M1 infrastructure gate complete; full v0.4 clause/legacy retirement/native Runtime/E2E proof remains later"
         }
       ],
       "limits": [
-        "M157-M03/M04 remain and M06 is new; M01/M02/M05 regressions pass at b1f533e. No M1 contribution integrated; full accepted clause/legacy retirement/native/E2E proof still required."
+        "All six M1 implementation findings resolved. Legacy paths remain; full final inventory/test migration and native Runtime/helper/E2E/release proof is not supplied by M1."
       ]
     },
     {
@@ -333,10 +343,20 @@
           "ciRun": "34030099746",
           "result": "CI18success_1M3skip_review_CHANGES_REQUIRED",
           "scope": "M1 infrastructure prerequisite only; no integrated complete-clause/native Runtime/E2E acceptance"
+        },
+        {
+          "kind": "accepted_M1_prerequisite",
+          "sourceHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+          "integrationHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+          "review": "SDP/Verification/CR-#21/M1-Review--003.md",
+          "sourceCiRun": "34031420582",
+          "integrationCiRun": "34031833446",
+          "result": "ACCEPT_18success_1explicitM3skip",
+          "scope": "M1 infrastructure gate complete; full v0.4 clause/legacy retirement/native Runtime/E2E proof remains later"
         }
       ],
       "limits": [
-        "M157-M03/M04 remain and M06 is new; M01/M02/M05 regressions pass at b1f533e. No M1 contribution integrated; full accepted clause/legacy retirement/native/E2E proof still required."
+        "All six M1 implementation findings resolved. Legacy paths remain; full final inventory/test migration and native Runtime/helper/E2E/release proof is not supplied by M1."
       ]
     },
     {

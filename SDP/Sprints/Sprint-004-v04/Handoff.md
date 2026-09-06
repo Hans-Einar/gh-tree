@@ -1,94 +1,88 @@
 # Program handoff
 
-State: ACTIVE — implementation kickoff. Sprint-004-v04 / I-03 / M1.
-Repository: Hans-Einar/gh-tree; full goal #21 remains open.
-Active contribution: #57, Composition CI/bootstrap-safety prerequisites.
-Canonical branch/worktree: codereview-21/refactor at
+State: ACTIVE - Sprint-004-v04 / I-03 / M2 Domain foundation.
+Repository Hans-Einar/gh-tree; full long-running goal #21 remains open.
+Current Issue #58. Canonical branch/worktree codereview-21/refactor in
 C:/Users/hanse/GIT/gh-tree-wt/refactor.
 
-## Accepted authority
+## Accepted state
 
-Product baseline v0.3.14: f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-All ten focused reviews accepted/merged; all143 overlapping product findings remain
-open (36H/89M/18L). Actual review/design/native evidence is preserved in SDP.
-Design #52 / PR54 merged4a42222f7bfedc1d80693effbb25a1a82fcff65e.
+Product baseline: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
+All ten focused reviews and complete design #52/PR54 accepted/merged. BC55/PR56
+final reviewed3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc merged at
+97cc0d8257603766dd741b49b7d8005857b421a9. All seven BCs and BoundaryTypes--001
+are effective FROZEN1.0.0. Do not edit them through a worker workaround.
 
-BC #55 / PR56 is COMPLETE and closed. Complete technical source independently
-accepted7685494e45c0ef44fbccf9b49a589a90a78026d0; freeze metadata introduced at
-a4d160fe0273f7cdfa75794169a679bbc9321929; final metadata independently accepted
-3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc. All18 final CI checks SUCCESS in
-34027493442/34027495276. Actual expected-HEAD squash merge/main/integration base:
-97cc0d8257603766dd741b49b7d8005857b421a9.
+M1 #57 is COMPLETE. Fresh worker and independent reviewer resolved M157-M01..M06.
+Exact accepted source/review/integration:
+05982a4adb35e39d7b7ba371e0d16d83b2b3674c.
+Source CI34031420582 and canonical integration push CI34031833446 each passed18
+applicable jobs, with the one explicit M3 Runtime-helper conformance skip.
+M1-Review--003 contains actual independent acceptance and native/probe evidence;
+M1-Review--001/002 preserve rejected sources/findings/controls. Raw captures and
+hash manifests are under SDP/Verification/CR-#21/Evidence.
 
-All seven BCs and BoundaryTypes--001 are effective FROZEN1.0.0. BCFreeze--001 and
-BCReview--002 preserve initial findings/corrections; BC55-TYPES-01/02 and
-BC55-META-01 resolved through independent re-review. Design/BC acceptance does not
-resolve product findings or prove native implementation/release conformance.
+M1 adds architecture checks, canonical-branch/native ARM64/twelve-build CI and
+manual compilation-only staging with no publication/clobber route. Root physical
+path inspector belongs only to this build tool. It does not implement Runtime.
+The normal CLI still uses legacy behavior; no legacy Go source/test was retired.
+All13 Slices remain selected; all143 baseline product findings remain open.
 
-## Continue M1
+## Exact next work
 
-Read AGENTS.md, full developmentInstructions.md, #21/#52/#55/#57, UserRunContract,
-accepted design/Slices/Verification/MigrationMap and frozen BCs/shared annex.
-Plan--001 at SDP/Implementation/CR-#21/Plan--001.md is the current implementation
-contract; sprint/index/relations/ledger through34 record kickoff before broad work.
-All SLC-01..13 remain selected; M1 is a build/architecture prerequisite, particularly
-for SLC-13, and completes no vertical Slice.
+Read AGENTS.md, full developmentInstructions, #21/#58 and prerequisite #57/#55/#52,
+UserRunContract, corrected Domain review and accepted REFDES/API/MigrationMap/
+Slices/Verification plus frozen BC/BoundaryTypes consumers. Current Domain contract:
+SDP/Implementation/CR-#21/M2-Domain--001.md. Program Plan--001 remains the full
+M1..M8 route. CurrentIndex/Relations/Ledger through40 record this kickoff before
+broad Domain work. Verification CurrentMatrix has65 checks, with M1 prerequisite
+evidence marked partial for full V-COMP-03/04; full v0.4 proof is not claimed.
 
-Master dispatches a fresh worker on codereview-21/layer-composition-bootstrap in
-C:/Users/hanse/GIT/gh-tree-wt/composition-bootstrap from this kickoff commit.
-Worker owns only .github/workflows/ci.yml and release.yml, new
-internal/composition/architecture tool/tests/fixtures/README and its bounded
-SDP/Implementation/CR-#21/Composition/M1--001.md report. Master owns program metadata.
-No other old file, frozen BC or accepted design edit; no product PR/tag/publication.
+Master dispatches a fresh Domain worker on codereview-21/layer-domain in
+C:/Users/hanse/GIT/gh-tree-wt/domain-implementation from this kickoff commit.
+Only new internal/domain values/tests/README and bounded Domain/M2--001.md report
+are writable. No old files, other layers, module/workflow, frozen design/BC or
+program metadata changes. Master coordinates and does not implement product code.
 
-Worker must preserve native test/vet/build and Linux race, add canonical push CI,
-all12 builds/native Windows ARM64 infrastructure, staged exact-path/blob/import/
-public-type/selected-platform checks and meaningful negative fixtures, safe release
-separation and the explicit future M3 Runtime-helper check hook. Missing future
-helper inputs are named prerequisites, not fake passing evidence. Full #57 controls.
+Implement the full pure scoped identity/exact-target model in API A1 and #58,
+including nonzero40/64 OIDs, Attached/Detached/Unborn, fork-aware PR exact target,
+unambiguous launch identity and positive SessionID without Domain allocation.
+No filesystem/URL/environment/clock/process/transport/storage/serialization layer.
+Run deterministic constructor/copy/scope/closed-variant tests plus appropriate
+race/full tests, M1 checker/all12 selections and actual branch CI. Freeze/push
+source; a separate fresh reviewer must inspect actual code/tests/authority before
+Master integration. Then open distinct API/ports and State-viewmodel leaf Issues.
+No adapter work before the required M2 surfaces are accepted.
 
-Freeze/push worker HEAD, send actual source/tests/contracts to a separate fresh
-reviewer, correct/re-review and obtain all configured exact branch CI. Master then
-serially integrates and records source/review/integration SHAs and real evidence
-before M2 Domain/API/ports/viewmodel. Root Master does not implement product code.
-Full M3..M8 adapters, workflows, UI, native vertical harness, cutover, retirement,
-verification, final PR/main and twelve-asset/install-upgrade release remain ahead.
+## Remaining full program and native hook
+
+M3 adapters integrate Git -> GitHub -> Persistence -> Discovery -> Runtime;
+M4 Application -> State -> View; M5 real new-stack headless vertical harness;
+M6 host/entry cutover; M7 mapped retirement/strict final tree; M8 full exact-SHA
+verification/product PR/main/tag/twelve assets/controlled install-upgrade. No
+Slice is complete from a folder or M1 CI alone. A faulty BC triggers BC-CHANGE.
+
+Accepted M1 Runtime hook: go run ./internal/runtime/cmd/helpergen -check on
+native Windows/amd64 Go1.25.0, actual source-closure/image/compression/manifest
+verification. Required committed inputs brokerassets/broker-amd64.gz,
+broker-arm64.gz and manifest.json, with broker/broker-cmd/helpergen Go source.
+First Runtime Go/image input makes missing prerequisites fail. Before Runtime,
+conformance is explicitly NOT RUN. Pass this accepted interface to the M3 worker;
+no runtime compiler/download or extra public asset is permitted.
 
 ## Workspace and limits
 
-Root C:/Users/hanse/GIT/gh-tree is clean main at97cc0d8 above. Review/design
-worktrees preserve accepted source HEADs; all11 were audited clean before this
-new integration branch. Program-checkpoints retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc;
-do not reset/discard it. Inspect current dirty/unpublished state and exact HEADs
-before integration; never infer them from this handoff alone.
+Root C:/Users/hanse/GIT/gh-tree stays on main97cc0d8. Implementation is on the
+canonical worktree above; inspect actual branch/dirty state before continuing.
+The M1 worker worktree composition-bootstrap preserves clean accepted05982a4.
+Earlier review/design worktrees preserve accepted source SHAs. Program-checkpoints
+retains local801280a7073fa87c04fdc4d06b3a9fbd4d7cd7fc; do not discard it.
+All program metadata writes must use explicit UTF-8 (a prior cp1252 read was
+corrected transparently in ledger35). Native raw archives preserve their bytes.
 
-No external blocker is known. Native mechanism probes under design/BC Feasibility
-are not product evidence; real signing, package-manager, native platform/fault and
-helper reproducibility matrices remain required. Native Windows Go1.25 is available
-as recorded in implementationNotes. All12 exact assets/native platforms are in
-Verification--001 and CurrentIndex.releaseBaseline. Installed extension was
-observed at v0.3.13 and remains unchanged. No release/tag/install-upgrade occurred.
-
-Verification execution index: SDP/Verification/CR-#21/CurrentMatrix.yaml, all65
-accepted detailed/vertical checks initially not_executed. Baseline CI is explicitly
-separate; link real reviewed source/integration evidence without prematurely
-closing complete clauses. Reviewer preparation found no blocking M1 authority
-conflict; historical I02 ACTIVE labels are now explicitly historical/completed.
-
-M1 candidate6685b4f76ca071be0125289925e7c9aa466dc10a received independent
-CHANGES_REQUIRED for M157-M01..05 (five MEDIUM); actual review/source/probe/CI
-records are in SDP/Verification/CR-#21/M1-Review--001.md and its evidence archive.
-CI34029160810 finished17 success/1 macOS failure/1 explicit M3 skip. Worker is
-correcting root aliases, nested callbacks, private helper boundaries, Git clean
-semantics and trimpath toolchain identity. No product contribution is integrated.
-Re-review corrected exact source and current CI before M1 acceptance; all143
-baseline findings remain open and full Slice verification remains ahead.
-
-M1 corrected candidateb1f533e062c8ab94b81e9309aaffadee096a5c7d has green
-CI34030099746 (18 success/1 explicit M3 skip), including real Windows ARM64 and
-macOS test/vet/build, but independent re-review is CHANGES_REQUIRED. M01/M02/M05
-regressions pass; M03 private-decomposition wrapper traversal and M04 legacy crlf
-profile remain, and M06 external child-junction source ownership is new. Actual
-sources/results/CI/native evidence is in M1-Review--002 and its archive. Worker
-corrects these three before a new exact-source re-review/CI; no integration or
-baseline finding/Slice closure. All143 baseline findings remain open.
+No external blocker is known. Native Windows Go1.25 and existing module tools are
+available as recorded in implementationNotes. M1 native inspector evidence is not
+Runtime/Persistence/real signing/Slice proof. User's installed extension was
+observed at v0.3.13 and remains unchanged; no tag/publication/install-upgrade has
+occurred. Full capability, native verification and safe verified v0.4.0 delivery
+remain the goal; do not reduce scope or declare success from this checkpoint.

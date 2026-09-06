@@ -1,0 +1,38 @@
+{
+  "sourceHead": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+  "kind": "independent_review_evidence_not_product",
+  "reviewer": "m1_composition_review",
+  "checkerSHA256": "D42FF68986597A48A0BE8DE4805E9C21AC2780282914F578F625691BEA5EDC83",
+  "files": [
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-05982a4\\handle-probe.go.txt",
+      "archive": "handle-probe.go.txt",
+      "bytes": 1740,
+      "sha256": "131094533250dce87d9ee4a1425221c692c0c330f365cd44f74d97aa64219996"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-05982a4\\retained-type-results.json",
+      "archive": "retained-type-results.json",
+      "bytes": 2922,
+      "sha256": "085157f1666c1a4529acf7477796df220299b2317dc7ac90be300c353f3d6bbf"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-05982a4\\retained-path-results.json",
+      "archive": "retained-path-results.json",
+      "bytes": 756,
+      "sha256": "b4de85a623e1fc6a26f0e2ba4b34f8894dad736cf6e99dcf064feb597406a500"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-05982a4\\retained-profile-results.json",
+      "archive": "retained-profile-results.json",
+      "bytes": 1756,
+      "sha256": "c00ce87ec6e2c55f9c6c21f14fb7a1cb9e95be222a6a128c6f2ec2141d2a005b"
+    },
+    {
+      "source": "C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-05982a4\\verification-results.json",
+      "archive": "verification-results.json",
+      "bytes": 1416,
+      "sha256": "f2e84193cc9e41728e4c44ff033e39f5782e74347e66cb5fb2fe3a36b2a99050"
+    }
+  ]
+}

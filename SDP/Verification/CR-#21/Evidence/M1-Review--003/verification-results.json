@@ -1,0 +1,46 @@
+{
+  "source": "05982a4adb35e39d7b7ba371e0d16d83b2b3674c",
+  "checkerSHA256": "D42FF68986597A48A0BE8DE4805E9C21AC2780282914F578F625691BEA5EDC83",
+  "handleProbe": {
+    "initialUncontrolled": {
+      "disposition": "Uncontrolled process-wide handle count increased; no source leak established. Go runtime thread growth needed a stable measurement control.",
+      "before": 106,
+      "after": 119
+    },
+    "controlled": {
+      "handlesBefore": 95,
+      "rounds": 5,
+      "GOMAXPROCS": 2,
+      "threadsBefore": 6,
+      "eachRound": "500 directory, 500 file and 1000 rejected inspections",
+      "warmup": "500 directory, 500 file and 1000 rejected inspections",
+      "result": "PASS",
+      "threadsAfterEachRound": [
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "handlesAfterEachRound": [
+        95,
+        95,
+        95,
+        95,
+        95
+      ]
+    }
+  },
+  "native386": {
+    "result": "PASS",
+    "selectedRootAliasExit": 0,
+    "source": "exact frozen checker compiled windows/386, CGO_ENABLED=0",
+    "outsideChildAliasExit": 1
+  },
+  "localVerification": {
+    "checkerSuite": "45 JSON scenarios and all standalone regressions PASS, 39.583s; all four native Windows junction cases executed",
+    "vet": "PASS",
+    "gofmt": "no output",
+    "allTargets": "12 selected-source/export checks PASS, 61 exact allowances"
+  }
+}

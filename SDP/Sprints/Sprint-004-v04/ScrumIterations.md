@@ -3,8 +3,8 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-03 - complete refactor implementation
-Active gate: M1 - Composition CI/bootstrap-safety (#57)
-All SLC-01..13 selected; active contribution supplies SLC-13 build prerequisites.
+Active gate: M2 - Domain foundation (#58)
+All SLC-01..13 selected; active Domain contribution supplies shared foundations.
 
 ## I-01 contract
 
@@ -211,7 +211,7 @@ Metadata review at a4d160f returned BC55-META-01 (MEDIUM) for mixed initial/curr
 review fields. Technical acceptance stands. Corrected index/relations preserve
 both exact review SHAs distinctly; metadata re-review/current CI is next.
 
-## I-03 / M1 active contribution
+## I-03 / M1 completed contribution
 
 I-02/G-08 and M0 COMPLETE: BC55/PR56 final independently reviewed freeze
 3ac7f20cedd8d14f131b2a15a602b233ef8ca5dc merged at
@@ -246,3 +246,17 @@ profile remain, and M06 external child-junction source ownership is new. Actual
 sources/results/CI/native evidence is in M1-Review--002 and its archive. Worker
 corrects these three before a new exact-source re-review/CI; no integration or
 baseline finding/Slice closure. All143 baseline findings remain open.
+
+## I-03 / M2 active Domain contract
+
+M1 COMPLETE at accepted source/review/integration
+05982a4adb35e39d7b7ba371e0d16d83b2b3674c. Independent M1-Review--003 accepts
+all six corrections. Source CI34031420582 and integration CI34031833446 each
+passed18 applicable jobs, with explicit M3 helper skip. No baseline finding closed.
+
+Active #58, full contract SDP/Implementation/CR-#21/M2-Domain--001.md. Fresh worker
+on codereview-21/layer-domain owns only new internal/domain values/tests/README
+and bounded Domain/M2--001.md report. All13 Slices selected; Domain is a shared
+foundation and completes no Slice. Separate fresh exact-source review and current
+CI precede Master serial integration, then separate API/ports and viewmodel Issues.
+No legacy/other-layer/module/frozen-contract/program metadata edit by the worker.

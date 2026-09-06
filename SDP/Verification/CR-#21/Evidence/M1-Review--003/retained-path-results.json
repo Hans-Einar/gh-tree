@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "outside-source-child-junction",
+    "Expected": "REJECT",
+    "Exit": 1,
+    "Output": "architecture: module source outside repository through child alias: C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-b1f533e\\child-junction-fixture\\internal\\git\\native -> C:\\Users\\hanse\\AppData\\Local\\Temp\\gh-tree-m1-independent-cb6a455eedd543a3a2cc3d34b8418781\\rereview-b1f533e\\child-junction-outside"
+  },
+  {
+    "Name": "selected-root-junction",
+    "Expected": "PASS",
+    "Exit": 0,
+    "Output": "architecture: windows/amd64 (staged)\narchitecture: PASS, 1 target selections; 0 exact legacy/shared-entry allowances used; ownership review still required"
+  }
+]

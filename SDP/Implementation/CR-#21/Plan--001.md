@@ -1,6 +1,7 @@
 # Implementation plan — complete v0.4 refactor
 
-State: ACTIVE, I-03 / M1. Authority: #21 and bounded contribution Issue #57.
+State: ACTIVE, I-03 / M2. Authority: #21 and active Domain contribution #58.
+M1 #57 is complete; its original contribution contract remains below as history.
 Integration branch: codereview-21/refactor.
 Integration base: 97cc0d8257603766dd741b49b7d8005857b421a9.
 Product baseline: f626077ca0e59fbe9ede7ba1116982bb94b2eb6b (v0.3.14).
@@ -16,7 +17,7 @@ All143 product findings remain open. M1..M8 retain the accepted serial order;
 M1 precedes Domain/API/ports/viewmodel leaves at M2. Final verification, product
 PR/main, source/tag/twelve-asset and controlled install/upgrade gates remain ahead.
 
-## Active contribution contract: M1 / #57
+## Completed contribution contract: M1 / #57
 
 Purpose: establish branch CI and architecture checks before dependent product
 workers rely on them; disable unsafe automatic bootstrap publication. This is
@@ -56,3 +57,9 @@ release. Each contribution gets its own Issue, layer-owned worker and independen
 review. See accepted Slices--001 for actual end-to-end behavior and Verification--001
 for required real Git, storage, native Runtime, State/View, migration and release
 evidence. A failing frozen boundary triggers BC-CHANGE before affected work proceeds.
+
+M1 completion: independent ACCEPT/source/integration05982a4; source CI34031420582
+and canonical integration CI34031833446 passed18 applicable jobs each, with explicit
+M3 helper skip. All six M1 review findings resolved; all143 baseline findings open.
+Active M2 Domain contract: [M2-Domain--001](M2-Domain--001.md) / #58. API/ports and
+State-owned viewmodel Issues follow reviewed Domain integration.

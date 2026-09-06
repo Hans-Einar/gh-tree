@@ -44,7 +44,7 @@ Acceptance of a review report does not mean its product findings are resolved.
 
 I-01: remaining focused reviews and program checkpoint establishment.
 I-02: reconciled Refactor Design and BC review/freeze.
-I-03: complete selected refactor implementation, active M1 under #57; contract in
+I-03: complete selected refactor implementation, M1 #57 complete and M2 Domain #58 active; contract in
 SDP/Implementation/CR-#21/Plan--001.md follows accepted REFDES/Slices--001.
 The later verification/release iteration executes the full M8 gate.
 
