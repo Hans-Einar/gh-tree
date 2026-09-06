@@ -67,7 +67,7 @@ No constructor clamps scrolling or changes selection to fit data or a viewport.
 
 | Family | Values and retained details |
 |---|---|
-| Navigator | NamespaceRow with semantic parent/depth/folder expansion; NavigatorModel carries namespace rows, typed BranchRows/PRRows, folder path and ListState. |
+| Navigator | NamespaceRow with semantic parent/depth/folder expansion; NavigatorModel carries explicit PullRequestsContent/BranchesContent, namespace rows, typed BranchRows/PRRows, folder path and ListState. |
 | Branch/PR | BranchEndpoint, Upstream, PRAnnotation, WorktreeAnnotation, BranchRow, PRRow; exact endpoints, fork/base scope, relationship evidence, current/primary/active flags, metadata/unknown badges, full title/body. |
 | Worktree | WorktreeRow, FileChange, WorktreesModel, ActiveModel; optional observed Attached/Detached/Unborn Head, locator/availability/lock/prunable facts, staged/worktree change status, rename source and counts. |
 | History | CommitRow, BranchModel, HistoryModel; exact selected source/target, complete parent IDs, verbatim subject/message, author/email/committer and supplied source timestamps, independent list/detail/message scroll. |
@@ -81,7 +81,13 @@ No constructor clamps scrolling or changes selection to fit data or a viewport.
 `PaneModel` is closed over Navigator/Worktrees/Active/Branch/Launch/Stashes/Console/
 History/Graph/Diff bodies. Use NewNavigatorPane etc. and the matching typed accessor.
 Each has a PaneHeader with availability/completeness, ContentGeneration, sources
-and notices. PanePath and FocusPath use closed pane/part IDs, never titles.
+and notices. Mode selects Cockpit/History/Graph/Diff, independently of pane focus
+and navigator content. Both Navigator and Branch context belong to CockpitMode,
+so the retained wide cockpit can keep both panes through Alt+N/B/C/M focus changes.
+NavigatorModelSpec.Content is a required closed PullRequestsContent/BranchesContent
+value; cached rows, selected identity and titles never decide browsing intent.
+Both cached row families can remain available with partial/empty current rows.
+PanePath and FocusPath use closed pane/part IDs, never titles.
 Snapshot validates mode/pane/focus/modal compatibility, unique panes/selections,
 projected selection consistency and actual terminal input ownership. A modal
 owns current focus; latent underlying pane data remains available.
@@ -167,6 +173,9 @@ View Layout and State/host gates must prove that and retain bounded cancel/navig
 External-consumer tests construct all ten panes and all twenty modal purposes,
 inspect full identities/details, reject invalid options/scopes/kinds/generations,
 and test copied raw output, nested fields and actual distinct backing arrays.
+Mixed-cockpit regressions retain Navigator/Branch/Active/Console together, preserve
+each selection/filter/scroll and partial row set across supplied focus changes,
+and distinguish navigator content even with identical titles/selection/cached rows.
 Package-local tests deliberately forge contradictory private variants. The M1
 checker validates pure imports/public type graphs and all twelve target selections.
 Unit/race/full-suite results and frozen source CI are recorded in the bounded

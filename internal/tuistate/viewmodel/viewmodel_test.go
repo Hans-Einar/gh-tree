@@ -108,16 +108,16 @@ func TestExternalConsumerCompleteTypedPaneInventory(t *testing.T) {
 		mode vm.Mode
 		part vm.Part
 	}{
-		{must(vm.NewNavigatorPane(header(), must(vm.NewNavigatorModel(vm.NavigatorModelSpec{Rows: []vm.NamespaceRow{must(vm.NewNamespaceRow(vm.NamespaceRowSpec{ID: bid, Meta: meta()}))}, Branches: []vm.BranchRow{br}, PullRequests: []vm.PRRow{prrow}, List: list(vm.Some(bid))})))), vm.BranchesMode, vm.ListPart},
-		{must(vm.NewWorktreesPane(header(), must(vm.NewWorktreesModel(vm.WorktreesModelSpec{Rows: []vm.WorktreeRow{wr}, List: list(vm.Some(wid))})))), vm.PullRequestsMode, vm.ListPart},
-		{must(vm.NewActivePane(header(), must(vm.NewActiveModel(vm.ActiveModelSpec{Worktree: vm.Some(wr), Changes: emptyList()})))), vm.PullRequestsMode, vm.ChangesPart},
-		{must(vm.NewBranchPane(header(), must(vm.NewBranchModel(vm.BranchModelSpec{Branch: br, Commits: []vm.CommitRow{commit(r, 64)}, List: list(vm.Some(rid))})))), vm.BranchContextMode, vm.MessagePart},
+		{must(vm.NewNavigatorPane(header(), must(vm.NewNavigatorModel(vm.NavigatorModelSpec{Content: vm.BranchesContent, Rows: []vm.NamespaceRow{must(vm.NewNamespaceRow(vm.NamespaceRowSpec{ID: bid, Meta: meta()}))}, Branches: []vm.BranchRow{br}, PullRequests: []vm.PRRow{prrow}, List: list(vm.Some(bid))})))), vm.CockpitMode, vm.ListPart},
+		{must(vm.NewWorktreesPane(header(), must(vm.NewWorktreesModel(vm.WorktreesModelSpec{Rows: []vm.WorktreeRow{wr}, List: list(vm.Some(wid))})))), vm.CockpitMode, vm.ListPart},
+		{must(vm.NewActivePane(header(), must(vm.NewActiveModel(vm.ActiveModelSpec{Worktree: vm.Some(wr), Changes: emptyList()})))), vm.CockpitMode, vm.ChangesPart},
+		{must(vm.NewBranchPane(header(), must(vm.NewBranchModel(vm.BranchModelSpec{Branch: br, Commits: []vm.CommitRow{commit(r, 64)}, List: list(vm.Some(rid))})))), vm.CockpitMode, vm.MessagePart},
 		{must(vm.NewHistoryPane(header(), must(vm.NewHistoryModel(vm.HistoryModelSpec{Source: bid, Target: vm.Some(target), Commits: []vm.CommitRow{commit(r, 64)}, List: list(vm.Some(rid))})))), vm.HistoryMode, vm.ListPart},
 		{must(vm.NewGraphPane(header(), graph)), vm.GraphMode, vm.ListPart},
 		{must(vm.NewDiffPane(header(), diff)), vm.DiffMode, vm.PatchPart},
-		{must(vm.NewLaunchPane(header(), must(vm.NewLaunchModel(vm.LaunchModelSpec{Worktree: w, Rows: []vm.LaunchRow{launchrow}, List: list(vm.Some(must(vm.NewLaunchElement(launchrow.Fields().ID, launchrow.Fields().SavedAlias))))})))), vm.PullRequestsMode, vm.ListPart},
-		{must(vm.NewStashesPane(header(), must(vm.NewStashesModel(vm.StashesModelSpec{Repository: r, Rows: []vm.StashRow{stash}, List: list(vm.Some(must(vm.NewStashElement(sid))))})))), vm.PullRequestsMode, vm.ListPart},
-		{must(vm.NewConsolePane(header(), must(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows: []vm.ConsoleModel{console(1, true)}, List: list(vm.Some(must(vm.NewSessionElement(must(domain.NewSessionID(1))))))})))), vm.PullRequestsMode, vm.InputPart},
+		{must(vm.NewLaunchPane(header(), must(vm.NewLaunchModel(vm.LaunchModelSpec{Worktree: w, Rows: []vm.LaunchRow{launchrow}, List: list(vm.Some(must(vm.NewLaunchElement(launchrow.Fields().ID, launchrow.Fields().SavedAlias))))})))), vm.CockpitMode, vm.ListPart},
+		{must(vm.NewStashesPane(header(), must(vm.NewStashesModel(vm.StashesModelSpec{Repository: r, Rows: []vm.StashRow{stash}, List: list(vm.Some(must(vm.NewStashElement(sid))))})))), vm.CockpitMode, vm.ListPart},
+		{must(vm.NewConsolePane(header(), must(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows: []vm.ConsoleModel{console(1, true)}, List: list(vm.Some(must(vm.NewSessionElement(must(domain.NewSessionID(1))))))})))), vm.CockpitMode, vm.InputPart},
 	}
 	for _, tc := range cases {
 		s := snapshot(tc.pane, tc.mode, tc.part)
@@ -354,7 +354,7 @@ func TestViewportMeasurementFocusAndGeneration(t *testing.T) {
 	rect, e := vm.NewRect(int(^uint(0)>>1), 0, 1, 1)
 	reject(t, rect, e)
 	pane := must(vm.NewConsolePane(header(), must(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows: []vm.ConsoleModel{console(1, false)}, List: emptyList()}))))
-	s := snapshot(pane, vm.PullRequestsMode, vm.BodyPart)
+	s := snapshot(pane, vm.CockpitMode, vm.BodyPart)
 	m := must(vm.NewMeasurement(vm.MeasurementSpec{Viewport: s.Fields().Viewport, PresentationGeneration: 10, Panes: []vm.PaneRect{must(vm.NewPaneRect(must(vm.NewPanePath(vm.ConsolePane, vm.BodyPart)), must(vm.NewRect(0, 0, 80, 24))))}, Consoles: []vm.ConsoleRect{must(vm.NewConsoleRect(must(domain.NewSessionID(1)), 7, must(vm.NewRect(1, 1, 78, 22))))}}))
 	if !m.Matches(s) {
 		t.Fatal("current measurement did not match")

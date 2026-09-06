@@ -69,8 +69,8 @@ func TestEveryModalPurposeBodyAndAllowedChoice(t *testing.T) {
 
 func TestModalSnapshotAndMeasurementCorrelation(t *testing.T) {
 	m := must(vm.NewModal(vm.ModalSpec{ID: must(vm.NewModalID("modal-a")), Owner: must(vm.NewOwnerKey("owner-a")), Purpose: vm.ConfirmQuit, Title: "Quit", Body: must(vm.NewConfirmationBody(must(vm.NewTargetDetail(vm.TargetDetailSpec{})), []string{"stop sessions"})), Choices: choices(vm.ProceedChoice)}))
-	nav := must(vm.NewNavigatorPane(header(), must(vm.NewNavigatorModel(vm.NavigatorModelSpec{List: emptyList()}))))
-	spec := snapshot(nav, vm.PullRequestsMode, vm.ListPart).Fields()
+	nav := must(vm.NewNavigatorPane(header(), must(vm.NewNavigatorModel(vm.NavigatorModelSpec{Content: vm.PullRequestsContent, List: emptyList()}))))
+	spec := snapshot(nav, vm.CockpitMode, vm.ListPart).Fields()
 	spec.Modal = vm.Some(m)
 	spec.Focus = must(vm.NewFocusPath(must(vm.NewPanePath(vm.ModalPane, vm.ChoicesPart)), vm.Some(m.Fields().ID), vm.None[vm.FieldID]()))
 	s := must(vm.NewSnapshot(spec))

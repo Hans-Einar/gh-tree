@@ -51,7 +51,7 @@ func TestPrivateTagsRefuseContradictoryPayloads(t *testing.T) {
 		t.Fatal("confirmation body accepted form payload")
 	}
 	lm, _ := NewListState(ListStateSpec{})
-	nm, _ := NewNavigatorModel(NavigatorModelSpec{List: lm})
+	nm, _ := NewNavigatorModel(NavigatorModelSpec{Content: PullRequestsContent, List: lm})
 	h, _ := NewPaneHeader(PaneHeaderSpec{Title: "pane", Availability: Available, Completeness: Complete, ContentGeneration: 1})
 	pane, _ := NewNavigatorPane(h, nm)
 	wm, _ := NewWorktreesModel(WorktreesModelSpec{List: lm})

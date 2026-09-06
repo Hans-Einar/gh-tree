@@ -155,18 +155,29 @@ const (
 
 func (v UpstreamState) Valid() bool { return v >= UpstreamNone && v <= UpstreamNotApplicable }
 
+// Mode selects the screen family, independently of pane focus and navigator
+// content. The cockpit can retain Navigator and Branch context simultaneously.
 type Mode uint8
 
 const (
-	PullRequestsMode Mode = iota + 1
-	BranchesMode
-	BranchContextMode
+	CockpitMode Mode = iota + 1
 	HistoryMode
 	GraphMode
 	DiffMode
 )
 
-func (v Mode) Valid() bool { return v >= PullRequestsMode && v <= DiffMode }
+func (v Mode) Valid() bool { return v >= CockpitMode && v <= DiffMode }
+
+// NavigatorContent is State's explicit PR-versus-branch browsing intent.
+// Cached rows, selection, titles and the focused pane never determine it.
+type NavigatorContent uint8
+
+const (
+	PullRequestsContent NavigatorContent = iota + 1
+	BranchesContent
+)
+
+func (v NavigatorContent) Valid() bool { return v == PullRequestsContent || v == BranchesContent }
 
 type Pane uint8
 
@@ -255,10 +266,8 @@ func paneInMode(p Pane, m Mode) bool {
 		return false
 	}
 	switch p {
-	case NavigatorPane:
-		return m == PullRequestsMode || m == BranchesMode
-	case BranchPane:
-		return m == BranchContextMode
+	case NavigatorPane, BranchPane:
+		return m == CockpitMode
 	case HistoryPane:
 		return m == HistoryMode
 	case GraphPane:

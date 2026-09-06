@@ -61,7 +61,7 @@ func noSharedMutable(t *testing.T, a, b reflect.Value) {
 }
 func TestSnapshotRecursiveBackingCopies(t *testing.T) {
 	pane := must(vm.NewConsolePane(header(), must(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows: []vm.ConsoleModel{console(1, false)}, List: list(vm.Some(must(vm.NewSessionElement(must(domain.NewSessionID(1))))))}))))
-	s := snapshot(pane, vm.PullRequestsMode, vm.BodyPart)
+	s := snapshot(pane, vm.CockpitMode, vm.BodyPart)
 	f := s.Fields()
 	clone := s.Clone()
 	noSharedMutable(t, reflect.ValueOf(s), reflect.ValueOf(clone))

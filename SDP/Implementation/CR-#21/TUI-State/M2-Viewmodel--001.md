@@ -1,6 +1,6 @@
 # M2 State-owned viewmodel worker report
 
-State: IMPLEMENTED — candidate for separate fresh independent review.
+State: CORRECTED CANDIDATE — M260-M01 requires separate fresh re-review.
 Authority: #60 under #21; Sprint-004-v04 / I-03 / M2.
 Role: fresh TUI State viewmodel Worker, m2_viewmodel_worker. Date: 2026-09-06.
 Branch: codereview-21/layer-tuistate-viewmodel.
@@ -75,7 +75,7 @@ presentation, modal, pane membership and console identity/content. It does not
 compute layout or prove adequate positive confirmation geometry; the later pure
 View/State/host gate owns that proof and native resize/approval behavior.
 
-## Local verification
+## Initial candidate local verification
 
 Native Windows/amd64; Go go1.25.0 from
 C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin,
@@ -104,7 +104,8 @@ identity, invalid enum/option/body fields, missing exact confirmations, unknown
 upstream counts fabricated as zero, stale modal/session/generations and overflowing
 or out-of-bound geometry/byte ranges. Package-local adversarial tests forge
 contradictory private variants and require rejection. No product/unit/guard test
-failure occurred during this authoring pass. Native/platform behavior beyond the
+failure occurred during the initial authoring pass; the later independent review
+found the missing mixed-cockpit case recorded below. Native/platform behavior beyond the
 local value tests is not inferred from their success.
 
 Compiler controls used go test -overlay <file.json>
@@ -114,6 +115,52 @@ C:/Users/hanse/AppData/Local/Temp/gh-tree-m2-viewmodel-4b7f2db236e94f9d9a592738a
 Each negative checked its specific diagnostic and a separate positive compiled,
 so unrelated build failure is not counted as proof. These are worker controls,
 not separate independent review evidence.
+
+## M260-M01 correction after independent CHANGES_REQUIRED
+
+Independent review at dbb89ea813a954bb8bbb276bea2bb46647826810 found one MEDIUM
+M260-M01 despite source CI34037022233 passing18 applicable jobs/one explicit M3
+helper skip. NavigatorPane was allowed only in PR/Branches modes and BranchPane
+only in BranchContextMode, so no snapshot could represent the retained simultaneous
+wide cockpit. The independent mixed-pane test failed for either focused pane.
+Other independent deep-copy/output/identity/stash/geometry/compiler controls passed;
+they did not override this missing-capability finding.
+
+Read the actual report at
+C:/Users/hanse/AppData/Local/Temp/gh-tree-m2-viewmodel-review-dbb89ea/review-report.md;
+its SHA256 is BED544631856B9634702836D85B8D44379C95E7142FAEE0E9C5968FB704A5AF6.
+Reopened baseline renderCockpit314 and the actual rejected values/snapshot checks.
+Master authorizes this correction under #60. The review's rejected vacant configured
+Deploy hypothesis remains outside scope; missing registered WorktreeID still refuses.
+
+The correction separates screen family from navigator content: Mode is now
+CockpitMode/HistoryMode/GraphMode/DiffMode. NavigatorModelSpec.Content is required
+and closed over PullRequestsContent/BranchesContent. Navigator and Branch context
+are both valid cockpit panes; moving focus does not require a mode/content change
+or pane removal. This replaces the rejected unaccepted candidate's three conflated
+cockpit modes; no accepted downstream State/View implementation consumes them yet.
+Current selected row, cached row family or title cannot determine navigator intent.
+All other identity/copy/modal/input/layout-bound checks remain in force. This is
+pure value representation, with no reducer, key routing, layout or workflow added.
+
+New TestCockpitRetainsMixedPanesAcrossFocusChanges constructs the actual wide
+160x70 Navigator/Branch/Active/Console combination and varies Navigator/list/filter,
+Branch/details/commits/message, Active and Console focus. It checks independently
+retained semantic selections outside partial current rows, cursor/filter/list and
+message/detail scroll, partial source notices and distinct nested backing arrays.
+It rejects history/graph/diff and unowned terminal-input focus over that cockpit.
+TestNavigatorContentIsExplicitWithEmptyAndCachedRows checks both explicit content
+values with identical titles/selections, empty or both cached row families, branch
+focus in a mixed cockpit, and invalid/missing content tags. Existing fixtures now
+state their navigator content explicitly and use the single cockpit screen mode.
+
+Correction local checks:14 top-level leaf tests PASS,79.1% statement coverage;
+go test -race ./internal/tuistate/viewmodel -count=1 PASS on native Windows/amd64;
+go test ./... -count=1, go vet ./... and go build ./... PASS;
+go run ./internal/composition/architecture PASS all12 selections with61 unchanged
+allowances. gofmt -l is empty and git diff --check PASS. Current source CI must be
+verified after push; prior green dbb89ea CI is historical evidence only. No
+independent acceptance or resolution is claimed before the re-review disposition.
 
 ## Frozen handoff and remaining gates
 

@@ -74,6 +74,7 @@ func (v ConfiguredTargetRow) Clone() ConfiguredTargetRow {
 
 // NavigatorModelSpec is a copied constructor/accessor record.
 type NavigatorModelSpec struct {
+	Content      NavigatorContent
 	Rows         []NamespaceRow
 	Branches     []BranchRow
 	PullRequests []PRRow
@@ -92,7 +93,7 @@ func NewNavigatorModel(s NavigatorModelSpec) (NavigatorModel, error) {
 	return NavigatorModel{cloneNavigatorModel(s), true}, nil
 }
 func validNavigatorModel(s NavigatorModelSpec) bool {
-	return allValid(s.Rows) && allValid(s.Branches) && allValid(s.PullRequests) && s.List.Valid() && allValid(s.Folder) && navigatorSelection(s.List)
+	return s.Content.Valid() && allValid(s.Rows) && allValid(s.Branches) && allValid(s.PullRequests) && s.List.Valid() && allValid(s.Folder) && navigatorSelection(s.List)
 }
 func cloneNavigatorModel(s NavigatorModelSpec) NavigatorModelSpec {
 	s.Rows = copyValues(s.Rows)
