@@ -18,6 +18,31 @@ type nativeStoreLock = winStoreLock
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return winLock(ctx, parent, basename, wait)
 }
+func nativeExistingLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
+	return winLockMode(ctx, parent, basename, wait, false)
+}
+func nativePublish(payload, parent *nativeObject, name, target string, present bool) error {
+	return winPublish(payload, parent, target, present)
+}
+func nativeDirectoryBarrier(parent *nativeObject) error  { return nil }
+func nativePublicationDurability() api.StorageDurability { return api.DurabilityUncertain }
+func nativeDirectoryIdentityAs(object *nativeObject, profile api.DirectoryIdentity) (api.DirectoryIdentity, error) {
+	return nativeDirectoryIdentity(object)
+}
+func nativeAppendCreated(c *nativeChain, child *nativeObject, name string) {
+	c.guards = append(c.guards, child)
+	c.remaining = c.remaining[1:]
+}
+func nativeAdoptDirectory(parent *nativeObject, name string) (*nativeObject, error) {
+	child, err := winOpenDirectory(parent.handle(), name)
+	if err != nil {
+		return nil, err
+	}
+	if err := nativeInspectDirectory(child); err != nil {
+		return nil, errors.Join(err, child.close())
+	}
+	return child, nil
+}
 func nativeRetainOriginal(original, parent *nativeObject, target, name string) (*nativeObject, error) {
 	return winRetainOriginal(original, parent, name)
 }
@@ -56,6 +81,9 @@ func nativeObjectSize(object *nativeObject) (int64, error) {
 }
 
 func nativeCreateFile(parent *nativeObject, name string, userOnly bool) (*nativeObject, error) {
+	return nativeCreateFileMetadata(parent, name, userOnly, nil)
+}
+func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
 	var security *windows.SECURITY_DESCRIPTOR
 	var err error
 	if userOnly {
@@ -63,6 +91,9 @@ func nativeCreateFile(parent *nativeObject, name string, userOnly bool) (*native
 		if err != nil {
 			return nil, err
 		}
+	}
+	if metadata != nil {
+		security = metadata.sd
 	}
 	return winOpenWithSecurity(parent.handle(), name,
 		windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.DELETE|windows.WRITE_DAC|windows.WRITE_OWNER,

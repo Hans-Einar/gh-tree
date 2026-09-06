@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -33,6 +34,7 @@ type Options struct {
 type Store struct {
 	user, preferences storeBinding
 	options           Options
+	hook              func(string) error // immutable private test instrumentation
 }
 
 func New(ctx context.Context, options Options) (*Store, error) {
@@ -63,7 +65,7 @@ func New(ctx context.Context, options Options) (*Store, error) {
 	if overlap {
 		return nil, errors.New("storage family bindings overlap")
 	}
-	return &Store{user, preferences, options}, nil
+	return &Store{user: user, preferences: preferences, options: options}, nil
 }
 
 func (s *Store) LoadUserConfig(ctx context.Context) (ports.LoadedUserConfig, error) {
@@ -142,7 +144,38 @@ func (s *Store) load(ctx context.Context, family api.StorageFamily, scope api.Wo
 			basename = s.preferences.basename
 		}
 		if err == nil {
-			doc, o, err = loadAcquired(ctx, chain, family, scope, basename)
+			var lock *nativeStoreLock
+			if len(chain.remaining) == 0 {
+				lock, err = nativeExistingLock(ctx, chain.parent(), basename, s.options.LockWait)
+				if errors.Is(err, os.ErrNotExist) {
+					err = nil
+				}
+			}
+			if err == nil {
+				doc, o, err = loadAcquired(ctx, chain, family, scope, basename)
+				if lock != nil {
+					locator := filepath.Join(scope.Data().RootLocator, ".gh-tree")
+					if family == api.UserConfig {
+						locator = s.user.parentPath
+					}
+					if family == api.Preferences {
+						locator = s.preferences.parentPath
+					}
+					names, _, _, inventoryErr := inventoryRecovery(ctx, chain.parent(), basename, s.options.RecoveryMaxRecords, s.options.RecoveryMaxBytes)
+					err = errors.Join(err, inventoryErr)
+					for _, name := range names {
+						if !manifestName(name) {
+							continue
+						}
+						recovery, recoveryErr := observeManifest(ctx, chain.parent(), name, basename, locator, family, scope)
+						o.Recovery = append(o.Recovery, recovery...)
+						err = errors.Join(err, recoveryErr)
+					}
+				}
+			}
+			if lock != nil {
+				err = errors.Join(err, lock.close())
+			}
 		}
 		err = errors.Join(err, chain.close())
 	}

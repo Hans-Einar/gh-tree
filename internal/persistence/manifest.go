@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -87,6 +88,7 @@ type recoveryManifest struct {
 	Basename          string
 	Parent            diskIdentity
 	Scope             diskRunScope
+	ExpectedScope     diskRunScope
 	Expected          diskVersion
 	ExpectedAnchor    diskIdentity
 	ExpectedRemaining []string
@@ -110,6 +112,9 @@ func artifactSuffix(kind api.StorageRecoveryKind) string {
 }
 func (m recoveryManifest) artifactName(kind api.StorageRecoveryKind) string {
 	return recoveryPrefix(m.Basename) + m.Nonce + artifactSuffix(kind)
+}
+func (m recoveryManifest) publicationName() string {
+	return recoveryPrefix(m.Basename) + m.Nonce + ".publication"
 }
 
 // Validation checks complete request/family/root/parent/absence transition and
@@ -150,10 +155,12 @@ func (m recoveryManifest) validate(family api.StorageFamily, scope api.WorktreeS
 	} else if m.Expected.Present || m.Original.Present || len(m.ExpectedRemaining) == 0 {
 		return errors.New("recovery manifest invalid missing-parent transition")
 	}
-	seenKinds := map[api.StorageRecoveryKind]bool{}
+	seenKinds := map[api.StorageRecoveryKind]int{}
+	seenNames := map[string]bool{}
 	seenIDs := map[string]bool{}
 	for _, artifact := range m.Artifacts {
-		if !artifact.Kind.Valid() || seenKinds[artifact.Kind] || seenIDs[artifact.ID] || artifact.Name != m.artifactName(artifact.Kind) || !singleName(artifact.Name) || !artifact.Identity.valid() {
+		validName := artifact.Name == m.artifactName(artifact.Kind) || artifact.Kind == api.RetainedPayload && artifact.Name == m.publicationName()
+		if !artifact.Kind.Valid() || seenNames[artifact.Name] || seenIDs[artifact.ID] || !validName || !singleName(artifact.Name) || !artifact.Identity.valid() {
 			return errors.New("recovery artifact name, identity or uniqueness mismatch")
 		}
 		// IDs are allocated separately, then persisted; no locator-derived IDs.
@@ -161,13 +168,14 @@ func (m recoveryManifest) validate(family api.StorageFamily, scope api.WorktreeS
 		if err != nil || len(id) != 32 || hex.EncodeToString(id) != artifact.ID {
 			return errors.New("invalid persisted recovery ID")
 		}
-		seenKinds[artifact.Kind], seenIDs[artifact.ID] = true, true
+		seenKinds[artifact.Kind]++
+		seenIDs[artifact.ID], seenNames[artifact.Name] = true, true
 		if artifact.Kind == api.RawOriginal && (artifact.Length != m.Original.Length || artifact.Digest != m.Original.Digest) ||
 			artifact.Kind == api.RetainedPayload && (artifact.Length != m.Proposed.Length || artifact.Digest != m.Proposed.Digest) {
 			return errors.New("recovery artifact byte binding mismatch")
 		}
 	}
-	if !seenKinds[api.Manifest] || !seenKinds[api.RetainedPayload] || seenKinds[api.RawOriginal] != m.Original.Present || seenKinds[api.RetainedOriginal] != m.Original.Present || len(m.Artifacts) != 2+2*boolInt(m.Original.Present) {
+	if seenKinds[api.Manifest] != 1 || seenKinds[api.RetainedPayload] < 1 || seenKinds[api.RetainedPayload] > 2 || seenKinds[api.RawOriginal] != boolInt(m.Original.Present) || seenKinds[api.RetainedOriginal] != boolInt(m.Original.Present) || len(m.Artifacts) != 1+seenKinds[api.RetainedPayload]+2*boolInt(m.Original.Present) {
 		return errors.New("incomplete recovery artifact set")
 	}
 	return nil
@@ -191,6 +199,10 @@ func decodeManifest(raw []byte) (recoveryManifest, error) {
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(&m); err != nil {
 		return m, err
+	}
+	canonical, err := json.Marshal(m)
+	if err != nil || !sameJSONValue(raw, canonical) {
+		return m, errors.New("manifest requires exact field names and complete shape")
 	}
 	return m, nil
 }
@@ -282,7 +294,9 @@ func observeManifest(ctx context.Context, parent *nativeObject, name, basename, 
 			// A renamed payload may no longer have its preparation name. This
 			// is an independent absence; never relabel the current target as the
 			// retained artifact or infer publication from matching target bytes.
-			resultErr = errors.Join(resultErr, err)
+			if !(artifact.Kind == api.RetainedPayload && artifact.Name == m.publicationName() && errors.Is(err, os.ErrNotExist)) {
+				resultErr = errors.Join(resultErr, err)
+			}
 			continue
 		}
 		identity, err := nativeArtifactIdentity(observed)

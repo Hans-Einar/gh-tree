@@ -68,6 +68,9 @@ func bindExplicit(ctx context.Context, family api.StorageFamily, path string) (b
 		return b, err
 	}
 	b.family, b.parentPath, b.basename = family, filepath.Dir(resolved), filepath.Base(resolved)
+	if strings.HasPrefix(nativeNameKey(b.basename), ".gh-tree-") {
+		return b, errors.New("storage basename overlaps the reserved recovery namespace")
+	}
 	c, err := nativeAcquire(ctx, b.parentPath)
 	if err != nil {
 		return b, err

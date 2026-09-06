@@ -280,6 +280,9 @@ type unixStoreLock struct {
 }
 
 func unixLock(ctx context.Context, parent *unixObject, basename string, budget time.Duration) (_ *unixStoreLock, resultErr error) {
+	return unixLockMode(ctx, parent, basename, budget, true)
+}
+func unixLockMode(ctx context.Context, parent *unixObject, basename string, budget time.Duration, create bool) (_ *unixStoreLock, resultErr error) {
 	if !singleName(basename) || budget <= 0 || budget > 5*time.Second {
 		return nil, errors.New("invalid lock parameters")
 	}
@@ -287,7 +290,11 @@ func unixLock(ctx context.Context, parent *unixObject, basename string, budget t
 		return nil, err
 	}
 	deadline := time.Now().Add(budget)
-	object, err := unixOpen(parent.fd(), basename+".lock", unix.O_RDWR|unix.O_CREAT, 0600, false)
+	flags := unix.O_RDWR
+	if create {
+		flags |= unix.O_CREAT
+	}
+	object, err := unixOpen(parent.fd(), basename+".lock", flags, 0600, false)
 	if err != nil {
 		return nil, err
 	}

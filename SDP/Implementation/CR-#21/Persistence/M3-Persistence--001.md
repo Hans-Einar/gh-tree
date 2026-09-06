@@ -1,7 +1,7 @@
 # M3 Persistence contribution — Issue #63
 
-State: IN PROGRESS; codec/version, native mechanisms/security and bound typed-load
-milestones; public commit/recovery and adapter acceptance remain pending.
+State: IN PROGRESS; all six Storage methods now exist in the P3c checkpoint.
+Complete adversarial/native/fault verification and adapter acceptance are pending.
 Branch: `codereview-21/layer-persistence`.
 Initial base: `412f33e477cec03cb6eafe7b846c9bcdd02c0a25`.
 Worker owns only `internal/persistence/` and this report. Master supplies separate
@@ -300,7 +300,7 @@ no binding rewriting or dropped incarnation checks is authorized. Master has the
 concrete issue; stable logical binding and live acquisition evidence are distinct.
 The ordinary FreeBSD system-EA EPERM profile remains unresolved without a waiver.
 
-## Exact successor work
+## Milestone P3b — private manifest observations
 
 P3b private manifest checkpoint (the commit adding this paragraph) now supplies
 bounded strict manifest decoding, family/store/parent/root/Expected/Original/
@@ -329,18 +329,54 @@ native ancestor verification of missing-parent Expected evidence, persistent
 payload publication/recovery naming, and constructor namespace exclusions remain
 part of the next complete-protocol work, not accepted by this partial checkpoint.
 
-Stop clean after this pushed milestone for the Master-requested fresh request-
-protocol worker. Existing private helpers are not an assembled safety protocol.
-Implement all three public commits and wire recovery into loads: expected whole-
-version validation under permanent lock; safe missing-parent creation/adoption
-with original Expected anchor preserved; supported parent/new-project/per-user
-metadata and exclusive payload/manifest/raw backup; exact original hardlink;
-bounded256/1GiB actual admission; manifest/artifact identities and per-artifact
-persisted RecoveryIDs; all required write/flush/close/prepublication comparisons;
-selected native commit and barriers; truthful known/indeterminate/cancel/error
-results and independent current observation. Native helpers currently expect
-their caller to establish those barriers. Never call them merely because encoding
-succeeds. Extend construction namespace overlap for the final recovery-name scheme.
+## Milestone P3c — public commit and load recovery protocol checkpoint
+
+Exact source is the commit adding this subsection. All six Storage methods now
+exist with port conformance. Typed commits encode/validate before acquisition,
+revalidate whole-document Expected under the permanent lock, create/adopt missing
+parents without following redirects, preserve original Expected/anchor/remainder,
+and return Original/Proposed on the established store. Loads open an existing
+permanent lock for recovery observation without creating one on a read-only path.
+Admission counts actual retained files and reserves preparation capacity.
+
+The request prepares exclusive manifest/payload/raw originals, retains the exact
+old inode, flushes and verifies bytes/metadata, persists distinct RecoveryIDs,
+closes preparation handles, compares current original and prepared payload again,
+checks the permanent lock entry, and calls only the selected native publisher.
+A separate payload hardlink preserves proposal access when publication consumes
+its staging name; each retained name has its own persisted ID. No replay/eviction.
+Known publication, durability, independent current observation, cancellation and
+delivery error remain separate. Private hooks expose fault/crash test boundaries.
+
+Windows amd64 full package/vet PASS; Linux/ext4 UID65534 targeted actual public
+commit tests PASS in `/tmp/gh-tree-persistence-p3c.mbc2x8/tmp`. Tests execute all
+three families, two successive user commits, fresh Store recovery IDs, stale/
+foreign versions, two missing user-parent levels with exact manifest Expected,
+and seven preparation/publication/durability/outcome fault boundaries. The first
+second-user-commit test found a real Windows descriptor-control difference:
+SetSecurityInfo changes AUTO_INHERITED on a descriptor originally supplied at
+creation. Existing-source descriptors are now supplied at exclusive payload/raw
+creation, and an already exact descriptor is not rewritten; full existing native
+metadata controls plus public second-commit controls pass.
+
+Master merged accepted canonical prerequisites at8a8a987 without Persistence tree
+changes. Actual FreeBSD adapter CI is active; ordinary system-EA EPERM and the
+supported profile remain unresolved. Native birth-less write identities currently
+refuse the unproved persistent-incarnation profile rather than dropping ctime;
+read observation remains available. Supplied run change-stamps are reobserved
+after own .gh-tree creation, while original request scope is separately retained.
+That path still requires explicit native controls and independent review.
+
+## Exact successor work
+
+This is an explicitly partial protocol checkpoint, not a review-ready contribution.
+Finish native Expected-ancestor/manifest association checks and all partial/crash
+artifact reporting; stable payload/staging late-edit semantics; safe exact cleanup
+and outcome error classification; full missing-parent/adopted-scope/own-effect
+controls; actual multiprocess writers/readers, external final-check gap, every
+write/flush/close/publication/crash boundary, resource counts, and reliable result
+delivery. Inspect the actual candidate afresh; these listed controls are not
+established by the small targeted P3c suite. Keep all existing fixtures/history.
 
 Restart observation must reacquire the stable lock and safely report exact retained
 facts, preserving same IDs and family/worktree/store/document-version association;
@@ -353,5 +389,5 @@ fresh review of the complete candidate. No integration or Slice closure here.
 
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: push P2f and hand the clean exact source to the fresh request-protocol worker;
-native CI remains pending. Complete public commits/recovery before final review.
+NEXT: push P3c, continue remaining exact protocol/native controls, then provide the
+complete frozen candidate to Master's separate fresh reviewer. CI remains a gate.

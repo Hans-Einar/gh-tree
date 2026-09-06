@@ -266,6 +266,9 @@ func winRead(ctx context.Context, object *winObject) ([]byte, winObservation, er
 type winStoreLock struct{ object *winObject }
 
 func winLock(ctx context.Context, parent *winObject, basename string, budget time.Duration) (_ *winStoreLock, resultErr error) {
+	return winLockMode(ctx, parent, basename, budget, true)
+}
+func winLockMode(ctx context.Context, parent *winObject, basename string, budget time.Duration, create bool) (_ *winStoreLock, resultErr error) {
 	if !singleName(basename) || budget <= 0 || budget > 5*time.Second {
 		return nil, errors.New("invalid lock parameters")
 	}
@@ -273,7 +276,11 @@ func winLock(ctx context.Context, parent *winObject, basename string, budget tim
 		return nil, err
 	}
 	deadline := time.Now().Add(budget)
-	object, err := winOpen(parent.handle(), basename+".lock", windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, windows.FILE_OPEN_IF, windows.FILE_NON_DIRECTORY_FILE)
+	disposition := uint32(windows.FILE_OPEN)
+	if create {
+		disposition = windows.FILE_OPEN_IF
+	}
+	object, err := winOpen(parent.handle(), basename+".lock", windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, disposition, windows.FILE_NON_DIRECTORY_FILE)
 	if err != nil {
 		return nil, err
 	}

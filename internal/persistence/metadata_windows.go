@@ -177,6 +177,16 @@ func winApplyMetadata(payload *winObject, m winMetadata) error {
 	if m.sd == nil {
 		return errors.New("missing source security")
 	}
+	// Exclusive creation can already establish the exact supplied descriptor.
+	// Reapplying it with SetSecurityInfo would itself set AUTO_INHERITED on
+	// some protected descriptors and change their recorded control semantics.
+	current, err := winInspectSecurity(payload.handle())
+	if err != nil {
+		return err
+	}
+	if m.equal(current) {
+		return nil
+	}
 	owner, _, err := m.sd.Owner()
 	if err != nil {
 		return err

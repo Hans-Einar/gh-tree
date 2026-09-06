@@ -105,7 +105,7 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 			}
 			records[key] = struct{}{}
 			names = append(names, name)
-			if len(records) > maxRecords || len(names) > 4*maxRecords {
+			if len(records) > maxRecords || len(names) > 5*maxRecords {
 				return names, len(records), size, errRecoveryCapacity
 			}
 		}

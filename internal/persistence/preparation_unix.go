@@ -6,6 +6,8 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -17,6 +19,39 @@ type nativeStoreLock = unixStoreLock
 
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return unixLock(ctx, parent, basename, wait)
+}
+func nativeExistingLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
+	return unixLockMode(ctx, parent, basename, wait, false)
+}
+func nativePublish(payload, parent *nativeObject, name, target string, present bool) error {
+	return unixPublish(parent, name, target, present)
+}
+func nativeDirectoryBarrier(parent *nativeObject) error  { return unix.Fsync(parent.fd()) }
+func nativePublicationDurability() api.StorageDurability { return api.SupportedCrashBarrierComplete }
+func nativeDirectoryIdentityAs(object *nativeObject, profile api.DirectoryIdentity) (api.DirectoryIdentity, error) {
+	v, err := unixObserve(object.fd())
+	if err != nil {
+		return api.DirectoryIdentity{}, err
+	}
+	if strings.HasPrefix(profile.Stamp(), "change:") {
+		v.stamp = fmt.Sprintf("change:%d:%d", v.stat.Ctim.Sec, v.stat.Ctim.Nsec)
+	}
+	return v.directoryIdentity()
+}
+func nativeAppendCreated(c *nativeChain, child *nativeObject, name string) {
+	c.guards = append(c.guards, child)
+	c.names = append(c.names, name)
+	c.remaining = c.remaining[1:]
+}
+func nativeAdoptDirectory(parent *nativeObject, name string) (*nativeObject, error) {
+	child, err := unixOpenDirectory(parent.fd(), name)
+	if err != nil {
+		return nil, err
+	}
+	if err := nativeInspectDirectory(child); err != nil {
+		return nil, errors.Join(err, child.close())
+	}
+	return child, nil
 }
 func nativeRetainOriginal(original, parent *nativeObject, target, name string) (*nativeObject, error) {
 	return unixRetainOriginal(original, parent, target, name)
@@ -49,6 +84,9 @@ func nativeCreateFile(parent *nativeObject, name string, userOnly bool) (*native
 		mode = 0600
 	}
 	return unixOpen(parent.fd(), name, unix.O_RDWR|unix.O_CREAT|unix.O_EXCL, mode, false)
+}
+func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
+	return nativeCreateFile(parent, name, userOnly)
 }
 func nativeInspectMetadata(object *nativeObject) (nativeMetadata, error) {
 	return unixInspectMetadata(object)
