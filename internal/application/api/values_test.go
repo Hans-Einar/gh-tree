@@ -274,6 +274,24 @@ func TestStorageRecoveryAndErrorFactsAreLossless(t *testing.T) {
 	if _, e := NewStorageCommitResult(badCommit); e == nil {
 		t.Fatal("known publication relabeled no commit")
 	}
+	fullRecovery := must(NormalizeRecovery(nil, []StorageRecovery{detail}))
+	sharedOnly := must(NormalizeRecovery([]RecoveryRecord{record}, nil))
+	intent := must(NewNavigationIntent(NavigationIntentData{Repository: remoteRepo("navigation"), Folder: "folder"}))
+	envelope := must(NewOutcomeEnvelope(OutcomeEnvelopeData{Effects: effects, Recovery: fullRecovery}))
+	navigation := must(NewSaveNavigationResult(SaveNavigationResultData{Intent: intent, EffectiveVersion: Some(version), Storage: result, Outcome: envelope}))
+	incomplete := navigation.Data()
+	incomplete.Outcome = must(NewOutcomeEnvelope(OutcomeEnvelopeData{Effects: effects, Recovery: sharedOnly}))
+	if _, e := NewSaveNavigationResult(incomplete); e == nil {
+		t.Fatal("result normalization lost StorageRecovery detail")
+	}
+	term := OperationTerminalData{OperationID: operation(2), Correlation: must(NewCorrelation(CorrelationData{})), Disposition: Succeeded, Result: Some[Result](navigation), Effects: effects, Recovery: sharedOnly}
+	if _, e := NewOperationTerminal(term); e == nil {
+		t.Fatal("terminal lost StorageRecovery detail")
+	}
+	term.Recovery = fullRecovery
+	if _, e := NewOperationTerminal(term); e != nil {
+		t.Fatal(e)
+	}
 }
 
 func TestRuntimeOutputAndResultFamily(t *testing.T) {

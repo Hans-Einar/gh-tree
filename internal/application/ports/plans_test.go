@@ -181,4 +181,9 @@ func TestStorageWrappersBindFamilyRootAndLoadState(t *testing.T) {
 	if _, e := ports.NewRunConfigCommit(scope, v, must(api.NewRunConfigDocument(legacy))); e == nil {
 		t.Fatal("legacy writer")
 	}
+	present := must(api.NewRunStorageVersion(scope, "run-store", true, 32, [32]byte{1}))
+	current := must(api.NewStorageLoadObservation(api.StorageLoadObservationData{State: api.ValidCurrent, Version: api.Some(present), SchemaVersion: api.Some(uint32(1))}))
+	if _, e := ports.NewLoadedRunConfig(scope, current, api.Some(must(api.NewRunConfigDocument(legacy)))); e == nil {
+		t.Fatal("legacy document mislabeled current")
+	}
 }

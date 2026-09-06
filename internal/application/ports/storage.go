@@ -18,7 +18,7 @@ func NewLoadedUserConfig(o api.StorageLoadObservation, d api.Optional[api.UserCo
 	if !validLoad(o, api.UserConfig, d.Present()) {
 		return LoadedUserConfig{}, invalid("user config load")
 	}
-	if v, p := d.Value(); p && !v.Valid() {
+	if v, p := d.Value(); p && (!v.Valid() || !schemaMatches(o, v.Data().SchemaVersion)) {
 		return LoadedUserConfig{}, invalid("user document")
 	}
 	return LoadedUserConfig{o, d}, nil
@@ -39,7 +39,7 @@ func NewLoadedPreferences(o api.StorageLoadObservation, d api.Optional[api.Prefe
 	if !validLoad(o, api.Preferences, d.Present()) {
 		return LoadedPreferences{}, invalid("preferences load")
 	}
-	if v, p := d.Value(); p && !v.Valid() {
+	if v, p := d.Value(); p && (!v.Valid() || !schemaMatches(o, v.Data().SchemaVersion)) {
 		return LoadedPreferences{}, invalid("preferences document")
 	}
 	return LoadedPreferences{o, d}, nil
@@ -61,7 +61,7 @@ func NewLoadedRunConfig(s api.WorktreeScope, o api.StorageLoadObservation, d api
 	if !s.Valid() || !validLoad(o, api.RunConfig, d.Present()) || !loadMatchesScope(o, s) {
 		return LoadedRunConfig{}, invalid("run load")
 	}
-	if v, p := d.Value(); p && !v.Valid() {
+	if v, p := d.Value(); p && (!v.Valid() || !schemaMatches(o, v.Data().SchemaVersion)) {
 		return LoadedRunConfig{}, invalid("run document")
 	}
 	return LoadedRunConfig{s, o, d}, nil
@@ -157,4 +157,14 @@ func loadMatchesScope(o api.StorageLoadObservation, s api.WorktreeScope) bool {
 		return v.MatchesRunScope(s)
 	}
 	return true
+}
+
+func schemaMatches(o api.StorageLoadObservation, schema uint32) bool {
+	switch o.Data().State {
+	case api.ValidLegacy:
+		return schema == 0
+	case api.ValidCurrent, api.LoadAbsent:
+		return schema == 1
+	}
+	return false
 }
