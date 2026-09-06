@@ -17,7 +17,7 @@ func unixStamp(fd int, st *unix.Stat_t, profile string) (string, error) {
 		}
 	}
 	if profile == "" || strings.HasPrefix(profile, "change:") {
-		return stamp("change", st.Ctim.Sec, st.Ctim.Nsec), nil
+		return stamp("change", int64(st.Ctim.Sec), int64(st.Ctim.Nsec)), nil
 	}
 	return "", errRedirect
 }

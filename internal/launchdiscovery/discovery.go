@@ -1,6 +1,7 @@
 package launchdiscovery
 
 import (
+	"container/heap"
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
@@ -14,6 +15,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync/atomic"
 	"time"
 )
 
@@ -30,9 +32,10 @@ type Config struct {
 	Providers []api.ProviderKind
 }
 type Adapter struct {
-	limits    Limits
-	providers []api.ProviderKind
-	issuer    string
+	limits       Limits
+	providers    []api.ProviderKind
+	issuer       string
+	observations atomic.Uint64
 }
 
 var _ ports.LaunchDiscovery = (*Adapter)(nil)
@@ -65,7 +68,7 @@ func New(config Config) (*Adapter, error) {
 	if _, e := rand.Read(nonce[:]); e != nil {
 		return nil, e
 	}
-	return &Adapter{limits, providers, hex.EncodeToString(nonce[:])}, nil
+	return &Adapter{limits: limits, providers: providers, issuer: hex.EncodeToString(nonce[:])}, nil
 }
 func providerKey(p api.ProviderKind) string {
 	if p == api.Npm {
@@ -82,7 +85,7 @@ func providerProfile(p api.ProviderKind) string {
 func (d *Adapter) version(scope string, parts ...any) api.SourceVersion {
 	h := sha256.New()
 	for _, p := range parts {
-		s := fmt.Sprint(p)
+		s := fmt.Sprintf("%#v", p)
 		fmt.Fprintf(h, "%d:%s", len(s), s)
 	}
 	v, e := api.NewSourceVersion("launchdiscovery-v1", scope, d.issuer, hex.EncodeToString(h.Sum(nil)))
@@ -104,7 +107,11 @@ func codeFor(e error) api.ErrorCode {
 		return api.Canceled
 	case errors.Is(e, errChanged):
 		return api.StaleObservation
-	case errors.Is(e, errRedirect), errors.Is(e, errLimit):
+	case errors.Is(e, errInvalid):
+		return api.Invalid
+	case nativePermission(e):
+		return api.Permission
+	case errors.Is(e, errRedirect), errors.Is(e, errLimit), nativeRedirect(e):
 		return api.Unsupported
 	default:
 		return api.IOFailure
@@ -124,6 +131,16 @@ type scan struct {
 }
 
 func (s *scan) notice(locator string, code api.ErrorCode, reason string) {
+	cap := s.adapter.limits.Directories + s.adapter.limits.Candidates
+	if len(s.sources) > cap {
+		s.partial = true
+		return
+	}
+	if len(s.sources) == cap {
+		locator = ""
+		code = api.Unsupported
+		reason = "diagnostic-limit"
+	}
 	n := diagnostic(code, reason)
 	s.diagnostics = append(s.diagnostics, n)
 	v, e := api.NewDiscoverySourceDiagnostic(api.DiscoverySourceDiagnosticData{Locator: locator, Diagnostic: n})
@@ -137,6 +154,10 @@ func (s *scan) notice(locator string, code api.ErrorCode, reason string) {
 }
 func (s *scan) observation() api.DiscoveryObservation {
 	finished := time.Now().UTC()
+	if finished.Before(s.started) {
+		finished = s.started
+		s.partial = true
+	}
 	interval, e := api.NewObservationInterval(api.ObservationIntervalData{StartedAt: s.started, FinishedAt: finished})
 	if e != nil {
 		panic(e)
@@ -156,7 +177,7 @@ func (s *scan) observation() api.DiscoveryObservation {
 		complete = api.More
 	}
 	version := s.adapter.version("scan", s.scope.Data(), s.definitions, s.sources, s.visited, s.skipped, complete)
-	id, e := api.NewObservationID(s.adapter.issuer + ":" + finished.Format(time.RFC3339Nano))
+	id, e := api.NewObservationID(s.adapter.issuer + ":" + fmt.Sprint(s.adapter.observations.Add(1)))
 	if e != nil {
 		panic(e)
 	}
@@ -170,7 +191,7 @@ func (s *scan) observation() api.DiscoveryObservation {
 var excluded = map[string]bool{".git": true, ".gh-tree": true, "node_modules": true, "vendor": true, "dist": true, "build": true, "out": true, "target": true, ".next": true, ".cache": true}
 
 func (d *Adapter) Discover(ctx context.Context, req api.DiscoveryRequest) (api.DiscoveryResult, error) {
-	if d == nil || ctx == nil || !req.Valid() {
+	if d == nil || d.issuer == "" || ctx == nil || !req.Valid() {
 		return api.DiscoveryResult{}, errors.New("invalid discovery request")
 	}
 	r := req.Data()
@@ -185,6 +206,13 @@ func (d *Adapter) Discover(ctx context.Context, req api.DiscoveryRequest) (api.D
 				err = e
 				s.definitions = nil
 			}
+			fresh, e := acquireRoot(r.Worktree)
+			if e != nil {
+				err = e
+				s.definitions = nil
+			} else {
+				fresh.close()
+			}
 			root.close()
 		}
 	}
@@ -193,11 +221,24 @@ func (d *Adapter) Discover(ctx context.Context, req api.DiscoveryRequest) (api.D
 	}
 	sortDefinitions(s.definitions)
 	var saved []api.SavedLaunchObservation
-	if version, ok := r.SavedVersion.Value(); ok {
+	if len(r.Saved) > d.limits.Candidates {
+		s.skipped += len(r.Saved)
+		s.notice("", api.Unsupported, "saved-candidate-limit")
+	} else if version, ok := r.SavedVersion.Value(); ok {
+		aliases := map[string]int{}
+		for _, entry := range r.Saved {
+			aliases[entry.Data().Alias]++
+		}
 		for _, entry := range r.Saved {
 			if ctx.Err() != nil {
 				s.notice(entry.Data().Alias, api.Canceled, "saved-observation-canceled")
 				break
+			}
+			if aliases[entry.Data().Alias] > 1 {
+				n := diagnostic(api.Invalid, "duplicate-saved-alias")
+				v, _ := api.NewSavedLaunchObservation(api.SavedLaunchObservationData{Alias: entry.Data().Alias, StorageVersion: version, Diagnostics: []api.Diagnostic{n}})
+				saved = append(saved, v)
+				continue
 			}
 			saved = append(saved, d.observeSaved(ctx, r.Worktree, entry, version))
 		}
@@ -264,7 +305,8 @@ func (s *scan) walk(ctx context.Context, dir *directory, parts []string) error {
 	}
 	// Directory enumeration is streaming; there is no all-tree/all-directory
 	// unbounded allocation. Context is checked between each bounded OS batch.
-	var children []string
+	children := nameHeap{}
+	directoryLimit := false
 	for {
 		if e := ctx.Err(); e != nil {
 			return e
@@ -292,9 +334,14 @@ func (s *scan) walk(ctx context.Context, dir *directory, parts []string) error {
 			if len(children)+s.visited >= s.adapter.limits.Directories {
 				s.skipped++
 				s.more = true
+				directoryLimit = true
+				if len(children) > 0 && entry.Name() < children[0] {
+					children[0] = entry.Name()
+					heap.Fix(&children, 0)
+				}
 				continue
 			}
-			children = append(children, entry.Name())
+			heap.Push(&children, entry.Name())
 		}
 		if e == io.EOF {
 			break
@@ -303,6 +350,9 @@ func (s *scan) walk(ctx context.Context, dir *directory, parts []string) error {
 			s.notice(dir.path, codeFor(e), "directory-enumeration-failed")
 			break
 		}
+	}
+	if directoryLimit {
+		s.notice(dir.path, api.Unsupported, "directory-limit")
 	}
 	sort.Strings(children)
 	for _, name := range children {
@@ -359,7 +409,10 @@ func (d *Adapter) project(ctx context.Context, scope api.WorktreeScope, dir *dir
 		}
 		parsed, err = parseNpm(ctx, manifest.data)
 		if err != nil {
-			return nil, nil, err
+			if ctx.Err() != nil {
+				return nil, nil, ctx.Err()
+			}
+			return nil, nil, fmt.Errorf("%w: %v", errInvalid, err)
 		}
 		regular := map[string]bool{}
 		for _, name := range []string{"pnpm-lock.yaml", "yarn.lock", "package-lock.json", "npm-shrinkwrap.json"} {
@@ -408,7 +461,10 @@ func (d *Adapter) project(ctx context.Context, scope api.WorktreeScope, dir *dir
 		}
 		parsed, err = parseMake(ctx, manifest.data, d.limits.MakeLineBytes)
 		if err != nil {
-			return nil, nil, err
+			if ctx.Err() != nil {
+				return nil, nil, ctx.Err()
+			}
+			return nil, nil, fmt.Errorf("%w: %v", errInvalid, err)
 		}
 	}
 	for _, n := range parsed.notices {
@@ -434,6 +490,10 @@ func (d *Adapter) project(ctx context.Context, scope api.WorktreeScope, dir *dir
 	source, e := api.NewProjectSource(api.ProjectSourceData{ManifestLocator: manifest.name, ManifestIdentity: d.version("manifest-object", manifest.identity), Content: version, Inputs: inputs, ParserProfile: providerProfile(provider), RootIdentity: scope.Data().RootIdentity, ProjectIdentity: dir.identity})
 	if e != nil {
 		return nil, notices, e
+	}
+	if len(parsed.members) > d.limits.Candidates {
+		parsed.members = parsed.members[:d.limits.Candidates]
+		notices = append(notices, diagnostic(api.Unsupported, "candidate-limit"))
 	}
 	defs := make([]api.LaunchDefinition, 0, len(parsed.members))
 	for _, m := range parsed.members {
@@ -469,3 +529,11 @@ func (d *Adapter) project(ctx context.Context, scope api.WorktreeScope, dir *dir
 	return defs, notices, nil
 }
 func validExecutable(s string) bool { return s != "" && !strings.ContainsAny(s, "\x00\r\n") }
+
+type nameHeap []string
+
+func (h nameHeap) Len() int           { return len(h) }
+func (h nameHeap) Less(i, j int) bool { return h[i] > h[j] }
+func (h nameHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *nameHeap) Push(v any)        { *h = append(*h, v.(string)) }
+func (h *nameHeap) Pop() any          { last := len(*h) - 1; v := (*h)[last]; *h = (*h)[:last]; return v }

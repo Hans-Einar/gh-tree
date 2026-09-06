@@ -14,6 +14,9 @@ import (
 func nativeComponent(s string) bool {
 	return !strings.ContainsRune(s, ':') && !strings.HasSuffix(s, ".") && !strings.HasSuffix(s, " ")
 }
+func nativePermission(e error) bool {
+	return e == windows.STATUS_ACCESS_DENIED || e == windows.ERROR_ACCESS_DENIED || os.IsPermission(e)
+}
 func nativeRedirect(e error) bool {
 	return e == windows.STATUS_REPARSE_POINT_ENCOUNTERED || e == windows.STATUS_NOT_A_DIRECTORY || e == windows.STATUS_FILE_IS_A_DIRECTORY
 }

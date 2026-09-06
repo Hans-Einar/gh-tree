@@ -1,6 +1,7 @@
 package launchdiscovery
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"errors"
@@ -16,6 +17,7 @@ import (
 var errRedirect = errors.New("redirected or unsupported filesystem object")
 var errChanged = errors.New("filesystem observation changed")
 var errLimit = errors.New("observation limit reached")
+var errInvalid = errors.New("invalid passive source")
 
 type directory struct {
 	file     *os.File
@@ -195,6 +197,33 @@ func observeFile(ctx context.Context, dir *directory, name string, read bool, ca
 	}
 	if id != o.identity {
 		return o, errChanged
+	}
+	if read {
+		// A second bounded read detects same-size in-place writes even when an
+		// editor restores mtime. It cannot promise immutable future project code.
+		h := sha256.New()
+		buf := make([]byte, 32768)
+		total := 0
+		for {
+			if e := ctx.Err(); e != nil {
+				return o, e
+			}
+			n, e := current.Read(buf)
+			total += n
+			if total > cap {
+				return o, errLimit
+			}
+			_, _ = h.Write(buf[:n])
+			if e == io.EOF {
+				break
+			}
+			if e != nil {
+				return o, e
+			}
+		}
+		if total != len(o.data) || !bytes.Equal(h.Sum(nil), o.digest[:]) {
+			return o, errChanged
+		}
 	}
 	return o, nil
 }

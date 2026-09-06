@@ -189,7 +189,7 @@ func (d *Adapter) observeSaved(ctx context.Context, scope api.WorktreeScope, ent
 }
 
 func (d *Adapter) Resolve(ctx context.Context, req api.ResolveLaunchRequest) (api.ResolveLaunchResult, error) {
-	if d == nil || ctx == nil || !req.Valid() {
+	if d == nil || d.issuer == "" || ctx == nil || !req.Valid() {
 		return api.ResolveLaunchResult{}, errors.New("invalid resolve request")
 	}
 	r := req.Data()
@@ -216,6 +216,18 @@ func (d *Adapter) Resolve(ctx context.Context, req api.ResolveLaunchRequest) (ap
 		expected = selection.Data().Members
 	case api.SavedLaunch:
 		pick := selection.Data()
+		if len(r.Saved) > d.limits.Candidates {
+			return refuse(errLimit)
+		}
+		count := 0
+		for _, entry := range r.Saved {
+			if entry.Data().Alias == pick.Alias {
+				count++
+			}
+		}
+		if count != 1 {
+			return refuse(errInvalid)
+		}
 		var found bool
 		for _, entry := range r.Saved {
 			if entry.Data().Alias != pick.Alias {
