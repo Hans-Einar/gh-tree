@@ -315,7 +315,14 @@
       "relation": "reviewed_by",
       "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--001.md",
       "head": "dbb89ea813a954bb8bbb276bea2bb46647826810",
-      "state": "changes_required"
+      "state": "historical_changes_required"
+    },
+    {
+      "from": "IMPL60",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
+      "head": "d279c3f2af59e48029e77d845f5a55271c7889cf",
+      "state": "accepted_pending_predecessor_integration"
     }
   ],
   "errata": [

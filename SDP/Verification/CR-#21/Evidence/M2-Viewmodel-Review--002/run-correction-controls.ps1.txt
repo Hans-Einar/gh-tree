@@ -1,0 +1,26 @@
+$ErrorActionPreference='Stop'
+$reviewRoot=$PSScriptRoot
+$goTool='C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe'
+$encoding=New-Object System.Text.UTF8Encoding($false)
+$valuePath=Join-Path $reviewRoot 'internal/tuistate/viewmodel/value.go'
+$panePath=Join-Path $reviewRoot 'internal/tuistate/viewmodel/pane.go'
+$cases=@(
+ @{Name='deny-branch';Path=$valuePath;Old='case NavigatorPane, BranchPane:';New="case BranchPane:`n return false`n case NavigatorPane:";Expected='retained simultaneous cockpit rejected'},
+ @{Name='infer-content';Path=$panePath;Old='func NewNavigatorModel(s NavigatorModelSpec) (NavigatorModel, error) {';New="func NewNavigatorModel(s NavigatorModelSpec) (NavigatorModel, error) {`n s.Content = PullRequestsContent";Expected='explicit navigator content lost'},
+ @{Name='ignore-content-validity';Path=$panePath;Old='return s.Content.Valid() && allValid(s.Rows)';New='return allValid(s.Rows)';Expected='expected invalid zero viewmodel.NavigatorModel'}
+)
+$results=@()
+foreach($case in $cases){
+ $source=[System.IO.File]::ReadAllText($case.Path,$encoding)
+ if(!$source.Contains($case.Old)){throw "Missing mutation point $($case.Name)"}
+ $replacement=Join-Path $reviewRoot "$($case.Name).go.txt"
+ [System.IO.File]::WriteAllText($replacement,$source.Replace($case.Old,$case.New),$encoding)
+ $overlay=Join-Path $reviewRoot "$($case.Name).json";$replace=@{};$replace[$case.Path]=$replacement
+ [System.IO.File]::WriteAllText($overlay,(@{Replace=$replace}|ConvertTo-Json -Depth 5),$encoding)
+ $log=Join-Path $reviewRoot "$($case.Name).log"
+ & $goTool test -overlay $overlay ./internal/tuistate/viewmodel -run '^TestReviewCorrectionRetainsIndependentCockpit$' -count=1 *> $log
+ $exit=$LASTEXITCODE;$specific=(Get-Content -LiteralPath $log -Raw -Encoding UTF8).Contains($case.Expected)
+ $results+=[pscustomobject]@{Name=$case.Name;Exit=$exit;SpecificExpectedDiagnostic=$specific;Passed=($exit -ne 0 -and $specific)}
+}
+[System.IO.File]::WriteAllText((Join-Path $reviewRoot 'correction-control-results.json'),($results|ConvertTo-Json -Depth 5),$encoding)
+$results|Format-Table -AutoSize

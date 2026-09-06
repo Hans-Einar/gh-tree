@@ -276,3 +276,11 @@ identity/output/stash/geometry controls pass; rejected vacant-Deploy hypothesis
 adds no scope. Actual report/test/control/raw/hash evidence is archived in
 M2-Viewmodel-Review--001. Worker corrects mode/content representation under#60;
 new exact re-review/CI required. No M2 integration or baseline finding closure.
+
+Viewmodel#60 source d279c3f2af59e48029e77d845f5a55271c7889cf independently
+ACCEPTED; M260-M01 resolved, source CI34038307701 green18/explicitM3skip. Full
+correction/review/control/raw/hash evidence is in M2-Viewmodel-Review--002. This
+leaf waits for accepted API/ports#59 before serial integration; do not integrate
+or close60 yet. API#59 current7e3dd0a is still independently reviewed, with a
+separate Runtime/Storage sub-review consolidating semantic findings. No M2/full
+Slice/baseline finding closure; all143 baseline findings remain open.

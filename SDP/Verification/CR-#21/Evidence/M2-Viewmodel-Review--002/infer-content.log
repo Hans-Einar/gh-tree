@@ -1,0 +1,5 @@
+--- FAIL: TestReviewCorrectionRetainsIndependentCockpit (4.04s)
+    review_correction_test.go:48: explicit navigator content lost or inferred from empty cache
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel	4.627s
+FAIL

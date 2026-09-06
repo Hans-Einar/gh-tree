@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "deny-branch",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "Passed": true
+  },
+  {
+    "Name": "infer-content",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "Passed": true
+  },
+  {
+    "Name": "ignore-content-validity",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "Passed": true
+  }
+]

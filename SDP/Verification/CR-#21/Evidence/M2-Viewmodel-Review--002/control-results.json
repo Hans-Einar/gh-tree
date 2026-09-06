@@ -1,0 +1,58 @@
+[
+  {
+    "Name": "copy-slice",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedOutcome": "fail",
+    "Passed": true
+  },
+  {
+    "Name": "copy-nested",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedOutcome": "fail",
+    "Passed": true
+  },
+  {
+    "Name": "copy-optional",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedOutcome": "fail",
+    "Passed": true
+  },
+  {
+    "Name": "compile-positive",
+    "Exit": 0,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedExit": 0,
+    "Passed": true
+  },
+  {
+    "Name": "compile-generation",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedExit": 1,
+    "Passed": true
+  },
+  {
+    "Name": "compile-modal-key",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedExit": 1,
+    "Passed": true
+  },
+  {
+    "Name": "compile-snapshot-private",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedExit": 1,
+    "Passed": true
+  },
+  {
+    "Name": "compile-nil-variant",
+    "Exit": 1,
+    "SpecificExpectedDiagnostic": true,
+    "ExpectedExit": 1,
+    "Passed": true
+  }
+]

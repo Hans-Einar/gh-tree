@@ -1,0 +1,5 @@
+--- FAIL: TestReviewCorrectionRetainsIndependentCockpit (0.41s)
+    review_correction_test.go:42: retained simultaneous cockpit rejected for content=1/cache=empty: invalid snapshot presentation value
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel	0.986s
+FAIL

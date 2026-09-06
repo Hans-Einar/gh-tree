@@ -1,0 +1,79 @@
+package viewmodel_test
+
+import (
+ "reflect"
+ "testing"
+
+ vm "github.com/Hans-Einar/gh-tree/internal/tuistate/viewmodel"
+)
+
+func TestReviewCorrectionRetainsIndependentCockpit(t *testing.T) {
+ f:=reviewData(t)
+ folder:=reviewMust(vm.NewNamespaceElement("folder","same-explicit-folder",vm.Some(f.remote)))
+ branchSelected:=reviewMust(vm.NewRevisionElement(f.parent))
+ activeSelected:=reviewMust(vm.NewNamespaceElement("path","same-exact-file",vm.Some(f.repo)))
+ consoleSelected:=reviewMust(vm.NewSessionElement(f.sid))
+ selections:=[]vm.ElementID{folder,branchSelected,activeSelected,consoleSelected}
+ navList:=reviewMust(vm.NewListState(vm.ListStateSpec{Selected:vm.Some(folder),Cursor:vm.Some(6),Scroll:reviewMust(vm.NewScroll(11,13)),Filter:"navigator-only",EditingFilter:true}))
+ branchList:=reviewMust(vm.NewListState(vm.ListStateSpec{Selected:vm.Some(branchSelected),Cursor:vm.Some(9),Scroll:reviewMust(vm.NewScroll(17,19)),Filter:"commits-only"}))
+ activeList:=reviewMust(vm.NewListState(vm.ListStateSpec{Selected:vm.Some(activeSelected),Cursor:vm.Some(4),Scroll:reviewMust(vm.NewScroll(23,29)),Filter:"changes-only"}))
+ consoleList:=reviewMust(vm.NewListState(vm.ListStateSpec{Selected:vm.Some(consoleSelected),Cursor:vm.Some(0),Scroll:reviewMust(vm.NewScroll(31,37))}))
+ branchModel:=reviewMust(vm.NewBranchModel(vm.BranchModelSpec{Branch:f.branchRow,Commits:[]vm.CommitRow{f.commit},List:branchList,DetailScroll:reviewMust(vm.NewScroll(41,43)),MessageScroll:reviewMust(vm.NewScroll(47,53))}))
+ activeModel:=reviewMust(vm.NewActiveModel(vm.ActiveModelSpec{Worktree:vm.Some(f.worktreeRow),Changes:activeList,DetailScroll:reviewMust(vm.NewScroll(59,61))}))
+ consoleModel:=reviewMust(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows:[]vm.ConsoleModel{f.console},List:consoleList}))
+ prRow:=reviewMust(vm.NewPRRow(vm.PRRowSpec{ID:f.pr,State:vm.PRStateUnknown,Meta:f.meta}))
+ paths:=[]vm.PanePath{
+  reviewMust(vm.NewPanePath(vm.NavigatorPane,vm.ListPart)),reviewMust(vm.NewPanePath(vm.BranchPane,vm.DetailsPart)),
+  reviewMust(vm.NewPanePath(vm.BranchPane,vm.ListPart)),reviewMust(vm.NewPanePath(vm.BranchPane,vm.MessagePart)),
+  reviewMust(vm.NewPanePath(vm.ActivePane,vm.ChangesPart)),reviewMust(vm.NewPanePath(vm.ActivePane,vm.DetailsPart)),
+  reviewMust(vm.NewPanePath(vm.ConsolePane,vm.TabsPart)),reviewMust(vm.NewPanePath(vm.ConsolePane,vm.BodyPart)),
+  reviewMust(vm.NewPanePath(vm.NavigatorPane,vm.FilterPart)),reviewMust(vm.NewPanePath(vm.NavigatorPane,vm.DetailsPart)),
+ }
+ for _,content:=range []vm.NavigatorContent{vm.PullRequestsContent,vm.BranchesContent}{
+  for _,cache:=range []string{"empty","both","branch-only","pr-only"}{
+   ns:=vm.NavigatorModelSpec{Content:content,List:navList,Folder:[]vm.ElementID{folder}}
+   if cache=="both"||cache=="branch-only"{ns.Branches=[]vm.BranchRow{f.branchRow}}
+   if cache=="both"||cache=="pr-only"{ns.PullRequests=[]vm.PRRow{prRow}}
+   if cache!="empty"{ns.Rows=[]vm.NamespaceRow{reviewMust(vm.NewNamespaceRow(vm.NamespaceRowSpec{ID:folder,Meta:f.meta}))}}
+   navigator:=reviewMust(vm.NewNavigatorModel(ns))
+   title:=f.header.Fields();title.Title="constant branch-ish title for both contents";h:=reviewMust(vm.NewPaneHeader(title))
+   panes:=[]vm.PaneModel{reviewMust(vm.NewNavigatorPane(h,navigator)),reviewMust(vm.NewBranchPane(f.header,branchModel)),reviewMust(vm.NewActivePane(f.header,activeModel)),reviewMust(vm.NewConsolePane(f.header,consoleModel))}
+   spec:=vm.SnapshotSpec{PresentationGeneration:101,Viewport:reviewMust(vm.NewViewport(160,70,103)),Mode:vm.CockpitMode,Focus:reviewMust(vm.NewFocusPath(paths[0],vm.None[vm.ModalID](),vm.None[vm.FieldID]())),Panes:panes,Selected:selections}
+   current,err:=vm.NewSnapshot(spec);if err!=nil{t.Fatalf("retained simultaneous cockpit rejected for content=%d/cache=%s: %v",content,cache,err)}
+   before:=current.Fields()
+   for _,path:=range paths{
+    next:=current.Fields();next.Focus=reviewMust(vm.NewFocusPath(path,vm.None[vm.ModalID](),vm.None[vm.FieldID]()));next.PresentationGeneration++
+    updated,err:=vm.NewSnapshot(next);if err!=nil{t.Fatalf("retained simultaneous cockpit rejected at focus %v: %v",path,err)}
+    got:=updated.Fields();nav,_:=got.Panes[0].Navigator()
+    if nav.Fields().Content!=content{t.Fatalf("explicit navigator content lost or inferred from %s cache",cache)}
+    if !reflect.DeepEqual(got.Panes,before.Panes)||!reflect.DeepEqual(got.Selected,before.Selected){t.Fatal("focus discarded or rewrote independent pane facts")}
+    if !reflect.DeepEqual(nav.Fields().List,navList)||nav.Fields().Content!=content{t.Fatal("navigator selection/filter/scroll not retained")}
+    br,_:=got.Panes[1].Branch();if !reflect.DeepEqual(br.Fields(),branchModel.Fields()){t.Fatal("branch content/message/detail state not retained")}
+    a,_:=got.Panes[2].Active();if !reflect.DeepEqual(a.Fields(),activeModel.Fields()){t.Fatal("active selection/unknown facts not retained")}
+    c,_:=got.Panes[3].Console();if !reflect.DeepEqual(c.Fields(),consoleModel.Fields()){t.Fatal("console identity/correlation not retained")}
+    for _,p:=range got.Panes{if p.Header().Fields().Completeness!=vm.Partial{t.Fatal("partial promoted")}}
+    reviewDisjoint(t,current,updated);reviewDisjoint(t,spec,updated)
+    current=updated
+   }
+   for _,mode:=range []vm.Mode{vm.Mode(0),vm.HistoryMode,vm.GraphMode,vm.DiffMode,vm.Mode(255)}{badSpec:=current.Fields();badSpec.Mode=mode;bad,e:=vm.NewSnapshot(badSpec);reviewReject(t,bad,e)}
+   for _,pane:=range []vm.Pane{vm.HistoryPane,vm.GraphPane,vm.DiffPane}{badSpec:=current.Fields();part:=vm.ListPart;if pane==vm.DiffPane{part=vm.PatchPart};badSpec.Focus=reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(pane,part)),vm.None[vm.ModalID](),vm.None[vm.FieldID]()));bad,e:=vm.NewSnapshot(badSpec);reviewReject(t,bad,e)}
+   badSpec:=current.Fields();badSpec.Focus=reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.ConsolePane,vm.InputPart)),vm.None[vm.ModalID](),vm.None[vm.FieldID]()));bad,e:=vm.NewSnapshot(badSpec);reviewReject(t,bad,e)
+   // Actual selected console input ownership remains possible when explicitly supplied.
+   inputSpec:=f.console.Fields();inputSpec.InputFocused=true;inputConsole:=reviewMust(vm.NewConsoleModel(inputSpec));badSpec.Panes[3]=reviewMust(vm.NewConsolePane(f.header,reviewMust(vm.NewConsolesModel(vm.ConsolesModelSpec{Rows:[]vm.ConsoleModel{inputConsole},List:consoleList}))))
+   inputSnapshot:=reviewMust(vm.NewSnapshot(badSpec));if !inputSnapshot.Valid(){t.Fatal("explicit selected input focus refused")}
+   staleFocus:=inputSnapshot.Fields();staleFocus.Focus=reviewMust(vm.NewFocusPath(paths[0],vm.None[vm.ModalID](),vm.None[vm.FieldID]()));bad,e=vm.NewSnapshot(staleFocus);reviewReject(t,bad,e)
+  }
+ }
+ for _,content:=range []vm.NavigatorContent{0,3,255}{bad,e:=vm.NewNavigatorModel(vm.NavigatorModelSpec{Content:content,List:navList});reviewReject(t,bad,e)}
+}
+
+func TestReviewCorrectionModalStillCorrelates(t *testing.T){
+ list:=reviewMust(vm.NewListState(vm.ListStateSpec{}));head:=reviewMust(vm.NewPaneHeader(vm.PaneHeaderSpec{Title:"nav",Availability:vm.Available,Completeness:vm.Partial,ContentGeneration:1}));nav:=reviewMust(vm.NewNavigatorPane(head,reviewMust(vm.NewNavigatorModel(vm.NavigatorModelSpec{Content:vm.PullRequestsContent,List:list}))))
+ id:=reviewMust(vm.NewModalID("correct-modal"));body:=reviewMust(vm.NewConfirmationBody(reviewMust(vm.NewTargetDetail(vm.TargetDetailSpec{})),[]string{"shutdown facts"}));mod:=reviewMust(vm.NewModal(vm.ModalSpec{ID:id,Owner:reviewMust(vm.NewOwnerKey("independent-owner")),Purpose:vm.ConfirmQuit,Title:"quit",Body:body,Choices:[]vm.ModalChoice{reviewMust(vm.NewModalChoice(vm.CancelChoice,"cancel",true)),reviewMust(vm.NewModalChoice(vm.ProceedChoice,"proceed",true))}}))
+ spec:=vm.SnapshotSpec{PresentationGeneration:5,Viewport:reviewMust(vm.NewViewport(160,70,7)),Mode:vm.CockpitMode,Focus:reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.ModalPane,vm.ChoicesPart)),vm.Some(id),vm.None[vm.FieldID]())),Panes:[]vm.PaneModel{nav},Modal:vm.Some(mod)};s:=reviewMust(vm.NewSnapshot(spec))
+ m:=reviewMust(vm.NewMeasurement(vm.MeasurementSpec{PresentationGeneration:5,Viewport:spec.Viewport,ModalID:vm.Some(id),ConfirmationPresentable:true,Panes:[]vm.PaneRect{reviewMust(vm.NewPaneRect(reviewMust(vm.NewPanePath(vm.ModalPane,vm.RootPart)),reviewMust(vm.NewRect(0,0,100,30))))}}));if !m.Matches(s){t.Fatal("current modal measurement refused")}
+ ms:=m.Fields();ms.ModalID=vm.Some(reviewMust(vm.NewModalID("stale")));if reviewMust(vm.NewMeasurement(ms)).Matches(s){t.Fatal("stale modal matched")}
+ ss:=s.Fields();ss.Focus=reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.NavigatorPane,vm.ListPart)),vm.None[vm.ModalID](),vm.None[vm.FieldID]()));bad,e:=vm.NewSnapshot(ss);reviewReject(t,bad,e)
+ ss=s.Fields();ss.Focus=reviewMust(vm.NewFocusPath(reviewMust(vm.NewPanePath(vm.ModalPane,vm.FormPart)),vm.Some(id),vm.Some(vm.MessageField)));bad,e=vm.NewSnapshot(ss);reviewReject(t,bad,e)
+ for _,v:=range []vm.Viewport{reviewMust(vm.NewViewport(0,70,7)),reviewMust(vm.NewViewport(160,0,7))}{ms=m.Fields();ms.Viewport=v;ms.Panes=nil;badM,e:=vm.NewMeasurement(ms);reviewReject(t,badM,e)}
+}
