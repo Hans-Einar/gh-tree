@@ -1,0 +1,37 @@
+=== RUN   TestRSPositiveControls
+--- PASS: TestRSPositiveControls (0.00s)
+=== RUN   TestRSStartIdentityAndEstablishment
+=== RUN   TestRSStartIdentityAndEstablishment/absent-session-applied-resources
+    review_runtime_storage_test.go:103: error=<nil> valid=true sessionPresent=false
+    review_runtime_storage_test.go:105: accepted applied Runtime resources without admitted session identity
+=== RUN   TestRSStartIdentityAndEstablishment/running-but-unestablished
+    review_runtime_storage_test.go:110: error=<nil> valid=true established=false
+    review_runtime_storage_test.go:112: accepted Running session with Established false
+--- FAIL: TestRSStartIdentityAndEstablishment (0.00s)
+    --- FAIL: TestRSStartIdentityAndEstablishment/absent-session-applied-resources (0.00s)
+    --- FAIL: TestRSStartIdentityAndEstablishment/running-but-unestablished (0.00s)
+=== RUN   TestRSRestartScopeBinding
+    review_runtime_storage_test.go:124: error=<nil> valid=true old-worktree=a replacement-worktree=b
+    review_runtime_storage_test.go:126: restart changes original selected worktree and cwd
+--- FAIL: TestRSRestartScopeBinding (0.00s)
+=== RUN   TestRSStorageWorktreeRecoveryBinding
+    review_runtime_storage_test.go:137: foreign recovery valid=true subject=a original-version-worktree=b
+    review_runtime_storage_test.go:139: StorageRecovery accepts RunConfig version from another worktree
+--- FAIL: TestRSStorageWorktreeRecoveryBinding (0.00s)
+=== RUN   TestRSStorageCommitVersionWorktreeBinding
+    review_runtime_storage_test.go:148: error=<nil> valid=true
+    review_runtime_storage_test.go:150: commit result accepts proposed/current versions from different worktrees
+--- FAIL: TestRSStorageCommitVersionWorktreeBinding (0.00s)
+=== RUN   TestRSStorageRecoveryLoadBinding
+    review_runtime_storage_test.go:160: error=<nil> valid=true
+    review_runtime_storage_test.go:162: run load accepts recovery for another store/worktree
+--- FAIL: TestRSStorageRecoveryLoadBinding (0.00s)
+=== RUN   TestRSOutputAndCopyControls
+--- PASS: TestRSOutputAndCopyControls (0.00s)
+=== RUN   TestRSStorageJSONAndCopyControls
+--- PASS: TestRSStorageJSONAndCopyControls (0.00s)
+=== RUN   TestRSStorageErrorAndNormalizationControls
+--- PASS: TestRSStorageErrorAndNormalizationControls (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.516s
+FAIL

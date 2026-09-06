@@ -1,0 +1,16 @@
+=== RUN   TestReviewRuntimeConsistency
+=== RUN   TestReviewRuntimeConsistency/unadmitted_start_reports_applied_resources
+    review_runtime_test.go:15: contradictory value was admitted as valid
+=== RUN   TestReviewRuntimeConsistency/running_session_reports_never_established
+    review_runtime_test.go:16: contradictory value was admitted as valid
+=== RUN   TestReviewRuntimeConsistency/restart_changes_worktree_and_cwd
+    review_runtime_test.go:20: contradictory value was admitted as valid
+--- FAIL: TestReviewRuntimeConsistency (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/unadmitted_start_reports_applied_resources (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/running_session_reports_never_established (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/restart_changes_worktree_and_cwd (0.00s)
+=== RUN   TestReviewCopiesAndBounds
+--- PASS: TestReviewCopiesAndBounds (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.449s
+FAIL

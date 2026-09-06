@@ -323,6 +323,13 @@
       "to": "SDP/Verification/CR-#21/M2-Viewmodel-Review--002.md",
       "head": "d279c3f2af59e48029e77d845f5a55271c7889cf",
       "state": "accepted_pending_predecessor_integration"
+    },
+    {
+      "from": "IMPL59",
+      "relation": "reviewed_by",
+      "to": "SDP/Verification/CR-#21/M2-API-Review--001.md",
+      "head": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+      "state": "changes_required"
     }
   ],
   "errata": [

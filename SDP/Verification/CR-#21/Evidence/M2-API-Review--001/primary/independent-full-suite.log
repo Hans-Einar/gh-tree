@@ -1,0 +1,26 @@
+?   	github.com/Hans-Einar/gh-tree/cmd/gh-tree	[no test files]
+?   	github.com/Hans-Einar/gh-tree/internal/app	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/application/api	0.650s
+ok  	github.com/Hans-Einar/gh-tree/internal/application/ports	0.564s
+--- FAIL: TestAcceptedTargetsAndBlobIdentity (0.03s)
+    check_test.go:313: internal/worktree/stash_test.go: actual 241361399e2d133ba1ff2c56f30c04beb6066b7e baseline 82a93ac266d700eef32c4ebf322b243ea80dcdea
+--- FAIL: TestTrimpathToolStdlib (0.25s)
+    check_test.go:376: trimpath checker without explicit GOROOT: exit status 1
+        architecture: legacy allowance changed: internal/app/service.go blob f9c880865942fcf2d20e179bf941f34751b84174, expected 4f8be20c2beff7db3f180a102fe146310c96a3aa
+        exit status 1
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/composition/architecture	31.085s
+ok  	github.com/Hans-Einar/gh-tree/internal/config	0.574s
+ok  	github.com/Hans-Einar/gh-tree/internal/diff	0.549s
+ok  	github.com/Hans-Einar/gh-tree/internal/domain	0.715s
+ok  	github.com/Hans-Einar/gh-tree/internal/github	0.559s
+ok  	github.com/Hans-Einar/gh-tree/internal/graph	0.551s
+?   	github.com/Hans-Einar/gh-tree/internal/graphui	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/launch	1.044s
+?   	github.com/Hans-Einar/gh-tree/internal/process	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/terminal	0.558s
+ok  	github.com/Hans-Einar/gh-tree/internal/tree	0.548s
+ok  	github.com/Hans-Einar/gh-tree/internal/tui	0.592s
+?   	github.com/Hans-Einar/gh-tree/internal/version	[no test files]
+ok  	github.com/Hans-Einar/gh-tree/internal/worktree	20.429s
+FAIL

@@ -1,0 +1,89 @@
+=== RUN   TestReviewGitCrossFieldScope
+=== RUN   TestReviewGitCrossFieldScope/positive_ref
+=== RUN   TestReviewGitCrossFieldScope/foreign_ref_revision
+    review_independent_test.go:34: contradictory value was admitted as valid
+=== RUN   TestReviewGitCrossFieldScope/same_repo_wrong_status_worktree
+    review_independent_test.go:35: contradictory value was admitted as valid
+=== RUN   TestReviewGitCrossFieldScope/created_worktree_different_target_repo
+    review_independent_test.go:37: contradictory value was admitted as valid
+=== RUN   TestReviewGitCrossFieldScope/created_worktree_no_head_or_scope
+    review_independent_test.go:38: contradictory value was admitted as valid
+=== RUN   TestReviewGitCrossFieldScope/stash_applied_other_repository
+    review_independent_test.go:39: contradictory value was admitted as valid
+--- FAIL: TestReviewGitCrossFieldScope (0.00s)
+    --- PASS: TestReviewGitCrossFieldScope/positive_ref (0.00s)
+    --- FAIL: TestReviewGitCrossFieldScope/foreign_ref_revision (0.00s)
+    --- FAIL: TestReviewGitCrossFieldScope/same_repo_wrong_status_worktree (0.00s)
+    --- FAIL: TestReviewGitCrossFieldScope/created_worktree_different_target_repo (0.00s)
+    --- FAIL: TestReviewGitCrossFieldScope/created_worktree_no_head_or_scope (0.00s)
+    --- FAIL: TestReviewGitCrossFieldScope/stash_applied_other_repository (0.00s)
+=== RUN   TestReviewRequestVersionBindings
+=== RUN   TestReviewRequestVersionBindings/positive_saved
+=== RUN   TestReviewRequestVersionBindings/saved_selection_foreign_run_version
+    review_independent_test.go:45: contradictory value was admitted as valid
+=== RUN   TestReviewRequestVersionBindings/discovery_foreign_version
+    review_independent_test.go:46: contradictory value was admitted as valid
+=== RUN   TestReviewRequestVersionBindings/resolve_foreign_version
+    review_independent_test.go:47: contradictory value was admitted as valid
+=== RUN   TestReviewRequestVersionBindings/save_foreign_version
+    review_independent_test.go:48: contradictory value was admitted as valid
+=== RUN   TestReviewRequestVersionBindings/default_foreign_version
+    review_independent_test.go:49: contradictory value was admitted as valid
+=== RUN   TestReviewRequestVersionBindings/retarget_exact_target_foreign_local_repository
+    review_independent_test.go:50: contradictory value was admitted as valid
+--- FAIL: TestReviewRequestVersionBindings (0.00s)
+    --- PASS: TestReviewRequestVersionBindings/positive_saved (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/saved_selection_foreign_run_version (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/discovery_foreign_version (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/resolve_foreign_version (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/save_foreign_version (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/default_foreign_version (0.00s)
+    --- FAIL: TestReviewRequestVersionBindings/retarget_exact_target_foreign_local_repository (0.00s)
+=== RUN   TestReviewPublicResultSemantics
+=== RUN   TestReviewPublicResultSemantics/worktree_status_foreign_subject
+    review_independent_test.go:55: contradictory value was admitted as valid
+=== RUN   TestReviewPublicResultSemantics/PR_result_accepts_commit_target
+    review_independent_test.go:56: contradictory value was admitted as valid
+=== RUN   TestReviewPublicResultSemantics/deploy_resolution_replaces_exact_target
+    review_independent_test.go:57: contradictory value was admitted as valid
+=== RUN   TestReviewPublicResultSemantics/completed_pop_wraps_refused_pushes
+    review_independent_test.go:59: contradictory value was admitted as valid
+=== RUN   TestReviewPublicResultSemantics/retarget_confirmation_omits_exact_target_and_worktree
+    review_independent_test.go:60: contradictory value was admitted as valid
+--- FAIL: TestReviewPublicResultSemantics (0.00s)
+    --- FAIL: TestReviewPublicResultSemantics/worktree_status_foreign_subject (0.00s)
+    --- FAIL: TestReviewPublicResultSemantics/PR_result_accepts_commit_target (0.00s)
+    --- FAIL: TestReviewPublicResultSemantics/deploy_resolution_replaces_exact_target (0.00s)
+    --- FAIL: TestReviewPublicResultSemantics/completed_pop_wraps_refused_pushes (0.00s)
+    --- FAIL: TestReviewPublicResultSemantics/retarget_confirmation_omits_exact_target_and_worktree (0.00s)
+=== RUN   TestReviewEffectNormalization
+=== RUN   TestReviewEffectNormalization/positive_stage
+=== RUN   TestReviewEffectNormalization/command_envelope_discards_known_effect
+    review_independent_test.go:66: contradictory value was admitted as valid
+=== RUN   TestReviewEffectNormalization/terminal_says_no_change_after_applied_index
+    review_independent_test.go:68: contradictory value was admitted as valid
+--- FAIL: TestReviewEffectNormalization (0.00s)
+    --- PASS: TestReviewEffectNormalization/positive_stage (0.00s)
+    --- FAIL: TestReviewEffectNormalization/command_envelope_discards_known_effect (0.00s)
+    --- FAIL: TestReviewEffectNormalization/terminal_says_no_change_after_applied_index (0.00s)
+=== RUN   TestReviewStorageRecoveryScope
+=== RUN   TestReviewStorageRecoveryScope/artifact_subject_and_version_different_worktree
+    review_independent_test.go:73: contradictory value was admitted as valid
+--- FAIL: TestReviewStorageRecoveryScope (0.00s)
+    --- FAIL: TestReviewStorageRecoveryScope/artifact_subject_and_version_different_worktree (0.00s)
+=== RUN   TestReviewRuntimeConsistency
+=== RUN   TestReviewRuntimeConsistency/unadmitted_start_reports_applied_resources
+    review_runtime_test.go:15: contradictory value was admitted as valid
+=== RUN   TestReviewRuntimeConsistency/running_session_reports_never_established
+    review_runtime_test.go:16: contradictory value was admitted as valid
+=== RUN   TestReviewRuntimeConsistency/restart_changes_worktree_and_cwd
+    review_runtime_test.go:20: contradictory value was admitted as valid
+--- FAIL: TestReviewRuntimeConsistency (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/unadmitted_start_reports_applied_resources (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/running_session_reports_never_established (0.00s)
+    --- FAIL: TestReviewRuntimeConsistency/restart_changes_worktree_and_cwd (0.00s)
+=== RUN   TestReviewCopiesAndBounds
+--- PASS: TestReviewCopiesAndBounds (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/application/api	0.433s
+FAIL

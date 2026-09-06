@@ -1,0 +1,303 @@
+[
+  {
+    "path": "go.mod",
+    "expectedBlob": "02f76de07dc0ae03e39a1de9965bb8fc1aff6525",
+    "actualBlob": "02f76de07dc0ae03e39a1de9965bb8fc1aff6525",
+    "matches": true,
+    "sha256": "993846AE4AED03F839BCFD724797A00BF491E301D644F6A0725404F747B9E18C"
+  },
+  {
+    "path": "go.sum",
+    "expectedBlob": "d4ba0e7bfc7493390a2246cc7c8c03c6f2202e65",
+    "actualBlob": "d4ba0e7bfc7493390a2246cc7c8c03c6f2202e65",
+    "matches": true,
+    "sha256": "61DFABAE2800394C92E4252EE93060EA8E801D8C1EB6221D418CED63C17EB383"
+  },
+  {
+    "path": "internal/application/api/README.md",
+    "expectedBlob": "15baefc7ea1658e6383ea09385b7c7561cd5e905",
+    "actualBlob": "15baefc7ea1658e6383ea09385b7c7561cd5e905",
+    "matches": true,
+    "sha256": "EDE44156533CED5333A827C1191E1CEAF6006E812E7F6EF422874931B4FE22C1"
+  },
+  {
+    "path": "internal/application/api/application_records.go",
+    "expectedBlob": "f2f1e848f48def781abde9b5405ca14e113dd2a7",
+    "actualBlob": "f2f1e848f48def781abde9b5405ca14e113dd2a7",
+    "matches": true,
+    "sha256": "9093369B0CB4530AE4660D203F9CCB3C8EF8A6C41096590AA186723C4FB85CA2"
+  },
+  {
+    "path": "internal/application/api/client.go",
+    "expectedBlob": "5cc1435138f6d4082caa0be5603ca11041ad54bd",
+    "actualBlob": "5cc1435138f6d4082caa0be5603ca11041ad54bd",
+    "matches": true,
+    "sha256": "AD7361BE44F053A86F4D6B1AA9924E7366C812AA9246F9E11D67F43F2B6B1FBD"
+  },
+  {
+    "path": "internal/application/api/closed_variants_test.go",
+    "expectedBlob": "726f9b094bee32d11d87849055f7397b18c45d43",
+    "actualBlob": "726f9b094bee32d11d87849055f7397b18c45d43",
+    "matches": true,
+    "sha256": "E94B3B9B5E5277D61F6374915D3C6036DD2DE079810771CC748DD428F320276D"
+  },
+  {
+    "path": "internal/application/api/conformance_test.go",
+    "expectedBlob": "5d1bd57b78416c7b1f3cb7e2be93e95b0b6500b8",
+    "actualBlob": "5d1bd57b78416c7b1f3cb7e2be93e95b0b6500b8",
+    "matches": true,
+    "sha256": "C60B38211FD78495748173388E02C32A1DC2D2D963AFDBD250DDF0562E834D44"
+  },
+  {
+    "path": "internal/application/api/discovery_records.go",
+    "expectedBlob": "8d35502e96bd42fe874872bd5fea6e4a6f9e0b81",
+    "actualBlob": "8d35502e96bd42fe874872bd5fea6e4a6f9e0b81",
+    "matches": true,
+    "sha256": "53D217988A7E3E58D6CA436A1543FBCCDC964BC5D63B4FD1F538633594B9E262"
+  },
+  {
+    "path": "internal/application/api/enums.go",
+    "expectedBlob": "945d16f60803ac4df7f284a42c029c2f610f5689",
+    "actualBlob": "945d16f60803ac4df7f284a42c029c2f610f5689",
+    "matches": true,
+    "sha256": "E75BCEABF5DA5EAE477CDF541CF9885913199B9F16F202E955EB9463504370DF"
+  },
+  {
+    "path": "internal/application/api/evidence.go",
+    "expectedBlob": "9fb2690a5ebf5e159e271c062d7c983574817275",
+    "actualBlob": "9fb2690a5ebf5e159e271c062d7c983574817275",
+    "matches": true,
+    "sha256": "D28C4E0A21AFCBCE4DB33C61BBECC20AC0E7367B741A4F25496366CD9B970ABE"
+  },
+  {
+    "path": "internal/application/api/evidence_records.go",
+    "expectedBlob": "63c911b5579964bcb4d89fcee3f682b1348a957f",
+    "actualBlob": "63c911b5579964bcb4d89fcee3f682b1348a957f",
+    "matches": true,
+    "sha256": "F2902E2B98865BFC0B2C0DBC515E6755C71C1675F6597683800AFA8D3BF25E81"
+  },
+  {
+    "path": "internal/application/api/git_records.go",
+    "expectedBlob": "d1842135d2df824655ef240f03dc2a4a719864d5",
+    "actualBlob": "d1842135d2df824655ef240f03dc2a4a719864d5",
+    "matches": true,
+    "sha256": "CDBB918EC7C53D4436F3E8F12DE1FE46923E0F3824E28852F8F8CD1C2331F5EF"
+  },
+  {
+    "path": "internal/application/api/ids.go",
+    "expectedBlob": "61eb3916cf7ba17b73420f2a436eb23140f37f52",
+    "actualBlob": "61eb3916cf7ba17b73420f2a436eb23140f37f52",
+    "matches": true,
+    "sha256": "CA68B391C315617C94F48971CF05C375A9D6D097758DB406FBFDCB3583931898"
+  },
+  {
+    "path": "internal/application/api/json_values.go",
+    "expectedBlob": "8b7b6dea7180b506d99193c1a9474092d7382339",
+    "actualBlob": "8b7b6dea7180b506d99193c1a9474092d7382339",
+    "matches": true,
+    "sha256": "F86EB22771970FC0E5AE222AF4B35A12D244172CB9E65B3030A64FE48F4AAD3D"
+  },
+  {
+    "path": "internal/application/api/primitives.go",
+    "expectedBlob": "94eda35e6d680579b85f6c266c29e36cd69aeb5d",
+    "actualBlob": "94eda35e6d680579b85f6c266c29e36cd69aeb5d",
+    "matches": true,
+    "sha256": "429FD18B6B822A18A6BF6CF36D8654BAA90235512D235A31BBCE1731873406A0"
+  },
+  {
+    "path": "internal/application/api/remote_records.go",
+    "expectedBlob": "125ac9ede39caef4112f5f3a1c193a81020599f9",
+    "actualBlob": "125ac9ede39caef4112f5f3a1c193a81020599f9",
+    "matches": true,
+    "sha256": "2000B2017A775DCE8598D18980AC5E48ACDCA3A5BAB29FDC710EE7B37F1377CA"
+  },
+  {
+    "path": "internal/application/api/result_binding.go",
+    "expectedBlob": "990a7fecb0758051c127b0353e32e2c43dd52c89",
+    "actualBlob": "990a7fecb0758051c127b0353e32e2c43dd52c89",
+    "matches": true,
+    "sha256": "ADDFA559912B4F6A2D30F03E61F4A938C74B53698D83D1D64D0AC609D3B7EA77"
+  },
+  {
+    "path": "internal/application/api/runtime_records.go",
+    "expectedBlob": "d56eaa2c439377e14855c65d3e2885b8a21c8a6d",
+    "actualBlob": "d56eaa2c439377e14855c65d3e2885b8a21c8a6d",
+    "matches": true,
+    "sha256": "41F573D476820EB6D444ACAA6DA6591B81B9F2CD168210911AB1C8D6403AEA5C"
+  },
+  {
+    "path": "internal/application/api/storage_records.go",
+    "expectedBlob": "417f704f646b3e128faf3bdfdedbe65efa241de8",
+    "actualBlob": "417f704f646b3e128faf3bdfdedbe65efa241de8",
+    "matches": true,
+    "sha256": "F0C877E9985FD15504A2308E7CAFA21211D21F96963FFD7CCE3E25B8D237E2B2"
+  },
+  {
+    "path": "internal/application/api/storage_validation.go",
+    "expectedBlob": "293dccbac4618719b7f78f0f61c8eee814c69d5e",
+    "actualBlob": "293dccbac4618719b7f78f0f61c8eee814c69d5e",
+    "matches": true,
+    "sha256": "6F0028C0877D642058771A70630A2E100D3DDF7A6CD711FB88363CD980BDD20E"
+  },
+  {
+    "path": "internal/application/api/unions.go",
+    "expectedBlob": "c188661ee37ac21a9c00b48ae0e502650e77c9c0",
+    "actualBlob": "c188661ee37ac21a9c00b48ae0e502650e77c9c0",
+    "matches": true,
+    "sha256": "CFA19C386CA40ABE89E8B4F4A551169BCEFE1B0C2D111285D5AD407AE607175F"
+  },
+  {
+    "path": "internal/application/api/validation.go",
+    "expectedBlob": "35d26e0fcef534959c1a9846971fd28fbd73e1a2",
+    "actualBlob": "35d26e0fcef534959c1a9846971fd28fbd73e1a2",
+    "matches": true,
+    "sha256": "9B0F4176F187AE2D72C9D555B514A8D18BDCF568188606A7A264B1FEF895CB61"
+  },
+  {
+    "path": "internal/application/api/values_records.go",
+    "expectedBlob": "99aa087df774aa6da38f6940e67d40c2fd280f23",
+    "actualBlob": "99aa087df774aa6da38f6940e67d40c2fd280f23",
+    "matches": true,
+    "sha256": "2D75A529E6D0460373998EDE4BDF208FF0E641BD96A278341B85658D32113F03"
+  },
+  {
+    "path": "internal/application/api/values_test.go",
+    "expectedBlob": "dd84b07d7eb290a18a5c15c0c47a4ef2817850ae",
+    "actualBlob": "dd84b07d7eb290a18a5c15c0c47a4ef2817850ae",
+    "matches": true,
+    "sha256": "7BF55D355B60B8DDCBB605426515C749D7D981BEF8387503E9924F363ABE9E65"
+  },
+  {
+    "path": "internal/application/ports/README.md",
+    "expectedBlob": "dec90f182589225d124fa2f55c5508fc3ba662bd",
+    "actualBlob": "dec90f182589225d124fa2f55c5508fc3ba662bd",
+    "matches": true,
+    "sha256": "4F27D28819BC73B5FDAD25E27040DB647D7A30103938F1304B80A6065B71DFC5"
+  },
+  {
+    "path": "internal/application/ports/conformance_test.go",
+    "expectedBlob": "d69d776cf74939652b20da05aa9f55a7cc3b1940",
+    "actualBlob": "d69d776cf74939652b20da05aa9f55a7cc3b1940",
+    "matches": true,
+    "sha256": "9BC0FD005DF842B973CCFF54576F08501E59AE547D4C36A378FFA936EE17F479"
+  },
+  {
+    "path": "internal/application/ports/interfaces.go",
+    "expectedBlob": "89fa822b9944425fbb9886b1b229ac14eea29c90",
+    "actualBlob": "89fa822b9944425fbb9886b1b229ac14eea29c90",
+    "matches": true,
+    "sha256": "9253FB2077580E2F983E3F4680A5FFABE9B5DA5BD1F2FACD207E496EBC71835B"
+  },
+  {
+    "path": "internal/application/ports/plan_variants.go",
+    "expectedBlob": "d3a98be31fae7a5120ea536a5f9c68552c985b80",
+    "actualBlob": "d3a98be31fae7a5120ea536a5f9c68552c985b80",
+    "matches": true,
+    "sha256": "A9DD441179D7413226B9F499E9DCD548AF870701653FF37E76CDA64EC3DC550E"
+  },
+  {
+    "path": "internal/application/ports/plans.go",
+    "expectedBlob": "b097828d306b9f9f010cee996d51e1c6211eccd1",
+    "actualBlob": "b097828d306b9f9f010cee996d51e1c6211eccd1",
+    "matches": true,
+    "sha256": "CA3408404337914EB898B81BD6D81AF28945640AA756E353039D119264438359"
+  },
+  {
+    "path": "internal/application/ports/plans_test.go",
+    "expectedBlob": "c3235aa01478d5bc9a96d2fa3465d51c1744c0c0",
+    "actualBlob": "c3235aa01478d5bc9a96d2fa3465d51c1744c0c0",
+    "matches": true,
+    "sha256": "B7AE6B4957921052E2FD8A762DEA4C3444F042BB2C7A6B091B63C9B7B19EC27A"
+  },
+  {
+    "path": "internal/application/ports/storage.go",
+    "expectedBlob": "fcee502ab2d1d9b5d860cc9378ca99cc48b73b89",
+    "actualBlob": "fcee502ab2d1d9b5d860cc9378ca99cc48b73b89",
+    "matches": true,
+    "sha256": "624275ED4B4C6A6F23BFA85ACC1203F69F04D7D12A2E8A07F8ECC2AC1B2748B6"
+  },
+  {
+    "path": "internal/domain/README.md",
+    "expectedBlob": "295d152f7e799689035abe98bbc69a002081a71c",
+    "actualBlob": "295d152f7e799689035abe98bbc69a002081a71c",
+    "matches": true,
+    "sha256": "76D00961038B4A18D9806985F52ABA11ECE7DE9846462C398B68648F897C2312"
+  },
+  {
+    "path": "internal/domain/branch.go",
+    "expectedBlob": "8de8e34e5985b8a64e91116e4a04f1d34035d494",
+    "actualBlob": "8de8e34e5985b8a64e91116e4a04f1d34035d494",
+    "matches": true,
+    "sha256": "3133D1593599BAEDA10B597FB526DB591C429E8ECD8689D9207FB835251B280F"
+  },
+  {
+    "path": "internal/domain/closed_test.go",
+    "expectedBlob": "08c44aa1b55a0051dbb69fdbf353234d0dae3ee1",
+    "actualBlob": "08c44aa1b55a0051dbb69fdbf353234d0dae3ee1",
+    "matches": true,
+    "sha256": "D44511BB010F76E3A9E9B422BC4DF51293D8BBF76D2BFFB9F4A3734579EC769F"
+  },
+  {
+    "path": "internal/domain/head.go",
+    "expectedBlob": "146bf5e6ed0af3994758e65bb37b6dffddca070e",
+    "actualBlob": "146bf5e6ed0af3994758e65bb37b6dffddca070e",
+    "matches": true,
+    "sha256": "5CF0FFDCF7DF76E30E1B5CCCF34BC51173A4C100CEC7D18E8DBC36D925848E86"
+  },
+  {
+    "path": "internal/domain/identity_test.go",
+    "expectedBlob": "ee11e8c9fd28e33465b036b156fceeadb5968f3f",
+    "actualBlob": "ee11e8c9fd28e33465b036b156fceeadb5968f3f",
+    "matches": true,
+    "sha256": "5189AEEA9B5EC59D24E14DDBE58B2921328D5A13A23CC9429E083EC92DC6B5AC"
+  },
+  {
+    "path": "internal/domain/launch.go",
+    "expectedBlob": "f8d798a6f65029e59f0ff29007954ab7031b60e0",
+    "actualBlob": "f8d798a6f65029e59f0ff29007954ab7031b60e0",
+    "matches": true,
+    "sha256": "9F12AE2E2401DE115EECE25506A3AD0430DA61C76CBB6A475CF7509547B4A219"
+  },
+  {
+    "path": "internal/domain/oid.go",
+    "expectedBlob": "81c5ead32b06b8db4366b6973df47066ca4bdda5",
+    "actualBlob": "81c5ead32b06b8db4366b6973df47066ca4bdda5",
+    "matches": true,
+    "sha256": "CA9A1B5E0189352B2B4DB8FE0D44D4C5C6AFCD51605387FD4EE2B1F99F2B8D0E"
+  },
+  {
+    "path": "internal/domain/repository.go",
+    "expectedBlob": "3256e795a55bdf62636be70093adc826a9595e7e",
+    "actualBlob": "3256e795a55bdf62636be70093adc826a9595e7e",
+    "matches": true,
+    "sha256": "CDD152CE953EF5251C7F8DA9466F1D0BAD920CA2BB8A8BE231FFDC92E220DDB0"
+  },
+  {
+    "path": "internal/domain/revision_test.go",
+    "expectedBlob": "a7f1c66da551c25c10eb2b7f2edb1ec20c457de7",
+    "actualBlob": "a7f1c66da551c25c10eb2b7f2edb1ec20c457de7",
+    "matches": true,
+    "sha256": "0E36C3579AAF90EBF693A8FE4EE68EF0DA382B1CEFCF11888BAAEB73A7BB4F84"
+  },
+  {
+    "path": "internal/domain/session.go",
+    "expectedBlob": "a41b248d1034e9bbc6f97a66218ed2d91da6a06e",
+    "actualBlob": "a41b248d1034e9bbc6f97a66218ed2d91da6a06e",
+    "matches": true,
+    "sha256": "446FE4BFB02708D96E9D61C37F846A05F4DA91A18BCF418C964503DBE400C38E"
+  },
+  {
+    "path": "internal/domain/surface_test.go",
+    "expectedBlob": "2668175b4a003c42c0bb082064685ed8b949cf77",
+    "actualBlob": "2668175b4a003c42c0bb082064685ed8b949cf77",
+    "matches": true,
+    "sha256": "6AF0DA2801C0D8B6FC11DB45272A2F85B9305D610EBAA979915BC999BF495B39"
+  },
+  {
+    "path": "internal/domain/target.go",
+    "expectedBlob": "89a059614ed740ac4ba8fd3c711bec2d535d19a7",
+    "actualBlob": "89a059614ed740ac4ba8fd3c711bec2d535d19a7",
+    "matches": true,
+    "sha256": "1E286BFC1ED394B1E0E56C071D974EACA84E79D3C77EEDE00012A3E9D3C7B406"
+  }
+]

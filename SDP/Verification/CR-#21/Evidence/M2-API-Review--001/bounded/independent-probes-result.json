@@ -1,0 +1,6 @@
+{
+  "exitCode": 1,
+  "toolchain": "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+  "source": "7e3dd0a3545cc259af6dfe67885b20c8ddc57749",
+  "command": "go test ./internal/application/api -run ^TestRS -count=1 -v"
+}

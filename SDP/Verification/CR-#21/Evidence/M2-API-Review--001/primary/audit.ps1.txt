@@ -1,0 +1,23 @@
+param([string]$File,[int]$Skip=0,[int]$Take=9999)
+$s = Get-Content -Raw -Encoding UTF8 $File
+$records = [regex]::Matches($s, '(?ms)^type (\w+)Data struct \{(.*?)^\}')
+$failures = @()
+foreach ($record in ($records | Select-Object -Skip $Skip -First $Take)) {
+ $name = $record.Groups[1].Value
+ $fields = [regex]::Replace($record.Groups[2].Value.Trim(), '\s+', ' ')
+ $validate = [regex]::Match($s, '(?ms)^func \(d ' + $name + 'Data\) validate\(\) error \{(.*?)^\}').Groups[1].Value
+ $clone = [regex]::Match($s, '(?ms)^func \(d ' + $name + 'Data\) clone\(\) ' + $name + 'Data \{(.*?)^\}').Groups[1].Value
+ $constructor = [regex]::Match($s, '(?ms)^func New' + $name + '\(d ' + $name + 'Data\) \(' + $name + ', error\) \{(.*?)^\}').Groups[1].Value
+ $actual = [regex]::Replace($constructor,'\s+','')
+ $expected = 'iferr:=d.validate();err!=nil{return'+$name+'{},err}return'+$name+'{data:d.clone(),initialized:true},nil'
+ if ($actual -ne $expected) { $failures += $name + ': constructor differs' }
+ $validFields = @()
+ $validate = [regex]::Replace($validate, '(?ms)\s*if !([\w.]+)\.Valid\(\) \{\s*return invalid\("[^"]*"\)\s*\}', {param($m) '[VALID ' + $m.Groups[1].Value + ']'})
+ $validate = [regex]::Replace($validate.Trim(), '\s+', ' ')
+ $clone = [regex]::Replace($clone.Trim(), '\s+', ' ')
+ "$name : $fields"
+ "  copy: $clone"
+ "  checks: $validate"
+}
+"Constructor deviations: $($failures -join ', ')"
+"Total records: $($records.Count)"

@@ -105,3 +105,12 @@ leaf waits for accepted API/ports#59 before serial integration; do not integrate
 or close60 yet. API#59 current7e3dd0a is still independently reviewed, with a
 separate Runtime/Storage sub-review consolidating semantic findings. No M2/full
 Slice/baseline finding closure; all143 baseline findings remain open.
+
+API/ports#59 independent complete review at7e3dd0a3545cc259af6dfe67885b20c8ddc57749
+is CHANGES_REQUIRED for eight MEDIUM groups M259-M01..M08 (26 invalid admissions).
+Separate Runtime/Storage reviewer confirms six cases in M06/M07; positive/race/
+copy tests pass, but cross-field semantics do not. Actual full reports/probes/logs/
+source hashes are in M2-API-Review--001 and its archive. Source/final CI passed18/
+explicitM3skip; this does not override findings. Worker corrects all groups before
+new frozen review/current CI. Viewmodeld279c3f is accepted and waits unintegrated
+for API/ports. All143 baseline findings/full13 Slices remain; no M2 completion.
