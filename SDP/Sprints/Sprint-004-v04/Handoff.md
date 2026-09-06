@@ -34,10 +34,13 @@ own only their adapter folder/tests/bounded report; no legacy, shared workflow/m
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
 
-Current pushed partial milestones: Git dd80cde (transport/physical scope/worktrees),
-GitHub235b32a (all remote methods, hardening pending), Persistencea95d112 (strict
-codec/version foundation). None is accepted or integrated. Shared FreeBSD CI#66
-is queued; native interoperability conventions are in M3-Adapters--001.
+Current pushed milestones: Git06cff09 (six read methods, no mutations),
+GitHub926b2b7 (frozen candidate, CI34054297560 passes18/explicit helper skip,
+independent review running), Persistence19df0a1 (codec/native Windows acquisition
+and locking, publication pending). None is accepted or integrated. Shared FreeBSD
+CI#66 is queued. BC-CHANGE-67 documents a concrete missing status-cause field;
+Git ObserveStatus/dependent work awaits reviewed/refrozen correction, independent
+reads continue. Proposal/interop conventions live in M3-Adapters--001.
 
 No M3 product work existed at resume. Before the next substantial step ensure the
 previous milestone is verified, committed and pushed. A partial recovery checkpoint

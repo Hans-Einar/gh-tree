@@ -631,14 +631,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "dd80cdecc0c835d119dc21671fbba2efacc23644",
-      "checkpointScope": "partial, not accepted/integrated"
+      "lastCheckpoint": "06cff09d7dc608ab4894953314f5d5cf0ee2e5ae",
+      "checkpointScope": "partial, not accepted/integrated",
+      "blockedScope": "ObserveStatus/dependent status work pending BC-CHANGE-67; independent reads continue"
     },
     {
       "id": "IMPL62",
       "kind": "implementation_contribution",
       "issue": 62,
-      "state": "implementation_in_progress",
+      "state": "independent_review",
       "layer": "GitHub",
       "slices": [
         "SLC-01",
@@ -662,8 +663,12 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "235b32a26913589e380d81465bc3bda261b841cb",
-      "checkpointScope": "partial, not accepted/integrated"
+      "lastCheckpoint": "926b2b70900fa5f0c2277b086fda0d9b6aad1194",
+      "checkpointScope": "frozen candidate, not accepted/integrated",
+      "sourceCI": {
+        "run": 34054297560,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      }
     },
     {
       "id": "IMPL63",
@@ -693,7 +698,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "a95d112aa493d3899d34728843b59090ab3c6f17",
+      "lastCheckpoint": "19df0a110cfb91aa6ff7d6cda5b1dd20dc5ae0bb",
       "checkpointScope": "partial, not accepted/integrated"
     },
     {
@@ -758,6 +763,19 @@
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
       "integrationHead": null
+    },
+    {
+      "id": "BC-CHANGE-67",
+      "kind": "boundary_contract_change",
+      "issue": 67,
+      "state": "draft_review_queued",
+      "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+      "affects": [
+        "IMPL61",
+        "M4",
+        "M5"
+      ],
+      "scope": "Application--Git G3 independent status causes and bounded pure API correction"
     }
   ],
   "productFindings": [

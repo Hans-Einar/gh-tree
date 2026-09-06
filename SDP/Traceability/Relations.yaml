@@ -457,6 +457,11 @@
         "IMPL64",
         "IMPL65"
       ]
+    },
+    {
+      "from": "IMPL61",
+      "relation": "requires_status_correction",
+      "to": "BC-CHANGE-67"
     }
   ],
   "errata": [
