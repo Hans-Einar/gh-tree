@@ -116,9 +116,9 @@ finding coverage, bounded probes/build evidence as needed, green exact-HEAD CI.
 Completion: Master acceptance/merge recorded; close I-01 only when all ten reports
 are accepted, then open dedicated Refactor Design Issue and begin I-02.
 
-## I-02 / G-07 active contract
+## I-02 / G-07 completed contract (historical execution below)
 
-State: ACTIVE. Authority: #52 and full user run contract, stages 4-5 and all
+Historical kickoff state: ACTIVE (gate now COMPLETE). Authority: #52 and full user run contract, stages 4-5 and all
 downstream capability/safety/verification/release requirements.
 Goal: reconcile the ten accepted reviews into implementable REFDES--001,
 complete API/ownership/vertical Slice and verification contracts. Read accepted
@@ -162,7 +162,7 @@ is opened after that merge; no implementation Slice is active yet.
 
 ## I-02 / G-08 completed contract (historical execution below)
 
-State: ACTIVE. Authority: #55 under #21. G-07 is COMPLETE: PR54 final reviewed
+Historical kickoff state: ACTIVE (gate now COMPLETE). Authority: #55 under #21. G-07 is COMPLETE: PR54 final reviewed
 e63547771d89f892ebe8e13f66a1ed8ef0807ba2 merged at
 4a42222f7bfedc1d80693effbb25a1a82fcff65e; all18 final CI checks passed in
 34022968145/34022971176. #52 is closed. Accepted design is now effective.

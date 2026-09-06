@@ -223,3 +223,9 @@ must specify encoding=utf-8. Product-finding/release-baseline data matched the
 prior accepted objects exactly; no product/design/BC content changed. Main CI at
 actual BC merge97cc0d8 passed all9 jobs in34027623200. Worker implementation
 continues under #57/Plan; this corrective metadata commit is supplied separately.
+
+Initialized CurrentMatrix.yaml for all52 detailed checks plus13 E2E checks from
+accepted Verification--001/Slices--001. All start not_executed; prior baseline
+CI is separate. Fresh M1 reviewer preparation found no blocking authority/ownership
+conflict and identified LOW historical ACTIVE labels; Master clarified them without
+changing the current M1 contract. Product worker continues; no test result invented.

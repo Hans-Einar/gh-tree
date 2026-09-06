@@ -68,3 +68,9 @@ helper reproducibility matrices remain required. Native Windows Go1.25 is availa
 as recorded in implementationNotes. All12 exact assets/native platforms are in
 Verification--001 and CurrentIndex.releaseBaseline. Installed extension was
 observed at v0.3.13 and remains unchanged. No release/tag/install-upgrade occurred.
+
+Verification execution index: SDP/Verification/CR-#21/CurrentMatrix.yaml, all65
+accepted detailed/vertical checks initially not_executed. Baseline CI is explicitly
+separate; link real reviewed source/integration evidence without prematurely
+closing complete clauses. Reviewer preparation found no blocking M1 authority
+conflict; historical I02 ACTIVE labels are now explicitly historical/completed.

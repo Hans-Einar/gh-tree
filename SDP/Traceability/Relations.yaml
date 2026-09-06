@@ -219,6 +219,15 @@
         "SLC-12",
         "SLC-13"
       ]
+    },
+    {
+      "from": "SDP/Verification/CR-#21/CurrentMatrix.yaml",
+      "relation": "tracks_execution_of",
+      "to": [
+        "SDP/Design/CR-#21/Verification--001.md",
+        "SDP/Design/CR-#21/Slices--001.md",
+        "BC55"
+      ]
     }
   ],
   "errata": [

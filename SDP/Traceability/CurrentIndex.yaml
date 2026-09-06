@@ -1449,5 +1449,6 @@
     "SLC-11",
     "SLC-12",
     "SLC-13"
-  ]
+  ],
+  "verificationMatrix": "SDP/Verification/CR-#21/CurrentMatrix.yaml"
 }
