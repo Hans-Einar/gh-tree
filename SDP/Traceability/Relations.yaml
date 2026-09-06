@@ -468,6 +468,12 @@
       "relation": "revises",
       "to": "BC--Application--Git",
       "version": "1.1.0"
+    },
+    {
+      "from": "BC-CHANGE-67",
+      "relation": "source_accepted",
+      "to": "675dfffb6d055caa1074fe3feaccdfbdd8b21f74",
+      "reviewHead": "0bb8f283ed1c2f31b4834f3e6c4f108e65df751b"
     }
   ],
   "errata": [

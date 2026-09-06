@@ -401,3 +401,8 @@ exact CI34055294036 passes18/helper skip, held for Git-first integration. Root
 verified review-head delta is report-only. Persistence4c5e5be passes native
 CI34054966709; fresh successor owns remaining publication work. #67 API authoring
 uses codex/cr21-status-api from frozen contract10f687e. No adapter integrated.
+
+#67 source675dfff/review0bb8f28 ACCEPT; exact source CI34055882003 passes18/helper
+skip. Serial prerequisite integration includes only pure API/tests/reports and
+current status; integrated CI remains before Git consumption. #66 branch22217f9
+is ready for fresh CI worker. No adapter/full Slice acceptance is implied.

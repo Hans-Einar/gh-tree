@@ -633,7 +633,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "941aad55b443a14e9210a3f7298189a6a6b3ac21",
+      "lastCheckpoint": "de9b2c898e0c14ce2301fd7d9bdf9725c74ba848",
       "checkpointScope": "partial, not accepted/integrated",
       "blockedScope": "ObserveStatus/dependent status work pending #67 reviewed API implementation; Git contract1.1.0 frozen"
     },
@@ -703,11 +703,11 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "4c5e5bed6b38860dc7a823780475e264605cbf26",
-      "checkpointScope": "private codecs/acquisition/locks verified; public methods/metadata/publication/recovery incomplete",
+      "lastCheckpoint": "c146bb5cf399105ef9de21956483a87e7dae9670",
+      "checkpointScope": "private codecs/acquisition/locks/publication primitives and Windows metadata; public methods/Unix metadata/recovery incomplete",
       "sourceCI": {
-        "run": 34054966709,
-        "head": "4c5e5bed6b38860dc7a823780475e264605cbf26",
+        "run": 34055865289,
+        "head": "0630ded502b2a086768459e475f83111f1fe4e9a",
         "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
       },
       "activeWorker": "m3_persistence_publication_worker"
@@ -769,17 +769,21 @@
       "id": "IMPL66",
       "kind": "shared_CI_support",
       "issue": 66,
-      "state": "authorized_queued",
+      "state": "implementation_dispatch_ready",
       "layer": "Composition",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "scope": ".github/workflows/ci.yml and narrow script helpers; native FreeBSD verification support",
-      "integrationHead": null
+      "integrationHead": null,
+      "branch": "codex/cr21-freebsd-ci",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci",
+      "workerBase": "22217f9c31b33ab78f030a8dd36bd3624bcf7485",
+      "workerReport": "SDP/Implementation/CR-#21/Composition/M3-CI--001.md"
     },
     {
       "id": "BC-CHANGE-67",
       "kind": "boundary_contract_change",
       "issue": 67,
-      "state": "api_implementation_in_progress",
+      "state": "integrated_ci_pending",
       "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
       "affects": [
         "IMPL61",
@@ -793,7 +797,14 @@
       "freezeHead": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39",
       "branch": "codex/cr21-status-api",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/status-api",
-      "workerBase": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39"
+      "workerBase": "10f687ea7df4cde1746b50ef4b5537ecdeb13c39",
+      "sourceHead": "675dfffb6d055caa1074fe3feaccdfbdd8b21f74",
+      "reviewHead": "0bb8f283ed1c2f31b4834f3e6c4f108e65df751b",
+      "reviewDisposition": "ACCEPT",
+      "sourceCI": {
+        "run": 34055882003,
+        "result": "18 applicable SUCCESS; explicit pre-Runtime helper skip"
+      }
     }
   ],
   "productFindings": [

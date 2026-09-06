@@ -34,17 +34,25 @@ own only their adapter folder/tests/bounded report; no legacy, shared workflow/m
 or frozen-contract edits without Master coordination. Separate reviewers inspect
 frozen candidates; serial integration is Git→GitHub→Persistence→Discovery→Runtime.
 
-Current pushed milestones: Git941aad5 (nine read methods, no mutations);
-GitHub technical7382617/reviewccbc843 is independently ACCEPTED and exact
-CI34055294036 passes18/explicit helper skip. It is held for Git-first integration;
-#62 remains open. Persistence4c5e5be CI34054966709 passes18/helper skip including
-native macOS/Windows ARM64/Linux race; fresh successor implements public
-methods/metadata/publication/recovery from the preserved codecs/acquisition/locks.
-No M3 adapter is integrated. Shared FreeBSD CI#66 is queued. Git status contract
-1.1.0 is frozen at10f687e; #67 API worker uses codex/cr21-status-api, worktree
-C:/Users/hanse/GIT/gh-tree-wt/status-api at that base. ObserveStatus/dependent Git
-work awaits reviewed integrated API correction; independent Git work continues.
-Current authority/interop/review links are in M3-Adapters--001.
+Current pushed milestones: Gitde9b2c8 (nine read methods/native foundations,
+no mutations); GitHub technical7382617/reviewccbc843 independently ACCEPTED,
+CI34055294036 passes18/helper skip, held for Git-first integration. Persistence
+c146bb5 has private native publication primitives/Windows metadata; latest verified
+CI34055865289 at0630ded passes18/helper skip. Public Storage/Unix metadata/recovery
+remain in progress. #66 FreeBSD worker branch codex/cr21-freebsd-ci is ready at
+base22217f9, worktree C:/Users/hanse/GIT/gh-tree-wt/freebsd-ci.
+
+#67 API correction technical675dfff/review0bb8f28 independently ACCEPTED and source
+CI34055882003 passes18/helper skip. It is being integrated into canonical with
+this status record; exact integrated CI must pass before the clean Git branch
+receives that prerequisite. Git status contract1.1.0 froze at10f687e. No M3 adapter
+is integrated and no full Slice closed. Authority/interop links: M3-Adapters--001.
+
+Local-only test residue: Persistence report atc146bb5 records the owned Windows
+metadata fixture TestWindowsNativeMetadataCopy2880129540/001 under the user's
+Local/Temp directory; automatic approval review rejected its ACL restoration/
+removal as blocked by policy. Preserve it; do not retry/bypass. It is test data,
+not unpushed product source. Current later tests clean through retained handles.
 
 No M3 product work existed at resume. Before the next substantial step ensure the
 previous milestone is verified, committed and pushed. A partial recovery checkpoint
