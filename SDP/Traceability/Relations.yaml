@@ -150,6 +150,16 @@
       "relation": "plans_disposition_of",
       "to": "SDP/Design/CR-#21/FindingDisposition.yaml",
       "state": "draft_all_product_findings_open"
+    },
+    {
+      "from": "BC55",
+      "relation": "depends_on",
+      "to": "REFDES52"
+    },
+    {
+      "from": "G-08",
+      "relation": "accepts",
+      "to": "BC55"
     }
   ],
   "errata": [

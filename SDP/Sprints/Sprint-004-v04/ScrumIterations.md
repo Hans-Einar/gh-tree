@@ -3,7 +3,7 @@
 State: ACTIVE
 Sprint: Sprint-004-v04
 Active iteration: I-02 — Refactor Design and contracts
-Active gate: G-07 — Refactor Design (#52)
+Active gate: G-08 — Boundary Contract review/freeze (#55)
 No implementation Slice is active before design and BC freeze.
 
 ## I-01 contract
@@ -159,3 +159,31 @@ Complete technical design independently ACCEPTED at
 664f0c051344e3abdfd7d3c5698e4fbd3f584a83, all18 CI checks successful. G-07 awaits
 only final acceptance-metadata exact-HEAD review/CI and PR54 merge. G-08 BC authority
 is opened after that merge; no implementation Slice is active yet.
+
+## I-02 / G-08 active contract
+
+State: ACTIVE. Authority: #55 under #21. G-07 is COMPLETE: PR54 final reviewed
+e63547771d89f892ebe8e13f66a1ed8ef0807ba2 merged at
+4a42222f7bfedc1d80693effbb25a1a82fcff65e; all18 final CI checks passed in
+34022968145/34022971176. #52 is closed. Accepted design is now effective.
+
+Goal: turn accepted REFDES/API/Storage/CwdAcquisition/WindowsBroker and complete
+Slice/verification maps into seven mutually consistent implementation BCs1.0.0.
+Files: SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md,
+BC--TUIState--Application.md, BC--Application--Git.md,
+BC--Application--GitHub.md, BC--Application--Runtime.md,
+BC--Application--LaunchDiscovery.md, BC--Application--Persistence.md; necessary
+shared type/signature annex and review record; Master checkpoint metadata.
+Branch/worktree: codex/cr21-boundary-contracts / gh-tree-wt/boundary-contracts,
+base4a42222f7bfedc1d80693effbb25a1a82fcff65e.
+
+Invariants: no product changes, no implementation branch/Slice, no silent design
+change; all143 product findings remain open. Boundaries keep exact identities,
+ownership, operation/session terminal separation, reliable transfer/ACK, acquired
+cwd/native broker, storage commit outcomes, pure State/View and full capability.
+Master authors/reconciles contracts; fresh independent reviewer reads the whole
+frozen set. Findings require correction and exact-HEAD re-review. Only consistent
+reviewed contracts receive FROZEN1.0.0 labels, followed by final metadata review,
+configured CI and expected-HEAD merge. Record freeze/source/merge on #21 and ledger.
+Next gate after completion: issue-authorized Composition CI bootstrap and reviewed
+layer Slice contributions on codereview-21/refactor; no premature product work.

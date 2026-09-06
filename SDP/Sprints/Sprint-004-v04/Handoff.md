@@ -1,15 +1,15 @@
 # Program handoff
 
-State: ACTIVE — Refactor Design; product implementation gated
+State: ACTIVE — Boundary Contracts; product implementation gated
 Repository: Hans-Einar/gh-tree
 Parent: #21, open under full user run authority
-Sprint/iteration/gate: Sprint-004-v04 / I-02 / G-07
-Active authority: #52 (Refactor Design)
+Sprint/iteration/gate: Sprint-004-v04 / I-02 / G-08
+Active authority: #55 (Boundary Contract review/freeze)
 
 ## Exact evidence
 
 - Product baseline: v0.3.14 / f626077ca0e59fbe9ede7ba1116982bb94b2eb6b.
-- Main/design base observed: 58f1cb9eda941db0941cbb8e04e6a0559a3ca896.
+- Main/contract base observed: 4a42222f7bfedc1d80693effbb25a1a82fcff65e.
 - All ten focused layers accepted/merged: Runtime #25, TUI State #26,
   Application #29, Git #31, corrected Domain #33, Launch Discovery #36,
   Persistence #40, GitHub #43, TUI View #46, Composition #49.
@@ -18,7 +18,8 @@ Active authority: #52 (Refactor Design)
 - Last report: Composition PR #51, reviewed e2ffc1e72c06270bbaf2a20f2c21b949a9b3985c,
   merged e0e716fd44421c221d00375fc0c0d0b8ea85bdff; nine CI checks passed.
 - Complete technical REFDES accepted at664f0c051344e3abdfd7d3c5698e4fbd3f584a83;
-  final acceptance-metadata review/CI/merge pending. No FROZEN BC, implementation
+  final e63547771d89f892ebe8e13f66a1ed8ef0807ba2 accepted/merged in PR54 at
+  4a42222f7bfedc1d80693effbb25a1a82fcff65e. No FROZEN BC, implementation
   Slice or v0.4 product change. Design acceptance is not product-finding resolution.
 - Release parity requires all twelve v0.3.14 assets, including FreeBSD, 32-bit
   and Windows ARM64; exact names in CurrentIndex.releaseBaseline. Installed
@@ -26,7 +27,7 @@ Active authority: #52 (Refactor Design)
 
 ## Continue
 
-Read AGENTS.md, developmentInstructions.md, full #21/#52, UserRunContract.md,
+Read AGENTS.md, developmentInstructions.md, full #21/#52/#55, UserRunContract.md,
 index/relations/ledger and all accepted reports afresh as #52 requires. Inspect
 actual remote refs and dirty/unpublished work before acting. Preserve user work.
 
@@ -63,9 +64,12 @@ records ACCEPT at664f0c051344e3abdfd7d3c5698e4fbd3f584a83, with H04 resolved at
 design level and all18 CI checks passing (34022527812/34022530503). All143 product
 findings remain open. Final acceptance labels are effective only after PR54 merge.
 
-Next: narrowly review the acceptance-metadata commit at its exact SHA, require
-its green CI and merge PR54 with expected-head protection. Then authorize BC
-review/freeze; no product implementation before
+Current next action: author/reconcile seven BCs and necessary shared type/signature
+annex on codex/cr21-boundary-contracts at
+C:/Users/hanse/GIT/gh-tree-wt/boundary-contracts. #55 authorizes this document-only
+gate; sprint/index/ledger kickoff is recorded before broad authoring. Fresh frozen-
+set review/correction, FROZEN1.0.0 metadata review/CI and merge precede product work.
+No product implementation before
 both gates. Master owns metadata/contracts/integration and delegates bounded
 product work to fresh workers with separate reviewers when implementation begins.
 

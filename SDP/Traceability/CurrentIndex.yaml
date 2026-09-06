@@ -4,12 +4,62 @@
   "programIssue": 21,
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-02",
-  "activeGate": "G-07",
+  "activeGate": "G-08",
   "implementationSlice": null,
   "productBaseline": "f626077ca0e59fbe9ede7ba1116982bb94b2eb6b",
-  "mainObserved": "58f1cb9eda941db0941cbb8e04e6a0559a3ca896",
-  "designState": "accepted_pending_final_metadata_review_and_merge",
-  "boundaryContracts": [],
+  "mainObserved": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+  "designState": "accepted",
+  "boundaryContracts": [
+    {
+      "id": "BC--TUIState--TUIView",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--TUIView.md"
+    },
+    {
+      "id": "BC--TUIState--Application",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--TUIState--Application.md"
+    },
+    {
+      "id": "BC--Application--Git",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Git.md"
+    },
+    {
+      "id": "BC--Application--GitHub",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--GitHub.md"
+    },
+    {
+      "id": "BC--Application--Runtime",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Runtime.md"
+    },
+    {
+      "id": "BC--Application--LaunchDiscovery",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--LaunchDiscovery.md"
+    },
+    {
+      "id": "BC--Application--Persistence",
+      "version": "1.0.0",
+      "state": "planned",
+      "issue": 55,
+      "doc": "SDP/LayerBoundaryContracts/BC--Application--Persistence.md"
+    }
+  ],
   "productFindingsState": "all_unresolved",
   "items": [
     {
@@ -214,7 +264,7 @@
     {
       "id": "REFDES52",
       "kind": "refactor_design",
-      "state": "accepted_pending_merge",
+      "state": "accepted",
       "issue": 52,
       "doc": "SDP/Design/CR-#21/REFDES--001.md",
       "branch": "codex/cr21-refactor-design",
@@ -234,16 +284,40 @@
       "fullReview": "SDP/Design/CR-#21/DesignReview--002.md",
       "correctedReviewHead": "8c109b1e4308eb301d7c1418292044d714c2f33b",
       "latestReview": "SDP/Design/CR-#21/DesignReview--004.md",
-      "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83"
+      "acceptedTechnicalHead": "664f0c051344e3abdfd7d3c5698e4fbd3f584a83",
+      "head": "e63547771d89f892ebe8e13f66a1ed8ef0807ba2",
+      "merge": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+      "ciRuns": [
+        "34022968145",
+        "34022971176"
+      ]
     },
     {
       "id": "G-07",
       "kind": "governance_gate",
-      "state": "active",
+      "state": "complete",
       "requires": [
         "REFDES52"
       ],
       "doc": "SDP/Sprints/Sprint-004-v04/ScrumIterations.md"
+    },
+    {
+      "id": "BC55",
+      "kind": "boundary_contract_gate",
+      "issue": 55,
+      "state": "authoring",
+      "branch": "codex/cr21-boundary-contracts",
+      "base": "4a42222f7bfedc1d80693effbb25a1a82fcff65e",
+      "doc": "SDP/LayerBoundaryContracts/README.md"
+    },
+    {
+      "id": "G-08",
+      "kind": "governance_gate",
+      "state": "active",
+      "requires": [
+        "REFDES52",
+        "BC55"
+      ]
     }
   ],
   "productFindings": [
