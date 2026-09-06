@@ -482,7 +482,7 @@ controls; full independent process-kill boundaries remain required below.
 
 Fresh finishing author began from clean pushed
 `a147a1d57d2eadda1ab998a218eb03c53b66540a`. Production is unchanged in this
-checkpoint. `objectid_windows_probe_test.go` uses only fixture-owned native
+checkpoint. `objectid_probe_windows_test.go` uses only fixture-owned native
 FILE_CREATE files, the existing class65 publisher/class11 retention and
 CREATE_OR_GET_OBJECT_ID before publication; all subsequent queries are GET-only.
 No SET/DELETE object-ID command, timestamp normalization, global/case setting,
@@ -532,6 +532,21 @@ timestamp normalization or migration to an ObjectID tuple is proposed. The old
 failing records therefore still refuse rather than receive fabricated proof.
 Any new identity must be recorded before publication and must survive the
 crash-before-outcome path without a postpublication repair.
+
+P3i test-selection correction: completed CI34063088464 exposed that the former
+`commit_windows_security_test.go` and `objectid_windows_probe_test.go` names did
+not select GOOS, causing Unix/race compilation to import x/sys/windows. Renamed
+them to `commit_security_windows_test.go` and `objectid_probe_windows_test.go`.
+Both Git blob hashes are unchanged (`e22dad12cb4160462b9afcf4f6b50f0f3f6d4e6b`
+and `1f8bb61fd71cc204a573e8a3791b58756234f353` respectively); all test logic and
+the deliberately failing native Windows creation-time regression are preserved.
+Go1.25.0 CGO_ENABLED0 `go test -c ./internal/persistence` PASS for all12 selected
+targets: Windows386/amd64/arm64, Linux386/amd64/arm/arm64, Darwinamd64/arm64 and
+FreeBSD386/amd64/arm64. Binaries remain only under the owned temporary directory
+`C:/Users/hanse/AppData/Local/Temp/gh-tree-persistence-test-selection-1df02286af4544638c402ec74c464acf`.
+This is package test compilation, not native execution, race execution, complete
+source CI or adapter acceptance. No product/identity/protocol behavior changed;
+Master's program hold remains in effect after this mechanical correction.
 
 ## Current handoff and exact next permitted action
 
