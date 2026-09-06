@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -60,6 +61,11 @@ func TestWindowsArtifactIdentityFullTupleAndReadOnlyProfiles(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer owned.close()
+	var short [63]byte
+	var returned uint32
+	if err := windows.DeviceIoControl(owned.handle(), windows.FSCTL_GET_OBJECT_ID, nil, 0, &short[0], uint32(len(short)), &returned, nil); err != windows.ERROR_INVALID_PARAMETER || returned != 0 {
+		t.Fatal("native malformed-buffer reply", err, returned)
+	}
 	if size, err := nativeObjectSize(owned); err != nil || size != 0 {
 		t.Fatal("identity initialization wrote data", err)
 	}
@@ -133,5 +139,18 @@ func TestWindowsArtifactIdentityFullTupleAndReadOnlyProfiles(t *testing.T) {
 	}
 	if _, err := nativeArtifactIdentity(parent); !errors.Is(err, errUnsupportedProfile) {
 		t.Fatal("directory acquired artifact profile", err)
+	}
+}
+
+func TestWindowsArtifactLegacyIdentityGoldenShape(t *testing.T) {
+	// Literal legacy serializer output, independent of today's marshaled shape.
+	raw := []byte(`{"Platform":1,"Device":9,"File":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"Stamp":"birth-filetime:133700000000000000"}`)
+	var record diskIdentity
+	if err := json.Unmarshal(raw, &record); err != nil {
+		t.Fatal(err)
+	}
+	encoded, err := json.Marshal(record)
+	if err != nil || !bytes.Equal(raw, encoded) {
+		t.Fatal("legacy canonical identity bytes changed", err)
 	}
 }

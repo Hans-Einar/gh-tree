@@ -563,9 +563,9 @@ captured before preparation and carried through final target checks. Existing
 birth records still compare exact birth, including ID-bearing files. No public
 version/directory/lock/root/Expected/native publisher/security semantics changed.
 
+Initial coherent product milestone0058949bf0f9bdc81021e53e8ef4f9f1e6713968 is pushed.
 Native Windows amd64 targeted tuple/error/profile tests and the actual12-cycle
-public commit/reload regression PASS; complete Persistence package PASS2.780s and
-vet PASS before the additional targeted tests (which also pass). Every FileID byte,
+public commit/reload regression PASS. Every FileID byte,
 all64 ID bytes, volume, malformed lengths/zero/uppercase/unknown tags, exact errno2
 versus arbitrary/wrapped failures and untouched-original bytes/security are tested.
 The actual invalid-handle GET returns its distinct native error. New ID creation
@@ -580,21 +580,57 @@ each public request cycle returns to the exact baseline with no tolerance. Nativ
 snapshot layout follows [PHNT](https://github.com/winsiderss/phnt/blob/master/ntpsapi.h).
 This is a targeted file-resource check, not a claim all runtime resources are proved.
 
-This first coherent source checkpoint is partial. Next: expanded public fresh-
-store/process/tunneling/death/legacy-frame controls, amd64/386 and Linux regression,
-vet/race/all12 builds and exact source CI (ARM64/other native jobs via Master).
-Separate fresh implementation review remains required. FreeBSD metadata, no-birth
-association, source-name interval and the full adapter fault/resource gates remain
-unresolved; this fix cannot close the adapter, any Slice or baseline finding.
+Expanded product controls now pass, with these exact expected/observed counts:
 
-## Historical P3i handoff (superseded by P3j above)
+| Control | Native result |
+|---|---|
+| Cached-absence, then8 public commits (4 fresh stores +4 fresh child processes) |30 expected/30 observed retained RecoveryIDs; four directly observed tunneled payload birth times. |
+| Present, then8 equivalent public commits |32 expected/32 observed retained RecoveryIDs; four directly observed tunneled payload birth times. |
+| Child killed/joined at native-return-lost, before any postpublication query or outcome delivery |All flushed native tuples and2/4 expected recovery records survive owner death and repeated fresh loads. No historical outcome is inferred. |
+| Manifest/raw/original/payload same-byte replacement |Each substituted role refuses; independent records and the displaced original bytes survive. |
+| Untagged/tagged original through actual public commit |Exact original bytes/security/ObjectID remain unchanged; untagged original retains birth profile. Directory ID remains unchanged; permanent lock still has no ObjectID. |
+| Old flat/journal records, matching/drifting birth, ID-bearing artifacts |Exact matching records/IDs/observations remain readable; drifting self identity refuses; raw frames remain byte-identical and successors cannot upgrade a recorded profile. Literal old identity JSON shape remains identical. |
 
-This remains a partial, nonaccepted contribution with the deliberately failing
-Windows12-commit public resource regression preserved. Next: independently assess
-the P3i native identity proposal, then adopt only the permitted private protocol
-and prove the public repeat/restart/crash path. Do not weaken identity checks or
-reinterpret arbitrary timestamp drift. Native Windows ARM64 and complete final
-review/CI remain required; P3i has only amd64/386 mechanism evidence.
+The recovery assertions account for every persisted retained-artifact ID and each
+previously returned complete record, not a surviving subset. The old publication
+name is independently absent after class65 rename, as in the unchanged protocol;
+its separate recorded ID stays in the manifest. The public tests use the actual
+commit/journal/observe paths rather than the earlier mechanism probe alone.
+
+Go1.25.0 native Windows amd64 full Persistence PASS4.760s;386/WOW64 full package
+PASS6.008s; amd64/386 vet PASS. Full Windows race package PASS23.063s before final
+assertion additions, then final identity/resource race selector PASS31.141s.
+Final native Windows `go test ./... -count=1` and Persistence vet also PASS,
+including architecture guard and the unchanged legacy packages.
+The final Windows ARM64 test binary compiles; native execution/source CI remain
+Master-observed gates. All12 module builds and Persistence test binaries compile:
+Windows386/amd64/arm64, Linux386/amd64/arm/arm64, Darwinamd64/arm64,
+FreeBSD386/amd64/arm64. Compile evidence is distinct from native execution.
+The unchanged Unix-selected product/tests also pass as an actual Linux/ext4
+binary in WSL openSUSE-Leap-15.5 under UID65534 with owned temporary fixtures,
+including original mode/recovery/source-substitution regression controls.
+
+Local UTF8 logs/binaries are beneath
+`C:/Users/hanse/AppData/Local/Temp/gh-tree-persistence-identity-c445c2aa3b49498c972f8ba9d6fda8a7`;
+Linux staging is `/tmp/gh-tree-persistence-identity.3NUO7F`.
+The first added snapshot fixture used a non-delete-sharing os.ReadFile and the
+old os.IsNotExist helper on a joined native error; it failed before its assertions.
+Corrected fixture reads use native share-all and errors.Is, without product changes.
+An initial race compiler path needed quoting; the corrected local GCC run passed.
+No previous denied-ACL fixture was touched and no global tooling/settings changed.
+
+This bounded correction is ready for separate fresh implementation review after
+the test/evidence commit is pushed. Exact source/native ARM64 CI remain pending.
+FreeBSD metadata, no-birth association, source-name interval and full adapter
+fault/resource gates remain unresolved. No adapter/Slice/baseline finding closes.
+
+## Current handoff and exact next permitted action
+
+The Windows12-commit regression is corrected by the reviewed private P3j profile;
+its old failed source/evidence remains in P3i and M3-Identity-Review--001. The
+complete adapter remains partial and nonaccepted. Next: fresh independent review
+of the bounded P3j product/test source, with exact native/source CI, before Master
+considers its disposition. No full contribution acceptance is claimed here.
 
 P3d–P3h record actual implemented journal, Expected-anchor/missing-parent,
 cooperative multiprocess, eight crash stages, late-write, independent-current,
@@ -614,13 +650,11 @@ evidence recorded above. Preserve the rejected denied-ACL cleanup fixture and
 all prior evidence. Freeze/push a complete candidate for Master's separate fresh
 review only after these contribution gates are satisfied; no integration here.
 
-Master explicitly held product adoption after the separate required Git review
-encountered an external cybersecurity content/access block. This author stops at
-the clean pushed P3i mechanism checkpoint plus this handoff update; the proposal
-requires Master/fresh assessment in the resumed authorized environment. This is
-an external program boundary, not Persistence acceptance or a waived native gate.
+Master authorized this independent bounded work while the separate Git review
+remains blocked by its external access condition. The author freezes this bounded
+correction for separate review; no blocked review was retried or substituted.
 
 SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
 INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: evaluate the P3i private Windows identity protocol using its actual native
-evidence, then complete permitted implementation and remaining exact gates.
+NEXT: independently review frozen P3j source and native evidence; then complete
+separately authorized remaining adapter work and all required exact gates.
