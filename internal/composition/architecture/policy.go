@@ -161,7 +161,7 @@ func externalAllowed(r role, path string, standard, test bool) bool {
 		return r == view && rendering[path]
 	}
 	if r == assets {
-		return standard && (pureStandard[path] || set("embed", "compress/gzip", "crypto/sha256", "io", "io/fs")[path])
+		return standard && (pureStandard[path] || set("embed", "compress/gzip", "crypto/sha256", "io", "io/fs", "encoding/json", "debug/pe")[path])
 	}
 	if r == discovery && (path == "os/exec" || path == "net" || strings.HasPrefix(path, "net/") || path == "plugin") {
 		return false

@@ -407,7 +407,7 @@ func syntaxPolicy(file *ast.File, r role) error {
 		if violation != nil {
 			return false
 		}
-		if isPure(r) {
+		if isPure(r) || r == assets {
 			switch n := node.(type) {
 			case *ast.GoStmt:
 				violation = fmt.Errorf("pure layer cannot start a goroutine")
@@ -424,7 +424,7 @@ func syntaxPolicy(file *ast.File, r role) error {
 				violation = fmt.Errorf("Domain cannot own JSON schemas/tags")
 			}
 		}
-		if isPure(r) {
+		if isPure(r) || r == assets {
 			if c, ok := node.(*ast.Comment); ok && strings.HasPrefix(c.Text, "//go:linkname") {
 				violation = fmt.Errorf("pure layer cannot bypass imports with go:linkname")
 			}
@@ -435,7 +435,7 @@ func syntaxPolicy(file *ast.File, r role) error {
 }
 
 func symbolPolicy(info *types.Info, r role) error {
-	if !isPure(r) {
+	if !isPure(r) && r != assets {
 		return nil
 	}
 	allowedTime := set("Time", "Duration", "Month", "Weekday", "UTC", "Nanosecond", "Microsecond", "Millisecond", "Second", "Minute", "Hour", "Date", "Unix", "UnixMilli", "UnixMicro", "ParseDuration", "RFC3339", "RFC3339Nano", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
@@ -444,6 +444,9 @@ func symbolPolicy(info *types.Info, r role) error {
 			continue
 		}
 		path, name := obj.Pkg().Path(), obj.Name()
+		if r == assets && path == "debug/pe" && name == "Open" {
+			return fmt.Errorf("assets forbids path-opening symbol debug/pe.Open")
+		}
 		if path == "encoding/json" && r == api && name != "Valid" {
 			return fmt.Errorf("API permits only the pure json.Valid predicate for OpaqueJSON, not json.%s", name)
 		}

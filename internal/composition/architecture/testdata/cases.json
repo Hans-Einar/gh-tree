@@ -170,6 +170,54 @@
     }
   },
   {
+    "Name": "assets-in-memory-parsers",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport (\"bytes\"; \"debug/pe\"; \"encoding/json\")\nfunc Check(b []byte) error { var v map[string]string; if err := json.NewDecoder(bytes.NewReader(b)).Decode(&v); err != nil { return err }; p, err := pe.NewFile(bytes.NewReader(b)); if err == nil { err = p.Close() }; return err }\n"
+    }
+  },
+  {
+    "Name": "assets-cannot-open-PE-path",
+    "Want": "assets forbids path-opening symbol debug/pe.Open",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport \"debug/pe\"\nfunc Check() error { _, err := pe.Open(\"image.exe\"); return err }\n"
+    }
+  },
+  {
+    "Name": "assets-cannot-alias-PE-open",
+    "Want": "assets forbids path-opening symbol debug/pe.Open",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport image \"debug/pe\"\nvar openImage = image.Open\n"
+    }
+  },
+  {
+    "Name": "assets-cannot-open-native-files",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport \"os\"\nvar read = os.ReadFile\n"
+    }
+  },
+  {
+    "Name": "assets-cannot-print",
+    "Want": "pure layer forbids I/O symbol fmt.Printf",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nimport \"fmt\"\nvar write = fmt.Printf\n"
+    }
+  },
+  {
+    "Name": "assets-cannot-start-goroutine",
+    "Want": "pure layer cannot start a goroutine",
+    "Files": {
+      "internal/runtime/brokerassets/data.go": "package brokerassets\nfunc start() { go func(){}() }\n"
+    }
+  },
+  {
+    "Name": "domain-cannot-use-asset-parsers",
+    "Want": "forbidden production import",
+    "Files": {
+      "internal/domain/id.go": "package domain\nimport _ \"debug/pe\"\n"
+    }
+  },
+  {
     "Name": "broker-cannot-embed-itself",
     "Target": "windows/amd64",
     "Want": "forbidden production import",
