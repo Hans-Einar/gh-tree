@@ -205,6 +205,13 @@ func privateImportAllowed(from role, path string) bool {
 	return set("internal/domain", "internal/application", "internal/application/api", "internal/application/ports", "internal/application/usecases", "internal/git", "internal/github/adapter", "internal/runtime", "internal/launchdiscovery", "internal/persistence", "internal/tuistate", "internal/tuistate/viewmodel", "internal/tuiview", "internal/composition", "internal/composition/host", "internal/version")[path]
 }
 
+// Exported names in private implementation packages are local plumbing, not
+// public DTOs. Their imports remain constrained; types from them are traversed
+// when they are reachable through the actual published layer roots checked here.
+func publicSurface(path string) bool {
+	return set("internal/domain", "internal/application", "internal/application/api", "internal/application/ports", "internal/application/usecases", "internal/git", "internal/github/adapter", "internal/runtime", "internal/launchdiscovery", "internal/persistence", "internal/tuistate", "internal/tuistate/viewmodel", "internal/tuiview", "internal/version")[path]
+}
+
 // Imported named types in public boundary surfaces must be values/control types,
 // never backend handles, readers or hidden renderer/process implementation DTOs.
 func publicExternalType(path, name string, r role) bool {

@@ -29,9 +29,14 @@ public type identities; no host-size or import-substring shortcut is used.
 ## Migration and package ownership
 
 `MigrationMap.yaml` is JSON-compatible YAML and is read with the standard library.
-Every remaining old Go file must match its exact path and baseline Git text blob.
-Git text is normalized to LF for Windows CRLF checkouts. The checker does not
-trust the index, folder prefixes or a moved copy of the same blob. New files in
+Every remaining old Go file must match its exact path and baseline Git blob.
+The checker reads path-specific text attributes and core.autocrlf. Explicit text
+and ordinary automatic text profiles preserve legitimate CRLF checkout conversion;
+`-text` and autocrlf=false retain the actual bytes. Automatic conversion with a
+CRLF/binary index, filter/encoding/ident/eol attributes and unknown profiles refuse
+explicitly. Git clean filters are never executed. Source archives with no Git
+metadata get raw-byte comparison, with no inferred Windows normalization.
+The checker does not trust folder prefixes or a moved copy of the same blob. New files in
 old folders fail; importing an unchanged legacy package from new code fails too.
 Deleting an allowance's file does not authorize its replacement or retirement:
 those decisions still require the Master-managed M5/M6/M7 gates.
@@ -61,13 +66,19 @@ explicitly listed; automatic/global Lip Gloss renderer configuration is rejected
 New dependencies or policy changes need the applicable Issue/BC authority and
 independent review, not an in-source suppression comment.
 
-Export checks follow aliases, pointers, collections, generic arguments, local
-private named types, embedded fields, exported methods and inferred variables.
-They reject native/adapter types, channels, any DTOs and exposed callback fields
-on boundary surfaces. Generic `Optional[T any]` constraints are permitted.
+Export checks follow aliases, pointers, collections, generic arguments, local and
+same-layer private named types, embedded fields, methods and inferred variables.
+They distinguish declared API functions/interface methods from callback signatures
+inside value graphs, rejecting nested callbacks, native/adapter types, channels
+and any DTOs on public boundary surfaces. Generic `Optional[T any]` constraints
+are permitted. Private implementation packages may exchange native resources with
+their owner. Their wrapper types are recursively checked if a public owner surface
+exposes them, so a private helper cannot hide native handles or nested callbacks.
 Composition wiring and Runtime's private broker/asset/build tools have different
 public implementation surfaces; the public product DTO rules are enforced at
-their API/ports/Domain boundaries and all their import edges remain checked.
+their public roots/API/ports/Domain boundaries and all import edges remain checked.
+Test-only standard-library ownership comes from the actual selected `go list std`
+metadata, so trimpath-built tools do not depend on an embedded GOROOT pathname.
 
 ## Tests and proof limits
 

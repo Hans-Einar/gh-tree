@@ -28,6 +28,8 @@ type migrationMap struct {
 }
 type checker struct {
 	root, module, mode string
+	gitClean           bool
+	autoCRLF           string
 	legacy             map[string]string
 	entryBlob          string
 	exempt             map[string]bool
@@ -77,10 +79,8 @@ func newChecker(root, mode string) (*checker, error) {
 	return c, nil
 }
 
-// Git's canonical text blob is LF-normalized even in a CRLF Windows checkout.
-// No directory-wide allowance and no working-tree Git index trust is involved.
+// Hash actual bytes. Path-specific text conversion, when proved, is separate.
 func blobHash(b []byte) string {
-	b = bytes.ReplaceAll(b, []byte("\r\n"), []byte("\n"))
 	h := sha1.New()
 	fmt.Fprintf(h, "blob %d%c", len(b), 0)
 	h.Write(b)
@@ -88,6 +88,20 @@ func blobHash(b []byte) string {
 }
 
 func (c *checker) inventory() error {
+	// go list reports physical package directories. In particular, macOS's
+	// /var temporary-root alias resolves to /private/var. Bind the selected root
+	// once to that same physical spelling before any relative ownership checks.
+	root, err := filepath.EvalSymlinks(c.root)
+	if err != nil {
+		return err
+	}
+	c.root, err = filepath.Abs(root)
+	if err != nil {
+		return err
+	}
+	if err := c.prepareCleanPolicy(); err != nil {
+		return err
+	}
 	c.exempt = map[string]bool{}
 	packages := map[string]bool{}
 	legacyHashes := map[string]string{}
@@ -120,6 +134,15 @@ func (c *checker) inventory() error {
 			return err
 		}
 		hash := blobHash(b)
+		// Check clean metadata wherever a baseline blob could grant an allowance
+		// or identify a renamed baseline copy. Ordinary new files need no clean
+		// conversion and cannot acquire an exception from their directory.
+		if c.legacy[rel] != "" || rel == "cmd/gh-tree/main.go" || legacyHashes[hash] != "" || legacyHashes[blobHash(bytes.ReplaceAll(b, []byte("\r\n"), []byte("\n")))] != "" {
+			hash, err = c.cleanBlobHash(rel, b)
+			if err != nil {
+				return err
+			}
+		}
 		if want, old := c.legacy[rel]; old {
 			if c.mode == "strict" {
 				return fmt.Errorf("strict mode requires empty legacy allowance: %s remains", rel)
@@ -226,6 +249,20 @@ func (c *checker) checkTarget(t targetSpec) error {
 		}
 		pkgs[p.ImportPath] = p
 	}
+	// Resolve test-only standard imports from the actual selected Go command.
+	// A trimpath-built checker has no usable embedded build.Default.GOROOT.
+	std := exec.Command("go", "list", "-f", "{{.ImportPath}}", "std")
+	std.Dir = c.root
+	std.Env = targetEnv(t)
+	standard, err := std.Output()
+	if err != nil {
+		return fmt.Errorf("selected Go standard-library metadata: %w", err)
+	}
+	for _, path := range strings.Fields(string(standard)) {
+		p := pkgs[path]
+		p.Standard = true
+		pkgs[path] = p
+	}
 	paths := []string{}
 	for path := range pkgs {
 		if within(path, c.module) {
@@ -284,15 +321,8 @@ func (c *checker) checkPackage(p listedPackage, all map[string]listedPackage, ta
 				toPath := strings.TrimPrefix(imp, c.module+"/")
 				allowed = internalAllowed(r, classify(toPath), test) && privateImportAllowed(r, toPath)
 			} else {
-				// Test-only dependencies may not appear in production go list.
-				// Resolve their GOROOT ownership; a dot-free name is not proof
-				// that an import is standard library (GOPATH packages exist).
+				// Includes test-only stdlib ownership from the selected Go command.
 				standard := all[imp].Standard
-				if test && !standard {
-					if meta, err := build.Default.Import(imp, p.Dir, build.FindOnly); err == nil {
-						standard = meta.Goroot
-					}
-				}
 				allowed = externalAllowed(r, imp, standard, test)
 			}
 			if !allowed {
@@ -323,7 +353,7 @@ func (c *checker) checkPackage(p listedPackage, all map[string]listedPackage, ta
 	if err != nil {
 		return fmt.Errorf("target type check %s: %w", p.ImportPath, err)
 	}
-	if !isTool(r) && r != composition && r != host && r != entry && r != broker && r != brokerEntry && r != assets {
+	if publicSurface(strings.TrimPrefix(p.ImportPath, c.module+"/")) {
 		if err := publicTypes(checkedPkg, r, c.module); err != nil {
 			return fmt.Errorf("%s: %w", p.ImportPath, err)
 		}
@@ -404,6 +434,14 @@ func symbolPolicy(info *types.Info, r role) error {
 
 func publicTypes(pkg *types.Package, r role, module string) error {
 	var visit func(types.Type, map[types.Type]bool) error
+	// A declared API function or interface method is callable. A signature reached
+	// inside one of its values, however deeply nested, is an exposed callback.
+	callable := func(sig *types.Signature, seen map[types.Type]bool) error {
+		if err := visit(sig.Params(), seen); err != nil {
+			return err
+		}
+		return visit(sig.Results(), seen)
+	}
 	visit = func(t types.Type, seen map[types.Type]bool) error {
 		if t == nil || seen[t] {
 			return nil
@@ -416,7 +454,8 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 			}
 			path := obj.Pkg().Path()
 			if within(path, module) {
-				to := classify(strings.TrimPrefix(path, module+"/"))
+				rel := strings.TrimPrefix(path, module+"/")
+				to := classify(rel)
 				if !internalAllowed(r, to, false) || (isAdapter(to) && to != r) {
 					return fmt.Errorf("exported API exposes forbidden type %s.%s", path, obj.Name())
 				}
@@ -441,11 +480,14 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 			for i := 0; i < t.TypeArgs().Len(); i++ {
 				children = append(children, t.TypeArgs().At(i))
 			}
-			if t.Obj().Pkg() == pkg {
+			owner := t.Obj().Pkg()
+			if owner == pkg || (owner != nil && within(owner.Path(), module) && classify(strings.TrimPrefix(owner.Path(), module+"/")) == r) {
 				children = append(children, t.Underlying())
 				for i := 0; i < t.NumMethods(); i++ {
 					if t.Method(i).Exported() {
-						children = append(children, t.Method(i).Type())
+						if err := callable(t.Method(i).Type().(*types.Signature), seen); err != nil {
+							return err
+						}
 					}
 				}
 			}
@@ -470,7 +512,7 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 				}
 			}
 		case *types.Signature:
-			children = append(children, t.Params(), t.Results())
+			return fmt.Errorf("exported boundary exposes callback inside a value graph")
 		case *types.Tuple:
 			for i := 0; i < t.Len(); i++ {
 				if callbackType(t.At(i).Type()) {
@@ -483,7 +525,9 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 				return fmt.Errorf("exported boundary exposes untyped any/interface{} payload")
 			}
 			for i := 0; i < t.NumMethods(); i++ {
-				children = append(children, t.Method(i).Type())
+				if err := callable(t.Method(i).Type().(*types.Signature), seen); err != nil {
+					return err
+				}
 			}
 			for i := 0; i < t.NumEmbeddeds(); i++ {
 				children = append(children, t.EmbeddedType(i))
@@ -504,6 +548,12 @@ func publicTypes(pkg *types.Package, r role, module string) error {
 	for _, name := range pkg.Scope().Names() {
 		obj := pkg.Scope().Lookup(name)
 		if obj.Exported() {
+			if function, ok := obj.(*types.Func); ok {
+				if err := callable(function.Type().(*types.Signature), map[types.Type]bool{}); err != nil {
+					return fmt.Errorf("%s: %w", name, err)
+				}
+				continue
+			}
 			if _, function := obj.(*types.Func); !function && callbackType(obj.Type()) {
 				return fmt.Errorf("%s: exported boundary exposes callback value/type", name)
 			}

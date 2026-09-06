@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -64,6 +65,8 @@ func TestExactLegacyAllowance(t *testing.T) {
 			switch change {
 			case "crlf":
 				old = strings.ReplaceAll(old, "\n", "\r\n")
+				gitFixture(t, c.root, "init", "-q")
+				gitFixture(t, c.root, "config", "--local", "core.autocrlf", "true")
 			case "edited":
 				old += "// changed\n"
 			case "renamed":
@@ -189,6 +192,38 @@ func TestOpaqueJSONValidationAndCallbackBoundary(t *testing.T) {
 	}
 }
 
+func TestPhysicalRepositoryRoot(t *testing.T) {
+	c := fixture(t)
+	physical, err := filepath.EvalSymlinks(c.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	alias := filepath.Join(t.TempDir(), "root-alias")
+	if err := os.Symlink(c.root, alias); err != nil {
+		if runtime.GOOS == "windows" {
+			t.Skipf("native symlink creation unavailable: %v", err)
+		}
+		t.Fatal(err)
+	}
+	c.root = alias
+	if err := c.inventory(); err != nil {
+		t.Fatal(err)
+	}
+	if c.root != physical {
+		t.Fatalf("selected root not physically normalized: %s, expected %s", c.root, physical)
+	}
+	if err := c.checkTarget(targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH}); err != nil {
+		t.Fatal(err)
+	}
+	// Normalizing the selected root does not allow an out-of-root source.
+	outside := t.TempDir()
+	writeFixture(t, outside, "outside.go", "package domain\n")
+	err = c.checkPackage(listedPackage{Dir: outside, ImportPath: fixtureModule + "/internal/domain", GoFiles: []string{"outside.go"}}, nil, targetSpec{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH})
+	if err == nil || !strings.Contains(err.Error(), "module source outside repository") {
+		t.Fatalf("outside source passed after root normalization: %v", err)
+	}
+}
+
 func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
 	root, err := filepath.Abs("../../..")
 	if err != nil {
@@ -201,6 +236,9 @@ func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if err := c.prepareCleanPolicy(); err != nil {
+		t.Fatal(err)
+	}
 	// Compare every still-present allowance with the accepted Git blob, including
 	// Windows text normalization. This is independent of fixture-generated hashes.
 	for path, want := range c.legacy {
@@ -211,9 +249,77 @@ func TestAcceptedTargetsAndBlobIdentity(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if got := blobHash(b); got != want {
+		got, err := c.cleanBlobHash(path, b)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != want {
 			t.Fatalf("%s: actual %s baseline %s", path, got, want)
 		}
+	}
+}
+
+func TestPathSpecificCleanProfile(t *testing.T) {
+	for _, profile := range []string{"minus-text", "plus-text", "autocrlf-false", "autocrlf-true", "filter-refused"} {
+		t.Run(profile, func(t *testing.T) {
+			c := fixture(t)
+			gitFixture(t, c.root, "init", "-q")
+			gitFixture(t, c.root, "config", "--local", "core.autocrlf", "false")
+			old := "package app\nconst Value = 1\n"
+			c.legacy["internal/app/old.go"] = blobHash([]byte(old))
+			writeFixture(t, c.root, "internal/app/old.go", strings.ReplaceAll(old, "\n", "\r\n"))
+			switch profile {
+			case "minus-text":
+				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go -text\n")
+			case "plus-text":
+				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go text\n")
+			case "autocrlf-true":
+				gitFixture(t, c.root, "config", "--local", "core.autocrlf", "true")
+			case "filter-refused":
+				writeFixture(t, c.root, ".gitattributes", "internal/app/old.go filter=probe\n")
+				gitFixture(t, c.root, "config", "--local", "filter.probe.clean", "echo FILTER-RAN > filter-ran")
+			}
+			err := c.inventory()
+			want := map[string]string{"minus-text": "legacy allowance changed", "autocrlf-false": "legacy allowance changed", "filter-refused": "unsupported Git clean profile"}[profile]
+			if want == "" {
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else if err == nil || !strings.Contains(err.Error(), want) {
+				t.Fatalf("want %s, got %v", want, err)
+			}
+			if _, err := os.Stat(filepath.Join(c.root, "filter-ran")); !os.IsNotExist(err) {
+				t.Fatal("checker executed a clean filter")
+			}
+		})
+	}
+}
+
+func TestTrimpathToolStdlib(t *testing.T) {
+	root, err := filepath.Abs("../../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command("go", "run", "-trimpath", "./internal/composition/architecture", "-target", runtime.GOOS+"/"+runtime.GOARCH)
+	cmd.Dir = root
+	for _, item := range os.Environ() {
+		key, _, _ := strings.Cut(item, "=")
+		if !strings.EqualFold(key, "GOROOT") && !strings.EqualFold(key, "GOFLAGS") {
+			cmd.Env = append(cmd.Env, item)
+		}
+	}
+	cmd.Env = append(cmd.Env, "GOFLAGS=-trimpath")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("trimpath checker without explicit GOROOT: %v\n%s", err, out)
+	}
+}
+
+func gitFixture(t *testing.T, root string, args ...string) {
+	t.Helper()
+	cmd := exec.Command("git", args...)
+	cmd.Dir = root
+	if out, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("fixture git %v: %v\n%s", args, err, out)
 	}
 }
 
