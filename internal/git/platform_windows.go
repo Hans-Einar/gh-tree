@@ -3,12 +3,12 @@
 package git
 
 import (
-	"encoding/binary"
 	"errors"
 	"os/exec"
 	"strconv"
 	"strings"
 	"syscall"
+	"unsafe"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
@@ -44,9 +44,16 @@ func observeDirectory(path string) (directoryObservation, error) {
 	} else {
 		final = strings.TrimPrefix(final, `\\?\`)
 	}
+	var nativeID struct {
+		Volume uint64
+		File   [16]byte
+	}
+	if err = windows.GetFileInformationByHandleEx(h, windows.FileIdInfo, (*byte)(unsafe.Pointer(&nativeID)), uint32(unsafe.Sizeof(nativeID))); err != nil {
+		return directoryObservation{}, err
+	}
 	var file [16]byte
-	binary.LittleEndian.PutUint64(file[:8], uint64(info.FileIndexHigh)<<32|uint64(info.FileIndexLow))
-	stamp := strconv.FormatUint(uint64(info.CreationTime.HighDateTime)<<32|uint64(info.CreationTime.LowDateTime), 16)
-	id, err := api.NewDirectoryIdentity(api.DirectoryWindows, uint64(info.VolumeSerialNumber), file, stamp)
+	copy(file[:], nativeID.File[:])
+	stamp := "birth-filetime:" + strconv.FormatUint(uint64(info.CreationTime.HighDateTime)<<32|uint64(info.CreationTime.LowDateTime), 10)
+	id, err := api.NewDirectoryIdentity(api.DirectoryWindows, nativeID.Volume, file, stamp)
 	return directoryObservation{path: final, identity: id}, err
 }

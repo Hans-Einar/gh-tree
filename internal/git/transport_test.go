@@ -157,6 +157,23 @@ func TestDirectoryObservationBindsPhysicalObject(t *testing.T) {
 	if err != nil || again != first {
 		t.Fatal("same directory changed identity", err)
 	}
+	child := filepath.Join(original, "child")
+	if err := os.WriteFile(child, []byte("child"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Rename(child, filepath.Join(original, "renamed")); err != nil {
+		t.Fatal(err)
+	}
+	contentsChanged, err := observeDirectory(original)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !sameDirectoryObject(first, contentsChanged) {
+		t.Fatal("child edit changed physical object")
+	}
+	if strings.HasPrefix(first.identity.Stamp(), "birth") && first.identity != contentsChanged.identity {
+		t.Fatal("child edit changed stable birth identity")
+	}
 	if err := os.Rename(original, filepath.Join(root, "retained")); err != nil {
 		t.Fatal(err)
 	}

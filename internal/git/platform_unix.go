@@ -48,6 +48,6 @@ func observeDirectory(path string) (directoryObservation, error) {
 	}
 	var file [16]byte
 	binary.LittleEndian.PutUint64(file[:8], uint64(s.Ino))
-	id, err := api.NewDirectoryIdentity(api.DirectoryUnix, uint64(s.Dev), file, directoryStamp(s))
+	id, err := api.NewDirectoryIdentity(api.DirectoryUnix, uint64(s.Dev), file, directoryStamp(f, s))
 	return directoryObservation{path: final, identity: id}, err
 }
