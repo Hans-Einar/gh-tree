@@ -146,3 +146,60 @@ jobs:
           if (git status --porcelain --untracked-files=all -- internal/runtime) { throw 'Helper verification changed committed or untracked Runtime inputs' }
       - name: Ordinary committed-input build without generation
         run: go build -trimpath -o '${{ runner.temp }}/gh-tree.exe' ./cmd/gh-tree
+
+  freebsd-native:
+    name: Native FreeBSD amd64 (new stack)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Restrict builder-key VM control to this disposable runner
+        shell: bash
+        run: |
+          # AnyVM also binds detected private addresses. Deny new inbound TCP
+          # outside loopback; established download replies remain allowed.
+          sudo iptables -I INPUT 1 ! -i lo -p tcp -m conntrack --ctstate NEW -j DROP
+          sudo ip6tables -I INPUT 1 ! -i lo -p tcp -m conntrack --ctstate NEW -j DROP
+      - name: Execute on FreeBSD 15.0 amd64 guest disk
+        uses: vmactions/freebsd-vm@f0552d3b69211736abd97f02ff3d4674c56b73b1 # v1.5.5
+        with:
+          release: '15.0'
+          arch: x86_64
+          sync: rsync
+          copyback: 'false'
+          disable-cache: 'true'
+          cache-after-prepare: 'false'
+          debug-on-error: 'false'
+          prepare: |
+            set -eu
+            pkg install -y git-lite ca_root_nss
+            fetch -o /tmp/go.tar.gz https://go.dev/dl/go1.25.0.freebsd-amd64.tar.gz
+            test "$(sha256 -q /tmp/go.tar.gz)" = 86e6fe0a29698d7601c4442052dac48bd58d532c51cccb8f1917df648138730b
+            tar -C /usr/local -xzf /tmp/go.tar.gz
+          run: |
+            set -eu
+            sh .github/scripts/freebsd-native.sh
+      - name: Retain bounded guest evidence even on test failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/freebsd-evidence"
+          printf 'source=%s run=%s attempt=%s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/freebsd-evidence/host.txt"
+          sudo iptables -C INPUT ! -i lo -p tcp -m conntrack --ctstate NEW -j DROP
+          sudo ip6tables -C INPUT ! -i lo -p tcp -m conntrack --ctstate NEW -j DROP
+          echo 'Non-loopback new inbound TCP denied (IPv4 and IPv6).' >> "$RUNNER_TEMP/freebsd-evidence/host.txt"
+          ss -ltnp >> "$RUNNER_TEMP/freebsd-evidence/host.txt"
+          # Copy only named logs, never a guest tree, credentials, fixtures or binaries.
+          for file in native.log tests.jsonl packages.txt failure-control.log failure-control.jsonl acl.txt xattr-user.txt xattr-system.txt; do
+            ssh -o ConnectTimeout=10 freebsd "cat /home/ghci/results/$file" > "$RUNNER_TEMP/freebsd-evidence/$file" || echo "Evidence unavailable: $file" >> "$RUNNER_TEMP/freebsd-evidence/host.txt"
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: freebsd-native-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/freebsd-evidence
+          retention-days: 7
