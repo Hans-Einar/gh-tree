@@ -7,10 +7,16 @@ import (
 	"encoding/hex"
 	"errors"
 	"io"
+	"math"
 	"strings"
 )
 
 var errRecoveryCapacity = errors.New("storage recovery capacity exhausted")
+
+// Observation is bounded independently of a caller's admission settings. All
+// artifacts permitted by the largest construction profile fit this bound; a
+// lowered record/byte budget must not hide previously retained recovery facts.
+const maxRecoveryInventoryNames = 5 * 256
 
 // The fixed-size prefix keeps names below native component limits even when
 // Composition chose a long document basename. Native names, not caller paths,
@@ -69,19 +75,19 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 	entries := 0
 	for {
 		if err := ctx.Err(); err != nil {
-			return names, len(records), size, err
+			return names, len(records), size, errors.Join(observedErr, err)
 		}
 		batch, err := parent.file.Readdirnames(128)
 		entries += len(batch)
 		if entries > 16384 {
-			return names, len(records), size, errRecoveryCapacity
+			return names, len(records), size, errors.Join(observedErr, errRecoveryCapacity)
 		}
 		for _, name := range batch {
 			if !strings.HasPrefix(nativeNameKey(name), prefix) {
 				continue
 			}
 			if !singleName(name) {
-				return names, len(records), size, errors.New("invalid recovery basename")
+				return names, len(records), size, errors.Join(observedErr, errors.New("invalid recovery basename"))
 			}
 			key := strings.TrimPrefix(nativeNameKey(name), prefix)
 			// A valid operation has one 256-bit nonce, followed by a suffix.
@@ -92,9 +98,12 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 				}
 			}
 			records[key] = struct{}{}
-			names = append(names, name)
-			if len(records) > maxRecords || len(names) > 5*maxRecords {
+			if len(names) == maxRecoveryInventoryNames {
 				return names, len(records), size, errors.Join(observedErr, errRecoveryCapacity)
+			}
+			names = append(names, name)
+			if len(records) > maxRecords && !errors.Is(observedErr, errRecoveryCapacity) {
+				observedErr = errors.Join(observedErr, errRecoveryCapacity)
 			}
 			object, openErr := nativeOpenDocument(parent, name)
 			if openErr != nil {
@@ -107,10 +116,15 @@ func inventoryRecovery(ctx context.Context, parent *nativeObject, basename strin
 				observedErr = errors.Join(observedErr, sizeErr)
 				continue
 			}
-			if n < 0 || n > maxBytes-size {
-				return names, len(records), size, errors.Join(observedErr, errRecoveryCapacity)
+			if n < 0 || n > math.MaxInt64-size {
+				// Saturate rather than wrap if hostile residue exceeds int64.
+				size = math.MaxInt64
+			} else {
+				size += n
 			}
-			size += n
+			if size > maxBytes && !errors.Is(observedErr, errRecoveryCapacity) {
+				observedErr = errors.Join(observedErr, errRecoveryCapacity)
+			}
 		}
 		if errors.Is(err, io.EOF) {
 			return names, len(records), size, observedErr

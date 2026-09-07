@@ -624,6 +624,37 @@ the test/evidence commit is pushed. Exact source/native ARM64 CI remain pending.
 FreeBSD metadata, no-birth association, source-name interval and full adapter
 fault/resource gates remain unresolved. No adapter/Slice/baseline finding closes.
 
+## Milestone P3k — remaining fault/resource/admission pass
+
+Fresh author starts from accepted clean53de3e1 under Master's ledger95/#63
+authorization. V-PER-01 already has strict complete-family codecs, unknown-member
+and raw-byte retention controls. Persistence-owned V-PER-03/04 already cover
+explicit binding, absence anchors, family/worktree refusal and native movement/
+substitution; Application migration/default/active policy remains downstream.
+V-PER-02 already includes cooperative processes,8 killed-process stages, native
+visibility, late writers, precise current/proposed/outcome and accepted Windows
+incarnation controls. Actual remaining gaps are lower-level preparation/close
+failure and failure-path resource controls, plus admission observation behavior.
+Historical pending paragraphs above do not mean these existing controls are absent.
+
+Concrete admission defect reproduced natively on Windows: after3 real commits,
+reducing construction record budget to1 returned only6/10 retained records;
+reducing byte budget to1 returned2/10. Load and refused Commit both lost facts.
+Inventory now separates admission limits from its fixed observation bound
+(1280 matching names,16384 directory entries). It continues measured observation
+after configured capacity is exhausted, retains native errors, saturates integer
+overflow conservatively and never evicts or starts preparation to make room.
+Exceeding the fixed observation bound still explicitly refuses as incomplete.
+Both real controls now retain all10 exact RecoveryIDs/records/observations,
+usable document/current version, proposed version and NotCommitted, while every
+existing filename and raw byte remains unchanged. Windows targeted preparation,
+manifest and complete commit controls PASS. Native Linux and subsequent combined
+fault/resource verification follow; no complete adapter acceptance is claimed.
+
+FreeBSD's pending user profile decision/native failure, no-birth persistent
+association and Unix final source-name-check/syscall interval remain unchanged
+open boundaries. No new primitive, privilege, relaxed metadata or identity rule.
+
 ## Current handoff and exact next permitted action
 
 The Windows12-commit regression is corrected by the reviewed private P3j profile;
