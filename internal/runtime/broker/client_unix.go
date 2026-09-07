@@ -133,15 +133,11 @@ func StartUnix(ctx context.Context, config UnixConfig) (*UnixClient, UnixStartRe
 	if err := ctx.Err(); err != nil {
 		return nil, UnixStartResult{}, err
 	}
-	if config.GracePeriod == 0 {
-		config.GracePeriod = 2 * time.Second
-	}
-	if config.ForcePeriod == 0 {
-		config.ForcePeriod = 3 * time.Second
-	}
-	if config.GracePeriod < time.Millisecond || config.GracePeriod > time.Minute || config.ForcePeriod < time.Millisecond || config.ForcePeriod > time.Minute {
+	grace, force, err := effectiveUnixPeriods(config.GracePeriod, config.ForcePeriod)
+	if err != nil {
 		return nil, UnixStartResult{}, ErrProtocol
 	}
+	config.GracePeriod, config.ForcePeriod = grace, force
 	config.Spec.ParentID = uint64(os.Getpid())
 	config.Spec.Components = append([]string(nil), config.Spec.Components...)
 	config.Spec.Arguments = append([]string(nil), config.Spec.Arguments...)
@@ -347,7 +343,7 @@ func (c *UnixClient) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	payload, err := EncodeStart(c.config.Spec)
+	payload, err := encodeUnixStart(c.config.Spec, c.config.GracePeriod, c.config.ForcePeriod)
 	if err != nil {
 		return err
 	}
@@ -536,9 +532,7 @@ loop:
 		select {
 		case <-stop:
 			stop = nil
-			payload := binary.BigEndian.AppendUint32(nil, uint32(c.config.GracePeriod/time.Millisecond))
-			payload = binary.BigEndian.AppendUint32(payload, uint32(c.config.ForcePeriod/time.Millisecond))
-			if err := c.send(Stop, payload); err != nil {
+			if err := c.send(Stop, nil); err != nil {
 				c.record(err, api.ControlCleanup, true)
 				c.record(c.control.close(), api.ControlCleanup, true)
 			}

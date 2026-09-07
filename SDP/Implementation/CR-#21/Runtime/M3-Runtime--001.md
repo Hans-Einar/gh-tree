@@ -515,4 +515,35 @@ private marker refusal and twelve repeated pipe/PTY cycles (102 owned descriptor
 closed, process fd6→6 and goroutine2→2). Windows Go1.25.0 CGO0 Linux-amd64 and
 Darwin-arm64 test binaries compile. These are not Darwin execution evidence;
 exact new-head macOS/FreeBSD/race CI and independent confirmation remain required.
-U02 construction-period transfer is the next bounded change, still unresolved.
+U01 exact source `73864e06ab60988b236f5ad3cfea851e72bc485e` passed all six
+native/race jobs in [CI34075705340](https://github.com/Hans-Einar/gh-tree/actions/runs/34075705340),
+including macOS101601241951 and FreeBSD101601241960. The missing broker/cmd
+inventory failure and dependent skips remain explicit separate #69/#70 gates.
+
+U02 adds `start_unix.go`: a versioned Unix-only 17-byte prefix carries both
+validated effective nanosecond periods with the unchanged bounded StartSpec.
+The supervisor binds them before cwd/user acquisition or any cleanup path.
+Zero construction values still select2s/3s; private zero, negative/overflow,
+out-of-range, old/no-period, unknown version, truncated/trailing/oversized inputs
+refuse. The total frame cap includes the prefix. Stop/Abort remain intent only;
+nonempty control payloads cannot change the immutable construction periods.
+No shared `protocol.go`/`start.go`, Windows/helper source or exported Unix client
+signature changed. #71 supplies the same UnixConfig and consumes the same facts.
+
+Actual UID/GID65534 Linux full broker suite PASS in owned ext4
+`/tmp/gh-tree-unix-fix-u02.FjaIWF`: natural root exits before retained ignoring-TERM
+child/grandchild with20ms/200ms clean in102ms; production zero/default construction
+cleans in2.097s with effective2s/3s. Early post-Start EOF, established control EOF
+and invalid command teardown join in42–56ms with control residuals retained and
+no live owned SID members. No premature Stop occurs in these measurements;
+the full owner is always joined. Twelve malformed native startup cases return131
+without user marker execution, and invalid construction acquires no owner.
+The first new frame-limit test miscomputed its fixture payload length; it failed,
+was corrected, and the full suite then passed. Existing negative review evidence
+is preserved. Local logs/build outputs remain outside Git under
+`C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907`.
+
+All nine Unix CGO0 broker test-binary selections, Linux-selected vet and staged
+Linux architecture PASS. These compilation gates are separate from native proof.
+New U02 exact-source hosted native/race CI and the existing independent reviewer's
+bounded confirmation remain required before Master considers integration.

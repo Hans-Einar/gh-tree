@@ -138,7 +138,7 @@ func RunSupervisor() int {
 	if err != nil || initial.Opcode != Start {
 		return 131
 	}
-	spec, err := DecodeStart(initial.Payload)
+	spec, grace, force, err := decodeUnixStart(initial.Payload)
 	if err != nil || spec.ParentID != uint64(os.Getppid()) {
 		return 131
 	}
@@ -146,7 +146,7 @@ func RunSupervisor() int {
 	if err != nil || !filepath.IsAbs(executable) {
 		return 131
 	}
-	tree := &unixTree{executable: executable, session: initial.SessionID, grace: 2 * time.Second, force: 3 * time.Second}
+	tree := &unixTree{executable: executable, session: initial.SessionID, grace: grace, force: force}
 	// Retain the designated descriptor until Fstat and the one Fchdir complete,
 	// then close it before command lookup/creation. User roots inherit no fd5.
 	cwd := os.NewFile(5, "runtime-acquired-cwd")
@@ -303,16 +303,7 @@ func RunSupervisor() int {
 			}
 			switch event.frame.Opcode {
 			case Stop, Abort:
-				if len(event.frame.Payload) == 8 {
-					grace := time.Duration(binary.BigEndian.Uint32(event.frame.Payload)) * time.Millisecond
-					force := time.Duration(binary.BigEndian.Uint32(event.frame.Payload[4:])) * time.Millisecond
-					if grace < time.Millisecond || grace > time.Minute || force < time.Millisecond || force > time.Minute {
-						parentGone = true
-					} else {
-						tree.grace = grace
-						tree.force = force
-					}
-				} else if len(event.frame.Payload) != 0 {
+				if len(event.frame.Payload) != 0 {
 					parentGone = true
 				}
 				stopping = true
