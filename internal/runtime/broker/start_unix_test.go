@@ -129,17 +129,23 @@ func TestNativeUnixMalformedStartupNeverExecutesUser(t *testing.T) {
 			channel := must(NewChannel(replyRead, controlWrite, Parent, UnixSupervisor, 13, must(FreshNonce())))
 			controlWrite.SetWriteDeadline(time.Now().Add(time.Second))
 			sendErr := channel.Send(Start, payload)
-			controlWrite.Close() // also ensures an erroneously accepted fixture owns EOF cleanup
 			done := make(chan error, 1)
 			go func() { done <- cmd.Wait() }()
+			// Retain both channel ends until the decoder refuses. Closing the
+			// writer here races FreeBSD's inherited-pipe/poller admission and
+			// tests early endpoint EOF instead of malformed configuration.
+			var waitErr error
 			select {
-			case waitErr := <-done:
-				var exit *exec.ExitError
-				if sendErr != nil || !errors.As(waitErr, &exit) || exit.ExitCode() != 131 || output.Len() != 0 {
-					t.Fatal("malformed private configuration reached user execution", sendErr, waitErr, output.String())
-				}
+			case waitErr = <-done:
 			case <-time.After(8 * time.Second):
-				t.Fatal("malformed private startup did not join its exact waiter")
+				controlWrite.Close() // an erroneously accepted fixture still owns EOF cleanup
+				t.Error("malformed private startup did not join its exact waiter")
+				waitErr = <-done
+			}
+			controlWrite.Close()
+			var exit *exec.ExitError
+			if sendErr != nil || !errors.As(waitErr, &exit) || exit.ExitCode() != 131 || output.Len() != 0 {
+				t.Fatal("malformed private configuration was not refused at decoding", sendErr, waitErr, output.String())
 			}
 		})
 	}

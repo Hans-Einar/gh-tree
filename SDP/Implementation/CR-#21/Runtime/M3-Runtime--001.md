@@ -547,3 +547,17 @@ All nine Unix CGO0 broker test-binary selections, Linux-selected vet and staged
 Linux architecture PASS. These compilation gates are separate from native proof.
 New U02 exact-source hosted native/race CI and the existing independent reviewer's
 bounded confirmation remain required before Master considers integration.
+
+U02 product source `4df4385fbb2481a0c0007dbfd489c93e15f3170c` passed hosted
+Linux/race/macOS. CI34076032397 FreeBSD101602203714 failed the new malformed-start
+fixture: it closed its writer immediately after sending, racing endpoint/poller
+admission and receiving130 before the required131 decoder refusal (11 cases).
+Its native injection/default/root-descendant/EOF cleanup controls passed:
+205ms injected,2.150s defaults and joined EOF/control-failure owners. Artifact
+10002096116 preserves the full failed run, ZIP SHA256
+`8bc4eb76d791772ec779a7babbdaa696ee1a1db25420cfa57613d76faf2c1e12`.
+The fixture now retains its writer through exact supervisor wait; on timeout it
+closes control and still joins. All malformed cases keep the exact131/no-user
+assertion. This is a test-only correction; ordinary-user Linux targeted malformed
+and full-envelope controls PASS. New-head FreeBSD/full native CI remains required.
+The all-twelve local staged architecture check also passed on4df4385.
