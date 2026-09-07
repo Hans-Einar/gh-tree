@@ -40,7 +40,7 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 | Native Runtime/runtime-implementation | codereview-21/layer-runtime | bca645e10979d2b2852d3b547d7a40c07633c9e1 | Native components accepted, CI20PASS; recovery tag below |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
 | Helper/runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | Generator/assets/policy independently accepted |
-| Parent/runtime-sessions | codex/cr21-runtime-sessions | 4412fe8e889c71c837a3364dd6bb2a3c47dde8c3 | Accepted native/common engine combined; exact CI pending, real bridges next |
+| Parent/runtime-sessions | codex/cr21-runtime-sessions | 4412fe8e889c71c837a3364dd6bb2a3c47dde8c3 | Accepted native/common engine combined, CI20PASS; real bridges in progress |
 | Binding/runtime-helper-binding | codex/cr21-runtime-helper-binding | f926195ffebc5b99921f6b0127bbe23ad7555a5a | Actual committed helpers independently accepted; integrated into native branch |
 
 No M3 adapter has been integrated into canonical. Common-parent/native component
@@ -54,8 +54,8 @@ acceptance does not close a full Runtime adapter or vertical Slice.
 - Parent4412fe8 combines accepted common01641986 and nativebca645e1 with no manual
   product edits. All17 parent root files, native/helper/policy subtrees and the exact
   binding test match accepted sources. Local Windows root race10.524s, vet and all12
-  architecture checks pass. Exact CI34085381063 pending. Once it passes, release
-  prepared #71 worker to real private Unix/Windows bridges, production constructor/
+  architecture checks pass. Exact CI34085381063 passes20/20. The prepared
+  fresh #71 worker is released to real private Unix/Windows bridges, production constructor/
   Runtime-only early entry, then native twelve-port/independent review. Actual main/
   legacy cutover remains M6. No production stub or native ownership shortcut.
 - Persistence technicalff40e32/review5380629 has bounded admission/fault/resource

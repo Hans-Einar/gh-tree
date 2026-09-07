@@ -1056,13 +1056,13 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "accepted_parent_native_combination_exact_ci_pending",
+      "state": "native_parent_base_verified_platform_bridges_in_progress",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md",
-      "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
+      "workerBase": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "Reviewed native bca645e1 and common parent01641986 combined without manual product edits",
       "lastCheckpoint": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
@@ -1071,7 +1071,7 @@
       "latestVerification": {
         "head": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
         "run": 34085381063,
-        "result": "in progress; local root race10.524s/vet/all12 architecture PASS,17 parent root files and native/helper/policy subtrees plus binding test match accepted sources exactly"
+        "result": "20 SUCCESS; combined accepted source gate complete. Local root race10.524s/vet/all12 architecture PASS and exact component-tree equality preserved."
       },
       "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation",
       "reviewHead": "01641986c702b9c6a1abd176586b4d58b39f13fa",
@@ -1084,7 +1084,7 @@
         "M71-M02"
       ],
       "nativeIntegrationHead": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
-      "activeWorker": "m3_runtime_bridges_read_only_until_ci"
+      "activeWorker": "m3_runtime_bridges"
     },
     {
       "id": "IMPL72",

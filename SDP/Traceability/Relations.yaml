@@ -629,6 +629,17 @@
       "relation": "remaining_boundary_assessment",
       "to": "82610b891a82e7b12eb0d13d6be82bc15342f1c4",
       "scope": "No-birth profile selection may be bounded; source publication binding/authority remains unresolved"
+    },
+    {
+      "from": "IMPL71",
+      "relation": "combines_reviewed_native_and_common_engine",
+      "to": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
+      "sources": [
+        "01641986c702b9c6a1abd176586b4d58b39f13fa",
+        "bca645e10979d2b2852d3b547d7a40c07633c9e1"
+      ],
+      "ci": 34085381063,
+      "result": "20 SUCCESS; real bridges/constructor next"
     }
   ],
   "errata": [

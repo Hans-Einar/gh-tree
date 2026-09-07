@@ -121,7 +121,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "native_linux_failure_investigation",
+      "dispatch": "parent_platform_binding",
       "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2",
       "subContributions": [
         69,
