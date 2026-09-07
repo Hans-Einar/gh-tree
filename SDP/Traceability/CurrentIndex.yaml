@@ -927,13 +927,13 @@
       "id": "IMPL69",
       "kind": "runtime_platform_contribution",
       "issue": 69,
-      "state": "implementation_in_progress",
+      "state": "independent_review_ready",
       "branch": "codex/cr21-runtime-windows",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
       "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
-      "lastCheckpoint": "fb1a9ec5a46f8b886ff226e32072abdef593648b",
+      "lastCheckpoint": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
       "subContributions": [
         "IMPL70"
       ],
@@ -942,13 +942,26 @@
         "head": "2f388202895ce17c359126dde4abfc5a9e643f46",
         "run": 34068171002,
         "result": "native amd64/ARM64 ACL textual-alias fixture failure, corrected locally at fb1a9ec; new exact source CI pending"
-      }
+      },
+      "technicalSource": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+      "review": "SDP/Implementation/CR-#21/Runtime/M3-Windows-Review--001.md",
+      "latestVerification": {
+        "head": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+        "run": 34071023665,
+        "result": "pending exact native CI; local amd64 race/386/vet/all12 compilation PASS"
+      },
+      "dependentGates": [
+        "independent native review",
+        "exact native CI",
+        "reviewed regenerated committed helper binding",
+        "parent/combined/full-stack integration"
+      ]
     },
     {
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "correction_authorized_changes_required",
+      "state": "bounded_correction_in_progress",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -960,7 +973,7 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "7fdfc9bedb66dd7a4cdb67eb798a936d24a06ace",
+      "lastCheckpoint": "a9559d99e9c584f0f4e911fd3d837335fa482322",
       "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
       "technicalSource": "b72ad94c60eb38d7c4ebe70fafd10b21a3289037",
@@ -973,10 +986,9 @@
         "H70-M03"
       ],
       "latestVerification": {
-        "head": "b72ad94c60eb38d7c4ebe70fafd10b21a3289037",
-        "run": 34068851101,
-        "attempt": 2,
-        "result": "18 SUCCESS, 2 FAILURE: fresh helper cache and native Windows GOROOT junction fixture"
+        "head": "a9559d99e9c584f0f4e911fd3d837335fa482322",
+        "run": 34070628791,
+        "result": "20 SUCCESS; M02/M03 author corrections pass fresh canonical/native CI, independent confirmation pending; H01 remains open"
       }
     },
     {

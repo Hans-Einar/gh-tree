@@ -57,8 +57,8 @@ Current status-only commits do not change that verified product tree.
 | Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
-| Windows Runtime#69 | codex/cr21-runtime-windows | fb1a9ec5a46f8b886ff226e32072abdef593648b | actual client/extraction/native386/amd64 race and owned-thread controls pass locally; ARM/emulation/adverse/full review pending |
-| Helper assets#70 | codex/cr21-runtime-helper-assets | 7fdfc9bedb66dd7a4cdb67eb798a936d24a06ace | technical b72ad94 CHANGES_REQUIRED: H70-H01/M02/M03; actual broker closure ab608327; CI18PASS/2FAIL |
+| Windows Runtime#69 | codex/cr21-runtime-windows | 5e9643364f62dcc51a967fbf94775e5350cd2bc9 | complete standalone native candidate frozen for fresh review; local race/386/all12 PASS, exact CI34071023665 pending; helper binding later |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | a9559d99e9c584f0f4e911fd3d837335fa482322 | M02/M03 corrections CI34070628791 20PASS; H01 immutable input binding remains open; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
@@ -156,3 +156,9 @@ are preserved on that source branch. Fresh bounded author correction is authoriz
 within existing #70 paths, then regeneration and independent bounded re-review.
 Build-only pinned dependency preparation may occur within the fixed command;
 no product runtime download/compiler, checkout pin mutation or CI relaxation.
+
+Windows standalone native source5e964336 is frozen for fresh independent review.
+Earlier bed507e/e0520a8 have positive native ARM64 routing/DLL/TLS proof; exact
+new-candidate native CI remains a gate. No shared wire/start changes or root
+Sessions implementation is included. #70 M02/M03 corrections pass actual fresh
+canonical CI20/20; H01 still blocks helper acceptance and source adoption.

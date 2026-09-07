@@ -333,3 +333,8 @@ snapshot binding, M02 fresh-cache admission and M03 canonical Go root junctions.
 Fresh author corrections stay in existing #70 paths, then regenerate/push and
 independently confirm. Build-only pinned Go dependency preparation is allowed
 within -check; no product runtime download/compiler, pin mutation or CI waiver.
+
+#69 Windows source5e964336 is frozen after actual owned startup/extraction/ABI/
+DLL/TLS/ConPTY/failure/resource controls. Fresh independent review of this native
+candidate proceeds while #70 corrects H01. Exact source/native CI and later
+regenerated helper binding remain mandatory; no premature Runtime acceptance.
