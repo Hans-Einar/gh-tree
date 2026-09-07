@@ -58,7 +58,7 @@ Current status-only commits do not change that verified product tree.
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
 | Windows Runtime#69 | codex/cr21-runtime-windows | 5e9643364f62dcc51a967fbf94775e5350cd2bc9 | complete standalone native candidate frozen for fresh review; local race/386/all12 PASS, exact CI34071023665 pending; helper binding later |
-| Helper assets#70 | codex/cr21-runtime-helper-assets | a9559d99e9c584f0f4e911fd3d837335fa482322 | M02/M03 corrections CI34070628791 20PASS; H01 immutable input binding remains open; actual broker closure ab608327 |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | c5f36edfcfd2e418f28e32fc0613143ed31649c5 | corrected technical732fd9bb, CI34071597307 SUCCESS; all3 findings await bounded independent confirmation; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
@@ -162,3 +162,17 @@ Earlier bed507e/e0520a8 have positive native ARM64 routing/DLL/TLS proof; exact
 new-candidate native CI remains a gate. No shared wire/start changes or root
 Sessions implementation is included. #70 M02/M03 corrections pass actual fresh
 canonical CI20/20; H01 still blocks helper acceptance and source adoption.
+
+#70 corrected source732fd9bb / reportc5f36edf is frozen for the existing reviewer.
+Guarded isolated toolchain/modules/source, fresh-cache preparation and physical
+Go-root alias fixes pass actual checker and source CI. Native Windows no-write/
+no-delete input guards bind the bytes consumed; final observer preserves all54
+Runtime+module-pin files. Acceptance still requires independent confirmation.
+
+Automatic approval review separately rejected recursive cleanup of three owned
+dependency caches as "blocked by policy"; no retry/bypass. They remain under
+C:/Users/hanse/AppData/Local/Temp/: gh-tree-helper-fresh-43f6e3a638ca4bf5afc5ec390cb2f542,
+gh-tree-helper-check-fresh-krknen5u, and gh-tree-helper-final-xdx2pbor. The temporary
+Go-root junction was removed before that rejection. These are reproducible caches,
+not unpushed implementation/evidence; do not confuse them with the older denied-ACL
+fixture, which remains separately untouched.

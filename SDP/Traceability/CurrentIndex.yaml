@@ -961,7 +961,7 @@
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "bounded_correction_in_progress",
+      "state": "corrected_candidate_independent_rereview_ready",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -973,10 +973,10 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "a9559d99e9c584f0f4e911fd3d837335fa482322",
+      "lastCheckpoint": "c5f36edfcfd2e418f28e32fc0613143ed31649c5",
       "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
-      "technicalSource": "b72ad94c60eb38d7c4ebe70fafd10b21a3289037",
+      "technicalSource": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets-Review--001.md",
       "reviewHead": "7fdfc9bedb66dd7a4cdb67eb798a936d24a06ace",
       "disposition": "CHANGES_REQUIRED",
@@ -986,9 +986,9 @@
         "H70-M03"
       ],
       "latestVerification": {
-        "head": "a9559d99e9c584f0f4e911fd3d837335fa482322",
-        "run": 34070628791,
-        "result": "20 SUCCESS; M02/M03 author corrections pass fresh canonical/native CI, independent confirmation pending; H01 remains open"
+        "head": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
+        "run": 34071597307,
+        "result": "SUCCESS; exact guarded checker/fresh-cache/root-junction/no-rewrite local proof, independent confirmation pending"
       }
     },
     {
