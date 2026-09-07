@@ -1,0 +1,52 @@
+package main
+
+import (
+    "bytes"
+    "net/url"
+    "os"
+    "path/filepath"
+    "testing"
+)
+
+// Independent follow-up to H70-H01: inspect what the actual copied go build
+// consumes after target verification has finished. Only owned fixtures change.
+func TestReviewerSourceInsertionAfterSelection(t *testing.T) {
+    canonicalTest(t)
+    root,cache,proxy:=moduleFixture(t)
+    u:=url.URL{Scheme:"file",Path:"/"+filepath.ToSlash(proxy)}
+    t.Setenv("GOMODCACHE",cache)
+    t.Setenv("GOPROXY",u.String())
+    t.Setenv("GOSUMDB","off")
+    if e:=admit(root);e!=nil{t.Fatal(e)}
+    p,e:=capture(root);if e!=nil{t.Fatal(e)}
+    const marker="REVIEW_UNRECORDED_POST_SELECTION_INPUT_333333"
+    var first map[string][]byte
+    for pass:=0;pass<2;pass++ {
+        s,e:=materialize(p,t.TempDir());if e!=nil{t.Fatal(e)}
+        defer s.close()
+        current:=map[string][]byte{}
+        for _,arch:=range arches {
+            if e:=s.verifySelection(p,arch);e!=nil{t.Fatal(e)}
+            path:=filepath.Join(s.root,"source","internal","runtime","broker","cmd","unrecorded_windows.go")
+            content:=[]byte("package main\nimport \"fmt\"\nfunc init(){fmt.Print(\""+marker+"\")}\n")
+            if e:=os.WriteFile(path,content,0600);e!=nil{t.Logf("source admission blocked: %v",e);continue}
+            out:=filepath.Join(s.root,arch+".exe")
+            args:=append([]string{"build"},buildFlags...)
+            args=append(args,"-o",out,entry)
+            if _,e:=s.command(arch,args...);e!=nil{t.Logf("build refused inserted input: %v",e);continue}
+            b,e:=os.ReadFile(out);if e!=nil{t.Fatal(e)}
+            if e:=validatePE(b,arch);e!=nil{t.Fatal(e)}
+            if !bytes.Contains(b,[]byte(marker)){t.Fatal("control did not retain injected input")}
+            current[arch]=b
+            t.Logf("pass=%d arch=%s verified snapshot built unrecorded source; imageSHA=%s",pass+1,arch,hash(b))
+            if e:=os.Remove(path);e!=nil{t.Fatal(e)}
+        }
+        s.close()
+        if pass==0{first=current}else{
+            for _,arch:=range arches{if len(first[arch])!=0 && bytes.Equal(first[arch],current[arch]){t.Errorf("FINDING H70-H01: both isolated %s builds accepted identical unrecorded post-selection source",arch)}}
+        }
+    }
+    after,e:=capture(root);if e!=nil{t.Fatal(e)}
+    if !bytes.Equal(jsonBytes(p.manifest),jsonBytes(after.manifest)){t.Fatal("outer source fixture changed")}
+    t.Log("outer source provenance remained byte-identical")
+}

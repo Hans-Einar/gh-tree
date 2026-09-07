@@ -1,9 +1,110 @@
 # M3 helper/assets independent review — Issue #70
 
-Disposition: **CHANGES_REQUIRED**. One HIGH and two MEDIUM findings block this
-bounded helper generator/assets/policy candidate. No product changes were made
-by this reviewer, and no Runtime contribution, Slice, integration or release is
-accepted.
+Current disposition: **CHANGES_REQUIRED** at corrected frozen
+`c5f36edfcfd2e418f28e32fc0613143ed31649c5`. H70-H01 remains OPEN (HIGH);
+H70-M02 and H70-M03 are independently RESOLVED. No product changes were made by
+this reviewer, and no Runtime contribution, Slice, integration or release is
+accepted. The original review and its evidence remain below.
+
+## Bounded re-review — corrected c5f36ed / technical 732fd9bb
+
+Master dispatch: `d4bbbb437daf910ffd184b7fb4e23a81dea8306f`, ledger CR21-0086.
+The latest #70 comment explicitly authorizes build-only pinned dependency
+preparation in the existing command, without checkout changes or workflow
+relaxation. The correction author stopped at clean published c5f36ed; this
+reviewer reopened the actual 15-path diff since reviewed report checkpoint
+`7fdfc9bedb66dd7a4cdb67eb798a936d24a06ace`. Corrected technical source is
+`732fd9bbfe1dad7430f71ceca8270283b82a29d7`. No broader broker review is included.
+
+| Finding | Independent disposition |
+|---|---|
+| H70-H01 | OPEN, HIGH. Previously captured external module/toolchain byte replacement is corrected, but the set of inputs consumed by the build is still mutable after its verification. |
+| H70-M02 | RESOLVED at this source. Exact command succeeds from an empty owned module cache; preparation uses copied unchanged pins and actual checksum admission. |
+| H70-M03 | RESOLVED at this source. Exact command succeeds through an owned canonical Go root junction; selected-root and redirected-child controls pass. |
+
+### H70-H01 continuation: new files are admitted after snapshot verification
+
+Locations: `internal/runtime/cmd/helpergen/main.go:408` (selection verification)
+and line 414 (separate build invocation), `snapshot.go:131/156`, and directory
+guard sharing at `seal_windows.go:20`. Captured existing input files are now
+protected against writes/deletion. Retained directory handles permit adding a
+new child file. After `verifySelection` returns, the separate `go build` command
+selects the package files again and can consume that newly added source.
+
+Independent `TestReviewerSourceInsertionAfterSelection` uses an owned local
+module proxy/source fixture and the actual `materialize`, `verifySelection`,
+`command` and `validatePE` implementations. In each of two independent snapshots,
+for each architecture it first successfully verifies selection, then adds
+`source/internal/runtime/broker/cmd/unrecorded_windows.go` while all snapshot
+guards remain held. The file adds an init function printing a unique marker.
+The exact copied-Go build with all production flags succeeds; the PE image
+contains that marker. The file is removed after build. Both independent images
+match for each architecture, and original source recapture is byte-identical:
+
+| Target | Both repeated images containing the unrecorded marker |
+|---|---|
+| amd64 | `d71b5c58a13d8a0c7c2be0381889c2da420759ab8ef441875776fb6fd33b748c` |
+| ARM64 | `666fdba3cba3231460afa84d1975dd326352ca38e452294e46ad133340904c5d` |
+
+This is the remaining consumed-input admission defect, not a rejection of the
+effective external-byte snapshot correction. The author's pre-verification
+extra-file test detects an earlier insertion but does not test the gap between
+verification and actual build. Bind both the consumed file set and bytes through
+actual compilation/linking; another before/after selection/hash scan is not a
+sufficient fix. This continuation retains H70-H01 rather than creating a new or
+duplicate finding.
+
+### Bounded executed controls and exact CI
+
+- Exact `go run ./internal/runtime/cmd/helpergen -check` through an owned Go
+  junction with an initially empty owned GOMODCACHE: PASS in 52.97 seconds,
+  four actual helper builds, final 915-input digest
+  `8b7e1ecac4c0510dd99b8bb5e09ea1f5ad1488858fbc979efae8d565ef4e53f6`.
+  External UTF-8 Python observer confirms all 54 Runtime-plus-go.mod/go.sum file
+  hashes, lengths, nanosecond mtimes and complete file set unchanged.
+- Independently rerun focused tests for fresh/selected-only/offline preparation,
+  inconsistent pins, root junction/child escape, native retained/released file
+  and directory guards, external module/standard-source/compiler/go executable
+  replacement during both builds, literal assembly include restrictions and
+  unrecorded/changed captured buffers: PASS, six tests, 44.936 seconds.
+- Independent post-selection new-source control: expected regression FAIL,
+  36.372 seconds. Both native target images include unrecorded input while
+  repeated hashes and original source provenance match, as above.
+- [CI34071597307 attempt 1](https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307)
+  was independently queried at exact technical732fd9bb: all 20 jobs SUCCESS,
+  including canonical helper job101589906952 and native Windowsamd64
+  job101589845468. These passing jobs do not exercise the newly identified
+  post-selection gap and do not override this independent finding.
+
+Diff inspection confirms loader code/tests, architecture policy/fixtures, embed
+selection and both gzip payloads are unchanged since the first independent
+review. Their unaffected evidence is reused. Only helpergen, its tests, the
+provenance manifest and the author report changed. The extra recursive assembly
+includes, copied Go support files, explicit PGO-off/internal-link options and
+independent full-module h1 verification were inspected. The original ab608
+broker closure is still the sole image source; newer Windows5e964336 is unadopted.
+
+Small continuation evidence uses the same existing evidence directory and
+manifest with `recheck-` filenames: independent source `.go.txt`, exact-command
+observer, no-rewrite result, command/result transcript and compact CI metadata.
+The transcript labels tool-session output rather than claiming an additional
+raw log capture. No large archive or new evidence format was introduced.
+
+Owned re-review cache and toolchain alias remain under
+`C:/Users/hanse/.codex/tmp/cr21-helper-review-002/` as named by the observer.
+They are separate from the three policy-rejected cleanup paths and the previous
+denied-ACL fixture; none of those paths was touched or retried. No blocked Git
+review or access retry occurred.
+
+Exact next action: separate author corrects the remaining H70-H01 file-set
+admission gap in the authorized generator files, regenerates the provenance
+inputs, runs this post-selection control and the affected exact checker/CI,
+then freezes a new candidate for bounded independent review. M02/M03 and
+unchanged parser/policy evidence can be reused where subsequent changes permit.
+Do not integrate, accept complete Runtime, or adopt newer native source without
+the later coordinated source/image regeneration and native review gates.
+
+## Original review — d110a06 / technical b72ad94
 
 Date: 2026-09-07. Role: fresh independent Reviewer, separate from the author.
 Authority: #70 under #69/#65/#21; Sprint-004-v04 / I-03 / M3; Master review

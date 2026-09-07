@@ -1,0 +1,18 @@
+{
+  "head": "c5f36edfcfd2e418f28e32fc0613143ed31649c5",
+  "command": [
+    "C:\\Users\\hanse\\.codex\\tmp\\cr21-helper-review-002\\canonical-go-alias\\bin\\go.exe",
+    "run",
+    "./internal/runtime/cmd/helpergen",
+    "-check"
+  ],
+  "exit": 0,
+  "seconds": 52.97,
+  "emptyCacheAtStart": true,
+  "GOROOTIsOwnedJunction": true,
+  "fileSetHashesLengthsMtimesUnchanged": true,
+  "files": 54,
+  "output": "helpers verified: canonical windows/amd64 go1.25.0; two clean builds per target; source closure 8b7e1ecac4c0510dd99b8bb5e09ea1f5ad1488858fbc979efae8d565ef4e53f6 (915 inputs)\n",
+  "retainedOwnedCache": "C:\\Users\\hanse\\.codex\\tmp\\cr21-helper-review-002\\fresh-exact-modcache",
+  "retainedOwnedJunction": "C:\\Users\\hanse\\.codex\\tmp\\cr21-helper-review-002\\canonical-go-alias"
+}

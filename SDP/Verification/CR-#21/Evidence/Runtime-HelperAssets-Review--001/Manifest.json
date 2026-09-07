@@ -45,6 +45,31 @@
       "sha256": "ca32525f0b4f139d63044aeb00801f9a6c8a07242b51ea0ec9da772fac2a97a6"
     },
     {
+      "path": "recheck-ci.json",
+      "length": 4807,
+      "sha256": "9c35dfb633d69ceff35169831879d65a11c1ac6c3dc2b04384394c7cd6165eb9"
+    },
+    {
+      "path": "recheck-controls.log",
+      "length": 3717,
+      "sha256": "3083ef5605be803b2b4c2620c1a29237df62a957c880c0bd758de3494f6bcce5"
+    },
+    {
+      "path": "recheck-fresh-junction-no-rewrite.json",
+      "length": 790,
+      "sha256": "443227e7455d6a816a6cc83867deadfbc64cb4ee7dd22764235c7753cb958c04"
+    },
+    {
+      "path": "recheck-insertion_test.go.txt",
+      "length": 2475,
+      "sha256": "1125ff7a6830999006a9e03aa5d4ca693357f734a85f30544e770533a1e9b550"
+    },
+    {
+      "path": "recheck-observer.py",
+      "length": 2073,
+      "sha256": "e821b17734ce2a73891635103874f3809b5c75f5d71ec2aa53c899190590a81d"
+    },
+    {
       "path": "reviewer_test.go.txt",
       "length": 3269,
       "sha256": "04f3b3d1cbdf4dfe1fe482f60448259c9814d6381b9d90a2e839627d2409a071"
@@ -58,6 +83,21 @@
       "path": "run_record.py",
       "length": 3053,
       "sha256": "1d80e906dbfc6a5b4537d4db8cf146d2dd53a527b9f693cb3723c6b0928d01d1"
+    }
+  ],
+  "rechecks": [
+    {
+      "source": "c5f36edfcfd2e418f28e32fc0613143ed31649c5",
+      "technicalSource": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
+      "disposition": "CHANGES_REQUIRED",
+      "open": [
+        "H70-H01"
+      ],
+      "resolved": [
+        "H70-M02",
+        "H70-M03"
+      ],
+      "filesPrefix": "recheck-"
     }
   ]
 }
