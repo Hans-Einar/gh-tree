@@ -1,0 +1,43 @@
+{
+  "sourceCommit": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+  "command": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "test",
+    "-overlay",
+    "C:\\Users\\hanse\\AppData\\Local\\Temp\\m69-review-overlay-jvhpwbea\\overlay.json",
+    "./internal/runtime/broker",
+    "-run",
+    "^TestReviewWindows",
+    "-count=1",
+    "-timeout=120s",
+    "-v"
+  ],
+  "GOARCH": "386",
+  "CGO_ENABLED": "0",
+  "exitCode": 1,
+  "testSHA256": "b07df85b959fcbcc52967f470109f56ed3c88ca12ca5d990a523194b69f2cf95"
+}
+=== RUN   TestReviewWindowsCanceledControls
+=== RUN   TestReviewWindowsCanceledControls/write
+    reviewer_controls_windows_test.go:65: already canceled write result={Accepted:0 Delivered:0 Completed:false} error=context canceled
+    reviewer_controls_windows_test.go:90: actual native output="\x1b[?9001h\x1b[?1004h\x1b[?25l\x1b[2J\x1b[m\x1b[HFIXTURE_READY {\"Cwd\":\"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\TestReviewWindowsCanceledControlswrite2987591984\\\\001\",\"Args\":[],\"PID\":32012}\r\n\x1b]0;C:\\Users\\hanse\\AppData\\Local\\Temp\\go-build781177272\\b001\\broker.test.exe\a\x1b[?25hCANCELED_CONTROL_EFFECT\r\nINPUT CANCELED_CONTROL_EFFECT SIZE 80 24\r\n\x1b[?9001l\x1b[?1004l" final={Architecture:{NativeMachine:34404 ProcessMachine:332 ImageMachine:332 InitialBreakpoint:1073741855} Established:true RootExited:true ExitCode:0 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]}
+    reviewer_controls_windows_test.go:92: pre-canceled input reached the real user process
+=== RUN   TestReviewWindowsCanceledControls/resize
+    reviewer_controls_windows_test.go:65: already canceled resize result={Accepted:0 Delivered:0 Completed:false} error=context canceled
+    reviewer_controls_windows_test.go:90: actual native output="\x1b[?9001h\x1b[?1004h\x1b[?25l\x1b[2J\x1b[m\x1b[H\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\x1b[H\x1b]0;C:\\Users\\hanse\\AppData\\Local\\Temp\\go-build781177272\\b001\\broker.test.exe\a\x1b[?25hFIXTURE_READY {\"Cwd\":\"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\TestReviewWindowsCanceledControlsresize2891607693\\\\001\",\"Args\":[],\"PID\":15928}\r\nRESIZE_OBSERVER\r\nINPUT RESIZE_OBSERVER SIZE 101 31\r\n\x1b[?9001l\x1b[?1004l" final={Architecture:{NativeMachine:34404 ProcessMachine:332 ImageMachine:332 InitialBreakpoint:1073741855} Established:true RootExited:true ExitCode:0 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]}
+    reviewer_controls_windows_test.go:95: pre-canceled resize changed the real pseudoconsole geometry
+--- FAIL: TestReviewWindowsCanceledControls (2.44s)
+    --- FAIL: TestReviewWindowsCanceledControls/write (1.84s)
+    --- FAIL: TestReviewWindowsCanceledControls/resize (0.61s)
+=== RUN   TestReviewWindowsCanceledInflightDelivery
+    reviewer_controls_windows_test.go:165: public canceled return={Accepted:0 Delivered:0 Completed:false} error=context deadline exceeded; inaccessible later reply={Accepted:65484 Delivered:0 Completed:true} error=short write; final={Architecture:{NativeMachine:34404 ProcessMachine:332 ImageMachine:332 InitialBreakpoint:1073741855} Established:true RootExited:true ExitCode:1 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]} waitError=<nil> pendingAfterJoin=0
+    reviewer_controls_windows_test.go:170: post-send cancellation drops eventual accepted/partial delivery facts from every exported observation
+--- FAIL: TestReviewWindowsCanceledInflightDelivery (0.66s)
+=== RUN   TestReviewWindowsFailureClassification
+    reviewer_controls_windows_test.go:209: missing-executable error=*errors.joinError(native broker reported failure) ErrCwd=false os.ErrNotExist=false final={Architecture:{NativeMachine:0 ProcessMachine:0 ImageMachine:0 InitialBreakpoint:0} Established:false RootExited:false ExitCode:0 Quiescent:false CleanupComplete:true Err:native broker reported failure Residuals:[]}
+    reviewer_controls_windows_test.go:209: stale-cwd error=*errors.joinError(native broker reported failure) ErrCwd=false os.ErrNotExist=false final={Architecture:{NativeMachine:0 ProcessMachine:0 ImageMachine:0 InitialBreakpoint:0} Established:false RootExited:false ExitCode:0 Quiescent:false CleanupComplete:true Err:native broker reported failure Residuals:[]}
+    reviewer_controls_windows_test.go:212: native refusal causes with different contract meanings collapse into one untyped error
+--- FAIL: TestReviewWindowsFailureClassification (1.13s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/runtime/broker	4.592s
+FAIL
