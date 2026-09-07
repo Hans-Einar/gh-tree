@@ -6,8 +6,8 @@
   "files": [
     {
       "path": ".gitattributes",
-      "length": 29,
-      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+      "length": 144,
+      "sha256": "d3f3fee3b40296460a90ba256370b677d53d1482effcfad9878ea7ff98e2407b"
     },
     {
       "path": "ci-attempt2.json",

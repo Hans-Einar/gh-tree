@@ -1,1 +1,4 @@
 * -text whitespace=cr-at-eol
+# Preserve exact native/CI diagnostic indentation and blank-line bytes.
+*.log -whitespace
+ci-job-*.txt -whitespace
