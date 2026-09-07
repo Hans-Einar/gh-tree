@@ -3,7 +3,7 @@
 Sprint-004-v04 / I-03 / M3. Full Issue #21 v0.4 objective remains active.
 Repository: Hans-Einar/gh-tree. Canonical worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor, branch codereview-21/refactor.
-Recovery tag: checkpoint/m3-runtime-prebinding/20260907-0247Z (the commit containing this status).
+Recovery tag: checkpoint/m3-runtime-prebinding/20260907-0247Z (checkpoint d7a62935; subsequent work may be newer).
 This is a recovery marker, not adapter, Slice, stage or release completion.
 
 ## Authoritative state
@@ -130,3 +130,15 @@ Use explicit UTF-8 including subprocess decoding, exact workdirs and existing
 scope/traceability. Test → coherent commit → push before the next substantial step.
 Use [skip ci] for documentation-only commits. Master does not implement product
 code; separate workers author and separate reviewers verify. Preserve all work.
+
+## Work after the recovery checkpoint
+
+#72 has separate pushed preparation7e19d617ae430cd2c7ad414b9ea4622eb1e00617 on
+codex/cr21-runtime-helper-binding, worktree runtime-helper-binding. It combines
+reviewed Windows/helper sources; payloads are still ab608-based until its worker
+regenerates and proves actual committed-image binding. Only its exact root test
+file is excepted from #71 ownership. No canonical product integration occurred.
+Unix corrected d0a7682 is queued for existing reviewer confirmation; parent common
+78a67e1 is queued for fresh independent review. This work follows the clean29-tree
+recovery inventory, so inspect the now-active worktrees instead of reusing that
+historical clean-state assertion.

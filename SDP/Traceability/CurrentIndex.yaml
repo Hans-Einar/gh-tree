@@ -828,7 +828,8 @@
       "lastCheckpoint": "d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7",
       "subContributions": [
         "IMPL69",
-        "IMPL71"
+        "IMPL71",
+        "IMPL72"
       ],
       "latestVerification": {
         "head": "71b95a32265270c43da58ff41f67ab370a39a245",
@@ -1017,7 +1018,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "common_parent_milestone_independent_review_ready",
+      "state": "common_parent_independent_review_ready",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1033,7 +1034,24 @@
         "head": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
         "run": 34076409741,
         "result": "6 native/race SUCCESS, expected helper prerequisite FAIL; local root race/vet/all12 architecture/build PASS. Common controlled-owner proof only, real bridges/constructor pending"
-      }
+      },
+      "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation"
+    },
+    {
+      "id": "IMPL72",
+      "kind": "runtime_helper_binding_contribution",
+      "issue": 72,
+      "state": "dispatch_ready",
+      "branch": "codex/cr21-runtime-helper-binding",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-binding",
+      "workerBase": "7e19d617ae430cd2c7ad414b9ea4622eb1e00617",
+      "reviewedSources": [
+        "9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8",
+        "6f385a9cab6798661970c4dc2a0aa56edba6c97b"
+      ],
+      "scope": "three generated brokerassets, exact root helper_binding_windows_test.go and report only",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-HelperBinding--001.md",
+      "pending": "regenerate stale ab608 assets against accepted Windows source and verify actual committed-image execution"
     }
   ],
   "productFindings": [
@@ -2111,8 +2129,8 @@
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
     "IMPL65",
-    "IMPL70",
-    "IMPL71"
+    "IMPL71",
+    "IMPL72"
   ],
   "pausedInitialContributions": [
     "IMPL61",

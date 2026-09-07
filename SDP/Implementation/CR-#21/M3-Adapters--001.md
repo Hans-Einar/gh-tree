@@ -406,3 +406,13 @@ unpublished branch commits. Windows standalone and helper generator/assets/polic
 are independently accepted; Unix correction and common parent reviews are next.
 Current Handoff consolidates authoritative refs/gates without historical duplicate
 narratives. No full adapter/Slice/integration acceptance is implied.
+
+#72 dispatch: Master merged reviewed Windows9b06f8bd and helper6f385a9c into
+separate preparation7e19d617. Native compile-only and Windows architecture pass;
+derived images remain explicitly stale until regeneration/binding. Worker owns
+only three generated assets, root helper_binding_windows_test.go (explicit #71
+exception) and its report. No native/loader/generator/other root/contract changes
+or TestMain are delegated. Real embedded emulated-parent/native-broker tests and
+canonical source verification precede separate binding review and any integration.
+Existing Unix reviewer confirms d0a7682/71b95a3; fresh reviewer assesses parent
+common78a67e1/fff5ee4. All three tasks have disjoint frozen/development worktrees.

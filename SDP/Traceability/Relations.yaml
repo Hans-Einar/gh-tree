@@ -571,6 +571,19 @@
       "reviewHead": "6f385a9cab6798661970c4dc2a0aa56edba6c97b",
       "ci": 34075549875,
       "imageSource": "ab608327e63727f66ffb1aa7b3200c2865307cf5"
+    },
+    {
+      "from": "IMPL72",
+      "relation": "binds_reviewed_native_and_helper",
+      "to": [
+        "IMPL69",
+        "IMPL70"
+      ]
+    },
+    {
+      "from": "IMPL71",
+      "relation": "requires_reviewed_native_image_binding",
+      "to": "IMPL72"
     }
   ],
   "errata": [
