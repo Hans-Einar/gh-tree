@@ -1,0 +1,45 @@
+directory: /tmp/gh-tree-census-confirm-q394y91h
+binary_sha256: 3e84d32f2c98fb071d48b297a798ebbf95ce1d980e29c4aa15458a8b33b49267
+Linux 6.18.33.2-microsoft-standard-WSL2 x86_64 GNU/Linux
+selector: ^(TestReviewLinuxRetainedProcDisappearanceAndLivePeer|TestNativeLinuxCensusRetainedStatAfterExactExit|TestLinuxCensus.*|TestNativeUnixClientFailedStartPreservesTypedFacts)$
+=== RUN   TestNativeLinuxCensusRetainedStatAfterExactExit
+    census_linux_test.go:100: live positive; exact exit0; fresh open ENOENT; retained-directory open ESRCH; retained read ESRCH; absent census record; descriptor closed
+--- PASS: TestNativeLinuxCensusRetainedStatAfterExactExit (0.00s)
+=== RUN   TestLinuxCensusAcquisitionClassifiesOnlyNativeDisappearance
+--- PASS: TestLinuxCensusAcquisitionClassifiesOnlyNativeDisappearance (0.00s)
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_file_or_directory-close-<nil>
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_file_or_directory-close-input/output_error
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_process-close-<nil>
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_process-close-input/output_error
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-permission_denied-close-<nil>
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-permission_denied-close-input/output_error
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-input/output_error-close-<nil>
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-input/output_error-close-input/output_error
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-bad_file_descriptor-close-<nil>
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/read-bad_file_descriptor-close-input/output_error
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/empty
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/malformed
+=== RUN   TestLinuxCensusReadAndCloseFailuresRemainErrors/oversized
+--- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_file_or_directory-close-<nil> (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_file_or_directory-close-input/output_error (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_process-close-<nil> (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-no_such_process-close-input/output_error (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-permission_denied-close-<nil> (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-permission_denied-close-input/output_error (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-input/output_error-close-<nil> (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-input/output_error-close-input/output_error (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-bad_file_descriptor-close-<nil> (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/read-bad_file_descriptor-close-input/output_error (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/empty (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/malformed (0.00s)
+    --- PASS: TestLinuxCensusReadAndCloseFailuresRemainErrors/oversized (0.00s)
+=== RUN   TestNativeUnixClientFailedStartPreservesTypedFacts
+--- PASS: TestNativeUnixClientFailedStartPreservesTypedFacts (0.00s)
+=== RUN   TestReviewLinuxRetainedProcDisappearanceAndLivePeer
+    review_census_linux_test.go:61: uid65534; exact child exit0; fresh open ENOENT; retained-directory open ESRCH; current open predicate misses ESRCH; corrected retained read omitted and closed; live peer remains in full census
+--- PASS: TestReviewLinuxRetainedProcDisappearanceAndLivePeer (0.00s)
+PASS
+native_exit: 0
+scoped_review_processes: []

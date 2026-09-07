@@ -98,3 +98,41 @@ controls. Master then records the exact integrated-source CI gate. Parent
 Sessions/production binding, full #65, canonical serial M3 integration, all
 Slices/M8/product PR/release remain separate gates. No merge or acceptance of
 those contributions is performed here.
+
+## Bounded M65-I01 confirmation
+
+**Final disposition: ACCEPT the bounded Linux census correction; M65-I01 is
+resolved.** Exact clean/pushed source
+`e39ff4c72a4ec3f175d36f3c436ed3aa2a28030c` was independently compared with the
+original reviewbf8df249. Only the acquisition predicate, focused Linux tests and
+author report changed. The original rejected source/report/evidence remain
+preserved; accepted read/close, signaling, native cleanup and shared/Windows/helper
+source are unchanged.
+
+The actual census call now uses `linuxProcEntryGone`: only ENOENT/ESRCH, direct
+or under the single os.Open PathError wrapper, count as disappearance. Nil,
+permission/I/O/descriptor/not-directory and joined errors do not. No generic
+substring, broad error-tree match or retry can hide an unrelated acquisition
+failure. The native retained-directory control now calls that actual predicate;
+fresh ENOENT and native ESRCH are recognized, with live/read/closed-owner facts
+still required.
+
+Independent targeted execution **PASS**, exit0, on the same Go1.25.0/Linux/amd64
+profile as UID/GID65534 in owned ext4
+`/tmp/gh-tree-census-confirm-q394y91h`: native acquisition/read disappearance,
+all acquisition/error and read/close negatives, unchanged typed NotFound startup,
+and the unchanged reviewer live-peer control. Both children join; exact executable
+inventory is empty. `linux-confirmation.log` and `confirmation.json` in the
+existing evidence directory retain commands/hashes. The historical reviewer
+overlay deliberately still checks the original os.IsNotExist expression; its
+printed "current open predicate" describes the original rejected source. The
+corrected production predicate is independently exercised by the updated native
+and classification tests. No full native suite or expensive matrix was repeated
+locally; the accepted unaffected evidence above is reused.
+
+[CI34084970413](https://github.com/Hans-Einar/gh-tree/actions/runs/34084970413)
+names exact corrected sourcee39ff4c and is still running at confirmation. Master
+must inspect its terminal result before accepting the combined integration gate.
+This acceptance closes only M65-I01 and the bounded census correction; parent
+binding, full Runtime, canonical serial integration and later program gates are
+unchanged. No merge, product edit or broad review restart was performed.
