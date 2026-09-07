@@ -28,7 +28,7 @@ const entry = "./internal/runtime/broker/cmd"
 const assetDir = "internal/runtime/brokerassets"
 
 var arches = []string{"amd64", "arm64"}
-var buildFlags = []string{"-mod=readonly", "-trimpath", "-buildvcs=false", "-ldflags=-buildid="}
+var buildFlags = []string{"-mod=readonly", "-trimpath", "-buildvcs=false", "-pgo=off", "-ldflags=-buildid= -linkmode=internal"}
 
 type source struct {
 	Path   string `json:"path"`
@@ -85,9 +85,10 @@ type captured struct {
 	repoPath string
 }
 type plan struct {
-	manifest      manifest
-	files         map[string]captured
-	targetSources map[string][]source
+	manifest       manifest
+	files          map[string]captured
+	targetSources  map[string][]source
+	targetIncludes map[string]map[string]bool
 }
 
 func hash(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
@@ -118,7 +119,7 @@ func main() {
 }
 
 func environment(arch, cache string) []string {
-	values := map[string]string{"GOROOT": runtime.GOROOT(), "GOCACHEPROG": "", "GODEBUG": "", "GOENV": "off", "GOWORK": "off", "GOTOOLCHAIN": "local", "GOFLAGS": "", "CGO_ENABLED": "0", "GOOS": "windows", "GOARCH": arch, "GOAMD64": "v1", "GOARM64": "v8.0", "GO386": "sse2", "GOARM": "7", "GOEXPERIMENT": "", "GOFIPS140": "off", "GOPROXY": "off", "GOSUMDB": "off", "GOTELEMETRY": "off"}
+	values := map[string]string{"GOROOT": runtime.GOROOT(), "GO111MODULE": "on", "GOCACHEPROG": "", "GODEBUG": "", "GOENV": "off", "GOWORK": "off", "GOTOOLCHAIN": "local", "GOFLAGS": "", "CGO_ENABLED": "0", "GOOS": "windows", "GOARCH": arch, "GOAMD64": "v1", "GOARM64": "v8.0", "GO386": "sse2", "GOARM": "7", "GOEXPERIMENT": "", "GOFIPS140": "off", "GOPROXY": "off", "GOSUMDB": "off", "GOTELEMETRY": "off"}
 	if cache != "" {
 		values["GOCACHE"] = cache
 	}
@@ -167,8 +168,8 @@ func admit(root string) error {
 }
 
 func capture(root string) (plan, error) {
-	p := plan{files: map[string]captured{}, targetSources: map[string][]source{}}
-	p.manifest = manifest{Schema: 1, Toolchain: "go1.25.0", Builder: "windows/amd64", Options: append([]string{"CGO_ENABLED=0", "GOOS=windows", "GOAMD64=v1", "GOARM64=v8.0", "GO386=sse2", "GOARM=7", "GOEXPERIMENT=", "GOFIPS140=off", "GOWORK=off", "GOTOOLCHAIN=local", "gzip=best-compression,mtime=0,os=255,name=,comment="}, buildFlags...)}
+	p := plan{files: map[string]captured{}, targetSources: map[string][]source{}, targetIncludes: map[string]map[string]bool{}}
+	p.manifest = manifest{Schema: 1, Toolchain: "go1.25.0", Builder: "windows/amd64", Options: append([]string{"CGO_ENABLED=0", "GOOS=windows", "GOAMD64=v1", "GOARM64=v8.0", "GO386=sse2", "GOARM=7", "GOEXPERIMENT=", "GOFIPS140=off", "GOWORK=off", "GOTOOLCHAIN=local", "GO111MODULE=on", "inputs=isolated-recorded-tree", "GOPROXY=off", "GOSUMDB=off", "gzip=best-compression,mtime=0,os=255,name=,comment="}, buildFlags...)}
 	p.manifest.OptionsDigest = hash(jsonBytes(p.manifest.Options))
 	add := func(key, path, repoPath string, text bool) error {
 		b, e := os.ReadFile(path)
@@ -192,6 +193,7 @@ func capture(root string) (plan, error) {
 	}
 	selectedModules := map[string]bool{modulePath: true}
 	for _, arch := range arches {
+		p.targetIncludes[arch] = map[string]bool{}
 		b, e := goCommand(root, arch, "", "list", "-mod=readonly", "-deps", "-json", entry)
 		if e != nil {
 			return p, e
@@ -249,6 +251,9 @@ func capture(root string) (plan, error) {
 					selected[key] = true
 				}
 			}
+			if e := captureIncludes(q, root, &p, selected, p.targetIncludes[arch], add); e != nil {
+				return p, e
+			}
 		}
 		for key := range selected {
 			p.targetSources[arch] = append(p.targetSources[arch], p.files[key].source)
@@ -286,6 +291,9 @@ func capture(root string) (plan, error) {
 			if e := add("module/"+m.Path+"@"+m.Version+"/go.mod", m.GoMod, "", false); e != nil {
 				return p, e
 			}
+			if e := verifyCapturedModule(m, &p); e != nil {
+				return p, e
+			}
 		}
 	}
 	p.manifest.ModuleDigest = hash(jsonBytes(p.manifest.Modules))
@@ -312,7 +320,7 @@ func capture(root string) (plan, error) {
 		}
 	}
 	// Bind the actual canonical compiler/linker/assembler, not just a version label.
-	for _, name := range []string{"VERSION", "bin/go.exe", "pkg/tool/windows_amd64/compile.exe", "pkg/tool/windows_amd64/link.exe", "pkg/tool/windows_amd64/asm.exe", "pkg/include/asm_amd64.h", "pkg/include/asm_ppc64x.h", "pkg/include/funcdata.h", "pkg/include/textflag.h"} {
+	for _, name := range []string{"VERSION", "go.env", "src/go.mod", "bin/go.exe", "pkg/tool/windows_amd64/compile.exe", "pkg/tool/windows_amd64/link.exe", "pkg/tool/windows_amd64/asm.exe", "pkg/include/asm_amd64.h", "pkg/include/asm_ppc64x.h", "pkg/include/funcdata.h", "pkg/include/textflag.h"} {
 		if e := add("toolchain/"+name, filepath.Join(runtime.GOROOT(), name), "", false); e != nil {
 			return p, e
 		}
@@ -390,25 +398,19 @@ func build(p plan) (map[string][]byte, error) {
 		return nil, e
 	}
 	defer os.RemoveAll(tmp)
-	root := filepath.Join(tmp, "source")
-	for _, f := range p.files {
-		if f.repoPath == "" {
-			continue
-		}
-		path := filepath.Join(root, filepath.FromSlash(f.repoPath))
-		if e := os.MkdirAll(filepath.Dir(path), 0700); e != nil {
-			return nil, e
-		}
-		if e := os.WriteFile(path, f.bytes, 0600); e != nil {
-			return nil, e
-		}
+	snapshot, e := materialize(p, tmp)
+	if e != nil {
+		return nil, e
 	}
 	images := map[string][]byte{}
 	for _, arch := range arches {
+		if e := snapshot.verifySelection(p, arch); e != nil {
+			return nil, e
+		}
 		out := filepath.Join(tmp, arch+".exe")
 		args := append([]string{"build"}, buildFlags...)
 		args = append(args, "-o", out, entry)
-		if _, e := goCommand(root, arch, filepath.Join(tmp, "cache"), args...); e != nil {
+		if _, e := snapshot.command(arch, args...); e != nil {
 			return nil, e
 		}
 		b, e := os.ReadFile(out)

@@ -3,7 +3,7 @@
   "protocol": 1,
   "toolchain": "go1.25.0",
   "builder": "windows/amd64",
-  "toolchainDigest": "add9b7621523ba3e70cda23cc60b6ade9cf4bfc60bec759a1e827c0309c2673e",
+  "toolchainDigest": "6e498999e9750af7609e02686e91a2cc2b98dbabba7948b38f5629251590b3a8",
   "moduleDigest": "0c55028cce5c5877a18178a962c835baefd70af58fb597740b06f6a57a1c4517",
   "options": [
     "CGO_ENABLED=0",
@@ -16,14 +16,19 @@
     "GOFIPS140=off",
     "GOWORK=off",
     "GOTOOLCHAIN=local",
+    "GO111MODULE=on",
+    "inputs=isolated-recorded-tree",
+    "GOPROXY=off",
+    "GOSUMDB=off",
     "gzip=best-compression,mtime=0,os=255,name=,comment=",
     "-mod=readonly",
     "-trimpath",
     "-buildvcs=false",
-    "-ldflags=-buildid="
+    "-pgo=off",
+    "-ldflags=-buildid= -linkmode=internal"
   ],
-  "optionsDigest": "a8a185711d1607dac79355cbc694addab0ccd2684f63073ca8111f9c6219357c",
-  "sourceDigest": "5c8f02ba57b335162667bf656d043ebbe83ec562243230e912e2e413162dd292",
+  "optionsDigest": "11280748ce283263d7be4d43e49f08b4aa9e870fc8b595e133ba4dd1c1e06cb3",
+  "sourceDigest": "1573f6fef6e93eb8c9608e358505a771bd671f7aad7eef47330828d2c4cf2a99",
   "sources": [
     {
       "path": "module/golang.org/x/sys@v0.44.0/go.mod",
@@ -126,6 +131,21 @@
       "length": 207550
     },
     {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.info",
+      "sha256": "68279b1eed15e0cffc55f04bbf8239a6d5194da8cc48c32b560168ab06c535eb",
+      "length": 27
+    },
+    {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.mod",
+      "sha256": "57f4393ea18d5446a12363b35c23a616d843fa1669c7121a70a2bc3a9677d665",
+      "length": 35
+    },
+    {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.ziphash",
+      "sha256": "317aa710afaba375d4d683d35c6a4ef4e487127da1c77798159a2145b0909f2d",
+      "length": 47
+    },
+    {
       "path": "recipe/internal/runtime/cmd/helpergen/host_other.go",
       "sha256": "20d1796b96cecd53fb7cf4928ab7fb09b6bad67481e3d40bb48b0db110901cc1",
       "length": 153
@@ -136,9 +156,19 @@
       "length": 534
     },
     {
+      "path": "recipe/internal/runtime/cmd/helpergen/includes.go",
+      "sha256": "7bf8167c43c10af45b1db28c05f44566e405a8ddd541d273c3c4c6baf1a8dea2",
+      "length": 3479
+    },
+    {
       "path": "recipe/internal/runtime/cmd/helpergen/main.go",
-      "sha256": "a6b15a472af7cae4f8cf093f354456102c46b4194f616fe4d0220982b941d6cd",
-      "length": 16749
+      "sha256": "5230ec3105b3caf06f3f3d251a846f1200874bb68b31a887420ddda3cb9e503a",
+      "length": 17016
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/modules.go",
+      "sha256": "a1d5156261ca7ec09f07af3a53ab9dab520544f09b3c1d35e3e7e18f7185df69",
+      "length": 3921
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/path_other.go",
@@ -154,6 +184,11 @@
       "path": "recipe/internal/runtime/cmd/helpergen/prepare.go",
       "sha256": "d8cd0690b924d602647ff1dee7e8a2b6686ed5a2969a7f642133c2e658b3f370",
       "length": 1703
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/snapshot.go",
+      "sha256": "972edde814c37fa5b1f71dc8661c9aa081ebc2d1e82d1c434fcbf8ee4c6b6da3",
+      "length": 5421
     },
     {
       "path": "repo/go.mod",
@@ -429,6 +464,11 @@
       "path": "toolchain/bin/go.exe",
       "sha256": "5c08733f77c624dd4b34bc157626656ef2485de987a8495a4b804cbb91f01726",
       "length": 15312896
+    },
+    {
+      "path": "toolchain/go.env",
+      "sha256": "98fcab78e155e9fa0c36b18874add30724d04c2452078117c78618107ebfbc9e",
+      "length": 505
     },
     {
       "path": "toolchain/pkg/include/asm_amd64.h",
@@ -1064,6 +1104,11 @@
       "path": "toolchain/src/fmt/scan.go",
       "sha256": "ac416ad4fba7f9901c737a203950d5d57220d1401e4bc7f0a2420389b88a86cd",
       "length": 32669
+    },
+    {
+      "path": "toolchain/src/go.mod",
+      "sha256": "73fe1e29614160c0ff8b58fb8a9370b6b1d03f4da38fbe3ad75373983ab09091",
+      "length": 178
     },
     {
       "path": "toolchain/src/hash/hash.go",
@@ -3196,6 +3241,16 @@
       "length": 3700
     },
     {
+      "path": "toolchain/src/runtime/cgo/abi_amd64.h",
+      "sha256": "7832f3b0a3d91852a53705f3df6d16d69e1e785cfd1d733ee33229411cd26717",
+      "length": 2795
+    },
+    {
+      "path": "toolchain/src/runtime/cgo/abi_arm64.h",
+      "sha256": "ea02dbdbe31f446716c290bbeb5b98f940ab71c1756c5a7da68711ef73e2b3ec",
+      "length": 1531
+    },
+    {
       "path": "toolchain/src/runtime/cgocall.go",
       "sha256": "bba697a2bdb037a50ef5865780282d9aaa33cf1ac70fb5d6199859e73bc3abee",
       "length": 25777
@@ -4565,7 +4620,7 @@
       "sha256": "9188bd5063040a2a39b7d5d550b06cd22bebcad73c9406a14f53314b54b44c5b",
       "compressedLength": 2038259,
       "compressedSHA256": "437f614f3ae04390c47f547fd0a7f60608870fb1f63cb136379f0a1b725f0183",
-      "sourceDigest": "05a8f969b601b44d9fada06a2ed38f674a4632bf2555ae9c0c94cd34b600208c"
+      "sourceDigest": "a960f47516ebdd0ac01138fe2a04e708e1f22b5c2f5447998ab96c27b7cc1a90"
     },
     {
       "arch": "arm64",
@@ -4574,7 +4629,7 @@
       "sha256": "2676e8efdcd53f1a87de64790d22ec2fa2f190419005eba25213978e29696e5d",
       "compressedLength": 1902326,
       "compressedSHA256": "c9952ce13f6f4846c7445226d2bfc91a2826f135623ce0fac965452b2d90c8f4",
-      "sourceDigest": "da1abdcdc48d56069dddda9e5d64c853aa0b67aa051fbc13ef57b34568bd377e"
+      "sourceDigest": "473f8149d3d52a3be578a44156a52d8a7cd03a28b877c674163e8a787f99ba44"
     }
   ]
 }

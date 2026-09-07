@@ -16,9 +16,29 @@ controls pass with an owned file proxy. Actual generation and the exact `go run
 GOMODCACHE directories. An external Python observer confirmed all 45 Runtime
 files' bytes, lengths, mtimes and file set unchanged in check mode. The current
 903-input digest is `5c8f02ba57b335162667bf656d043ebbe83ec562243230e912e2e413162dd292`.
-H01 immutable build consumption remains open; this is a tested partial
-correction checkpoint only. Independent re-review and final exact-source
-checker/CI remain required after all corrections.
+Exact M02/M03 source `a9559d99` passes all 20 CI jobs in run 34070628791,
+including the unchanged canonical helper checker and native Windows tests.
+
+H01 now builds from captured repository, selected module and toolchain buffers
+in isolated read-only input trees, copied Go/compiler/linker/assembler executables,
+fresh work/build/module caches and offline subprocesses. Captured selected module
+bytes are independently bound to root h1 pins by a full module-directory checksum;
+cache ziphash and earlier verification are insufficient. Recursive assembly
+includes bind actual nested headers (including Runtime ABI headers), rejecting
+absolute/traversing include operands. Auto-PGO is off and linking is internal.
+The real regression replaces an owned selected module, standard source,
+compile.exe and go.exe during BOTH clean builds, restores all before recapture,
+and proves identical original provenance plus images containing only recorded
+module bytes for amd64/ARM64. Corrupt captured buffers, extra unrecorded inputs,
+and inconsistent selected-module content refuse. Full generator/assets/architecture
+package tests and generator/assets vet pass. Actual regeneration passes with
+913 inputs, digest `1573f6fef6e93eb8c9608e358505a771bd671f7aad7eef47330828d2c4cf2a99`;
+both broker images remain the exact ab608 bytes listed below.
+
+This is a tested H01 correction checkpoint, pending final snapshot ownership
+hardening/controls, exact fresh-cache/root-junction no-rewrite checker and bounded
+independent re-review. It is not helper, Runtime or Slice acceptance. The historical
+initial-candidate description below is superseded by these correction details.
 
 Disposition: bounded candidate frozen for independent review; final Windows
 source adoption/regeneration and integrated/native Runtime acceptance remain open.
