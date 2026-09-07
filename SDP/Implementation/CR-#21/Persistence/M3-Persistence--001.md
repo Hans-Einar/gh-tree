@@ -685,6 +685,13 @@ manifest/preparation/set-ID and existing8 crash stages. Owned staging:
 The final expanded12 crash controls and exact source CI/native macOS are checked
 after this checkpoint. Full adapter/native-profile acceptance remains open.
 
+Source75137a0's CI34080235390 exposed a macOS test-fixture portability failure:
+os.ReadDir attempted lstat of transient `/dev/fd` entries and returned EBADF before
+the new controls ran. The counter now uses bounded names-only enumeration while
+retaining/explicitly closing its directory descriptor; exact baseline and actual
+open/close negative checks remain unchanged. This correction changes no product
+behavior and does not treat the failed macOS run as passing native evidence.
+
 ## Current handoff and exact next permitted action
 
 The Windows12-commit regression is corrected by the reviewed private P3j profile;

@@ -3,6 +3,8 @@
 package persistence
 
 import (
+	"errors"
+	"io"
 	"os"
 	"runtime"
 	"testing"
@@ -18,9 +20,20 @@ func testRequestResources(t testing.TB) func(testing.TB) {
 	}
 	count := func(t testing.TB) int {
 		t.Helper()
-		entries, err := os.ReadDir(path)
+		// /dev/fd entries need not support lstat (Darwin may report a
+		// transient descriptor). Count names while the enumeration descriptor
+		// is retained; os.ReadDir's file-info fallback is inappropriate here.
+		directory, err := os.Open(path)
 		if err != nil {
 			t.Fatal(err)
+		}
+		entries, err := directory.Readdirnames(4096)
+		if errors.Is(err, io.EOF) {
+			err = nil
+		}
+		err = errors.Join(err, directory.Close())
+		if err != nil || len(entries) == 4096 {
+			t.Fatalf("bounded native descriptor enumeration: count=%d error=%v", len(entries), err)
 		}
 		return len(entries)
 	}
