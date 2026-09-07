@@ -40,7 +40,7 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 | Native Runtime/runtime-implementation | codereview-21/layer-runtime | bca645e10979d2b2852d3b547d7a40c07633c9e1 | Native components accepted, CI20PASS; recovery tag below |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
 | Helper/runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | Generator/assets/policy independently accepted |
-| Parent/runtime-sessions | codex/cr21-runtime-sessions | 4412fe8e889c71c837a3364dd6bb2a3c47dde8c3 | Accepted native/common engine combined, CI20PASS; real bridges in progress |
+| Parent/runtime-sessions | codex/cr21-runtime-sessions | 4de11da27d76773eb43b98030683f2ed541aaa90 | Private Unix bridge pushed/native Linux PASS; Windows bridge in progress |
 | Binding/runtime-helper-binding | codex/cr21-runtime-helper-binding | f926195ffebc5b99921f6b0127bbe23ad7555a5a | Actual committed helpers independently accepted; integrated into native branch |
 
 No M3 adapter has been integrated into canonical. Common-parent/native component
@@ -58,6 +58,9 @@ acceptance does not close a full Runtime adapter or vertical Slice.
   fresh #71 worker is released to real private Unix/Windows bridges, production constructor/
   Runtime-only early entry, then native twelve-port/independent review. Actual main/
   legacy cutover remains M6. No production stub or native ownership shortcut.
+  Private Unix milestone4de11da now exercises all12 methods with real Linux owners,
+ 10 race repetitions and all12 builds/architecture; CI34086538228 pending. Windows
+  binding/construction and combined independent review remain required.
 - Persistence technicalff40e32/review5380629 has bounded admission/fault/resource
   ACCEPT; earlier identity/protocol corrections remain accepted. CI34080421099:
   18PASS/native FreeBSDFAIL/helperSKIP. Remaining assessment82610b8 distinguishes

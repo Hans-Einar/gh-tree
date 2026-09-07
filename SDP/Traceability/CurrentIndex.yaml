@@ -1079,7 +1079,7 @@
       "workerBase": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "Reviewed native bca645e1 and common parent01641986 combined without manual product edits",
-      "lastCheckpoint": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
+      "lastCheckpoint": "4de11da27d76773eb43b98030683f2ed541aaa90",
       "technicalSource": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
@@ -1098,7 +1098,14 @@
         "M71-M02"
       ],
       "nativeIntegrationHead": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
-      "activeWorker": "m3_runtime_bridges"
+      "activeWorker": "m3_runtime_bridges",
+      "unixBridgeMilestone": {
+        "head": "4de11da27d76773eb43b98030683f2ed541aaa90",
+        "ci": 34086538228,
+        "state": "pushed_local_native_pass_platform_ci_pending",
+        "checks": "Real Linux twelve-port controls and10 race repetitions; Windows root race/vet; all12 builds/architecture PASS",
+        "review": "combined bridge/native-port review pending"
+      }
     },
     {
       "id": "IMPL72",
