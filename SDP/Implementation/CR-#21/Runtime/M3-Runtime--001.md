@@ -1,6 +1,6 @@
 # M3 Runtime contribution — #65
 
-State: UNIX NATIVE REVIEW CANDIDATE / #65 OVERALL INCOMPLETE / NOT ACCEPTED
+State: UNIX NATIVE CORRECTION IN PROGRESS / #65 OVERALL INCOMPLETE / NOT ACCEPTED
 
 Parent: #21; worker authority: #65. Branch: `codereview-21/layer-runtime`.
 Worktree: `C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation`.
@@ -484,3 +484,35 @@ remains pending. Prior full source/native/race results do not substitute for it.
 No native/resource correctness limitation is hidden as a passing skip. Parent
 composition/private dispatch, Windows/image integration, complete public lifecycle
 and full Slice/M3/native-release proof remain gated outside this isolated candidate.
+
+## Independent review corrections: M65-U01 / M65-U02
+
+Fresh bounded correction author: `m3_runtime_unix_fix`; Master dispatch
+`9ec0729af545ca5d637d4486e6c4d24cad302218`, ledger90. Base `c3f23b89610a8695125fcd881711a929c7828374`
+preserves the independent CHANGES_REQUIRED report and native negatives for technical
+`fe4fd4266d3798132d4cca15ce54dc991ad147b1`. Those findings/evidence are unchanged.
+Ownership now excludes root Runtime/#71, Windows/#69, helpers/assets/#70 and the
+shared protocol/start interfaces; only Unix broker source/tests and this report.
+
+U01 milestone adds actual anonymous-object admission beyond FIFO type/direction.
+Linux requires the internal PIPEFS_MAGIC superblock; filesystem FIFOs retain their
+filesystem even after unlink. Darwin requires the DTYPE_PIPE non-vnode fstatfs
+profile (EINVAL), after separate type and direction checks. FreeBSD's existing
+duplex anonymous profile remains intact. Native positive controls verify pollable
+read deadline and close-on-exec; Linux/Darwin controls reject reversed direction
+and all linked/unlinked named read/write endpoints.
+
+Primary source profiles inspected at Linux
+[df290809 fs/pipe.c](https://github.com/torvalds/linux/blob/df2908090cda368b01ff43709f51890076c56157/fs/pipe.c)
+and XNU [f6217f89 sys_pipe.c](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/sys_pipe.c),
+[file_vnode](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_descrip.c)
+and [fstatfs64](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/vfs/vfs_syscalls.c).
+No pathname/link-count heuristic or signal authority change is used.
+
+U01 targeted local native controls PASS as UID/GID65534 in owned WSL openSUSE
+ext4 `/tmp/gh-tree-unix-fix-u01.BefF1c`: anonymous/linked/unlinked/direction,
+private marker refusal and twelve repeated pipe/PTY cycles (102 owned descriptors
+closed, process fd6→6 and goroutine2→2). Windows Go1.25.0 CGO0 Linux-amd64 and
+Darwin-arm64 test binaries compile. These are not Darwin execution evidence;
+exact new-head macOS/FreeBSD/race CI and independent confirmation remain required.
+U02 construction-period transfer is the next bounded change, still unresolved.
