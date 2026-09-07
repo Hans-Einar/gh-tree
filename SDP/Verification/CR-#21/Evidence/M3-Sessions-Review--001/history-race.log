@@ -1,12 +1,12 @@
-=== RUN   TestReviewRestartHistoryEvictionRace
-panic: invalid boundary value: d.Old
-
-goroutine 334 [running]:
-github.com/Hans-Einar/gh-tree/internal/runtime.owned[...](...)
-	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/sessions.go:47
-github.com/Hans-Einar/gh-tree/internal/runtime.(*sessions).Restart.func1()
-	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/lifecycle.go:155 +0x129e
-created by github.com/Hans-Einar/gh-tree/internal/runtime.(*sessions).Restart in goroutine 344
-	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/lifecycle.go:130 +0x102b
-FAIL	github.com/Hans-Einar/gh-tree/internal/runtime	0.635s
-FAIL
+=== RUN   TestReviewRestartHistoryEvictionRace
+panic: invalid boundary value: d.Old
+
+goroutine 334 [running]:
+github.com/Hans-Einar/gh-tree/internal/runtime.owned[...](...)
+	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/sessions.go:47
+github.com/Hans-Einar/gh-tree/internal/runtime.(*sessions).Restart.func1()
+	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/lifecycle.go:155 +0x129e
+created by github.com/Hans-Einar/gh-tree/internal/runtime.(*sessions).Restart in goroutine 344
+	C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions/internal/runtime/lifecycle.go:130 +0x102b
+FAIL	github.com/Hans-Einar/gh-tree/internal/runtime	0.635s
+FAIL

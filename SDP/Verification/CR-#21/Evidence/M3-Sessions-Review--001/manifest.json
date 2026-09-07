@@ -89,20 +89,20 @@
   ],
   "files": {
     "baseline-race.log": {
-      "bytes": 61,
-      "sha256": "9ad6c6aeb82efad080a40040961a6e12a59a8cc64416d486869859ba6930da63"
+      "bytes": 59,
+      "sha256": "77d7487399f8060cca3d90d76a486569ce9a5261a762b8cbe32a64639d9220fe"
     },
     "history-race.log": {
-      "bytes": 691,
-      "sha256": "f6562707fcb1cdd3d26b5f692bcddc3042249fa60c6e12ffc85c36fe92b23cbb"
+      "bytes": 667,
+      "sha256": "822924afb3b723622d20e9c0d6c9364b0bf7ac6700a59c572d4d9eff4b899828"
     },
     "positive-race.log": {
-      "bytes": 626,
-      "sha256": "4135dd210918e807a906f6e0f39240bb287b3d58178a6bea87bd85f27cf9ccad"
+      "bytes": 606,
+      "sha256": "97a77caa7b53dc091db103a98e10c444511c3edbf31134b80cce214c55bc976b"
     },
     "reviewer-race.log": {
-      "bytes": 703,
-      "sha256": "b4a9cf34683877f92a558180386a2ceb6a21ab189ff1aadd9f7021b9e1f0140e"
+      "bytes": 685,
+      "sha256": "31e4eba88d55d0a9fa0e77e4b5525d3fc62912c91fd1eb65fba5c422c01a3e90"
     },
     "reviewer_sessions_test.go.txt": {
       "bytes": 8854,
@@ -112,6 +112,7 @@
   "notes": [
     "One reviewer fixture compile typo corrected before final probes.",
     "Baseline tests and positives pass; three deterministic regressions fail at frozen candidate.",
-    "No product/test file modifications or source copies."
+    "No product/test file modifications or source copies.",
+    "Log transport line endings normalized to LF without changing output text; original capture commit retained."
   ]
 }
