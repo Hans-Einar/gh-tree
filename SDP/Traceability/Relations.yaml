@@ -623,6 +623,12 @@
       "to": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
       "reviewHead": "5380629ec23552cdb750f15aeb50bc5260438c5a",
       "ci": 34080421099
+    },
+    {
+      "from": "IMPL63",
+      "relation": "remaining_boundary_assessment",
+      "to": "82610b891a82e7b12eb0d13d6be82bc15342f1c4",
+      "scope": "No-birth profile selection may be bounded; source publication binding/authority remains unresolved"
     }
   ],
   "errata": [

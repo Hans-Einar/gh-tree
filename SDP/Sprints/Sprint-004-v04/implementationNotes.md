@@ -463,3 +463,19 @@ Prebinding checkpoint checkpoint/m3-runtime-prebinding/20260907-0242Z captures a
 Helper H01/M02/M03 now independently resolved; actual Windows-image binding,
 Unix correction confirmation and parent common review are next. See consolidated
 Handoff and existing inventory; full Issue21 objective and serial gates remain.
+
+Native integration2bc27e0/reportfd3abea CI34082980191:19PASS, including both Windows
+native architectures, exact helper reproduction, FreeBSD/macOS/race/all12 builds.
+Windows test-only refinement admits only fully repaired typed extraction cleanup
+STATUS_CANNOT_DELETE with actual broker wait/Job-zero/handle/path postconditions;
+owned SEC_IMAGE control proves refusal then repair. Product/helper closure unchanged.
+Linux failed failed-start NotFound attribution with code12/stage2. Fresh #65 worker
+may investigate exact source/log and correct only Unix-selected broker files/tests
+and M3-Runtime report; no shared Windows/helper/contract/root-parent changes. Preserve
+original failure, use targeted native tests then exact CI; a product fix requires
+independent bounded review before parent integration. No acceptance from rerun alone.
+
+Persistence remaining assessment82610b8 is durable: no-birth is explicit profile
+selection if no accepted capability is removed; source-name publication interval
+needs a demonstrated mechanism or explicit reviewed boundary decision. Neither
+source interval nor FreeBSD scope is waived; no new product mechanism authorized.

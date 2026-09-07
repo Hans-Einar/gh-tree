@@ -26,89 +26,81 @@ That inventory precedes this status commit; it records all exact worktree/ref
 states and post-resume commit history. All authors/reviewers were stopped at
 published boundaries. Before modifying a resumed lane, inspect its actual state.
 
-## Published contribution checkpoints
+## Current published contributions
 
-Worker source, reports and detailed evidence live on the named branches. Use
-CurrentIndex plus git show <HEAD>:<report-path> when a report is not on canonical.
-Worktree directory names below are under C:/Users/hanse/GIT/gh-tree-wt/.
+Paths are under C:/Users/hanse/GIT/gh-tree-wt/. Exact reports/evidence are on the
+named branches and indexed in CurrentIndex; historical evidence is not repeated.
 
-| Contribution / worktree | Pushed branch | Exact HEAD | Disposition / remaining gate |
+| Contribution/worktree | Branch | Latest pushed HEAD | Disposition |
 |---|---|---|---|
-| Git#61 / git-implementation | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | 11 facts/registry/locks; CI34063202321 19PASS; required review blocked, mutations incomplete |
-| GitHub#62 / github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617 independently accepted, held for Git-first integration |
-| Persistence#63 / persistence-implementation | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded Windows identity correction bfdc79c accepted; full adapter/native gates open |
-| Discovery#64 / discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac accepted; CI34065291612 19PASS; held for prior serial gates |
-| Unix Runtime#65 / runtime-implementation | codereview-21/layer-runtime | d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7 | corrected source71b95a3/product4df4385; CI34076324950 6PASS; M65-U01/U02 confirmation pending |
-| Windows Runtime#69 / runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | standalone bd78dea independently accepted; committed helper binding pending |
-| Helper#70 / runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | b6f161f generator/assets/policy accepted, CI34075549875 20PASS; images bind older ab608327 |
-| Parent#71 / runtime-sessions | codex/cr21-runtime-sessions | 78a67e1198466e05bc5f2544b3c4a495dc45a52c | common engine fff5ee4,12 methods/unexported test-owner construction; fresh review and real bridges pending |
+| Git/git-implementation | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | Facts foundation only; required review blocked, mutation methods incomplete |
+| GitHub/github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | All5 methods independently accepted; held for Git-first integration |
+| Persistence/persistence-implementation | codereview-21/layer-persistence | 82610b891a82e7b12eb0d13d6be82bc15342f1c4 | Identity and bounded protocol/fault-resource deltas accepted; full adapter gates open |
+| Discovery/discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | All2 methods independently accepted; prior serial gates held |
+| Native Runtime/runtime-implementation | codereview-21/layer-runtime | fd3abeac967a695bcdad15918a723ff8bab751df | Reviewed native/helper components combined; integrated Linux gate failing |
+| Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
+| Helper/runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | Generator/assets/policy independently accepted |
+| Parent/runtime-sessions | codex/cr21-runtime-sessions | 01641986c702b9c6a1abd176586b4d58b39f13fa | Common12-method engine accepted; production bridges pending |
+| Binding/runtime-helper-binding | codex/cr21-runtime-helper-binding | f926195ffebc5b99921f6b0127bbe23ad7555a5a | Actual committed helpers independently accepted; integrated into native branch |
 
-Standalone Windows recovery tag:
-checkpoint/m3-windows-native-reviewed/20260907-0206Z at review9b06f8bd.
-No M3 adapter is integrated into canonical yet. Component acceptance is not full
-Runtime or vertical Slice acceptance.
+No M3 adapter has been integrated into canonical. Common-parent/native component
+acceptance does not close a full Runtime adapter or vertical Slice.
 
-## Verification and open work
+## Verification and exact next actions
 
-- Windows W69-M01/M02 independently resolved: canceled admission, retained bounded
-  delivery receipts and closed native cause/stage facts. Actual amd64/386 controls,
-  native ARM64, race/vet and12-target builds pass. CI34073256923 has6 native/race
-  successes; only missing helper inventory fails, dependent cross/helper jobs skip.
-- Helper H70-H01/M02/M03 independently resolved: captured/guarded input bytes,
-  one-shot native name-change invalidation through actual compilation, fresh-cache
-  admission and canonical Go-root junctions. Real changed-source PE compilations
-  are rejected; exact checker preserves all60 Runtime+pin files. Accepted images
-  still derive from ab608327e63727f66ffb1aa7b3200c2865307cf5. Regenerate and test
-  actual committed images against reviewed Windows source before native binding.
-- Unix M65-U01/U02 author corrections add actual anonymous endpoint profiles and
-  startup-bound cleanup periods. Product defaults remain2s/3s. Original named-FIFO,
-  natural-exit-budget and malformed FreeBSD fixture failures are retained. Native
-  Linux/macOS/FreeBSD and race pass at71b95a3; independent confirmation remains.
-- Parent common-engine tests cover lifecycle/cancel, late output/finals/ACK,
- 64KiB split/pending receipts, restart, Shutdown, cleanup repair and counter limits.
-  Root race/vet and all12 architecture/build checks pass; source CI34076409741
-  has6 successes and expected helper prerequisite failure. Controlled owners are
-  common-state evidence only; there is no production constructor or native stub.
-- Persistence early protocol findings are independently corrected at91acac5;
-  Windows repeated-publication identity is independently accepted at bfdc79c.
-  Native amd64/386/ARM64 and Linux confirmation pass. CI34066675310 still fails
-  native FreeBSD (18 successes/helper skip). Full fault/resource, no-birth
-  association and Unix source-name/check-to-syscall interval gates remain open.
+- Native integration510139d combines Unix reviewf85294d and binding reviewf926195f
+  (including Windows/helper). Product closure remains unchanged through test2bc27e0.
+  CI34082980191:19PASS, Linux FAIL. Both Windows native architectures, FreeBSD,
+  macOS/race, exact955-input helper reproduction and all12 builds pass. Linux
+  TestNativeUnixClientFailedStartPreservesTypedFacts returned code12/stage2 instead
+  of NotFound; fresh Unix worker investigates before further integration.
+- Prior FreeBSD blocked-output fixture now observes actual join-timeout fact before
+  releasing its callback. Windows extraction fixture now proves full native cleanup
+  and admits only the exact repaired historical STATUS_CANNOT_DELETE; deterministic
+  owned SEC_IMAGE refusal/release control confirms it. Original failures remain in
+  reports; neither test correction changed product code or waived cleanup.
+- Parent technical5a14f7d/review01641986 resolves all M71 findings (Restart retention,
+  Shutdown repair, sequence/startup publication). Controlled-owner race/vet/all12
+  tests pass; CI34081419821 has6 successes and expected missing-helper prerequisite
+  failure/dependent skips. After native gate passes, Master integrates reviewed
+  native sources into this branch; fresh #71 worker supplies real platform bridges,
+  production constructor and early private entry, then native/independent review.
+- Persistence technicalff40e32/review5380629 has bounded admission/fault/resource
+  ACCEPT; earlier identity/protocol corrections remain accepted. CI34080421099:
+  18PASS/native FreeBSDFAIL/helperSKIP. Remaining assessment82610b8 distinguishes
+  explicit proven write-profile selection from the unresolved source-name binding
+  interval. No no-birth mechanism or boundary waiver is claimed.
 
-Detailed source/test/CI records are the existing M3 reports and review files;
-reuse them rather than duplicate histories or infer review from author summaries.
+## Blockers and authority boundaries
 
-## Blockers and exact next actions
+Git foundation review failed with a cybersecurity service/access block. No accepted
+review exists. Do not retrieve withheld output, retry/relabel/substitute the blocked
+review, switch model to bypass or waive it. Resolve approved access/false positive.
+Official guidance: https://learn.chatgpt.com/docs/cyber-safety . Separately authorized
+independent M3 work continues.
 
-The required Git foundation review failed with a cybersecurity service/access
-block at source855a144; no completed accepted review exists. Its already-delivered
-provisional findings are in M3-Foundation-Review--001. Do not retrieve withheld
-output, retry/relabel that review, switch models to bypass controls or waive it.
-Resolve approved review access/false positive first. Official guidance:
-https://learn.chatgpt.com/docs/cyber-safety . Independent M3 work may continue.
+FreeBSD ordinary ZFS cannot inspect protected system EAs through the selected
+profile. User decision remains pending: retain full requirements and design an
+explicit privileged mechanism, explicitly revise the profile, or keep it blocked.
+No privileged helper, metadata-loss/read-only substitute or platform reduction is
+approved. The existing M3-FreeBSD-Assessment--001 is authoritative evidence.
 
-FreeBSD Persistence requires a user trust/scope decision after the independent
-M3-FreeBSD-Assessment--001: ordinary ZFS cannot inspect arbitrary protected system
-EAs through the selected profile. No privileged helper, metadata-loss/read-only
-substitute or platform reduction is approved. The pending user choice is to retain
-full requirements and design a privileged mechanism, explicitly revise the profile,
-or keep that part blocked. Elapsed time is not an answer.
+Persistence's remaining source-publication interval can consume a substituted
+source after the last check. Frozen authority permits a target-editor race but no
+source-namespace exception. Master must identify a demonstrated binding mechanism
+or prepare an explicit reviewed boundary decision; neither is adopted. No-birth
+write refusal may be scoped to proven profiles only if no accepted capability is
+removed. See M3-Remaining-Gates-Assessment--001 for exact clauses and options.
 
-Next Master actions: request bounded Unix correction confirmation and fresh parent
-common-engine review; define a bounded helper-binding contribution, combine only
-reviewed Windows/helper sources in its own worktree, regenerate exact assets and
-verify real committed-image execution. Then integrate accepted native work into
-#71 and implement actual platform bridges/production construction with full native
-verification and independent review. No unreviewed merge or placeholder shortcut.
-
-Canonical adapter order stays Git → GitHub → Persistence → Discovery → Runtime.
-Then M4 Application/State/View, M5 real harness, M6 host/cutover, M7 mapped retirement,
-M8 native/E2E, product PR/main and release only with explicit authority/all gates.
-The full goal continues automatically; this recovery point does not cancel it.
+Canonical order remains Git → GitHub → Persistence → Discovery → Runtime, then M4
+Application/State/View, M5 real harness, M6 host/cutover, M7 mapped retirement, M8
+native/E2E, product PR/main and release only with explicit authority/all gates.
+The full objective remains active. No CLI/legacy cutover has occurred.
 
 ## Local-only state and working rules
 
-No unpublished product work or uncommitted implementation exists at this snapshot.
+The latest author handoffs listed above were clean and pushed. Inspect active lanes
+before reuse; the older29-worktree inventory is historical, not current live status.
 Ordinary compiler/module caches, owned native fixtures/binaries and WSL /tmp runs
 remain local; material reviewer sources/logs are preserved in existing SDP evidence.
 No broad source/binary/cache archive is required. Two detached review worktrees
@@ -130,49 +122,3 @@ Use explicit UTF-8 including subprocess decoding, exact workdirs and existing
 scope/traceability. Test → coherent commit → push before the next substantial step.
 Use [skip ci] for documentation-only commits. Master does not implement product
 code; separate workers author and separate reviewers verify. Preserve all work.
-
-## Work after the recovery checkpoint
-
-#72 has separate pushed preparation7e19d617ae430cd2c7ad414b9ea4622eb1e00617 on
-codex/cr21-runtime-helper-binding, worktree runtime-helper-binding. It combines
-reviewed Windows/helper sources; payloads are still ab608-based until its worker
-regenerates and proves actual committed-image binding. Only its exact root test
-file is excepted from #71 ownership. No canonical product integration occurred.
-Unix corrected d0a7682 is queued for existing reviewer confirmation; parent common
-78a67e1 is queued for fresh independent review. This work follows the clean29-tree
-recovery inventory, so inspect the now-active worktrees instead of reusing that
-historical clean-state assertion.
-
-Latest follow-up: Unix/shared native review f85294d independently accepts corrected
-71b95a3/product4df4385. Binding #72 freezes b9def1f (technical cf16072), CI34078800342
-20PASS, for fresh review of actual committed-image/source execution. Parent review
-c436773 requires an eviction-triggered Restart panic fix, Shutdown reobservation
-and truthful geometry/sequence-boundary handling; root-only correction follows.
-Persistence #63 also resumes concrete remaining fault/resource coverage from
-53de3e1 while all explicit platform/trust blockers stay open. CurrentIndex holds
-exact refs; prior recovery inventory remains a historical clean snapshot.
-
-Native integration510139d18da16a0d42c62ee88fba8053813f2b13 is pushed on
-codereview-21/layer-runtime: reviewed Unix plus accepted binding f926195f (Windows
-and helper sources/images). Local Windows race, all12 architecture, vet and
-unchanged955-input helper rebuild pass; exact integrated native CI is pending.
-Canonical program still has no M3 product integration. Parent corrected
-f4e48b3/technical4495635 is frozen for independent confirmation of M71 findings.
-
-Current rework gates: parent review15eed03 resolves H01/M01 but keeps M02 for an
-established-start sequence/cwd publication panic. Native integration510139d
-CI34080586354 has19 successes and one FreeBSD blocked-output fixture failure;
-actual final fact is clean/error nil, so its historical-timeout synchronization
-is being checked without weakening native ownership. Persistence sourceff40e32/
-report3772faf awaits fresh bounded fault/resource review; CI18PASS/known FreeBSD
-failure. CurrentIndex and separate branch reports contain exact refs.
-
-Latest accepted bounded sources: parent common5a14f7d/review01641986 and
-Persistence ff40e32/review5380629 (admission/fault/resource only). Native integration
-941f4be/reportbab42e9 CI34081403751 has19 successes, with one Windows ARM64
-extraction-test error: actual final cleanup true/zero residuals plus historical
-permission diagnostic. Cause and actual artifact/handle postconditions are under
-Windows-owner investigation; no blanket error allowance or source gate waiver.
-Real parent construction/bridges wait for this native gate. Remaining Persistence
-association/source-name obligations are eligible for bounded read-only assessment;
-no-birth/source interval and FreeBSD decisions are not silently closed.
