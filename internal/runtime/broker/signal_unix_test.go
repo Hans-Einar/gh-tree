@@ -235,6 +235,33 @@ func signalFixtureSuite() (result error) {
 	}
 	fmt.Println("PASS foreign SID acquisition refused; control fixture remains alive")
 
+	gone := exec.Command(executable, "--runtime-fixture-exit")
+	gone.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	if err := gone.Start(); err != nil {
+		return err
+	}
+	goneGroup := gone.Process.Pid
+	if err := gone.Wait(); err != nil {
+		return err
+	}
+	if a, err := acquire(goneGroup, killGroup); err == nil {
+		// A vanished candidate numerically equal to the new helper PID can
+		// only create that helper's own group inside this owned SID.
+		if a.cmd.Process.Pid != goneGroup {
+			return errors.New("vanished group unexpectedly acquired a different helper identity")
+		}
+		if err := a.commit(ctx); err != nil {
+			return err
+		}
+		if err := a.join(ctx); err != nil {
+			return err
+		}
+		if err := a.closeEndpoints(); err != nil {
+			return err
+		}
+	}
+	fmt.Println("PASS vanished candidate refuses or acquires only the new helper's own group")
+
 	member, err := newMember(false, false)
 	if err != nil {
 		return err

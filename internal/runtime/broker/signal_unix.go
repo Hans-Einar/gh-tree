@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -114,11 +115,11 @@ func RunSignalHelper() int {
 	if err := unix.Kill(0, sig); err != nil {
 		return 124
 	}
-	if prepare.signal == stopGroup {
+	if prepare.signal == stopGroup || prepare.signal == killGroup {
 		for {
 			time.Sleep(time.Hour)
 		}
-	} // remain parked until acquired KILL cleanup
+	} // never race a pending STOP/KILL with voluntary process exit
 	return 0
 }
 
@@ -238,7 +239,11 @@ func (a *acquiredSignal) join(ctx context.Context) error {
 					return nil
 				}
 			}
-			return errors.Join(ErrProtocol, a.waitErr)
+			code := -1
+			if a.cmd.ProcessState != nil {
+				code = a.cmd.ProcessState.ExitCode()
+			}
+			return fmt.Errorf("acquired KILL helper exit %d did not prove SIGKILL: %w", code, errors.Join(ErrProtocol, a.waitErr))
 		}
 		return a.waitErr
 	case <-ctx.Done():

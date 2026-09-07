@@ -401,13 +401,32 @@ Private client types/signatures and shared protocol/start source are unchanged.
 Remaining native failure/resource-count coverage and independent review stay
 separate from #71's twelve-method parent implementation.
 
+Exact0dfd887 CI34072100039 now confirms corrected FreeBSD/Linux/race and both
+Windows suite jobs PASS. macOS job101591203418 has a separate helper failure:
+foreign SID, pre-Commit close and wrong nonce controls pass, followed by
+ErrProtocol in the last-original-member-after-Joined KILL case. Inspected actual
+job output; this is not the repaired terminal assertion failure.
+
+## Checkpoint 7: KILL helper lifetime
+
+After self-group KILL returns, the helper now remains parked until native signal
+termination, matching the existing STOP lifetime rule. It cannot voluntarily
+exit0 before deferred self-signal handling, which would defeat the required exact
+SIGKILL waiter evidence on Darwin. Failed termination evidence now reports the
+actual observed helper exit class. No numerical recovery/fallback is introduced.
+Added vanished-before-acquisition control, allowing only the documented harmless
+case in which the newly allocated helper PID itself equals the vanished group
+number. Whole-session census and all joins remain the final cleanup authority.
+Ordinary-user Linux full broker suite PASS at the correction, native directory
+`/tmp/gh-tree-runtime-native.QQUAiQ`; actual corrected macOS CI remains required.
+
 ## Next permitted work
 
 Commit/push this coherent partial checkpoint before further substantial work.
-Then implement inherited-endpoint/parent validation, private Fchdir/SID supervisor
-and acquired-group helpers, plus Windows native broker/embedded-helper closure, with
-explicit partial checkpoints and native fixture verification. Assemble all twelve
-Sessions methods around actual resource owners; no shortened replacement scope.
+Continue remaining Unix native failure/recovery, control-loss/escape, repeated
+resource counts and independent exact-source verification. #71 owns parent
+Sessions/root files, #69 owns Windows native code and #70 owns helper assets;
+their reviewed integration remains Master-owned. Preserve every native gate.
 Request Master coordination before any shared-interface/workflow/private-host
 dispatch change or frozen-contract gap. Preserve every native requirement and
 all failed/not-run verification facts until exact-source evidence resolves them.
