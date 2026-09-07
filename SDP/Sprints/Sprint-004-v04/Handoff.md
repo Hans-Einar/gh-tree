@@ -215,3 +215,11 @@ the common lifecycle/12-method engine with test-only native owners. No productio
 stub, native acceptance or unreviewed merge; reviewed platform binding comes later.
 Helper H01 now uses the authorized one-shot name-change notification proposal
 after oplocks invalidated unchanged reads. Actual build integration/review remains.
+
+Helper input-set correction is frozen at4d59b27 (technical b6f161f), exact source
+CI34075549875 SUCCESS. Actual one-shot FILE_NAME|DIR_NAME invalidation rejects
+after-selection/after-child-start additions and restorations, including embedded
+data/preexisting mutator handles. Unchanged copied-Go builds and exact checker
+pass, observer preserves all60 Runtime+pin files. Existing independent reviewer
+confirms H01 next; source remains actual ab608 until later reviewed adoption.
+#71 common parent implementation and the two Unix corrections continue separately.
