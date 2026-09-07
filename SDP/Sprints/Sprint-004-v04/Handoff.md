@@ -35,7 +35,7 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 |---|---|---|---|
 | Git/git-implementation | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | Facts foundation only; required review blocked, mutation methods incomplete |
 | GitHub/github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | All5 methods independently accepted; held for Git-first integration |
-| Persistence/persistence-implementation | codereview-21/layer-persistence | 015cd1a437b1e7fd914383b7943a702f1227ccd8 | Windows byte correction frozen for independent review; other gates open |
+| Persistence/persistence-implementation | codereview-21/layer-persistence | d5174fa6d55424d3125e8d7e11454fb7e35cc6ce | Windows byte correction accepted; metadata/other gates open |
 | Discovery/discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | All2 methods independently accepted; prior serial gates held |
 | Native Runtime/runtime-implementation | codereview-21/layer-runtime | bca645e10979d2b2852d3b547d7a40c07633c9e1 | Native components accepted, CI20PASS; recovery tag below |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
@@ -66,8 +66,10 @@ acceptance does not close a full Runtime adapter or vertical Slice.
   handle changes prepared bytes before publication, yet known committed intent is
   claimed. Correction015cd1a retains a continuous native byte guard from exclusive
   creation through publication; local amd64/386/race controls pass. CI34085358603
-  and independent confirmation pending. A separate prepared-DACL mutation through
-  WRITE_DAC is durably reproduced; byte exclusion does not waive metadata integrity.
+  has18PASS/FreeBSDFAIL/helperSKIP, nativeARM64PASS; independent reviewd5174fa6
+  accepts byte integrity. HIGH M363-META-H01 independently reproduces prepared-DACL
+  mutation through WRITE_DAC; metadata integrity remains open. A separate draft
+  BC-CHANGE-PER-METADATA-01 awaits independent wording review then user decision.
   No no-birth mechanism, Windows trust exception or boundary waiver is claimed.
 
 ## Blockers and authority boundaries

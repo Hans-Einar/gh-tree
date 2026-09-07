@@ -615,3 +615,57 @@ approval, profile reduction or full adapter acceptance may be inferred.
 Parent4412fe8 exactCI34085381063 is20/20PASS. Prepared fresh #71 author is now
 released on that clean pushed base for the already scoped real bridge milestones.
 No additional authority, native protocol change or M6 cutover is introduced.
+
+## BC-CHANGE-PER-METADATA-01 — proposed Windows preparation-metadata boundary
+
+**DRAFT FOR INDEPENDENT REVIEW AND USER DECISION; no frozen authority changes.**
+Independent reviewd5174fa6d55424d3125e8d7e11454fb7e35cc6ce accepts the byte guard
+at015cd1a but reproduces HIGH M363-META-H01: WRITE_DAC can alter the prepared ordered
+DACL before publication. Retained object identity and byte sharing do not enforce
+metadata stability. No preservation/refusal mechanism closing that interval has
+been demonstrated under the selected ordinary-account protocol.
+
+The proposed choice retains the native byte/object protections and states a
+separate cooperative metadata condition. It is a guarantee change needing user
+authority after independent review. The alternative is to keep the stronger
+metadata guarantee and hold this gate until a suitable mechanism is demonstrated
+and reviewed. The pending Unix choice does not authorize this Windows choice.
+
+Proposed normative addition to Storage--001 and Application--Persistence:
+
+> On Windows, preparation still copies and independently verifies all supported
+> required metadata and refuses unsupported/unreadable metadata. The selected
+> publication guarantee additionally requires that other actors do not modify
+> the prepared publication object's metadata from exclusive creation until it
+> becomes the published target at the native publication point. This condition
+> includes its access/security policy; it is not enforced by FILE_SHARE_WRITE
+> denial or a retained payload handle. Such native protections continue to bind
+> the source object and exclude foreign prepared-byte writers independently.
+>
+> Existing original-handle edits and edits of the published target remain governed
+> by the existing target-editor boundary. The condition ends at the native
+> publication point, even while return delivery/cleanup is pending. Changes then
+> visible through a retained payload alias are not automatically evidence of
+> prepublication interference. Raw-backup/manifest retention and integrity remain
+> separate obligations. No new actor receives access or privileges from this rule.
+>
+> Metadata comparison and detected-drift refusal remain mandatory; detected drift
+> before invocation refuses without publication. If an issued operation's required
+> prepared-state attribution is actually uncertain, use the existing valid
+> Indeterminate/PublicationKnown=false/EffectIndeterminate result with actual known
+> content, namespace, current/proposed and recovery facts retained in the available
+> fields/diagnostics. Do not invent rollback, NotCommitted or replay. Conversely,
+> an allowed later target edit cannot erase an independently known completed
+> publication. Undetected breach of the preparation-metadata condition is outside
+> this cooperative guarantee; native success alone is not metadata exclusion proof.
+
+The existing native-success/PublicationKnown prose and outcome table must be
+qualified consistently at any future reviewed refreeze: known committed success
+means attributable publication under the stated preparation condition. No public
+Go API shape, primitive, security permissions, supported-profile reduction or
+privilege helper is proposed. All byte/object guards, supported metadata copying/
+verification, existing adverse controls and honest failure/recovery facts remain.
+Independent review must check these exact semantics before user choice. Approval
+would authorize only the documented boundary followed by normal affected design/
+BC review/refreeze and verification; it would not itself close full #63 or any
+Slice. FreeBSD, no-birth and Unix source questions remain separate.

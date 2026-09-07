@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "windows_prepared_byte_correction_independent_review",
+      "state": "bounded_byte_correction_accepted_metadata_and_other_boundaries_open",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,7 +713,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "015cd1a437b1e7fd914383b7943a702f1227ccd8",
+      "lastCheckpoint": "d5174fa6d55424d3125e8d7e11454fb7e35cc6ce",
       "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
         "head": "bfdc79c2289274636f66574a3c86f467bb993615",
@@ -741,7 +741,7 @@
       "latestVerification": {
         "head": "015cd1a437b1e7fd914383b7943a702f1227ccd8",
         "run": 34085358603,
-        "result": "in progress; native amd64/386 full Persistence/race/targeted mapping controls/vet PASS; separate prepared-DACL mutation proof remains open"
+        "result": "18 SUCCESS/native FreeBSD FAILURE/helper SKIP; native ARM64 PASS, independent amd64 race/386 byte/close/resource/recovery controls PASS"
       },
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
       "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
@@ -778,10 +778,23 @@
       "preparedByteFinding": {
         "id": "M363-SRC-H01",
         "severity": "HIGH",
-        "state": "correction_review_pending",
+        "state": "resolved_bounded_independent_acceptance",
         "platform": "Windows",
         "scope": "prepared bytes changed through separate writable handle before publication; both native presence modes reproduced",
-        "source": "015cd1a437b1e7fd914383b7943a702f1227ccd8"
+        "source": "015cd1a437b1e7fd914383b7943a702f1227ccd8",
+        "reviewHead": "d5174fa6d55424d3125e8d7e11454fb7e35cc6ce"
+      },
+      "metadataFinding": {
+        "id": "M363-META-H01",
+        "severity": "HIGH",
+        "state": "open",
+        "reviewHead": "d5174fa6d55424d3125e8d7e11454fb7e35cc6ce",
+        "scope": "independently reproduced prepared ordered-DACL mutation through WRITE_DAC"
+      },
+      "metadataBoundaryProposal": {
+        "id": "BC-CHANGE-PER-METADATA-01",
+        "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+        "state": "draft_independent_review_then_user_decision"
       }
     },
     {
