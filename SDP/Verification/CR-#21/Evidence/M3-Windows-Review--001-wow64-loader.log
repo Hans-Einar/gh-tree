@@ -1,0 +1,55 @@
+{
+  "sourceCommit": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+  "command": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "test",
+    "-overlay",
+    "C:\\Users\\hanse\\AppData\\Local\\Temp\\m69-review-overlay-xzszkge3\\overlay.json",
+    "./internal/runtime/broker",
+    "-run",
+    "^TestReviewWindowsWOW64StaticDLLTLS$",
+    "-count=1",
+    "-timeout=120s",
+    "-v"
+  ],
+  "GOARCH": "amd64",
+  "CGO_ENABLED": "0",
+  "exitCode": 0,
+  "testSHA256": "b07df85b959fcbcc52967f470109f56ed3c88ca12ca5d990a523194b69f2cf95"
+}
+=== RUN   TestReviewWindowsWOW64StaticDLLTLS
+    reviewer_wow64_loader_windows_test.go:65: installed native compiler/target evidence:
+        **********************************************************************
+        ** Visual Studio 2022 Developer Command Prompt v17.13.6
+        ** Copyright (c) 2022 Microsoft Corporation
+        **********************************************************************
+        [vcvarsall.bat] Environment initialized for: 'x86'
+        Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34810 for x86
+        Copyright (C) Microsoft Corporation.  All rights reserved.
+
+        native_dll.c
+        Microsoft (R) Incremental Linker Version 14.43.34810.0
+        Copyright (C) Microsoft Corporation.  All rights reserved.
+
+        /out:native_dll.dll
+        /dll
+        /implib:native_dll.lib
+        /OUT:native_loader.dll
+        /IMPLIB:native_loader.lib
+        native_dll.obj
+           Creating library native_loader.lib and object native_loader.exp
+        Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34810 for x86
+        Copyright (C) Microsoft Corporation.  All rights reserved.
+
+        native_exe.c
+        Microsoft (R) Incremental Linker Version 14.43.34810.0
+        Copyright (C) Microsoft Corporation.  All rights reserved.
+
+        /out:native_exe.exe
+        /OUT:native_loader.exe
+        native_exe.obj
+        native_loader.lib
+    reviewer_wow64_loader_windows_test.go:109: native x86 mapped-machine=014c DLL+exe TLS callbacks and static debug CRT heap: NATIVE_DLL_TLS_DEBUG_HEAP exe=0 dll=0
+--- PASS: TestReviewWindowsWOW64StaticDLLTLS (3.20s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime/broker	3.669s

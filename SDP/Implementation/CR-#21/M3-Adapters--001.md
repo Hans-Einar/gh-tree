@@ -248,3 +248,9 @@ frozen artifact identity contract and unchanged class65/class11 publication.
 This is separate from the blocked Git audit. Product adoption remains withheld
 until the private protocol's scope, negative controls and crash association are
 reviewed; no directory convention, timestamp repair or original-ID mutation waiver.
+
+Master native integration on Runtime branch: accepted Unix f85294d plus accepted
+Windows/helper/binding f926195f, with native Windows race, all12 architecture,
+Runtime vet and unchanged-source helper rebuild PASS before merge commit.
+Exact committed native CI follows. #71 parent/common corrections and real
+production bridges remain separate; no canonical adapter-order waiver.

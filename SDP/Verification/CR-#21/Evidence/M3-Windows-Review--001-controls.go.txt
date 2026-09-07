@@ -1,0 +1,237 @@
+//go:build windows
+
+package broker
+
+import (
+	"bytes"
+	"context"
+	"errors"
+	"io"
+	"os"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
+)
+
+// Independent reviewer controls. Add with go -overlay; no product replacement.
+func TestReviewWindowsCanceledControls(t *testing.T) {
+	for _, op := range []string{"write", "resize"} {
+		t.Run(op, func(t *testing.T) {
+			s := windowsSpec(t)
+			s.Environment = os.Environ()
+			s.Terminal = true
+			exe, err := os.Executable()
+			if err != nil {
+				t.Fatal(err)
+			}
+			s.Executable = exe
+			s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "terminal"}
+			var mu sync.Mutex
+			var output bytes.Buffer
+			config := WindowsConfig{SessionID: 701, Spec: s, Image: exe, Output: func(_ api.OutputStream, b []byte) { mu.Lock(); output.Write(b); mu.Unlock() }}
+			if _, embedded, e := MachineRoute(); e != nil {
+				t.Fatal(e)
+			} else if embedded {
+				config.Extraction = extractedNativeFixture(t)
+				config.Image = config.Extraction.Path()
+			}
+			live, cancelLive := context.WithTimeout(context.Background(), 12*time.Second)
+			defer cancelLive()
+			client, started, err := StartWindows(live, config)
+			if err != nil || !started.Established {
+				t.Fatalf("start %+v %v", started, err)
+			}
+			defer func() {
+				client.Stop()
+				final, e := client.Wait(live)
+				if !final.CleanupComplete {
+					t.Errorf("cleanup %+v %v", final, e)
+				}
+			}()
+			canceled, cancel := context.WithCancel(context.Background())
+			cancel()
+			var delivery WindowsDelivery
+			if op == "write" {
+				delivery, err = client.Write(canceled, []byte("CANCELED_CONTROL_EFFECT\r"))
+			} else {
+				delivery, err = client.Resize(canceled, 31, 101)
+				_, e := client.Write(live, []byte("RESIZE_OBSERVER\r"))
+				if e != nil {
+					t.Fatal(e)
+				}
+			}
+			t.Logf("already canceled %s result=%+v error=%v", op, delivery, err)
+			if !errors.Is(err, context.Canceled) {
+				t.Errorf("canceled control did not refuse: %+v %v", delivery, err)
+			}
+			if delivery.Dispatched || delivery.Receipt != nil {
+				t.Errorf("pre-canceled control admitted dispatch: %+v", delivery)
+			}
+			if op == "write" {
+				// Give the real user fixture a bounded observation interval.
+				until := time.Now().Add(750 * time.Millisecond)
+				for time.Now().Before(until) {
+					mu.Lock()
+					observed := strings.Contains(output.String(), "INPUT CANCELED_CONTROL_EFFECT")
+					mu.Unlock()
+					if observed {
+						break
+					}
+					time.Sleep(5 * time.Millisecond)
+				}
+				client.Stop()
+			}
+			final, waitErr := client.Wait(live)
+			if !final.CleanupComplete {
+				t.Fatalf("join %+v %v", final, waitErr)
+			}
+			mu.Lock()
+			captured := output.String()
+			mu.Unlock()
+			t.Logf("actual native output=%q final=%+v", captured, final)
+			if op == "write" && strings.Contains(captured, "INPUT CANCELED_CONTROL_EFFECT") {
+				t.Error("pre-canceled input reached the real user process")
+			}
+			if op == "resize" && strings.Contains(captured, "SIZE 101 31") {
+				t.Error("pre-canceled resize changed the real pseudoconsole geometry")
+			}
+		})
+	}
+}
+
+func TestReviewWindowsCanceledInflightDelivery(t *testing.T) {
+	s := windowsSpec(t)
+	s.Environment = os.Environ()
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Executable = exe
+	s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+	config := WindowsConfig{SessionID: 702, Spec: s, Image: exe, Output: func(api.OutputStream, []byte) {}}
+	if _, embedded, e := MachineRoute(); e != nil {
+		t.Fatal(e)
+	} else if embedded {
+		config.Extraction = extractedNativeFixture(t)
+		config.Image = config.Extraction.Path()
+	}
+	live, cancelLive := context.WithTimeout(context.Background(), 12*time.Second)
+	defer cancelLive()
+	client, started, err := StartWindows(live, config)
+	if err != nil || !started.Established {
+		t.Fatalf("start %+v %v", started, err)
+	}
+	defer func() {
+		client.Stop()
+		final, e := client.Wait(live)
+		if !final.CleanupComplete {
+			t.Errorf("cleanup %+v %v", final, e)
+		}
+	}()
+	data := bytes.Repeat([]byte{'A'}, MaxFrame-headerSize)
+	first, err := client.Write(live, data)
+	if err != nil || first.Delivered != uint32(len(data)) {
+		t.Fatalf("fill %+v %v", first, err)
+	}
+	short, cancelShort := context.WithTimeout(context.Background(), 75*time.Millisecond)
+	defer cancelShort()
+	returned, err := client.Write(short, data)
+	if !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("expected blocked write deadline: %+v %v", returned, err)
+	}
+	if !returned.Dispatched || returned.Completed || returned.Receipt == nil {
+		t.Fatalf("post-send timeout lost observation owner: %+v %v", returned, err)
+	}
+	client.pendingMu.Lock()
+	count := len(client.pending)
+	client.pendingMu.Unlock()
+	if count != 1 {
+		t.Fatalf("expected one retained in-flight request, got %d", count)
+	}
+	client.Stop()
+	final, waitErr := client.Wait(live)
+	if !final.CleanupComplete {
+		t.Fatalf("join %+v %v", final, waitErr)
+	}
+	actual, actualErr := returned.Receipt.Wait(live)
+	if !actual.Dispatched || !actual.Completed || !errors.Is(actualErr, io.ErrShortWrite) {
+		t.Fatalf("missing known native completion: %+v %v", actual, actualErr)
+	}
+	var observers sync.WaitGroup
+	for n := 0; n < 16; n++ {
+		observers.Add(1)
+		go func() {
+			defer observers.Done()
+			again, e := returned.Receipt.Wait(short)
+			if again != actual || !errors.Is(e, io.ErrShortWrite) {
+				t.Errorf("repeated canceled observer lost known reply: %+v %v", again, e)
+			}
+		}()
+	}
+	observers.Wait()
+	client.pendingMu.Lock()
+	left := len(client.pending)
+	client.pendingMu.Unlock()
+	t.Logf("canceled return=%+v error=%v; returned receipt reply=%+v error=%v; final=%+v waitError=%v pendingAfterObservation=%d", returned, err, actual, actualErr, final, waitErr, left)
+	if actual.Accepted != uint32(len(data)) || actual.Delivered >= actual.Accepted {
+		t.Fatalf("fixture did not establish native partial delivery: %+v %v", actual, actualErr)
+	}
+	if left != 0 {
+		t.Error("terminal receipt observation did not retire ownership")
+	}
+}
+
+func TestReviewWindowsFailureClassification(t *testing.T) {
+	observations := make(map[string]string)
+	for _, mode := range []string{"missing-executable", "stale-cwd"} {
+		s := windowsSpec(t)
+		s.Environment = os.Environ()
+		exe, err := os.Executable()
+		if err != nil {
+			t.Fatal(err)
+		}
+		s.Executable = exe
+		s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+		if mode == "missing-executable" {
+			s.Executable = s.RootLocator + `\absent-review-fixture.exe`
+		} else {
+			s.RootIdentity = windowsSpec(t).RootIdentity
+		}
+		config := WindowsConfig{SessionID: 703, Spec: s, Image: exe, Output: func(api.OutputStream, []byte) {}}
+		if _, embedded, e := MachineRoute(); e != nil {
+			t.Fatal(e)
+		} else if embedded {
+			config.Extraction = extractedNativeFixture(t)
+			config.Image = config.Extraction.Path()
+		}
+		live, cancelLive := context.WithTimeout(context.Background(), 12*time.Second)
+		client, started, startErr := StartWindows(live, config)
+		if client == nil || startErr == nil || started.Established {
+			cancelLive()
+			t.Fatalf("unexpected refusal %+v %v", started, startErr)
+		}
+		final, waitErr := client.Wait(live)
+		cancelLive()
+		if !final.CleanupComplete {
+			t.Fatalf("join %+v %v", final, waitErr)
+		}
+		observations[mode] = startErr.Error()
+		var failure *WindowsFailure
+		if !errors.As(startErr, &failure) {
+			t.Fatalf("untyped failure: %v", startErr)
+		}
+		if mode == "stale-cwd" && (!errors.Is(startErr, ErrCwd) || failure.Cause != WindowsCwdFailure || failure.Stage != api.CwdAcquisition || failure.Cleanup) {
+			t.Fatalf("stale classification: %+v", failure)
+		}
+		if mode == "missing-executable" && (!errors.Is(startErr, os.ErrNotExist) || failure.Cause != WindowsNotFoundFailure || failure.Stage != api.ProcessContainment || failure.Cleanup) {
+			t.Fatalf("missing classification: %+v", failure)
+		}
+		t.Logf("%s error=%T(%v) ErrCwd=%v os.ErrNotExist=%v final=%+v", mode, startErr, startErr, errors.Is(startErr, ErrCwd), errors.Is(startErr, os.ErrNotExist), final)
+	}
+	if observations["missing-executable"] == observations["stale-cwd"] {
+		t.Error("native refusal causes with different contract meanings collapse into one untyped error")
+	}
+}

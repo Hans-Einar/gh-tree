@@ -1,0 +1,39 @@
+{
+  "sourceCommit": "6decc16a952dad45a07e7e35ea01a11e5df32c00",
+  "command": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "test",
+    "-race",
+    "-overlay",
+    "C:\\Users\\hanse\\AppData\\Local\\Temp\\m69-review-overlay-sec4p38q\\overlay.json",
+    "./internal/runtime/broker",
+    "-run",
+    "^TestReviewWindows",
+    "-count=1",
+    "-timeout=120s",
+    "-v"
+  ],
+  "GOARCH": "amd64",
+  "CGO_ENABLED": "1",
+  "exitCode": 0,
+  "testSHA256": "e86d65bd27380eeb5fa377690a5a4f490c3653018190845bcc50ad0d1c665330"
+}
+=== RUN   TestReviewWindowsCanceledControls
+=== RUN   TestReviewWindowsCanceledControls/write
+    reviewer_controls_windows_test.go:66: already canceled write result={Accepted:0 Delivered:0 Completed:false Dispatched:false Receipt:<nil>} error=context canceled
+    reviewer_controls_windows_test.go:94: actual native output="\x1b[?9001h\x1b[?1004h\x1b[?25l\x1b[2J\x1b[m\x1b[HFIXTURE_READY {\"Cwd\":\"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\TestReviewWindowsCanceledControlswrite786315959\\\\001\",\"Args\":[],\"PID\":42536}\r\n\x1b]0;C:\\Users\\hanse\\AppData\\Local\\Temp\\go-build2104031433\\b001\\broker.test.exe\a\x1b[?25h\x1b[?9001l\x1b[?1004l" final={Architecture:{NativeMachine:34404 ProcessMachine:0 ImageMachine:34404 InitialBreakpoint:2147483651} Established:true RootExited:true ExitCode:36 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]}
+=== RUN   TestReviewWindowsCanceledControls/resize
+    reviewer_controls_windows_test.go:66: already canceled resize result={Accepted:0 Delivered:0 Completed:false Dispatched:false Receipt:<nil>} error=context canceled
+    reviewer_controls_windows_test.go:94: actual native output="\x1b[?9001h\x1b[?1004h\x1b[?25l\x1b[2J\x1b[m\x1b[HFIXTURE_READY {\"Cwd\":\"C:\\\\Users\\\\hanse\\\\AppData\\\\Local\\\\Temp\\\\TestReviewWindowsCanceledControlsresize4056415932\\\\001\",\"Args\":[],\"PID\":47220}\r\n\x1b]0;C:\\Users\\hanse\\AppData\\Local\\Temp\\go-build2104031433\\b001\\broker.test.exe\a\x1b[?25hRESIZE_OBSERVER\r\nINPUT RESIZE_OBSERVER SIZE 80 24\r\n\x1b[?9001l\x1b[?1004l" final={Architecture:{NativeMachine:34404 ProcessMachine:0 ImageMachine:34404 InitialBreakpoint:2147483651} Established:true RootExited:true ExitCode:0 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]}
+--- PASS: TestReviewWindowsCanceledControls (1.91s)
+    --- PASS: TestReviewWindowsCanceledControls/write (0.82s)
+    --- PASS: TestReviewWindowsCanceledControls/resize (1.10s)
+=== RUN   TestReviewWindowsCanceledInflightDelivery
+    reviewer_controls_windows_test.go:178: canceled return={Accepted:0 Delivered:0 Completed:false Dispatched:true Receipt:0xc00008e3c0} error=context deadline exceeded; returned receipt reply={Accepted:65484 Delivered:0 Completed:true Dispatched:true Receipt:0xc00008e3c0} error=short write; final={Architecture:{NativeMachine:34404 ProcessMachine:0 ImageMachine:34404 InitialBreakpoint:2147483651} Established:true RootExited:true ExitCode:1 Quiescent:true CleanupComplete:true Err:<nil> Residuals:[]} waitError=<nil> pendingAfterObservation=0
+--- PASS: TestReviewWindowsCanceledInflightDelivery (0.14s)
+=== RUN   TestReviewWindowsFailureClassification
+    reviewer_controls_windows_test.go:232: missing-executable error=*errors.joinError(Windows runtime not found at process containment) ErrCwd=false os.ErrNotExist=true final={Architecture:{NativeMachine:0 ProcessMachine:0 ImageMachine:0 InitialBreakpoint:0} Established:false RootExited:false ExitCode:0 Quiescent:false CleanupComplete:true Err:Windows runtime not found at process containment Residuals:[]}
+    reviewer_controls_windows_test.go:232: stale-cwd error=*errors.joinError(Windows runtime stale cwd at cwd acquisition) ErrCwd=true os.ErrNotExist=false final={Architecture:{NativeMachine:0 ProcessMachine:0 ImageMachine:0 InitialBreakpoint:0} Established:false RootExited:false ExitCode:0 Quiescent:false CleanupComplete:true Err:Windows runtime stale cwd at cwd acquisition Residuals:[]}
+--- PASS: TestReviewWindowsFailureClassification (0.06s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime/broker	3.741s

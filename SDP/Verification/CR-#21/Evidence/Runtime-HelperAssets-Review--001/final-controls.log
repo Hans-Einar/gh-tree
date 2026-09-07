@@ -1,0 +1,61 @@
+=== RUN   TestReviewerInputSetAcceptanceBoundary
+=== RUN   TestReviewerInputSetAcceptanceBoundary/after-selection/amd64
+    reviewer_acceptance_test.go:61: generator rejected image acceptance; close joined requests and retained invalidation
+=== RUN   TestReviewerInputSetAcceptanceBoundary/after-selection/arm64
+    reviewer_acceptance_test.go:61: generator rejected image acceptance; close joined requests and retained invalidation
+=== RUN   TestReviewerInputSetAcceptanceBoundary/after-child-start/amd64
+    reviewer_acceptance_test.go:52: actual compiler output amd64 contains unrecorded marker, SHA256=4b964acb5df62236c887f1356ef86069296bd45d2b742f0aa80443a82825fa3e
+    reviewer_acceptance_test.go:61: generator rejected image acceptance; close joined requests and retained invalidation
+=== RUN   TestReviewerInputSetAcceptanceBoundary/after-child-start/arm64
+    reviewer_acceptance_test.go:52: actual compiler output arm64 contains unrecorded marker, SHA256=ad5dcdebd3b38c83fc8e254f8cdf246c1a6cbdd4042a93e55bfa50a0cc7a9706
+    reviewer_acceptance_test.go:61: generator rejected image acceptance; close joined requests and retained invalidation
+--- PASS: TestReviewerInputSetAcceptanceBoundary (25.25s)
+    --- PASS: TestReviewerInputSetAcceptanceBoundary/after-selection/amd64 (4.59s)
+    --- PASS: TestReviewerInputSetAcceptanceBoundary/after-selection/arm64 (3.66s)
+    --- PASS: TestReviewerInputSetAcceptanceBoundary/after-child-start/amd64 (7.97s)
+    --- PASS: TestReviewerInputSetAcceptanceBoundary/after-child-start/arm64 (7.64s)
+=== RUN   TestReviewerCompletedNameChangesCannotCancelCleanly
+    reviewer_acceptance_test.go:80: all 64 completed insertion/removal pairs remained invalid through cancellation/join
+--- PASS: TestReviewerCompletedNameChangesCannotCancelCleanly (0.01s)
+=== RUN   TestBuildConsumesCapturedModuleAndToolchain
+    snapshot_test.go:94: amd64 repeated image=2d0996242cfe17fe7a16500ffab06816442eeeadd60f2c2ee4d74684de768ca3; captured module bytes retained despite live module/compiler/source replacement
+    snapshot_test.go:94: arm64 repeated image=9e349bf572340b2c16ec97a5eb25db3901671080d9095f9ba266a4bd503e4fc4; captured module bytes retained despite live module/compiler/source replacement
+--- PASS: TestBuildConsumesCapturedModuleAndToolchain (26.65s)
+=== RUN   TestDirectoryWatchReadProbe
+=== RUN   TestDirectoryWatchReadProbe/stat-child
+=== RUN   TestDirectoryWatchReadProbe/read-self
+=== RUN   TestDirectoryWatchReadProbe/read-child
+=== RUN   TestDirectoryWatchReadProbe/open-child
+=== RUN   TestDirectoryWatchReadProbe/read-file
+--- PASS: TestDirectoryWatchReadProbe (0.01s)
+    --- PASS: TestDirectoryWatchReadProbe/stat-child (0.00s)
+    --- PASS: TestDirectoryWatchReadProbe/read-self (0.00s)
+    --- PASS: TestDirectoryWatchReadProbe/read-child (0.00s)
+    --- PASS: TestDirectoryWatchReadProbe/open-child (0.00s)
+    --- PASS: TestDirectoryWatchReadProbe/read-file (0.01s)
+=== RUN   TestDirectoryChangeGuardReleaseOverflowAndRefusal
+=== RUN   TestDirectoryChangeGuardReleaseOverflowAndRefusal/unchanged
+=== RUN   TestDirectoryChangeGuardReleaseOverflowAndRefusal/overflow
+=== RUN   TestDirectoryChangeGuardReleaseOverflowAndRefusal/unexpected-cancel
+=== RUN   TestDirectoryChangeGuardReleaseOverflowAndRefusal/unsupported
+--- PASS: TestDirectoryChangeGuardReleaseOverflowAndRefusal (0.01s)
+    --- PASS: TestDirectoryChangeGuardReleaseOverflowAndRefusal/unchanged (0.00s)
+    --- PASS: TestDirectoryChangeGuardReleaseOverflowAndRefusal/overflow (0.00s)
+    --- PASS: TestDirectoryChangeGuardReleaseOverflowAndRefusal/unexpected-cancel (0.00s)
+    --- PASS: TestDirectoryChangeGuardReleaseOverflowAndRefusal/unsupported (0.00s)
+=== RUN   TestPartialDirectoryWatchAcquisitionUnwinds
+--- PASS: TestPartialDirectoryWatchAcquisitionUnwinds (0.00s)
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild/source
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild/embed
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild/hardlink
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild/rename
+=== RUN   TestPostSelectionInputSetChangesRefuseActualBuild/prior-handle
+--- PASS: TestPostSelectionInputSetChangesRefuseActualBuild (28.12s)
+    --- PASS: TestPostSelectionInputSetChangesRefuseActualBuild/source (7.27s)
+    --- PASS: TestPostSelectionInputSetChangesRefuseActualBuild/embed (7.34s)
+    --- PASS: TestPostSelectionInputSetChangesRefuseActualBuild/hardlink (3.89s)
+    --- PASS: TestPostSelectionInputSetChangesRefuseActualBuild/rename (4.14s)
+    --- PASS: TestPostSelectionInputSetChangesRefuseActualBuild/prior-handle (4.13s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen	80.613s

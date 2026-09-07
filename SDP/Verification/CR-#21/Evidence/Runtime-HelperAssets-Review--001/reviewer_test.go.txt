@@ -1,0 +1,67 @@
+package main
+
+import (
+    "bytes"
+    "os"
+    "path/filepath"
+    "strings"
+    "testing"
+)
+
+const reviewerBase = "C:/Users/hanse/.codex/tmp/cr21-helper-review-001"
+
+func TestReviewerCachePinIntegrity(t *testing.T) {
+    root := filepath.Join(reviewerBase,"forged","source")
+    t.Setenv("GOMODCACHE",filepath.Join(reviewerBase,"forged","modcache"))
+    if e := admit(root); e != nil { t.Fatalf("admit rejected cache: %v",e) }
+    p,e := capture(root)
+    if e != nil {
+        if !strings.Contains(e.Error(),"checksum mismatch") {t.Fatal(e)}
+        t.Logf("POSITIVE: capture refused a forged cached sum against checked-in go.sum: %v",e)
+        return
+    }
+    sums,e := os.ReadFile(filepath.Join(root,"go.sum")); if e != nil { t.Fatal(e) }
+    for _,m := range p.manifest.Modules {
+        if m.Main {continue}
+        pinned := strings.Contains(string(sums),m.Path+" "+m.Version+" "+m.Sum+"\n")
+        t.Logf("admit=SUCCESS module=%s recordedSum=%s matchesCheckedInGoSum=%v",m.Path,m.Sum,pinned)
+        if !pinned { t.Errorf("FINDING: verified module provenance is not pinned by go.sum") }
+    }
+}
+
+func TestReviewerJunctionClosure(t *testing.T) {
+    link := filepath.Join(reviewerBase,"go-link")
+    name := filepath.Join(link,"src","internal","goarch","goarch.go")
+    if _,e:=os.Stat(name); e != nil {t.Fatal(e)}
+    got,e:=contained(filepath.Join(link,"src"),name)
+    t.Logf("existing file through canonical GOROOT junction: contained=%q error=%v",got,e)
+    if e != nil {t.Errorf("FINDING: canonical toolchain junction refuses existing source")}
+}
+
+func TestReviewerLiveModuleBuildInputs(t *testing.T) {
+    root := filepath.Join(reviewerBase,"pinned","source")
+    cache := filepath.Join(reviewerBase,"pinned","modcache")
+    t.Setenv("GOMODCACHE",cache)
+    if e := admit(root); e != nil { t.Fatal(e) }
+    p,e := capture(root); if e != nil {t.Fatal(e)}
+    file := filepath.Join(cache,"example.com/helperfixture@v1.0.0/value.go")
+    original,e := os.ReadFile(file); if e != nil {t.Fatal(e)}
+    changed := bytes.ReplaceAll(original,[]byte("REVIEW_ORIGINAL_MODULE_BYTES_111111"),[]byte("REVIEW_CHANGED_MODULE_BYTES_222222"))
+    if e := os.WriteFile(file,changed,0600); e != nil {t.Fatal(e)}
+    defer os.WriteFile(file,original,0600)
+    first,e := build(p); if e != nil {t.Fatal(e)}
+    second,e := build(p); if e != nil {t.Fatal(e)}
+    if e := os.WriteFile(file,original,0600); e != nil {t.Fatal(e)}
+    after,e := capture(root); if e != nil {t.Fatal(e)}
+    sameManifest := bytes.Equal(jsonBytes(p.manifest),jsonBytes(after.manifest))
+    t.Logf("before/after source provenance identical=%v",sameManifest)
+    if !sameManifest {t.Fatal("control did not restore exact closure")}
+    for _,arch := range arches {
+        same := bytes.Equal(first[arch],second[arch])
+        foreign := bytes.Contains(first[arch],[]byte("REVIEW_CHANGED_MODULE_BYTES_222222"))
+        t.Logf("arch=%s independent images match=%v builtUnrecordedModuleBytes=%v imageSHA=%s",arch,same,foreign,hash(first[arch]))
+        if !same || !foreign {t.Fatal("control did not expose live module consumption")}
+    }
+    _,e=outputs(p,first); if e != nil {t.Fatal(e)}
+    t.Errorf("FINDING: both clean builds consumed live module bytes absent from their accepted provenance")
+}

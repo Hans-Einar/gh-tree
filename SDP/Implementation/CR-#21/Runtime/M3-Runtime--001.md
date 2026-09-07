@@ -590,3 +590,22 @@ This author makes no source acceptance, full #65/M3/Slice/PR/main/release claim.
 No shared interface, Windows/helper/root Runtime/frozen document changes; no
 pending product edit, merge, unpushed commit or owned native process is left.
 Local owned test binaries/logs/directories remain at the explicit paths above.
+
+## Master native-component integration
+
+Master combines accepted Unix/shared review f85294d with accepted Windows/helper/
+committed-image binding review f926195f. All product changes come from those
+reviewed histories; no manual native, generator, loader or public contract change.
+Shared protocol/start and the Windows selected helper closure remain unchanged.
+
+Exact prepared merge checks: native Windows race tests PASS (root10.180s,
+broker50.134s, assets19.952s); all12 architecture selections PASS; Runtime vet
+PASS; helper -check independently reproduces both targets twice with unchanged
+955-input digest23bf82b051123cd1aa31c5a2368d1cc732f4b09cbc33ea2c9abf4f08f0cfdde5.
+No generated assets were rewritten by verification. Exact committed-head native
+CI is the next integration gate.
+
+This integrates native components on the Runtime layer branch only. Common
+Sessions corrections/production bridges/constructor remain #71 work; no complete
+#65/Runtime/Slice or canonical program integration is claimed. The program
+CurrentIndex/Handoff on codereview-21/refactor records the resolved merge SHA.
