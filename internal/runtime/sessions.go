@@ -169,10 +169,10 @@ func (r *sessions) Start(ctx context.Context, req api.SessionStartRequest) (api.
 	if ctx == nil || !req.Valid() {
 		return refusedStart(errInvalid, false)
 	}
-	return r.start(ctx, req, nil, api.None[domain.SessionID]())
+	return r.start(ctx, req, nil, nil)
 }
 
-func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, environment []string, predecessor api.Optional[domain.SessionID]) (api.SessionStartResult, error) {
+func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, environment []string, predecessor *session) (api.SessionStartResult, error) {
 	r.admission.Lock()
 	// Deduplication lives with the bounded retained records. Evicted IDs/keys do
 	// not become authority to resurrect an old transition.
@@ -180,7 +180,7 @@ func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, envir
 	for _, old := range r.registry.sessions {
 		old.mu.Lock()
 		same := old.start.Data().OperationID == req.Data().OperationID
-		collision := old.restart != nil && old.restart.request.Data().OperationID == req.Data().OperationID && !predecessor.Present()
+		collision := old.restart != nil && old.restart.request.Data().OperationID == req.Data().OperationID && predecessor == nil
 		old.mu.Unlock()
 		if same || collision {
 			r.registry.mu.Unlock()
@@ -200,18 +200,17 @@ func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, envir
 		r.admission.Unlock()
 		return refusedStart(err, ctx.Err() != nil)
 	}
-	s, err := r.registry.admit(ctx, req, env, display, caps, predecessor)
-	if err == nil {
-		if oldID, present := predecessor.Value(); present {
-			old, lookupErr := r.registry.lookup(oldID)
-			if lookupErr == nil {
-				old.mu.Lock()
-				if old.restart != nil {
-					old.restart.replacement = s
-				}
-				old.mu.Unlock()
-			}
-		}
+	restartOf := api.None[domain.SessionID]()
+	if predecessor != nil {
+		predecessor.mu.Lock()
+		restartOf = api.Some(predecessor.snapshot.Data().SessionID)
+		predecessor.mu.Unlock()
+	}
+	s, err := r.registry.admit(ctx, req, env, display, caps, restartOf)
+	if err == nil && predecessor != nil {
+		predecessor.mu.Lock()
+		predecessor.restart.replacement = s
+		predecessor.mu.Unlock()
 	}
 	r.admission.Unlock()
 	if err != nil {

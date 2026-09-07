@@ -23,6 +23,12 @@ func (r *sessions) Stop(ctx context.Context, request api.SessionStopRequest) (ap
 	if err != nil {
 		return api.SessionStopResult{}, err
 	}
+	return r.stop(ctx, s)
+}
+
+// A lifecycle transition owns its admitted subject even after cleaned history
+// evicts the public ID. Never resolve that subject again during the transition.
+func (r *sessions) stop(ctx context.Context, s *session) (api.SessionStopResult, error) {
 	s.mu.Lock()
 	supported := s.snapshot.Data().Capabilities.Data().TreeStop
 	s.mu.Unlock()
@@ -42,7 +48,7 @@ func (r *sessions) Stop(ctx context.Context, request api.SessionStopRequest) (ap
 	}
 	wait, cancel := context.WithTimeout(ctx, r.budgets.grace+r.budgets.force)
 	defer cancel()
-	err = r.waitCleanup(wait, s)
+	err := r.waitCleanup(wait, s)
 	return s.stopResult(ctx.Err() != nil), err
 }
 
@@ -128,7 +134,7 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 	r.registry.mu.Unlock()
 	r.admission.Unlock()
 	go func() {
-		old, err := r.Stop(ctx, owned(api.NewSessionStopRequest(api.SessionStopRequestData{OperationID: d.OperationID, SessionID: d.SessionID})))
+		old, err := r.stop(ctx, s)
 		result := api.SessionRestartResultData{Old: old, CancellationAsked: ctx.Err() != nil}
 		if err == nil {
 			err = ctx.Err()
@@ -144,7 +150,7 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 			}
 			inv.Geometry = geometry
 			req := owned(api.NewSessionStartRequest(api.SessionStartRequestData{OperationID: d.OperationID, Invocation: owned(api.NewInvocation(inv))}))
-			replacement, startErr := r.start(ctx, req, env, api.Some(d.SessionID))
+			replacement, startErr := r.start(ctx, req, env, s)
 			err = startErr
 			if replacement.Data().Session.Present() {
 				result.Replacement = api.Some(replacement)
