@@ -1,0 +1,88 @@
+uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+=== RUN   TestNativeRejectsNamedAndUnlinkedDirectionalFIFO
+--- PASS: TestNativeRejectsNamedAndUnlinkedDirectionalFIFO (0.00s)
+=== RUN   TestNativeRejectsReversedAnonymousPipeDirection
+--- PASS: TestNativeRejectsReversedAnonymousPipeDirection (0.00s)
+=== RUN   TestNativeAnonymousPipeEndpointProfile
+    endpoints_unix_test.go:27: native pipe write=false access=0 fstatfs=<nil>
+    endpoints_unix_test.go:27: native pipe write=true access=1 fstatfs=<nil>
+--- PASS: TestNativeAnonymousPipeEndpointProfile (0.01s)
+=== RUN   TestReviewRejectsNamedAndUnlinkedDirectionalFIFO
+--- PASS: TestReviewRejectsNamedAndUnlinkedDirectionalFIFO (0.00s)
+=== RUN   TestReviewNaturalExitUsesConstructionBudgets
+    reviewer_unix_test.go:59: eventual cleanup: elapsed=92.597627ms complete=true residuals=0 err=<nil>
+--- PASS: TestReviewNaturalExitUsesConstructionBudgets (0.09s)
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/truncated
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/shared-without-periods
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/oversized
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-too-short
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-too-short
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-too-long
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-overflow
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/trailing
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/version
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-too-long
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-overflow
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-zero
+=== RUN   TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-zero
+--- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/truncated (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/shared-without-periods (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/oversized (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-too-short (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-too-short (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-too-long (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-overflow (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/trailing (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/version (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-too-long (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-overflow (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/grace-zero (0.00s)
+    --- PASS: TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration/force-zero (0.00s)
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/truncated
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/trailing
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/shared-without-periods
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/version
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/grace-zero
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/force-zero
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/grace-too-short
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/force-too-short
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/grace-too-long
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/force-too-long
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/grace-overflow
+=== RUN   TestNativeUnixMalformedStartupNeverExecutesUser/force-overflow
+--- PASS: TestNativeUnixMalformedStartupNeverExecutesUser (0.02s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/truncated (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/trailing (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/shared-without-periods (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/version (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/grace-zero (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/force-zero (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/grace-too-short (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/force-too-short (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/grace-too-long (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/force-too-long (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/grace-overflow (0.00s)
+    --- PASS: TestNativeUnixMalformedStartupNeverExecutesUser/force-overflow (0.00s)
+=== RUN   TestNativeUnixNaturalRootExitUsesConstructionPeriods
+=== RUN   TestNativeUnixNaturalRootExitUsesConstructionPeriods/injected
+    start_unix_test.go:195: natural root-before-descendants injected cleanup=89.558948ms
+=== RUN   TestNativeUnixNaturalRootExitUsesConstructionPeriods/defaults
+    start_unix_test.go:195: natural root-before-descendants defaults cleanup=2.070850239s
+--- PASS: TestNativeUnixNaturalRootExitUsesConstructionPeriods (2.16s)
+    --- PASS: TestNativeUnixNaturalRootExitUsesConstructionPeriods/injected (0.09s)
+    --- PASS: TestNativeUnixNaturalRootExitUsesConstructionPeriods/defaults (2.07s)
+=== RUN   TestNativeUnixFailureAndControlEOFUseConstructionPeriods
+=== RUN   TestNativeUnixFailureAndControlEOFUseConstructionPeriods/early-eof
+    start_unix_test.go:266: early-eof cleanup owners joined in 35.370877ms; control residual retained
+=== RUN   TestNativeUnixFailureAndControlEOFUseConstructionPeriods/control-eof
+    start_unix_test.go:266: control-eof cleanup owners joined in 35.520141ms; control residual retained
+=== RUN   TestNativeUnixFailureAndControlEOFUseConstructionPeriods/invalid-command
+    start_unix_test.go:266: invalid-command cleanup owners joined in 35.358471ms; control residual retained
+--- PASS: TestNativeUnixFailureAndControlEOFUseConstructionPeriods (0.12s)
+    --- PASS: TestNativeUnixFailureAndControlEOFUseConstructionPeriods/early-eof (0.04s)
+    --- PASS: TestNativeUnixFailureAndControlEOFUseConstructionPeriods/control-eof (0.04s)
+    --- PASS: TestNativeUnixFailureAndControlEOFUseConstructionPeriods/invalid-command (0.04s)
+PASS

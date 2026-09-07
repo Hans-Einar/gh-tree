@@ -132,7 +132,7 @@ func startSupervisorFixture(t *testing.T, spec StartSpec) *supervisorFixture {
 	if err := controlWrite.SetWriteDeadline(time.Now().Add(3 * time.Second)); err != nil {
 		t.Fatal(err)
 	}
-	if err := f.channel.Send(Start, must(EncodeStart(spec))); err != nil {
+	if err := f.channel.Send(Start, must(encodeUnixStart(spec, 2*time.Second, 3*time.Second))); err != nil {
 		t.Fatal(err)
 	}
 	return f

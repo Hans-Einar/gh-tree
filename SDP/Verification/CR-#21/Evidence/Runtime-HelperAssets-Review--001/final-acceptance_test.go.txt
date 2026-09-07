@@ -1,0 +1,81 @@
+package main
+
+import (
+    "bytes"
+    "errors"
+    "net/url"
+    "os"
+    "os/exec"
+    "path/filepath"
+    "strings"
+    "testing"
+)
+
+// Bounded independent adaptation of the original H70-H01 file-set control.
+// The distinction is real compiler output versus the generator accepting it.
+func TestReviewerInputSetAcceptanceBoundary(t *testing.T) {
+    canonicalTest(t)
+    root,cache,proxy:=moduleFixture(t)
+    u:=url.URL{Scheme:"file",Path:"/"+filepath.ToSlash(proxy)}
+    t.Setenv("GOMODCACHE",cache)
+    t.Setenv("GOPROXY",u.String())
+    t.Setenv("GOSUMDB","off")
+    if err:=admit(root);err!=nil{t.Fatal(err)}
+    p,err:=capture(root);if err!=nil{t.Fatal(err)}
+    const marker="REVIEW_REJECT_AFTER_REAL_COMPILATION_555555"
+    for _,stage:=range []string{"after-selection","after-child-start"}{
+        for _,arch:=range arches{
+            t.Run(stage+"/"+arch,func(t *testing.T){
+                s,err:=materialize(p,t.TempDir());if err!=nil{t.Fatal(err)}
+                defer s.close()
+                if err:=s.verifySelection(p,arch);err!=nil{t.Fatal(err)}
+                source:=filepath.Join(s.root,"source")
+                if err:=os.Rename(source,filepath.Join(s.root,"renamed-source"));err==nil{t.Fatal("input-root path guard allowed rename")}
+                path:=filepath.Join(source,"internal","runtime","broker","cmd","unrecorded_windows.go")
+                content:=[]byte("package main\nimport \"fmt\"\nfunc init(){fmt.Print(\""+marker+"\")}\n")
+                insert:=func(){if err:=os.WriteFile(path,content,0600);err!=nil{t.Fatal(err)}}
+                out:=filepath.Join(s.root,arch+".exe")
+                args:=append([]string{"build"},buildFlags...)
+                args=append(args,"-o",out,entry)
+                if stage=="after-selection"{
+                    insert()
+                    if err:=os.Remove(path);err!=nil{t.Fatal(err)}
+                    _,err=s.command(arch,args...)
+                    if _,statErr:=os.Stat(out);!os.IsNotExist(statErr){t.Fatalf("invalidated pre-start build unexpectedly ran: %v",statErr)}
+                }else{
+                    started:=false
+                    _,err=s.commandAfterStart(arch,func(){started=true;insert()},args...)
+                    if !started{t.Fatal("did not start actual copied Go child")}
+                    b,readErr:=os.ReadFile(out);if readErr!=nil{t.Fatalf("real compiler did not produce image: %v",readErr)}
+                    if peErr:=validatePE(b,arch);peErr!=nil{t.Fatal(peErr)}
+                    if !bytes.Contains(b,[]byte(marker)){t.Fatal("insertion missed actual Go source consumption")}
+                    t.Logf("actual compiler output %s contains unrecorded marker, SHA256=%s",arch,hash(b))
+                    if err:=os.Remove(path);err!=nil{t.Fatal(err)}
+                }
+                var exitErr *exec.ExitError
+                if errors.As(err,&exitErr){t.Fatalf("compiler error is not guard evidence: %v",err)}
+                if err==nil || !strings.Contains(err.Error(),"input directory invalidated"){t.Fatalf("expected permanent input-set refusal, got %v",err)}
+                if closeErr:=s.close();closeErr==nil || !strings.Contains(closeErr.Error(),"invalidated"){t.Fatalf("release erased invalidation: %v",closeErr)}
+                if closeErr:=s.close();closeErr!=nil{t.Fatalf("idempotent release: %v",closeErr)}
+                if err:=os.Rename(source,filepath.Join(s.root,"released-source"));err!=nil{t.Fatalf("released path positive control: %v",err)}
+                t.Log("generator rejected image acceptance; close joined requests and retained invalidation")
+            })
+        }
+    }
+    after,err:=capture(root);if err!=nil{t.Fatal(err)}
+    if !bytes.Equal(jsonBytes(p.manifest),jsonBytes(after.manifest)){t.Fatal("outer source provenance changed")}
+}
+
+func TestReviewerCompletedNameChangesCannotCancelCleanly(t *testing.T){
+    root:=t.TempDir()
+    for i:=0;i<64;i++{
+        watch,err:=openDirectoryWatch(root);if err!=nil{t.Fatal(err)}
+        path:=filepath.Join(root,"temporary")
+        if err:=os.WriteFile(path,nil,0600);err!=nil{watch.close();t.Fatal(err)}
+        if err:=os.Remove(path);err!=nil{watch.close();t.Fatal(err)}
+        // Both native namespace operations complete BEFORE close/cancellation.
+        if err:=watch.close();err==nil || !strings.Contains(err.Error(),"invalidated"){t.Fatalf("completed change accepted at iteration %d: %v",i,err)}
+        if !watch.released{t.Fatal("request/handle ownership remained unreleased")}
+    }
+    t.Log("all 64 completed insertion/removal pairs remained invalid through cancellation/join")
+}

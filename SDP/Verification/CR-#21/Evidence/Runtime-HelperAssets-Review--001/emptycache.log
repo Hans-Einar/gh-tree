@@ -1,0 +1,4 @@
+helpergen: go mod verify: exit status 1
+go: github.com/aymanbagabas/go-osc52/v2@v2.0.1: module lookup disabled by GOPROXY=off
+
+exit status 1

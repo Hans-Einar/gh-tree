@@ -1,0 +1,27 @@
+{
+  "source": "e39ff4c72a4ec3f175d36f3c436ed3aa2a28030c",
+  "scopedProcesses": [],
+  "nativeExit": 0,
+  "buildCommand": "go test -overlay <original overlay.json> -c -o <temporary>/broker-confirmation.test ./internal/runtime/broker",
+  "disposition": "ACCEPT M65-I01 resolved; bounded census contribution only",
+  "ciRun": 34084970413,
+  "ciSource": "e39ff4c72a4ec3f175d36f3c436ed3aa2a28030c",
+  "nativeDirectory": "/tmp/gh-tree-census-confirm-q394y91h",
+  "nativeCommand": "setpriv --reuid=65534 --regid=65534 --clear-groups ./broker.test -test.v -test.run=^(TestReviewLinuxRetainedProcDisappearanceAndLivePeer|TestNativeLinuxCensusRetainedStatAfterExactExit|TestLinuxCensus.*|TestNativeUnixClientFailedStartPreservesTypedFacts)$ -test.count=1 -test.timeout=30s",
+  "files": [
+    {
+      "bytes": 4099,
+      "name": "linux-confirmation.log",
+      "sha256": "8e4a00f93930b3ef4347be98137e1bc2df2400c3220c316a267063ecff03b073"
+    },
+    {
+      "bytes": 2456,
+      "name": "review_census_linux_test.go.txt",
+      "sha256": "17eb7f1be97785c9ae91ce820cba0c3f33d94b04392327ecdaa4b75995434e33"
+    }
+  ],
+  "baseReview": "bf8df249b256aba54a89a86c6cce0986ebae73a0",
+  "ciAtReview": "in progress; integration gate remains Master-owned",
+  "binarySHA256": "3e84d32f2c98fb071d48b297a798ebbf95ce1d980e29c4aa15458a8b33b49267",
+  "builder": "Go1.25.0 windows/amd64, GOOS=linux GOARCH=amd64 CGO_ENABLED=0"
+}

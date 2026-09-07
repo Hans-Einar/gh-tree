@@ -1,0 +1,45 @@
+{
+  "head": "b9def1ff383bad3bcd2da53a1062eee93fae7255",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "toolchain": "go version go1.25.0 windows/amd64",
+  "checker": {
+    "exit": 0,
+    "seconds": 27.851
+  },
+  "noRewrite": {
+    "count": 76,
+    "sameFilesBytesLengthsMtimes": true
+  },
+  "manifest": {
+    "sha256": "03c9db1f329aa29a4d5b4c279dcc2fc17ac0cd42967d7b4527c2bef5c482a3e8",
+    "sourceDigest": "23bf82b051123cd1aa31c5a2368d1cc732f4b09cbc33ea2c9abf4f08f0cfdde5",
+    "sourceCount": 955,
+    "targets": [
+      {
+        "arch": "amd64",
+        "machine": 34404,
+        "length": 3612160,
+        "sha256": "bfdb8eb2ec496222b8033bbeca2331c319fd1a0cfcacb6bb7adf3e79c138781c",
+        "compressedLength": 2109197,
+        "compressedSHA256": "b62f559568d69b369ea5cf2ecef93d56f65ae0c5f3d03ab4241f7b64a447f44b",
+        "sourceDigest": "f49a6d8ed24f0d02ff40d559761612a1a7e5f1e3ba75f5ddca6cddec2c027f35"
+      },
+      {
+        "arch": "arm64",
+        "machine": 43620,
+        "length": 3422208,
+        "sha256": "617b7b8a06b5333e146af86a63d5c93f89548f98ab9ab240e9a6600aa34dc5bf",
+        "compressedLength": 1968006,
+        "compressedSHA256": "54ecab0a18d9ca2bc762cb75baf8e9d6e07190c1370efdd86df41d6206b032c7",
+        "sourceDigest": "f2d23b90b2595ea8b0bee24c8bc4f4b3e0751e9429500749c3f67fe537d27a57"
+      }
+    ]
+  },
+  "repositorySourceEntriesVerified": 56,
+  "nativeBinding": {
+    "exit": 0,
+    "seconds": 9.999
+  },
+  "sourceStillUnchanged": true,
+  "recipeSourceEntriesVerified": 13
+}

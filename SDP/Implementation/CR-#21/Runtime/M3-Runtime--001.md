@@ -1,6 +1,6 @@
 # M3 Runtime contribution — #65
 
-State: UNIX NATIVE REVIEW CANDIDATE / #65 OVERALL INCOMPLETE / NOT ACCEPTED
+State: LINUX CENSUS CORRECTION CANDIDATE / NATIVE INTEGRATION GATE PENDING / #65 INCOMPLETE
 
 Parent: #21; worker authority: #65. Branch: `codereview-21/layer-runtime`.
 Worktree: `C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation`.
@@ -484,3 +484,265 @@ remains pending. Prior full source/native/race results do not substitute for it.
 No native/resource correctness limitation is hidden as a passing skip. Parent
 composition/private dispatch, Windows/image integration, complete public lifecycle
 and full Slice/M3/native-release proof remain gated outside this isolated candidate.
+
+## Independent review corrections: M65-U01 / M65-U02
+
+Fresh bounded correction author: `m3_runtime_unix_fix`; Master dispatch
+`9ec0729af545ca5d637d4486e6c4d24cad302218`, ledger90. Base `c3f23b89610a8695125fcd881711a929c7828374`
+preserves the independent CHANGES_REQUIRED report and native negatives for technical
+`fe4fd4266d3798132d4cca15ce54dc991ad147b1`. Those findings/evidence are unchanged.
+Ownership now excludes root Runtime/#71, Windows/#69, helpers/assets/#70 and the
+shared protocol/start interfaces; only Unix broker source/tests and this report.
+
+U01 milestone adds actual anonymous-object admission beyond FIFO type/direction.
+Linux requires the internal PIPEFS_MAGIC superblock; filesystem FIFOs retain their
+filesystem even after unlink. Darwin requires the DTYPE_PIPE non-vnode fstatfs
+profile (EINVAL), after separate type and direction checks. FreeBSD's existing
+duplex anonymous profile remains intact. Native positive controls verify pollable
+read deadline and close-on-exec; Linux/Darwin controls reject reversed direction
+and all linked/unlinked named read/write endpoints.
+
+Primary source profiles inspected at Linux
+[df290809 fs/pipe.c](https://github.com/torvalds/linux/blob/df2908090cda368b01ff43709f51890076c56157/fs/pipe.c)
+and XNU [f6217f89 sys_pipe.c](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/sys_pipe.c),
+[file_vnode](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_descrip.c)
+and [fstatfs64](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/vfs/vfs_syscalls.c).
+No pathname/link-count heuristic or signal authority change is used.
+
+U01 targeted local native controls PASS as UID/GID65534 in owned WSL openSUSE
+ext4 `/tmp/gh-tree-unix-fix-u01.BefF1c`: anonymous/linked/unlinked/direction,
+private marker refusal and twelve repeated pipe/PTY cycles (102 owned descriptors
+closed, process fd6→6 and goroutine2→2). Windows Go1.25.0 CGO0 Linux-amd64 and
+Darwin-arm64 test binaries compile. These are not Darwin execution evidence;
+exact new-head macOS/FreeBSD/race CI and independent confirmation remain required.
+U01 exact source `73864e06ab60988b236f5ad3cfea851e72bc485e` passed all six
+native/race jobs in [CI34075705340](https://github.com/Hans-Einar/gh-tree/actions/runs/34075705340),
+including macOS101601241951 and FreeBSD101601241960. The missing broker/cmd
+inventory failure and dependent skips remain explicit separate #69/#70 gates.
+
+U02 adds `start_unix.go`: a versioned Unix-only 17-byte prefix carries both
+validated effective nanosecond periods with the unchanged bounded StartSpec.
+The supervisor binds them before cwd/user acquisition or any cleanup path.
+Zero construction values still select2s/3s; private zero, negative/overflow,
+out-of-range, old/no-period, unknown version, truncated/trailing/oversized inputs
+refuse. The total frame cap includes the prefix. Stop/Abort remain intent only;
+nonempty control payloads cannot change the immutable construction periods.
+No shared `protocol.go`/`start.go`, Windows/helper source or exported Unix client
+signature changed. #71 supplies the same UnixConfig and consumes the same facts.
+
+Actual UID/GID65534 Linux full broker suite PASS in owned ext4
+`/tmp/gh-tree-unix-fix-u02.FjaIWF`: natural root exits before retained ignoring-TERM
+child/grandchild with20ms/200ms clean in102ms; production zero/default construction
+cleans in2.097s with effective2s/3s. Early post-Start EOF, established control EOF
+and invalid command teardown join in42–56ms with control residuals retained and
+no live owned SID members. No premature Stop occurs in these measurements;
+the full owner is always joined. Twelve malformed native startup cases return131
+without user marker execution, and invalid construction acquires no owner.
+The first new frame-limit test miscomputed its fixture payload length; it failed,
+was corrected, and the full suite then passed. Existing negative review evidence
+is preserved. Local logs/build outputs remain outside Git under
+`C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907`.
+
+All nine Unix CGO0 broker test-binary selections, Linux-selected vet and staged
+Linux architecture PASS. These compilation gates are separate from native proof.
+New U02 exact-source hosted native/race CI and the existing independent reviewer's
+bounded confirmation remain required before Master considers integration.
+
+U02 product source `4df4385fbb2481a0c0007dbfd489c93e15f3170c` passed hosted
+Linux/race/macOS. CI34076032397 FreeBSD101602203714 failed the new malformed-start
+fixture: it closed its writer immediately after sending, racing endpoint/poller
+admission and receiving130 before the required131 decoder refusal (11 cases).
+Its native injection/default/root-descendant/EOF cleanup controls passed:
+205ms injected,2.150s defaults and joined EOF/control-failure owners. Artifact
+10002096116 preserves the full failed run, ZIP SHA256
+`8bc4eb76d791772ec779a7babbdaa696ee1a1db25420cfa57613d76faf2c1e12`.
+The fixture now retains its writer through exact supervisor wait; on timeout it
+closes control and still joins. All malformed cases keep the exact131/no-user
+assertion. This is a test-only correction; ordinary-user Linux targeted malformed
+and full-envelope controls PASS. New-head FreeBSD/full native CI remains required.
+The all-twelve local staged architecture check also passed on4df4385.
+
+## Corrected Unix handoff
+
+Frozen technical/test source: `71b95a32265270c43da58ff41f67ab370a39a245`, clean
+and pushed on `codereview-21/layer-runtime`; product unchanged from4df4385.
+Exact [CI34076324950 attempt1](https://github.com/Hans-Einar/gh-tree/actions/runs/34076324950)
+is complete: all six native/race jobs SUCCESS. macOS101603045618 executes
+Go1.25.0 darwin/arm64 broker tests (10.119s); Linux race101603045595 executes
+`go test -race ./...` with broker12.403s. Linux101603045601 and both Windows
+jobs101603045604/101603045680 also pass. This branch's Windows jobs are not #69
+native broker proof. Inventory101603045569 still fails missing broker/cmd Go
+source; dependent cross-build/helper jobs skip. The workflow is not fully green.
+
+FreeBSD101603045610 SUCCESS: native15.0-RELEASE-p12 amd64, UID/GID1001,
+Go1.25.0; all twelve malformed startup cases now pass131/no-user execution.
+Actual natural root-before-descendant cleanup is119ms injected and2.123s defaults;
+early EOF/control EOF/invalid command owners join in102–228ms with residual facts
+retained. Full artifact10002195473, name
+`freebsd-native-71b95a32265270c43da58ff41f67ab370a39a245-1`,62502 bytes, ZIP SHA256
+`0662e65b97b12219dfaf9303eaa792a512d6e09c7e60ea863624caf66991237e`.
+Final71b95a3 all-nine Unix broker test-binary cross-compiles PASS; gofmt is clean.
+Earlier failed4df4385 FreeBSD and original independent negatives remain preserved.
+
+Exact next action: existing separate reviewer independently confirms U01/U02
+against71b95a3 and the actual native evidence, then Master decides integration.
+This author makes no source acceptance, full #65/M3/Slice/PR/main/release claim.
+No shared interface, Windows/helper/root Runtime/frozen document changes; no
+pending product edit, merge, unpushed commit or owned native process is left.
+Local owned test binaries/logs/directories remain at the explicit paths above.
+
+## Master native-component integration
+
+Master combines accepted Unix/shared review f85294d with accepted Windows/helper/
+committed-image binding review f926195f. All product changes come from those
+reviewed histories; no manual native, generator, loader or public contract change.
+Shared protocol/start and the Windows selected helper closure remain unchanged.
+
+Exact prepared merge checks: native Windows race tests PASS (root10.180s,
+broker50.134s, assets19.952s); all12 architecture selections PASS; Runtime vet
+PASS; helper -check independently reproduces both targets twice with unchanged
+955-input digest23bf82b051123cd1aa31c5a2368d1cc732f4b09cbc33ea2c9abf4f08f0cfdde5.
+No generated assets were rewritten by verification. Exact committed-head native
+CI is the next integration gate.
+
+This integrates native components on the Runtime layer branch only. Common
+Sessions corrections/production bridges/constructor remain #71 work; no complete
+#65/Runtime/Slice or canonical program integration is claimed. The program
+CurrentIndex/Handoff on codereview-21/refactor records the resolved merge SHA.
+
+## Combined-native blocked-output fixture correction
+
+Master dispatch `73a8005f4a0fc366d359ff9f33705321978eb8cd`, ledger97; base/native
+integration `510139d18da16a0d42c62ee88fba8053813f2b13`. Exact CI34080586354 has
+19SUCCESS/1FAILURE: FreeBSD101614974148, artifact10003581444, reports only
+`TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin` failing because the
+final fully clean fact had no historical native timeout. The fixture released
+its callback after a100ms caller wait; the native20ms output-join period starts
+only after the exact supervisor joins, so these two timeouts are independent.
+No product defect or erased native diagnostic is established by that failure.
+
+Only `client_unix_test.go` and this report change. The fixture keeps every
+original assertion, observes the actual native `errUnixJoinTimeout` in current
+facts while the callback remains blocked, verifies its OutputCleanup residual
+and retained callback, then releases and requires complete cleanup plus that
+genuine historical error. The observation loop uses the existing5s context;
+it never substitutes a longer sleep, fabricated error or changed product bound.
+Deferred callback release/native cleanup is registered even for a retained owner
+returned with startup error. Product, shared, Windows and helper/image bytes are
+unchanged from accepted integration510139d.
+
+Targeted actual Linux execution PASS20/20 as UID/GID65534 in owned ext4
+`/tmp/gh-tree-unix-output-sync.TcMNhu` (existing openSUSE-Leap-15.5 WSL). All nine
+Unix broker test-binary target selections compile with Windows Go1.25.0/CGO0.
+Local UTF8 log: `C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907/output-sync-native.log`.
+Exact new-head FreeBSD/full native CI remains required. Master inspects this
+bounded fixture correction and the integration gate; no new whole native
+product review or full #65/Slice acceptance is claimed.
+
+Frozen fixture source `941f4be195bf1a0fefdb13d41e13435e0628bf76`:
+[CI34081403751 attempt1](https://github.com/Hans-Einar/gh-tree/actions/runs/34081403751)
+is terminal19SUCCESS/1FAILURE. FreeBSD101617231875 passes the corrected actual
+test (0.11s) and full native suite as UID/GID1001 on15.0-RELEASE-p12 amd64 with
+Go1.25.0. Full artifact10003827417 (66105 bytes), ZIP SHA256
+`bb50ea3b13673dc6f3d29787ff20fc93557dcc4d7b510794c628b99583c0a4de`.
+Linux/macOS/Windows-amd64, Linux race101617231997, all12 build/architecture jobs,
+the prerequisite check and helper source-closure/reproducibility all pass.
+
+Remaining integration failure is separate Windows-ARM64 job101617232026:
+`TestWindowsExtractedBrokerLifecycle`, extract_windows_test.go205, returns
+Established/RootExited/Quiescent/CleanupComplete true, exit0, no residuals, but
+`Windows runtime permission denied at helper extraction during cleanup`.
+Windows product/test/helper bytes are unchanged by this Unix-only correction.
+The exact failure was sent to Master for the Windows owner; this author neither
+changes that source nor relaxes its assertion. The original510139d FreeBSD failure
+remains recorded above. Only this report changes after941f4be; source is frozen
+clean/pushed for Master inspection and coordinated remaining integration work.
+
+## Linux retained proc-record correction
+
+Fresh bounded worker `m3_runtime_unix_integration_fix`, Master dispatch c545039 /
+ledger99; clean/pushed base fd3abeac967a695bcdad15918a723ff8bab751df. Original
+[CI34082980191](https://github.com/Hans-Einar/gh-tree/actions/runs/34082980191),
+technical2bc27e0, has19SUCCESS/1FAILURE. Linux101621669773 reports
+`TestNativeUnixClientFailedStartPreservesTypedFacts` at client_unix_test.go337:
+fully clean, unestablished final with `Unix native failure (code 12, stage 2)`
+instead of NotFound. The original source/run are preserved. That safe wire class
+is IOFailure/ProcessContainment; it does not identify the underlying native errno.
+
+A separate deterministic native control demonstrates a product census gap:
+opening a live owned `/proc/PID/stat`, closing that exact child's input and
+waiting for its successful exit leaves the retained stat descriptor returning
+ESRCH3. Fresh pathname open returns ENOENT2. Linux
+[proc_single_show at v6.18](https://github.com/torvalds/linux/blob/v6.18/fs/proc/base.c#L750)
+returns ESRCH when the inode's task has gone. The previous census recognized only
+ENOENT after reading. Supervisor startup performs this census before executable
+lookup, so a disappearing unrelated process can prevent reaching the intended
+NotFound case. This is a plausible explanation of the original CI failure,
+not proven attribution of its unavailable native errno.
+
+Only census_linux.go, new census_linux_test.go and this report change. The actual
+bounded stat read/close is factored into readLinuxStat and now omits the exact
+native read-ESRCH disappearance, as it already omitted read-ENOENT. No open-error
+classification, PID signaling, membership/quiescence rule, retry, protocol or
+startup-result rule changes. Close errors take precedence over disappearance and
+join any read error; permission, I/O, descriptor, malformed and oversized inputs
+still invalidate census. Windows/shared/helper-source closure and generated assets
+are unchanged. The existing typed NotFound test is byte-for-byte unchanged.
+
+Native regression first FAILS after mechanical reader extraction but before the
+ESRCH correction: `exited retained proc object was not omitted ... read
+/proc/29/stat: no such process`. With the correction, the retained-fd test,
+13 bounded read/close/invalid-input subtests, valid-bytes/failed-close control and
+unchanged typed failed-start test PASS20 repetitions. The live positive proves
+an actual record; exact wait, direct native ESRCH probe and closed-descriptor
+assertions prove omission represents task disappearance and owner completion.
+No sleep, unrelated process signal or passing rerun substitutes for that control.
+
+Execution: Go1.25.0-built Linux/amd64, UID/GID65534 on existing WSL openSUSE,
+kernel6.18.33.2, owned ext4 `/tmp/gh-tree-unix-census.kU76jV`. Full actual broker
+suite PASS, including complete SID cleanup, retained descendants, EOF/escape
+residuals, acquisition failures and repeated resources. Linux-selected vet and
+all four Linux test-binary target compilations PASS. Local UTF8 logs/binaries
+remain under C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907/ (esrch-before.log,
+esrch-fixed.log, esrch-full.log); regression source is committed, no product state
+exists only in those reproducible local fixtures. No owned native process remains.
+
+Next gate: push this coherent correction, inspect exact integrated native/race/
+helper/all12 CI, and obtain a separate bounded independent census/cleanup review.
+This author does not accept the correction, integrate parent Sessions, close #65,
+or claim any full adapter/Slice/canonical/release completion.
+
+## Bounded M65-I01 acquisition correction
+
+Independent reviewbf8df249b256aba54a89a86c6cce0986ebae73a0 accepted the read-side
+correction but required acquisition-side ESRCH handling. Its original report,
+probe and native log are unchanged. Source99af6bf passed all20 exact jobs in
+CI34084151911; that passing CI did not resolve the additional native finding.
+Master dispatch3ce0480 / ledger104 authorizes only this bounded correction.
+
+The actual census open predicate now recognizes only native ENOENT or ESRCH,
+either direct or inside the one os.Open PathError wrapper. Unrelated EACCES,
+EPERM, EIO, EBADF, ENOTDIR and combined errors remain failures. The accepted
+read/close implementation, parser, limits, membership, signaling and cleanup
+policies are unchanged; no Windows/shared/helper/root file changes occurred.
+
+The existing retained-stat test now also retains the proc directory, waits the
+exact child exit0, proves fresh open ENOENT and retained-directory openat ESRCH,
+and exercises the actual production acquisition predicate. This reuses the
+reviewer's deterministic native mechanism; it does not claim syscall interposition
+or identify the unavailable original CI errno. The unchanged independent overlay
+also PASSes with its live-peer full-census positive. That overlay deliberately
+still tests the old os.IsNotExist predicate to preserve its original evidence;
+the updated product test separately proves the corrected predicate.
+
+Actual Linux UID/GID65534 targeted native/acquisition/read-close/unchanged NotFound
+controls PASS20 repetitions; Linux-selected vet PASS. Same Go1.25.0 builder,
+kernel6.18.33.2 and owned /tmp/gh-tree-unix-census.kU76jV. No full local matrix
+was repeated. UTF8 esrch-open-fixed.log SHA256:
+c799212b4090a9a54fb88708201fab44daa670c880f677343c9506b0ab1226cd;
+unchanged-probe run esrch-open-review.log, under the earlier named local log root.
+Both directly owned children are joined; local binaries/logs are reproducible.
+
+Next: push coherent source, start exact native/race/helper/all12 CI, then freeze
+for the same independent reviewer's bounded confirmation. M65-I01 acceptance,
+parent integration and full Runtime/adapter/Slice completion remain Master's gates.

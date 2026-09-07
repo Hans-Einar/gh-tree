@@ -1,0 +1,129 @@
+{
+  "headSha": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307",
+  "jobs": [
+    {
+      "name": "Race detector",
+      "conclusion": "success",
+      "databaseId": 101589845191,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845191"
+    },
+    {
+      "name": "Accepted target inventory and M3 prerequisites",
+      "conclusion": "success",
+      "databaseId": 101589845353,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845353"
+    },
+    {
+      "name": "Native FreeBSD amd64 (new stack)",
+      "conclusion": "success",
+      "databaseId": 101589845361,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845361"
+    },
+    {
+      "name": "Test (macos-latest)",
+      "conclusion": "success",
+      "databaseId": 101589845383,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845383"
+    },
+    {
+      "name": "Test (ubuntu-latest)",
+      "conclusion": "success",
+      "databaseId": 101589845394,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845394"
+    },
+    {
+      "name": "Test (windows-11-arm)",
+      "conclusion": "success",
+      "databaseId": 101589845420,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845420"
+    },
+    {
+      "name": "Test (windows-latest)",
+      "conclusion": "success",
+      "databaseId": 101589845468,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589845468"
+    },
+    {
+      "name": "Runtime helper source closure and reproducibility (M3)",
+      "conclusion": "success",
+      "databaseId": 101589906952,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589906952"
+    },
+    {
+      "name": "Build and architecture freebsd/386",
+      "conclusion": "success",
+      "databaseId": 101589907096,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907096"
+    },
+    {
+      "name": "Build and architecture windows/386",
+      "conclusion": "success",
+      "databaseId": 101589907108,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907108"
+    },
+    {
+      "name": "Build and architecture linux/arm",
+      "conclusion": "success",
+      "databaseId": 101589907109,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907109"
+    },
+    {
+      "name": "Build and architecture linux/386",
+      "conclusion": "success",
+      "databaseId": 101589907124,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907124"
+    },
+    {
+      "name": "Build and architecture linux/amd64",
+      "conclusion": "success",
+      "databaseId": 101589907133,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907133"
+    },
+    {
+      "name": "Build and architecture darwin/arm64",
+      "conclusion": "success",
+      "databaseId": 101589907146,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907146"
+    },
+    {
+      "name": "Build and architecture windows/arm64",
+      "conclusion": "success",
+      "databaseId": 101589907147,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907147"
+    },
+    {
+      "name": "Build and architecture freebsd/arm64",
+      "conclusion": "success",
+      "databaseId": 101589907148,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907148"
+    },
+    {
+      "name": "Build and architecture freebsd/amd64",
+      "conclusion": "success",
+      "databaseId": 101589907159,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907159"
+    },
+    {
+      "name": "Build and architecture darwin/amd64",
+      "conclusion": "success",
+      "databaseId": 101589907165,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907165"
+    },
+    {
+      "name": "Build and architecture linux/arm64",
+      "conclusion": "success",
+      "databaseId": 101589907185,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907185"
+    },
+    {
+      "name": "Build and architecture windows/amd64",
+      "conclusion": "success",
+      "databaseId": 101589907238,
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34071597307/job/101589907238"
+    }
+  ]
+}

@@ -1,9 +1,13 @@
 # M3 Unix native implementation review — #65 / #21
 
-Disposition: **CHANGES_REQUIRED** — two MEDIUM findings in the frozen Unix candidate.
+Current disposition: **ACCEPT — Unix/shared native candidate only**, after bounded
+independent confirmation at `d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7`.
+M65-U01/U02 are resolved; no open finding remains in this review's scope.
+The original **CHANGES_REQUIRED** disposition and both MEDIUM findings below
+describe the initial frozen source and remain preserved as historical evidence.
 
 Reviewer: `m3_runtime_unix_review`, fresh independent reviewer; not the author or
-Master. Review source: `codereview-21/layer-runtime` at
+Master. Initial review source: `codereview-21/layer-runtime` at
 `fe4fd4266d3798132d4cca15ce54dc991ad147b1`, clean and equal to origin at inspection.
 Source kickoff: `26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2`.
 Master dispatch: `828d316523bd596f481d7c65b774a9e0d012eb7c`, ledger89.
@@ -150,7 +154,7 @@ native proof. Full parent Sessions/ACK/restart/aggregate shutdown, Windows/nativ
 ABI/assets, composition cutover, all-twelve packaging, exact integrated-source and
 vertical/release acceptance remain their existing later gates.
 
-## Handoff
+## Initial handoff
 
 No source edits, merges, reset, cleanup of unrelated fixtures or new review
 subagents. Findings were reported promptly to Master. Product tree and origin
@@ -159,3 +163,89 @@ critical evidence. Exact next permitted action: Master dispatches the author for
 bounded U01/U02 corrections, obtains actual corrected native evidence and a new
 frozen source SHA, then requests independent affected-source re-review. Preserve
 the already-passing unaffected evidence and all separate program gates.
+
+## Bounded independent correction confirmation
+
+Master dispatch `e43297acbbff385315062bbaec7b5a58c79678a8`, ledger94. Reviewed
+clean/pushed candidate `d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7`, matching origin;
+complete executable/test tree matches tested
+`71b95a32265270c43da58ff41f67ab370a39a245`. Product source is unchanged from
+`4df4385fbb2481a0c0007dbfd489c93e15f3170c`; the final technical delta only retains
+the malformed-fixture writer through the exact supervisor wait. The required
+exit131/no-user assertion remains, and timeout still closes control and joins.
+No product implementation was performed by this reviewer.
+
+Reopened the actual complete diff since `c3f23b8`, changed Unix files/tests and
+current author record. The common protocol/StartSpec codec/tests, FreeBSD duplex
+admission, public/private exported client signatures and root Runtime files are
+unchanged. New startup code is selected only on Linux/Darwin/FreeBSD, so this
+correction does not change the Windows helper dependency source closure.
+
+**M65-U01 resolved.** Linux now verifies the anonymous pipefs superblock in
+addition to FIFO type/direction. Darwin adds its non-vnode Fstatfs profile after
+those checks. Independently inspected pinned
+[Linux pipe creation/pipefs source](https://github.com/torvalds/linux/blob/df2908090cda368b01ff43709f51890076c56157/fs/pipe.c),
+[XNU file_vnode type selection](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/kern/kern_descrip.c)
+and [XNU fstatfs64 path](https://github.com/apple-oss-distributions/xnu/blob/f6217f891ac0bb64f3d375211650a4c1ff8ca1ea/bsd/vfs/vfs_syscalls.c).
+The original reviewer linked/unlinked read/write negative now passes unchanged.
+Actual anonymous positives still prove both directions, close-on-exec and read
+deadline; reversed directions and named/unlinked FIFOs refuse. Darwin native
+package execution confirms its selected implementation/tests; FreeBSD retains
+its existing anonymous duplex and named/unlinked controls.
+
+**M65-U02 resolved.** The Unix-only versioned 17-byte Start prefix binds both
+effective uint64 nanosecond periods before user acquisition or any cleanup path.
+Bounds reject zero/negative-overflow/out-of-range wire values; exact admitted
+nanoseconds survive. Construction zero still means 2s/3s. The total frame ceiling
+includes the prefix; the unchanged StartSpec decoder refuses trailing/unknown
+data. Stop/Abort carry intent only and cannot update construction periods.
+Natural exit, early/established control EOF and invalid control all use the
+bound configuration while retaining the original cleanup/residual semantics.
+
+The exact original two-test reviewer overlay was reused unchanged on corrected
+source, with the endpoint and startup correction tests selected alongside it.
+Windows Go1.25.0 built Linux/amd64 with CGO0; actual execution used UID/GID65534
+on the same WSL Linux kernel and fresh owned ext4 directory
+`/tmp/gh-tree-unix-confirm-d0a7682e.HIBIpU`. All selected tests **PASS**:
+
+| Independent/native control | Observed result |
+|---|---|
+| Original U01 negative | All four named/unlinked × read/write endpoints refuse. |
+| Original U02 negative | Natural root-before-descendants cleanup 92.598ms, complete, zero residuals. |
+| New natural-exit controls | Injected 89.559ms; default 2.071s with effective 2s/3s. |
+| Early EOF / established EOF / invalid control | Exact owners join in 35–36ms; control uncertainty remains residual, no false CleanupComplete or live owned SID member. |
+| Startup admission | All thirteen malformed codec cases refuse; twelve native frame-admissible cases return131 with no user output; invalid construction acquires no owner; frame ceiling includes the wrapper. |
+| Endpoint positive/negative controls | Anonymous profiles, CLOEXEC and deadline pass; reversed and named/unlinked endpoints refuse. |
+
+All owned clients/waiters complete, and the final scoped executable inventory
+finds no live confirmation fixture. `linux-confirmation.log` and
+`confirmation.json` in the existing evidence directory preserve commands/hashes.
+The original failed logs/overlay/manifest are unchanged. Unaffected full native,
+common-codec and resource-cycle evidence from the initial review is reused.
+
+Independently fetched current job metadata and raw relevant logs for
+[CI34076324950 attempt1](https://github.com/Hans-Einar/gh-tree/actions/runs/34076324950):
+exact tested source71b95a3, six native/race SUCCESS jobs. macOS101603045618 runs
+Go1.25.0 darwin/arm64 broker tests (10.119s); Linux race101603045595 executes the
+actual race suite (broker12.403s). FreeBSD101603045610 runs
+15.0-RELEASE-p12 amd64 as UID/GID1001 with Go1.25.0 (broker9.573s); all twelve
+native malformed-start cases and natural/default/EOF/failure controls pass.
+Artifact10002195473 is62,502 bytes, ZIP SHA256
+`0662e65b97b12219dfaf9303eaa792a512d6e09c7e60ea863624caf66991237e`.
+The earlier4df4385 FreeBSD fixture failure remains disclosed in the author record;
+it is not passing evidence. The corrected exact131 expectation is independently
+confirmed locally and in the final FreeBSD log.
+
+Inventory101603045569 still fails the separate missing broker/cmd prerequisite;
+dependent build/helper jobs skip. Thus the aggregate workflow is not claimed
+green. Windows jobs in this source are not #69 native implementation evidence.
+All-nine compilation and all-twelve architecture checks in the author record
+remain distinct from the independent native/race confirmation above.
+
+**Final disposition: ACCEPT this Unix/shared native candidate.** Both findings
+are resolved without changing frozen public contracts or the unrelated shared
+Windows source closure. No additional material finding arose in the bounded
+correction review. Parent Sessions/#71, #69 Windows, #70 assets, #72 and their
+real-client composition, exact integrated source, complete Runtime/Slices/M8 and
+release gates remain separate. Master alone chooses and records permitted
+integration; no integration, product PR or release is performed by this review.

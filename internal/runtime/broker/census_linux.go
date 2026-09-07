@@ -2,10 +2,12 @@ package broker
 
 import (
 	"context"
+	"errors"
 	"io"
 	"os"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 func census(ctx context.Context) ([]processFact, error) {
@@ -29,31 +31,19 @@ func census(ctx context.Context) ([]processFact, error) {
 				return nil, ErrCensus
 			}
 			f, err := os.Open("/proc/" + entry.Name() + "/stat")
-			if os.IsNotExist(err) {
+			if linuxProcEntryGone(err) {
 				continue
 			}
 			if err != nil {
 				return nil, err
 			}
-			data, err := io.ReadAll(io.LimitReader(f, 8193))
-			closeErr := f.Close()
-			if os.IsNotExist(err) {
-				continue
-			}
+			p, present, err := readLinuxStat(pid, f)
 			if err != nil {
 				return nil, err
 			}
-			if closeErr != nil {
-				return nil, closeErr
+			if present {
+				result = append(result, p)
 			}
-			if len(data) > 8192 {
-				return nil, ErrCensus
-			}
-			p, err := parseLinuxStat(pid, string(data))
-			if err != nil {
-				return nil, err
-			}
-			result = append(result, p)
 		}
 		if readErr == io.EOF {
 			return result, nil
@@ -62,6 +52,39 @@ func census(ctx context.Context) ([]processFact, error) {
 			return nil, readErr
 		}
 	}
+}
+
+// proc_pid_permission can return ESRCH after pathname lookup if the task
+// disappeared. Accept only the native errno (optionally wrapped by os.Open),
+// never a combined error that may also contain an unrelated acquisition failure.
+func linuxProcEntryGone(err error) bool {
+	if pathErr, ok := err.(*os.PathError); ok {
+		err = pathErr.Err
+	}
+	return err == syscall.ENOENT || err == syscall.ESRCH
+}
+
+// readLinuxStat owns one opened proc stat file, including its close result.
+func readLinuxStat(pid int, f io.ReadCloser) (processFact, bool, error) {
+	data, readErr := io.ReadAll(io.LimitReader(f, 8193))
+	closeErr := f.Close()
+	if closeErr != nil {
+		return processFact{}, false, errors.Join(readErr, closeErr)
+	}
+	// An opened proc stat inode does not keep its task alive. Linux's
+	// proc_single_show returns ESRCH if that task exited after the open.
+	// This record disappeared; other failures still invalidate the census.
+	if os.IsNotExist(readErr) || errors.Is(readErr, syscall.ESRCH) {
+		return processFact{}, false, nil
+	}
+	if readErr != nil {
+		return processFact{}, false, readErr
+	}
+	if len(data) > 8192 {
+		return processFact{}, false, ErrCensus
+	}
+	p, err := parseLinuxStat(pid, string(data))
+	return p, err == nil, err
 }
 
 func parseLinuxStat(want int, line string) (processFact, error) {

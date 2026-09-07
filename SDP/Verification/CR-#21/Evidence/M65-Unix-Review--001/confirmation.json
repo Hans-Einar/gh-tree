@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "disposition": "ACCEPT_UNIX_SHARED_NATIVE_CANDIDATE_ONLY",
+  "reviewedSource": "d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7",
+  "testedSource": "71b95a32265270c43da58ff41f67ab370a39a245",
+  "productSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c",
+  "findings": {
+    "M65-U01": "resolved",
+    "M65-U02": "resolved"
+  },
+  "unchangedOriginalOverlay": {
+    "path": "reviewer_unix_test.go.txt",
+    "sha256": "0c6de2ba4381f359abc71c8192c4beefee98d1126caa8b242ea82a61d33b780a"
+  },
+  "local": {
+    "builder": "Go1.25.0 Windows/amd64",
+    "GOOS": "linux",
+    "GOARCH": "amd64",
+    "CGO_ENABLED": "0",
+    "native": "openSUSE-Leap-15.5 WSL Linux6.18.33.2-microsoft-standard-WSL2 amd64 UID/GID65534",
+    "ownedDirectory": "/tmp/gh-tree-unix-confirm-d0a7682e.HIBIpU",
+    "command": "broker-review.test -test.v -test.count=1 -test.timeout=60s -test.run=\"TestReview|TestNativeAnonymousPipeEndpointProfile|TestNativeRejectsNamedAndUnlinkedDirectionalFIFO|TestNativeRejectsReversedAnonymousPipeDirection|TestUnixStartEnvelopeEffectivePeriodsAndMalformedConfiguration|TestNativeUnixMalformedStartupNeverExecutesUser|TestNativeUnixNaturalRootExitUsesConstructionPeriods|TestNativeUnixFailureAndControlEOFUseConstructionPeriods\"",
+    "exit": 0,
+    "result": "PASS",
+    "finalOwnedExecutableInventory": "none live",
+    "log": {
+      "path": "linux-confirmation.log",
+      "bytes": 7060,
+      "sha256": "009103f820e11919f70f8f517d0caf01fdc89209aad2cf3e875ac654702ae354"
+    }
+  },
+  "ci": {
+    "run": 34076324950,
+    "attempt": 1,
+    "source": "71b95a32265270c43da58ff41f67ab370a39a245",
+    "nativeRaceJobs": {
+      "101603045595": "success",
+      "101603045601": "success",
+      "101603045604": "success",
+      "101603045610": "success",
+      "101603045618": "success",
+      "101603045680": "success"
+    },
+    "prerequisite": {
+      "101603045569": "failure: missing broker/cmd Go source"
+    },
+    "dependentBuildHelper": "skipped",
+    "FreeBSDArtifact": {
+      "id": 10002195473,
+      "bytes": 62502,
+      "zipSha256": "0662e65b97b12219dfaf9303eaa792a512d6e09c7e60ea863624caf66991237e"
+    }
+  },
+  "unchangedSurfacesVerified": [
+    "common protocol.go",
+    "common start.go",
+    "common protocol_test.go",
+    "FreeBSD duplex endpoint implementation",
+    "root Runtime",
+    "exported native client signatures"
+  ],
+  "remainingGates": [
+    "#71 parent Sessions",
+    "#69 Windows",
+    "#70 helpers/assets",
+    "#72",
+    "real-client composition and integrated SHA",
+    "complete Runtime/Slice/M8/release"
+  ],
+  "productEditsByReviewer": false
+}
