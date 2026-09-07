@@ -21,6 +21,53 @@ import (
 func TestMain(m *testing.M) {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
+		case supervisorPrivateMarker:
+			os.Exit(RunSupervisor())
+		case "--runtime-fixture-cwd":
+			data, err := os.ReadFile("marker")
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+			fmt.Printf("owned-cwd=%s;marker=%s\n", must(os.Getwd()), data)
+			os.Exit(0)
+		case "--runtime-fixture-tree-root":
+			reader, writer, err := os.Pipe()
+			if err != nil {
+				os.Exit(1)
+			}
+			cmd := exec.Command(must(os.Executable()), "--runtime-fixture-tree-branch")
+			cmd.Stdout = writer
+			cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+			if err := cmd.Start(); err != nil {
+				reader.Close()
+				writer.Close()
+				os.Exit(1)
+			}
+			go cmd.Wait()
+			writer.Close()
+			reader.SetReadDeadline(time.Now().Add(3 * time.Second))
+			line, err := bufio.NewReader(reader).ReadString('\n')
+			reader.Close()
+			if err != nil {
+				cmd.Process.Kill()
+				os.Exit(1)
+			}
+			fmt.Print(line)
+			os.Exit(0)
+		case "--runtime-fixture-tree-branch":
+			signal.Ignore(syscall.SIGTERM)
+			member, err := startFixtureMember(must(os.Executable()), false, true)
+			if err != nil {
+				if member != nil {
+					member.cleanup()
+				}
+				os.Exit(1)
+			}
+			fmt.Printf("owned-tree-child=%d;owned-tree-grandchild=%d\n", os.Getpid(), member.cmd.Process.Pid)
+			time.Sleep(20 * time.Second)
+			member.cleanup()
+			os.Exit(0)
 		case signalPrivateMarker:
 			os.Exit(RunSignalHelper())
 		case "--runtime-fixture-signal-suite":

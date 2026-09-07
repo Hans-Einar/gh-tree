@@ -230,6 +230,53 @@ progress (not executed by these tests and not part of this narrow fix commit).
 Final exact committed-source CI must confirm the correction. Downloaded evidence
 is retained under the existing local build directory, `freebsd-da29569/`.
 
+Corrected actual FreeBSD job101581052093 in run34068364364 at exact a6e79eaa is
+SUCCESS. Artifact9999688515 (55,128 bytes), tests.jsonl SHA256
+`A0F0A28F837B74AFF156AED9F74DC025EE401AA52F3AB0CF3ED346468B74469B`, confirms both
+anonymous endpoints access=2/Fstatfs EINVAL, named/unlinked FIFO negative PASS,
+all six acquired-helper control/group/wait/census assertions PASS. Thus the
+profile diagnosis/correction now has native evidence. The aggregate still has
+the mandatory expected helper-prerequisite failure and is not an acceptance run.
+
+## Checkpoint 4: Unix SID supervisor and resource-barrier engine
+
+Added actual supervisor/tree native code and tests. The private same-executable
+supervisor authenticates inherited endpoints and actual parent/SID, Fstats the
+designated acquired cwd descriptor, Fchdirs once, closes that descriptor, and
+only then resolves argv/PATH with copied environment and observed PWD. User root
+inherits cwd/standard streams without private descriptors and starts in a separate
+PGID; terminal roots obtain the foreground group. A single native owner watches
+root exit, parent control/EOF and complete census. Cleanup sends acquired TERM,
+parks acquired STOP helpers, performs full stopped-member recensus, then acquired
+KILL; complete root/helper waits and no live SID members precede Quiescent.
+Release is required before normal supervisor exit while parent output drains.
+Unknown/escaped/unacquirable membership remains failure, never numeric recovery.
+
+Actual ordinary-user Linux source tests PASS for native acquired-cwd marker access,
+root exiting before both child and grandchild in separate groups, and a real
+isolated interactive shell with foreground sleep/background pipeline groups,
+100x30 PTY resize, input/output and explicit quiescence/release/reader/wait joins.
+Final local run directory `/tmp/gh-tree-runtime-native.rLJzHI`. All nine selected
+Unix broker test-binary cross-compiles PASS; Linux-selected broker vet PASS. The
+full supervisor source still needs native macOS/FreeBSD execution and adverse
+startup/helper/EOF/escape/unwind/race verification at committed source.
+
+The first new natural-exit test failed because its concurrent fixture collector
+embedded bytes.Buffer, promoting ReaderFrom and bypassing its synchronized Write
+method. Private collector now contains the buffer as a field; actual marker
+content and all three native lifecycle fixtures PASS after correction. Other
+fixture failures are not counted as native passes. No project script or user
+process was invoked/manipulated. The broader pre-existing helper tests continue
+to verify control rejection and actual acquired signaling.
+
+This remains a partial native component milestone: parent Unix client resource
+unwinds/controls, Runtime Sessions API assembly, complete result/diagnostic facts,
+construction-injected budgets and the full failure/platform gates remain. Raw
+supervisor entry codes/failure frames still need truthful parent normalization.
+The test harness executes actual native code but does not replace the missing
+production parent ownership path. Windows #69 and assets #70 remain separately
+owned/reviewed. No shared protocol/start source or Windows helper closure changed.
+
 ## Next permitted work
 
 Commit/push this coherent partial checkpoint before further substantial work.

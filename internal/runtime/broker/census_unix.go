@@ -26,6 +26,7 @@ func sessionMembers(all []processFact, supervisor int) ([]processFact, []int, er
 	var members []processFact
 	groups := map[int]bool{}
 	found := false
+	var observationError error
 	for _, p := range all {
 		if p.session != supervisor || !p.live {
 			continue
@@ -37,19 +38,20 @@ func sessionMembers(all []processFact, supervisor int) ([]processFact, []int, er
 			found = true
 			continue
 		}
-		if p.group <= 0 || p.group == supervisor {
-			return nil, nil, ErrCensus
-		}
 		members = append(members, p)
+		if p.group <= 0 || p.group == supervisor {
+			observationError = ErrCensus
+			continue
+		}
 		groups[p.group] = true
 	}
 	if !found {
-		return nil, nil, ErrCensus
+		observationError = ErrCensus
 	}
 	result := make([]int, 0, len(groups))
 	for group := range groups {
 		result = append(result, group)
 	}
 	sort.Ints(result)
-	return members, result, nil
+	return members, result, observationError
 }

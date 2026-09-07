@@ -6,9 +6,9 @@ WindowsBroker, and Feasibility/Runtime RTF-02. No old launch/terminal/process
 implementation is imported or moved here.
 
 This is an explicit partial M3 checkpoint. The current implementation contains
-the private registry, bounded memory/framed transports and native Unix cwd
-acquisition. It has no exported Sessions constructor, public lifecycle stubs,
-native startup backend, or Composition
+the private registry, bounded memory/framed transports and native Unix cwd,
+helper and supervisor components. It has no exported Sessions constructor,
+complete parent native client, public lifecycle stubs, or Composition
 cutover. Passing these tests does not establish process containment or cleanup.
 The mandatory M1 helper prerequisite currently fails because the native broker,
 entry, verifier, embedded images, and provenance manifest are not yet implemented.
@@ -89,3 +89,16 @@ frozen FreeBSD bounded `/bin/ps` numeric profile with its exact observer waiter.
 These observations choose acquisition candidates and classify residuals. They do
 not authorize numeric PID/PGID signaling. Native Darwin/FreeBSD execution remains
 required; cross-compilation only verifies selected code/layout availability.
+
+`broker/supervisor_unix.go` and `tree_unix.go` provide the SID owner: authenticated
+Start, designated descriptor Fstat/Fchdir exactly once then close before command
+lookup, inherited cwd and copied PWD/environment, different user-root PGID and
+PTY foreground group, one root/helper waiter, TERM then parked STOP/full recensus/
+KILL, root-exit-triggered cleanup, parent EOF ownership, Quiescent/Release and
+supervisor exit. Failed ownership retains resources and refuses successful
+quiescence. Native Linux tests prove cwd marker access, root-before-child-and-
+grandchild cleanup, a real shell with foreground/background pipeline groups,
+100x30 terminal resize and reader/wait release ordering. Whole-client partial
+acquisition/error/cancel/input/resize ownership and all twelve Sessions methods
+still need assembly and full failure verification. The CLI has no private-mode
+dispatch cutover; tests dispatch the actual native functions in their own binary.
