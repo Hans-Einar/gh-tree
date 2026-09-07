@@ -45,7 +45,7 @@ func (r *sessions) stop(ctx context.Context, s *session) (api.SessionStopResult,
 func (r *sessions) waitCleanup(ctx context.Context, s *session) error {
 	for {
 		s.mu.Lock()
-		phase := s.snapshot.Data().Phase
+		phase := s.latestLocked().Phase
 		observing := s.observing
 		changed := s.changed
 		s.mu.Unlock()
@@ -219,7 +219,9 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 		result.Sessions = append(result.Sessions, stop)
 		if !stop.Data().CleanupComplete {
 			result.Complete = false
-			residuals := stop.Data().Session.Data().Cleanup.Data().Residuals
+			s.mu.Lock()
+			residuals := s.latestLocked().Cleanup.Data().Residuals
+			s.mu.Unlock()
 			if len(residuals) == 0 {
 				s.mu.Lock()
 				nativeClean, control := s.nativeClean, s.controlBusy

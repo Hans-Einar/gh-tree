@@ -25,7 +25,7 @@ func awaitObservationIdle(t *testing.T, s *session) {
 	deadline := time.Now().Add(time.Second)
 	for {
 		s.mu.Lock()
-		idle := !s.observing && s.snapshot.Data().Phase == api.CleanupFailed
+		idle := !s.observing && s.latestLocked().Phase == api.CleanupFailed
 		s.mu.Unlock()
 		if idle {
 			return

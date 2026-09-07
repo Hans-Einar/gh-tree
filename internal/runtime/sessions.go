@@ -291,7 +291,7 @@ func (r *sessions) capture(s *session, stream api.OutputStream, data []byte) {
 		return
 	}
 	err := r.registry.change(s, api.OutputAvailable, func(d *api.SessionSnapshotData) error {
-		if d.Sequence.Value() >= math.MaxUint64-1 || s.startPending && d.Sequence.Value() >= math.MaxUint64-2 {
+		if !s.hintAvailableLocked() || s.startPending && d.Sequence.Value() >= math.MaxUint64-2 {
 			return errExhausted
 		}
 		seq := owned(api.NewSessionSequence(d.Sequence.Value() + 1))

@@ -14,29 +14,48 @@ const liveCapacity = 64
 const historyCapacity = 256
 
 type session struct {
-	mu           sync.Mutex
-	start        api.SessionStartRequest
-	environment  []string
-	snapshot     api.SessionSnapshot
-	output       outputRing
-	input        *inputQueue
-	owner        nativeOwner
-	changed      chan struct{}
-	startDone    chan struct{}
-	startPending bool
-	established  bool
-	startErr     error
-	stopAsked    bool
-	stopSent     bool
-	nativeClean  bool
-	producers    int
-	controlBusy  bool
-	observing    bool
-	reobserve    bool // one coalesced external recovery request across an error
-	acquired     api.Optional[api.AcquiredCwd]
-	exit         api.Optional[api.SessionExit]
-	diagnostics  map[api.RuntimeCleanupStage]api.Diagnostic
-	restart      *restartTransition
+	mu              sync.Mutex
+	start           api.SessionStartRequest
+	environment     []string
+	snapshot        api.SessionSnapshot
+	unpublished     api.Optional[api.SessionSnapshot] // observed facts awaiting a fresh version
+	output          outputRing
+	input           *inputQueue
+	owner           nativeOwner
+	changed         chan struct{}
+	startDone       chan struct{}
+	startPending    bool
+	established     bool
+	startErr        error
+	stopAsked       bool
+	stopSent        bool
+	nativeClean     bool
+	producers       int
+	controlBusy     bool
+	controlReserved bool // numerical publication slot, held through native receipt observation
+	observing       bool
+	reobserve       bool // one coalesced external recovery request across an error
+	acquired        api.Optional[api.AcquiredCwd]
+	exit            api.Optional[api.SessionExit]
+	diagnostics     map[api.RuntimeCleanupStage]api.Diagnostic
+	restart         *restartTransition
+}
+
+// Public snapshots remain immutable at their published sequence. Unavoidable
+// native facts may accumulate privately when only reserved versions remain.
+func (s *session) latestLocked() api.SessionSnapshotData {
+	if pending, ok := s.unpublished.Value(); ok {
+		return pending.Data()
+	}
+	return s.snapshot.Data()
+}
+
+func (s *session) hintAvailableLocked() bool {
+	reserved := uint64(1) // the one reliable final
+	if s.controlReserved {
+		reserved++
+	}
+	return math.MaxUint64-s.snapshot.Data().Sequence.Value() > reserved
 }
 
 // registry synchronizes membership, allocation, final reservation and admission.
@@ -108,7 +127,7 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 	defer r.mu.Unlock()
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	d := s.snapshot.Data()
+	d := s.latestLocked()
 	if d.Phase == api.Cleaned {
 		return errClosed
 	}
@@ -118,10 +137,17 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 	if err := edit(&d); err != nil {
 		return err
 	}
-	// Private ownership still accepts cleanup facts after hint sequence space is
-	// exhausted. Only the final can consume the last version; output refuses in
-	// its edit before touching the ring. Never reuse a published snapshot version.
-	if kind != api.RuntimeCleaned && d.Sequence.Value() == math.MaxUint64-1 {
+	// Validate and retain actual observations even when no unreserved hint
+	// version remains. Optional producers refuse before effects; admitted native
+	// observations still reach the reserved control publication or final.
+	if kind != api.RuntimeCleaned && !s.hintAvailableLocked() {
+		pending, err := api.NewSessionSnapshot(d)
+		if err != nil {
+			return err
+		}
+		s.unpublished = api.Some(pending)
+		close(s.changed)
+		s.changed = make(chan struct{})
 		return errExhausted
 	}
 	d.Sequence, _ = api.NewSessionSequence(d.Sequence.Value() + 1)
@@ -133,6 +159,7 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 		return err
 	}
 	s.snapshot = next
+	s.unpublished = api.None[api.SessionSnapshot]()
 	close(s.changed)
 	s.changed = make(chan struct{})
 	if d.Phase == api.Cleaned {

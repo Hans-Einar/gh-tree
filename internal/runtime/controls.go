@@ -27,6 +27,8 @@ func (r *sessions) Write(ctx context.Context, request api.SessionWriteRequest) (
 		err = errUnsupported
 	} else if snapshot.Phase != api.Running || s.stopAsked {
 		err = errClosed
+	} else if !s.hintAvailableLocked() {
+		err = errExhausted
 	} else {
 		err = s.input.accept(ctx, d.Bytes)
 	}
@@ -137,12 +139,15 @@ func (r *sessions) control(ctx context.Context, id domain.SessionID, geometry ap
 		err = errClosed
 	} else if s.controlBusy {
 		err = errBusy
+	} else if !s.hintAvailableLocked() {
+		err = errExhausted
 	}
 	if err != nil {
 		s.mu.Unlock()
 		return owned(api.NewSessionControlResult(api.SessionControlResultData{SessionID: id, Sequence: d.Sequence, CancellationAsked: ctx.Err() != nil, Diagnostics: diagnostics(err)})), err
 	}
 	s.controlBusy = true
+	s.controlReserved = true
 	s.producers++
 	owner := s.owner
 	s.mu.Unlock()
@@ -161,7 +166,8 @@ func (r *sessions) control(ctx context.Context, id domain.SessionID, geometry ap
 			err = diagnostic(api.Indeterminate, "runtime.control_unknown", "Native control delivery remains unknown; do not replay.")
 		}
 		delivered := fact.Completed && fact.Delivered > 0
-		_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
+		publicationErr := r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
+			s.controlReserved = false // consume only this control's reserved slot
 			if resize && delivered {
 				display := d.Display.Data()
 				display.Geometry = g
@@ -172,6 +178,9 @@ func (r *sessions) control(ctx context.Context, id domain.SessionID, geometry ap
 			}
 			return nil
 		})
+		if err == nil {
+			err = publicationErr
+		}
 		s.mu.Lock()
 		seq := s.snapshot.Data().Sequence
 		s.mu.Unlock()
