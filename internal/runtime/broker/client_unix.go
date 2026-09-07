@@ -213,6 +213,9 @@ func (c *UnixClient) create(ctx context.Context) error {
 		return err
 	}
 	c.control = controlWrite
+	if err := c.checkpoint("control-request-pipe"); err != nil {
+		return err
+	}
 	replyRead, replyWrite, err := c.pipe(api.ControlCleanup)
 	if err != nil {
 		return err
@@ -230,11 +233,17 @@ func (c *UnixClient) create(ctx context.Context) error {
 		}
 		original := c.own(master, api.TerminalCleanup)
 		slaveFile := c.own(slave, api.TerminalCleanup)
+		if err := c.checkpoint("pty-pair"); err != nil {
+			return err
+		}
 		pollable, pollErr := pollablePTY(master)
 		if pollable != nil {
 			c.terminal = c.own(pollable, api.TerminalCleanup)
 		}
 		if err := errors.Join(pollErr, original.close()); err != nil {
+			return err
+		}
+		if err := c.checkpoint("pty-master"); err != nil {
 			return err
 		}
 		c.input = c.terminal
@@ -252,6 +261,9 @@ func (c *UnixClient) create(ctx context.Context) error {
 		c.input = inputWrite
 		stdin = inputRead
 		c.childFiles = append(c.childFiles, inputRead)
+		if err := c.checkpoint("input-pipe"); err != nil {
+			return err
+		}
 		outRead, outWrite, err := c.pipe(api.OutputCleanup)
 		if err != nil {
 			return err
@@ -259,6 +271,9 @@ func (c *UnixClient) create(ctx context.Context) error {
 		stdout = outWrite
 		c.outputs = append(c.outputs, outRead)
 		c.childFiles = append(c.childFiles, outWrite)
+		if err := c.checkpoint("stdout-pipe"); err != nil {
+			return err
+		}
 		errRead, errWrite, err := c.pipe(api.OutputCleanup)
 		if err != nil {
 			return err
@@ -296,8 +311,11 @@ func (c *UnixClient) create(ctx context.Context) error {
 	c.cmd = cmd
 	c.processDone = make(chan struct{})
 	go func() { c.processErr = cmd.Wait(); close(c.processDone) }()
-	for _, file := range c.childFiles {
+	for index, file := range c.childFiles {
 		if err := file.close(); err != nil {
+			return err
+		}
+		if err := c.checkpoint(fmt.Sprintf("child-endpoint-%d", index)); err != nil {
 			return err
 		}
 	}
@@ -311,6 +329,9 @@ func (c *UnixClient) create(ctx context.Context) error {
 		}
 		c.outputWG.Add(1)
 		go c.drain(file, stream)
+		if err := c.checkpoint(fmt.Sprintf("output-reader-%d", index)); err != nil {
+			return err
+		}
 	}
 	if err := c.checkpoint("supervisor-created"); err != nil {
 		return err

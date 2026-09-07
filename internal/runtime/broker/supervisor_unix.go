@@ -22,9 +22,9 @@ const supervisorPrivateMarker = "--gh-tree-runtime-supervisor-v1"
 func unixFailurePayload(phase byte, stage api.RuntimeCleanupStage, err error) []byte {
 	code := api.IOFailure
 	switch {
-	case os.IsPermission(err):
+	case errors.Is(err, os.ErrPermission):
 		code = api.Permission
-	case os.IsNotExist(err) || errors.Is(err, exec.ErrNotFound):
+	case errors.Is(err, os.ErrNotExist) || errors.Is(err, exec.ErrNotFound):
 		code = api.NotFound
 	case errors.Is(err, ErrCwd):
 		code = api.StaleObservation

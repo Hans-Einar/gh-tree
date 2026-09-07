@@ -1,6 +1,6 @@
 # M3 Runtime contribution — #65
 
-State: IN PROGRESS / PARTIAL CHECKPOINT / NOT ACCEPTED
+State: UNIX NATIVE REVIEW CANDIDATE / #65 OVERALL INCOMPLETE / NOT ACCEPTED
 
 Parent: #21; worker authority: #65. Branch: `codereview-21/layer-runtime`.
 Worktree: `C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation`.
@@ -422,11 +422,65 @@ Ordinary-user Linux full broker suite PASS at the correction, native directory
 
 ## Next permitted work
 
-Commit/push this coherent partial checkpoint before further substantial work.
-Continue remaining Unix native failure/recovery, control-loss/escape, repeated
-resource counts and independent exact-source verification. #71 owns parent
-Sessions/root files, #69 owns Windows native code and #70 owns helper assets;
-their reviewed integration remains Master-owned. Preserve every native gate.
+Freeze/push the Unix candidate below, obtain new-head native/race CI and a fresh
+independent source/test/contract review, correct actual findings and re-review.
+#71 owns parent Sessions/root files, #69 owns Windows native code and #70 owns
+helper assets; their reviewed integration remains Master-owned. Preserve every
+native gate. This worker cannot accept/integrate the contribution or close #65.
 Request Master coordination before any shared-interface/workflow/private-host
 dispatch change or frozen-contract gap. Preserve every native requirement and
 all failed/not-run verification facts until exact-source evidence resolves them.
+
+## Unix native candidate: adversarial ownership and recovery
+
+Prior exact a57d496 CI34072812802 passes all six independent native/race jobs,
+including macOS corrected KILL lifetime. Only the known helper-input inventory
+failure remains; this is not all-target/helper conformance or full Runtime acceptance.
+
+The candidate adds actual native parent-control EOF and observed setsid escape
+tests: both retain explicit residuals and never fabricate full cleanup; their
+parent handles/workers close/join. The escape fixture itself owns and cleans its
+deliberately escaped direct child; product code performs no numeric recovery.
+Cancellation before acquisition and at all five lifecycle acquisition barriers
+retains correct owner/no-owner facts. A user-root fd probe proves private pipe/cwd
+descriptors do not reach it; an intentionally inherited fixture fd3 is the positive
+detector control. Existing private-entry, frame/nonce and group-acquisition controls
+remain in place.
+
+Native acquisition injection now covers17 checkpoints: cwd, each control/input/
+stdout pipe stage, PTY pair/master transfer, I/O setup, all five child endpoint
+closures, both output-reader starts, supervisor creation and Start transfer. Each
+returns a retained owner and proves actual cleanup. The helper recovery fixture
+uses an exclusively created copy of the test executable; removing execute permission
+causes a typed Permission residual while ownership remains active, restoring that
+owned copy allows cleanup, and historical permission facts survive. It changes
+neither the installed executable nor user project code. This test exposed joined
+error classification using os.IsPermission; errors.Is now correctly preserves
+permission/not-found facts through aggregate cleanup errors.
+
+Twelve alternating pipe/PTY cycles retain their closed client objects and verify
+every registered native descriptor is closed/unusable, all private owner counters
+are joined, and goroutine counts return. Linux additionally verifies process fd
+inventory6→6; local evidence has102 closed owned descriptor objects and goroutines
+2→2. The same repeated ownership/worker test runs on macOS/FreeBSD; their global
+process fd inventory is not asserted from an unavailable Linux proc filesystem.
+
+Final local ordinary-user Linux full broker suite PASS after all candidate changes,
+directory `/tmp/gh-tree-runtime-native.QsL9z5`. All nine Unix test-binary cross-builds,
+Linux-selected vet and staged architecture PASS. New candidate exact native CI
+remains pending. Prior full source/native/race results do not substitute for it.
+
+| Unix-native obligation | Actual source/test evidence | Remaining acceptance scope |
+|---|---|---|
+| Independent acquired cwd and before-user Fchdir | cwd_unix/stamp variants; supervisor; original-object, link/stale/barrier-replacement tests and actual marker fixture | Fresh review and new-head native gate; no continuous ancestry/sandbox promise |
+| SID/controlling tty/different user PGID | supervisor/tree; native root-before-child/grandchild and foreground/background PTY fixtures | Fresh review; full parent Sessions integration belongs #71 |
+| Joined/Commit/acquired self-signals and identity lifetime | signal/endpoints/census variants; foreign/vanished/last-original/nonce/parked STOP/KILL fixtures | Fresh review; global numerical PID recycling is not forced by tests |
+| Startup/partial ownership and copied transports | client;17 acquisition fault points, cancellation, checksum/partial input/late controls and typed failed startup | Fresh review and final native fault selection; malformed/unsupported native profiles always refuse |
+| Complete release/joins and truthful residuals | client/tree/supervisor; EOF/escape, blocked writer/output, callback panic, helper failure/recovery and repeated resource counts | Fresh review; deliberate unobserved new-session escape is outside portable SID containment |
+| Native Linux/macOS/FreeBSD execution | Exact prior CI records above and candidate fixtures without platform bypass | Candidate new-head CI, independent review and eventual integrated SHA |
+| Twelve Sessions methods/event ACK/restart/aggregate shutdown | Existing common root foundations, queued #71 | #71 real-client assembly and review, not completed by this Unix native candidate |
+| Windows broker/images/reproducibility | Independently owned #69/#70 | Separate accepted source/assets and Master integration; this branch still fails missing-helper inventory |
+
+No native/resource correctness limitation is hidden as a passing skip. Parent
+composition/private dispatch, Windows/image integration, complete public lifecycle
+and full Slice/M3/native-release proof remain gated outside this isolated candidate.

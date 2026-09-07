@@ -171,9 +171,10 @@ func TestNativeUnixClientOutputCallbackPanicIsOwned(t *testing.T) {
 
 func TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner(t *testing.T) {
 	injected := errors.New("owned native fixture acquisition failure")
-	for _, stage := range []string{"cwd", "control-pipes", "io", "supervisor-created", "start-sent"} {
+	for _, stage := range []string{"cwd", "control-request-pipe", "control-pipes", "input-pipe", "stdout-pipe", "pty-pair", "pty-master", "io", "child-endpoint-0", "child-endpoint-1", "child-endpoint-2", "child-endpoint-3", "child-endpoint-4", "output-reader-0", "output-reader-1", "supervisor-created", "start-sent"} {
 		t.Run(stage, func(t *testing.T) {
 			config, _ := unixClientFixture(t, "--runtime-fixture-hold-ignore")
+			config.Spec.Terminal = strings.HasPrefix(stage, "pty-")
 			config.hook = func(at string, _ *UnixClient) error {
 				if at == stage {
 					return injected

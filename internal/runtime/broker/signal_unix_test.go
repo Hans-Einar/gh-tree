@@ -23,6 +23,43 @@ import (
 func TestMain(m *testing.M) {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
+		case "--runtime-fixture-check-private-fds":
+			for fd := 3; fd <= 5; fd++ {
+				var stat unix.Stat_t
+				if unix.Fstat(fd, &stat) == nil {
+					kind := stat.Mode & unix.S_IFMT
+					if kind == unix.S_IFIFO || kind == unix.S_IFDIR {
+						os.Exit(1)
+					}
+				}
+			}
+			fmt.Println("__owned_no_private_fds__")
+			os.Exit(0)
+		case "--runtime-fixture-helper-recovery":
+			if err := helperRecoveryFixture(); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+			os.Exit(0)
+		case "--runtime-fixture-escape-root":
+			terminate := make(chan os.Signal, 1)
+			signal.Notify(terminate, syscall.SIGTERM)
+			member, err := startFixtureMember(must(os.Executable()), true, true)
+			if err != nil {
+				if member != nil {
+					member.cleanup()
+				}
+				os.Exit(1)
+			}
+			fmt.Println("__owned_escape_started__")
+			select {
+			case <-terminate:
+			case <-time.After(5 * time.Second):
+			}
+			if err := member.cleanup(); err != nil {
+				os.Exit(1)
+			}
+			os.Exit(0)
 		case "--runtime-fixture-foreground":
 			fmt.Println("__owned_foreground_ready__")
 			time.Sleep(20 * time.Second)
