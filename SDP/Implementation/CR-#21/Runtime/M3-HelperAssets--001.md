@@ -1,7 +1,8 @@
 # M3 Runtime helper assets — Issue #70
 
-Disposition: bounded implementation checkpoint; independent review, final Windows
+Disposition: bounded candidate frozen for independent review; final Windows
 source adoption/regeneration and integrated/native Runtime acceptance remain open.
+Product candidate: `b72ad94c60eb38d7c4ebe70fafd10b21a3289037`.
 Worker branch: `codex/cr21-runtime-helper-assets`, dedicated
 `C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets`. Broker source base:
 `ab608327e63727f66ffb1aa7b3200c2865307cf5`. No other worker changes are integrated.
@@ -96,19 +97,35 @@ attempt produced no accepted assets. No prerequisite/CI gate was weakened.
   public cmd/gh-tree cross-builds passed and outputs were hashed, then removed
   from the owned temporary output directory. CLI still uses its legacy entry;
   those builds establish packaging availability, not Runtime cutover.
-- Earlier complete `-check` independently rebuilt and matched the 896-input
-  manifest before adding four assembler support headers. Final exact-checkpoint
-  check/no-rewrite and clean-checkout ordinary-build confirmation follow this
-  commit and will be recorded without relabeling the earlier proof.
+- Final exact-product `b72ad94` `go run ./internal/runtime/cmd/helpergen -check`
+  passed with the complete 900-input digest above, after two new independent
+  clean builds per target. An external Python observer captured every Runtime
+  file's SHA256, length and nanosecond modification time before/after, and checked
+  the complete file set: all 40 files were unchanged. Checkout stayed clean.
+- An owned clean `git archive b72ad94` extraction, with GOPROXY=off/GOSUMDB=off,
+  GOTOOLCHAIN=local/GOWORK=off/GOFLAGS=-mod=readonly/CGO_ENABLED=0, passed ordinary
+  `go build -trimpath -o <owned-temp>/gh-tree.exe ./cmd/gh-tree`,
+  `go build ./internal/runtime/...`, and `go test ./internal/runtime/brokerassets
+  -count=1`. No generator ran in that clean tree, and no dependency download was
+  permitted. The owned temporary archive extraction/output was removed afterward.
+
+Exact final check output (exit0):
+
+```text
+helpers verified: canonical windows/amd64 go1.25.0; two clean builds per target; source closure e3a5f8b97f9b5e02fc389097429c98226146d202ba49fe398a843fd6cf06045c (900 inputs)
+No-rewrite exact bytes/lengths/mtimes/file set: True files= 40
+```
 
 ## Remaining gates and exact next action
 
 Master requests a fresh independent reviewer for the frozen helper candidate,
 including the narrow Composition policy delta. Windows source has advanced to
-`2f388202895ce17c359126dde4abfc5a9e643f46` after this branch's base; those assets
+`fb1a9ec5a46f8b886ff226e32072abdef593648b` after this branch's base; these assets
 must not be represented as current for that source. Wait for a coherent Windows
 freeze, obtain Master-authorized adoption, then regenerate/check reviewed assets
 against that exact closure. No transient source synchronization is performed.
+The current candidate is frozen for review against its fixed real ab608 closure;
+the author stops after this report-only evidence checkpoint is pushed.
 
 Runtime Sessions/parent integration, extraction native tests, native Windows ARM64
 and emulation, full ABI/fault/ConPTY/lifecycle tests, other native platforms,
