@@ -410,3 +410,27 @@ Next: push this coherent test-only refinement, run exact integrated native CI
 (including the deterministic ARM64 control), then freeze evidence for Master's
 verification disposition. Existing helper source/bytes stay unchanged. This
 investigation grants no full Runtime, parent, Slice, main or release acceptance.
+
+Final test source is clean/pushed
+`2bc27e0c36105b6366b7749d4e97e9e5cd3fefbb`.
+[CI34082980191](https://github.com/Hans-Einar/gh-tree/actions/runs/34082980191),
+attempt1, completed at that exact source with19 SUCCESS /1 FAILURE. Native
+Windows ARM64 job101621669933 passed the full broker suite70.373s; native
+Windows amd64 job101621670102 passed70.534s. Both logs bind actual Go1.25.0 native
+host architecture and source, and full vet/build also passed. The deterministic
+mapped-image control and strict final native/object assertions are part of those
+executed Windows tests. Inventory, all twelve architecture builds, helper
+reproducibility101621740588, FreeBSD, macOS and race also passed. The helper
+manifest Git blob remains `5bb5f64ac040e7d301bfc9fb49961fca5f184f20`, identical to
+the starting integrated source; no product/helper input changed.
+
+The run remains failed because Linux job101621669773 reports
+`TestNativeUnixClientFailedStartPreservesTypedFacts`, client_unix_test.go337,
+with final `{false false 0 0 true true Unix native failure (code 12, stage 2) []}`
+and the same error. This separate Unix source/test was not changed or re-run as
+a workaround; Master received its exact raw-log finding for the appropriate
+owner. Windows cleanup evidence is complete for this bounded refinement, while
+the combined native integration gate remains incomplete. This final report-only
+commit uses `[skip ci]` and leaves2bc27e0's tested files unchanged. Next action:
+Master verifies this scoped evidence and handles the separate Linux gate; this
+author stops with a clean pushed worktree and no product-change proposal.
