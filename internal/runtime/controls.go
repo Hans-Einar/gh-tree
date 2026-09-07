@@ -77,6 +77,9 @@ func (r *sessions) writeLoop(s *session) {
 		if err != nil {
 			d := diagnostic(safeDiagnostic(err).Data().Code, "runtime.input_delivery", fmt.Sprintf("Accepted input: %d bytes; observed native delivery: %d bytes. No automatic replay.", len(data), delivered))
 			s.mu.Lock()
+			if previous, ok := s.diagnostics[api.InputCleanup]; ok {
+				d = diagnostic(d.Data().Code, "runtime.input_delivery", previous.Data().Message+" "+d.Data().Message)
+			}
 			s.diagnostics[api.InputCleanup] = d
 			s.mu.Unlock()
 			_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error { return nil })

@@ -224,7 +224,20 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 			result.Complete = false
 			residuals := stop.Data().Session.Data().Cleanup.Data().Residuals
 			if len(residuals) == 0 {
-				residuals = []api.RuntimeResidual{r.residual(s, api.Acquisition, errCleanup)}
+				s.mu.Lock()
+				nativeClean, control := s.nativeClean, s.controlBusy
+				producers := s.producers
+				s.mu.Unlock()
+				if nativeClean && producers > 0 {
+					if control {
+						residuals = append(residuals, r.residual(s, api.ControlCleanup, errCleanup))
+					}
+					if producers > 1 || !control {
+						residuals = append(residuals, r.residual(s, api.InputCleanup, errCleanup))
+					}
+				} else {
+					residuals = []api.RuntimeResidual{r.residual(s, api.Acquisition, errCleanup)}
+				}
 			}
 			result.Residuals = append(result.Residuals, residuals...)
 		}

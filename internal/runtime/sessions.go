@@ -147,7 +147,15 @@ func (r *sessions) specification(inv api.Invocation) ([]string, api.InvocationSu
 	if argv, ok := d.Execution.(api.ArgvExecution); ok {
 		executable = argv.Data().Executable
 	}
-	display := owned(api.NewInvocationSummary(api.InvocationSummaryData{Label: d.Label, ExecutableDisplay: executable, Cwd: d.Cwd, AcceptedLocator: d.Cwd.Data().Worktree.Data().RootLocator, Terminal: d.Terminal, Geometry: d.Geometry}))
+	locator := d.Cwd.Data().Worktree.Data().RootLocator
+	if components := d.Cwd.Data().ProjectComponents; len(components) > 0 {
+		separator := "/"
+		if windows {
+			separator = "\\"
+		}
+		locator = strings.TrimRight(locator, separator) + separator + strings.Join(components, separator)
+	}
+	display := owned(api.NewInvocationSummary(api.InvocationSummaryData{Label: d.Label, ExecutableDisplay: executable, Cwd: d.Cwd, AcceptedLocator: locator, Terminal: d.Terminal, Geometry: d.Geometry}))
 	terminal := d.Terminal == api.Terminal
 	caps := owned(api.NewSessionCapabilities(api.SessionCapabilitiesData{Output: true, Input: true, Resize: terminal, TerminalETX: terminal, TreeStop: true, Restart: true}))
 	return resolved, display, caps, nil
@@ -306,7 +314,10 @@ func (r *sessions) observe(s *session, owner nativeOwner) {
 	for {
 		fact, err := owner.NextFact(context.Background())
 		if err != nil {
-			fact.Residuals = []api.RuntimeResidual{r.residual(s, api.SupervisorOrBroker, safeDiagnostic(err))}
+			fact.Diagnostic = api.Some(safeDiagnostic(err))
+			if !fact.CleanupComplete {
+				fact.Residuals = append(fact.Residuals, r.residual(s, api.SupervisorOrBroker, safeDiagnostic(err)))
+			}
 		}
 		_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
 			if fact.Established {

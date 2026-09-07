@@ -21,10 +21,14 @@ type controlledOwner struct {
 	stops  atomic.Int32
 	write  func(context.Context, []byte) (nativeDelivery, error)
 	resize func(context.Context, api.Geometry) (nativeDelivery, error)
+	next   func(context.Context) (nativeFact, error)
 }
 
 func testOwner() *controlledOwner { return &controlledOwner{facts: make(chan nativeFact, 8)} }
 func (o *controlledOwner) NextFact(ctx context.Context) (nativeFact, error) {
+	if o.next != nil {
+		return o.next(ctx)
+	}
 	select {
 	case f := <-o.facts:
 		return f, nil
@@ -468,5 +472,17 @@ func TestSessionsFailureBeforeNativeAcquisitionStillOwnsFinal(t *testing.T) {
 	repeated, err := r.Start(context.Background(), request)
 	if !errors.Is(err, errUnsupported) || mustValue(repeated.Data().Session).Data().SessionID != id || starts.Load() != 1 {
 		t.Fatal("failed start duplicate reran native acquisition")
+	}
+}
+
+func TestSessionsKnownCleanupSurvivesObservationError(t *testing.T) {
+	o := testOwner()
+	o.next = func(context.Context) (nativeFact, error) { return cleanedFact(), errUnsupported }
+	r, _ := testEngine(o)
+	id := startID(t, r, engineRequest(1, false))
+	awaitPhase(t, r, id, api.Cleaned)
+	stop := must(r.Stop(context.Background(), stopRequest(id)))
+	if !stop.Data().CleanupComplete || len(stop.Data().Diagnostics) == 0 {
+		t.Fatal("known cleanup or historical diagnostic erased")
 	}
 }
