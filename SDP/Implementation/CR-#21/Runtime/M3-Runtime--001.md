@@ -638,3 +638,22 @@ Local UTF8 log: `C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907/output-sync
 Exact new-head FreeBSD/full native CI remains required. Master inspects this
 bounded fixture correction and the integration gate; no new whole native
 product review or full #65/Slice acceptance is claimed.
+
+Frozen fixture source `941f4be195bf1a0fefdb13d41e13435e0628bf76`:
+[CI34081403751 attempt1](https://github.com/Hans-Einar/gh-tree/actions/runs/34081403751)
+is terminal19SUCCESS/1FAILURE. FreeBSD101617231875 passes the corrected actual
+test (0.11s) and full native suite as UID/GID1001 on15.0-RELEASE-p12 amd64 with
+Go1.25.0. Full artifact10003827417 (66105 bytes), ZIP SHA256
+`bb50ea3b13673dc6f3d29787ff20fc93557dcc4d7b510794c628b99583c0a4de`.
+Linux/macOS/Windows-amd64, Linux race101617231997, all12 build/architecture jobs,
+the prerequisite check and helper source-closure/reproducibility all pass.
+
+Remaining integration failure is separate Windows-ARM64 job101617232026:
+`TestWindowsExtractedBrokerLifecycle`, extract_windows_test.go205, returns
+Established/RootExited/Quiescent/CleanupComplete true, exit0, no residuals, but
+`Windows runtime permission denied at helper extraction during cleanup`.
+Windows product/test/helper bytes are unchanged by this Unix-only correction.
+The exact failure was sent to Master for the Windows owner; this author neither
+changes that source nor relaxes its assertion. The original510139d FreeBSD failure
+remains recorded above. Only this report changes after941f4be; source is frozen
+clean/pushed for Master inspection and coordinated remaining integration work.
