@@ -31,7 +31,7 @@ func census(ctx context.Context) ([]processFact, error) {
 				return nil, ErrCensus
 			}
 			f, err := os.Open("/proc/" + entry.Name() + "/stat")
-			if os.IsNotExist(err) {
+			if linuxProcEntryGone(err) {
 				continue
 			}
 			if err != nil {
@@ -52,6 +52,16 @@ func census(ctx context.Context) ([]processFact, error) {
 			return nil, readErr
 		}
 	}
+}
+
+// proc_pid_permission can return ESRCH after pathname lookup if the task
+// disappeared. Accept only the native errno (optionally wrapped by os.Open),
+// never a combined error that may also contain an unrelated acquisition failure.
+func linuxProcEntryGone(err error) bool {
+	if pathErr, ok := err.(*os.PathError); ok {
+		err = pathErr.Err
+	}
+	return err == syscall.ENOENT || err == syscall.ESRCH
 }
 
 // readLinuxStat owns one opened proc stat file, including its close result.

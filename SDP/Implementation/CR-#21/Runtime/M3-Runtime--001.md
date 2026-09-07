@@ -711,3 +711,38 @@ Next gate: push this coherent correction, inspect exact integrated native/race/
 helper/all12 CI, and obtain a separate bounded independent census/cleanup review.
 This author does not accept the correction, integrate parent Sessions, close #65,
 or claim any full adapter/Slice/canonical/release completion.
+
+## Bounded M65-I01 acquisition correction
+
+Independent reviewbf8df249b256aba54a89a86c6cce0986ebae73a0 accepted the read-side
+correction but required acquisition-side ESRCH handling. Its original report,
+probe and native log are unchanged. Source99af6bf passed all20 exact jobs in
+CI34084151911; that passing CI did not resolve the additional native finding.
+Master dispatch3ce0480 / ledger104 authorizes only this bounded correction.
+
+The actual census open predicate now recognizes only native ENOENT or ESRCH,
+either direct or inside the one os.Open PathError wrapper. Unrelated EACCES,
+EPERM, EIO, EBADF, ENOTDIR and combined errors remain failures. The accepted
+read/close implementation, parser, limits, membership, signaling and cleanup
+policies are unchanged; no Windows/shared/helper/root file changes occurred.
+
+The existing retained-stat test now also retains the proc directory, waits the
+exact child exit0, proves fresh open ENOENT and retained-directory openat ESRCH,
+and exercises the actual production acquisition predicate. This reuses the
+reviewer's deterministic native mechanism; it does not claim syscall interposition
+or identify the unavailable original CI errno. The unchanged independent overlay
+also PASSes with its live-peer full-census positive. That overlay deliberately
+still tests the old os.IsNotExist predicate to preserve its original evidence;
+the updated product test separately proves the corrected predicate.
+
+Actual Linux UID/GID65534 targeted native/acquisition/read-close/unchanged NotFound
+controls PASS20 repetitions; Linux-selected vet PASS. Same Go1.25.0 builder,
+kernel6.18.33.2 and owned /tmp/gh-tree-unix-census.kU76jV. No full local matrix
+was repeated. UTF8 esrch-open-fixed.log SHA256:
+c799212b4090a9a54fb88708201fab44daa670c880f677343c9506b0ab1226cd;
+unchanged-probe run esrch-open-review.log, under the earlier named local log root.
+Both directly owned children are joined; local binaries/logs are reproducible.
+
+Next: push coherent source, start exact native/race/helper/all12 CI, then freeze
+for the same independent reviewer's bounded confirmation. M65-I01 acceptance,
+parent integration and full Runtime/adapter/Slice completion remain Master's gates.

@@ -10,6 +10,8 @@ import (
 	"strings"
 	"syscall"
 	"testing"
+
+	"golang.org/x/sys/unix"
 )
 
 func TestNativeLinuxCensusRetainedStatAfterExactExit(t *testing.T) {
@@ -36,7 +38,13 @@ func TestNativeLinuxCensusRetainedStatAfterExactExit(t *testing.T) {
 			}
 		}
 	}()
-	path := fmt.Sprintf("/proc/%d/stat", cmd.Process.Pid)
+	procPath := fmt.Sprintf("/proc/%d", cmd.Process.Pid)
+	path := procPath + "/stat"
+	directory, err := os.Open(procPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer directory.Close()
 	live, err := os.Open(path)
 	if err != nil {
 		t.Fatal(err)
@@ -58,6 +66,24 @@ func TestNativeLinuxCensusRetainedStatAfterExactExit(t *testing.T) {
 	if err != nil {
 		t.Fatal("exact fixture wait", err)
 	}
+	if f, err := os.Open(path); !errors.Is(err, syscall.ENOENT) || !linuxProcEntryGone(err) {
+		if f != nil {
+			f.Close()
+		}
+		t.Fatal("fresh proc path after exact wait", err)
+	}
+	// Reuse the reviewer's retained-directory control to make the native
+	// acquisition race deterministic; it is not a synthetic read failure.
+	fd, openErr := unix.Openat(int(directory.Fd()), "stat", unix.O_RDONLY|unix.O_CLOEXEC, 0)
+	if fd >= 0 {
+		unix.Close(fd)
+	}
+	if !errors.Is(openErr, syscall.ESRCH) {
+		t.Fatal("retained proc directory acquisition", fd, openErr)
+	}
+	if !linuxProcEntryGone(&os.PathError{Op: "open", Path: path, Err: openErr}) {
+		t.Fatal("native acquisition disappearance was not recognized", openErr)
+	}
 	// First establish the native errno on this retained object. Failed seq_file
 	// reads do not advance its offset, so the actual reader sees the same errno.
 	var probe [1]byte
@@ -71,7 +97,18 @@ func TestNativeLinuxCensusRetainedStatAfterExactExit(t *testing.T) {
 	if _, err := retained.Stat(); !errors.Is(err, os.ErrClosed) {
 		t.Fatal("retained descriptor not closed", err)
 	}
-	t.Log("live positive; exact exit0; native retained read ESRCH; absent census record; descriptor closed")
+	t.Log("live positive; exact exit0; fresh open ENOENT; retained-directory open ESRCH; retained read ESRCH; absent census record; descriptor closed")
+}
+
+func TestLinuxCensusAcquisitionClassifiesOnlyNativeDisappearance(t *testing.T) {
+	for _, nativeErr := range []error{nil, syscall.ENOENT, syscall.ESRCH, syscall.EACCES, syscall.EPERM, syscall.EIO, syscall.EBADF, syscall.ENOTDIR, ErrCensus, errors.Join(syscall.ESRCH, syscall.EACCES)} {
+		want := nativeErr == syscall.ENOENT || nativeErr == syscall.ESRCH
+		for _, err := range []error{nativeErr, &os.PathError{Op: "open", Path: "/proc/owned/stat", Err: nativeErr}} {
+			if got := linuxProcEntryGone(err); got != want {
+				t.Fatalf("acquisition error %v: gone=%v, want %v", err, got, want)
+			}
+		}
+	}
 }
 
 type linuxStatTestReader struct {
