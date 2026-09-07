@@ -26,10 +26,11 @@ type manifestFrame struct {
 	Digest [32]byte
 }
 type manifestJournal struct {
-	object *nativeObject
-	frames uint32
-	last   [32]byte
-	bytes  int
+	object     *nativeObject
+	frames     uint32
+	last       [32]byte
+	bytes      int
+	checkpoint func(string) error // private request fault/crash instrumentation
 }
 
 // Each flushed snapshot is independently complete and hash-chained. A torn
@@ -57,8 +58,18 @@ func (j *manifestJournal) append(ctx context.Context, snapshot recoveryManifest)
 	if len(raw) > maxManifestJournalBytes-j.bytes {
 		return errors.New("manifest journal size limit")
 	}
+	if j.checkpoint != nil {
+		if err := j.checkpoint("write"); err != nil {
+			return err
+		}
+	}
 	if err := writeComplete(ctx, j.object.file, raw); err != nil {
 		return err
+	}
+	if j.checkpoint != nil {
+		if err := j.checkpoint("flush"); err != nil {
+			return err
+		}
 	}
 	if err := j.object.file.Sync(); err != nil {
 		return err

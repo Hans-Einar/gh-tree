@@ -655,6 +655,36 @@ FreeBSD's pending user profile decision/native failure, no-birth persistent
 association and Unix final source-name-check/syscall interval remain unchanged
 open boundaries. No new primitive, privilege, relaxed metadata or identity rule.
 
+The combined preparation/resource checkpoint adds35 actual protocol boundaries
+with both failure delivery and cancellation (70 cases). Manifest frame write/
+flush and precommit/request close boundaries reuse private instrumentation;
+native close is always attempted, cancellation cannot skip it, and each failing
+close now has its own CleanupIncomplete diagnostic alongside the unchanged
+publication result. Tests disable automatic GC and require exact native File
+handle restoration on Windows and descriptor restoration on Unix, then reacquire
+the lock and compare every returned still-named recovery record after restart.
+These injected boundary failures do not claim physical disk-full/flush/power loss.
+
+Separate real native controls: Windows no-delete-sharing reader yields actual
+sharing refusal with current/version/resource ownership intact; ordinary Unix
+directory write-permission removal yields actual EACCES at6 creation/retention/
+publication stages, with exact retained-descriptor permission restoration; a
+joined Unix child with its own RLIMIT_FSIZE writes an actual40000-byte payload
+prefix then fails, preserving NotCommitted/original/manifest and closing all
+request descriptors. No process/global privilege or persistent settings change.
+The existing killed-process test now includes4 additional data/journal/preclose
+boundaries and requires exact proved record counts plus identical repeated loads,
+instead of merely asserting that some record survived.
+
+Go1.25.0 native Windows full Persistence PASS7.818s and vet PASS. Native Linux6.18
+WSL openSUSE-Leap-15.5 ext4 under UID/GID65534 passes the70-case failure/resource
+selector,6 actual EACCES cases, actual partial-write child, admission correction,
+manifest/preparation/set-ID and existing8 crash stages. Owned staging:
+`/tmp/gh-tree-persistence-faults.KTJqz1`; local binary/script/log beneath
+`C:/Users/hanse/AppData/Local/Temp/gh-tree-persistence-faults-e93679261e4f41ae8e2d48e226ede13f`.
+The final expanded12 crash controls and exact source CI/native macOS are checked
+after this checkpoint. Full adapter/native-profile acceptance remains open.
+
 ## Current handoff and exact next permitted action
 
 The Windows12-commit regression is corrected by the reviewed private P3j profile;

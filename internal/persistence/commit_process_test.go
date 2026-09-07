@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -142,7 +143,7 @@ func TestCommitSeparateProcessesUseWholeDocumentCAS(t *testing.T) {
 }
 
 func TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts(t *testing.T) {
-	for _, stage := range []string{"lock", "prepare.payload", "prepare.original.journal", "manifest-flushed", "before-publication", "native-return-lost", "directory-flush", "outcome-delivery"} {
+	for _, stage := range []string{"lock", "prepare.payload", "prepare.payload.flush", "prepare.raw.flush", "prepare.original.journal", "prepare.ready.journal.flush", "manifest-flushed", "prepare.close", "before-publication", "native-return-lost", "directory-flush", "outcome-delivery"} {
 		t.Run(stage, func(t *testing.T) {
 			root := physicalStoreTemp(t)
 			old := []byte(`{"schemaVersion":1,"stripPrefixes":["old"]}`)
@@ -175,8 +176,20 @@ func TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts(t *testing.T) {
 			if !loaded.Valid() || loaded.Observation().Data().State != api.ValidCurrent {
 				t.Fatalf("crash load: %v %v", loaded, err)
 			}
-			if stage != "lock" && len(loaded.Observation().Data().Recovery) == 0 {
-				t.Fatalf("crash lost all persisted recovery: %v", err)
+			wantRecords := map[string]int{
+				"lock": 0, "prepare.payload": 1, "prepare.payload.flush": 1,
+				"prepare.raw.flush": 2, "prepare.original.journal": 3,
+				"prepare.ready.journal.flush": 5, "manifest-flushed": 5,
+				"prepare.close": 5, "before-publication": 5,
+				"native-return-lost": 4, "directory-flush": 4, "outcome-delivery": 4,
+			}[stage]
+			facts := recoveryRecords(t, loaded.Observation().Data().Recovery)
+			if len(facts) != wantRecords {
+				t.Fatalf("crash lost or invented proved artifact facts: got %d want %d: %v", len(facts), wantRecords, err)
+			}
+			repeated, reloadErr := newTestStore(t, root).LoadUserConfig(context.Background())
+			if !repeated.Valid() || !reflect.DeepEqual(recoveryRecords(t, repeated.Observation().Data().Recovery), facts) || repeated.Observation().Data().Version != loaded.Observation().Data().Version {
+				t.Fatalf("restart altered stable recovery/current facts: %v", reloadErr)
 			}
 			// Reacquired lock and a completed load prove killed request ownership
 			// was released. Restart facts never label the dead request committed.

@@ -38,6 +38,20 @@ func (s *Store) checkpoint(ctx context.Context, stage string) error {
 	return ctx.Err()
 }
 
+// Cleanup is attempted regardless of cancellation or injected delivery failure.
+// Each close has its own diagnostic so an earlier native effect cannot be
+// mistaken for failure of publication, and one close never skips the next.
+func (s *Store) closeResource(stage string, close func() error) error {
+	err := close()
+	if s != nil && s.hook != nil {
+		err = errors.Join(err, s.hook(stage))
+	}
+	if err != nil {
+		return errors.Join(errCleanupIncomplete, err)
+	}
+	return nil
+}
+
 func (s *Store) acquireStore(ctx context.Context, family api.StorageFamily, scope api.WorktreeScope) (c *nativeChain, name, locator string, resultErr error) {
 	if s == nil {
 		return nil, "", "", errInvalidRequest
@@ -140,6 +154,12 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	var name, locator string
 	effectiveScope := scope
 	defer func() {
+		closeOwned := func(at string, close func() error) {
+			if err := s.closeResource(at, close); err != nil {
+				r.Diagnostics = append(r.Diagnostics, storageDiagnostic(at, err))
+				resultErr = errors.Join(resultErr, err)
+			}
+		}
 		if lock != nil && c != nil {
 			observationContext, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			_, observed, err := loadAcquired(observationContext, c, proposed.family, effectiveScope, name)
@@ -151,13 +171,13 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			}
 		}
 		for i := len(owned) - 1; i >= 0; i-- {
-			resultErr = errors.Join(resultErr, owned[i].close())
+			closeOwned("close.artifact", owned[i].close)
 		}
 		if lock != nil {
-			resultErr = errors.Join(resultErr, lock.close())
+			closeOwned("close.lock", lock.close)
 		}
 		if c != nil {
-			resultErr = errors.Join(resultErr, c.close())
+			closeOwned("close.parents", c.close)
 		}
 		r.CancellationAsked = ctx.Err() != nil
 		state := api.NotStarted
@@ -391,7 +411,9 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err := m.validate(proposed.family, effectiveScope, name, directoryRecord(parentID)); err != nil {
 		return result, err
 	}
-	journal := manifestJournal{object: manifest}
+	journal := manifestJournal{object: manifest, checkpoint: func(at string) error {
+		return s.checkpoint(ctx, stage+".journal."+at)
+	}}
 	if err := journal.append(ctx, m); err != nil {
 		return result, err
 	}
@@ -509,6 +531,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		return result, err
 	}
 	m.Preparing = false
+	stage = "prepare.ready"
 	if err := m.validate(proposed.family, effectiveScope, name, directoryRecord(parentID)); err != nil {
 		return result, err
 	}
@@ -530,7 +553,8 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		}
 		object := owned[i]
 		owned = append(owned[:i], owned[i+1:]...)
-		if err := object.close(); err != nil {
+		stage = "prepare.close"
+		if err := s.closeResource(stage, object.close); err != nil {
 			return result, err
 		}
 	}

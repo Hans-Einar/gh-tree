@@ -16,6 +16,7 @@ var (
 	errBindingChanged     = errors.New("storage binding changed")
 	errInvalidRequest     = errors.New("invalid storage request")
 	errLockBusy           = errors.New("storage lock busy")
+	errCleanupIncomplete  = errors.New("storage resource cleanup incomplete")
 )
 
 // Options contains explicit Composition-selected absolute locations and bounded
@@ -258,7 +259,9 @@ func storageDiagnostic(stage string, cause error) api.Diagnostic {
 		return notices[0]
 	}
 	code := api.IOFailure
-	if nativeUnsupported(cause) {
+	if errors.Is(cause, errCleanupIncomplete) {
+		code = api.CleanupIncomplete
+	} else if nativeUnsupported(cause) {
 		code = api.Unsupported
 	} else if errors.Is(cause, errLockBusy) || errors.Is(cause, errRecoveryCapacity) {
 		code = api.Busy
