@@ -6,8 +6,8 @@ split within Runtime. Frozen Application--Runtime/BoundaryTypes 1.0.0,
 WindowsBroker/CwdAcquisition and Verification govern this contribution. No
 acceptance, integration, full adapter or native platform completion is claimed.
 
-Current disposition: **standalone Windows native candidate frozen for fresh
-independent review**. Latest candidate status and outstanding dependent gates are
+Current disposition: **W69-M01/M02 corrected source pending current CI and bounded
+independent re-review**. Latest candidate status and outstanding dependent gates are
 at the end of this record; earlier partial checkpoints are historical evidence.
 
 ## Partial checkpoint 1
@@ -259,3 +259,66 @@ The working tree is to remain clean and the candidate held while the fresh revie
 inspects it. Next permitted action is independent review, followed only by bounded
 corrections/re-review or Master-coordinated helper binding/integration. The unrelated
 blocked Git foundation review has not been retrieved, retried or replaced.
+
+## Bounded W69-M01/M02 correction — 2026-09-07
+
+Fresh correcting author under Master87581558/ledger87 and the latest #69 comment;
+starting clean/pushed review HEAD35a7632c97920b68e5c428bbbbf37494a056d8ea. The two
+findings and unaffected native evidence remain in M3-Windows-Review--001. A bounded
+implementation subagent authored only the failure codec/engine/process/debug
+correction and its tests; it performed no independent review or integration.
+
+W69-M01: ordinary controls now await serialization cancellably, then recheck
+cancellation and Stop at one atomic memory admission point. At most64 dispatched
+but unobserved receipts remain; only one native input is in flight, bounded to
+65484 bytes (the parent's65536-byte queue still needs its existing split/join).
+No input bytes remain in a completed receipt. A rejected operation returns no
+receipt. Every possibly dispatched operation returns a WindowsReceipt through
+WindowsDelivery, including an ambiguous send error. Dispatched means possible
+effect; Completed alone means a known native result. Receipt.Wait observes the
+original immutable result, prefers terminal facts over raced cancellation, and
+retires admission exactly once even on error. Cancellation preserves the receipt;
+concurrent/repeated observers retain the result. Native cleanup never waits for
+receipt consumption. The parent must join retained receipts before its public
+final; a completed native-cleanup fact alone does not consume them or authorize
+input replay. This private seam was coordinated/approved by Master for #71.
+
+The receive owner drains the ordered broker stream through EOF after process exit
+and after send-direction failure, preserving late write/failure replies. Fatal
+engine cleanup now joins/reports an in-flight native write before its Failure
+frame. Unknown terminal transport outcomes remain explicitly Dispatched with
+Completed false, rather than asserted zero effect. Delivered frames validate
+request kind, exact accepted length, delivered bounds, status byte and sequence.
+
+W69-M02: a versioned bounded payload carries up to16 closed cause/stage/cleanup
+records, with strict enum/count/duplicate/trailing-byte validation. WindowsFailure
+preserves errors.Is for stale cwd, not-found, permission, unsupported profile,
+process, protocol, cancellation and cleanup semantics. Local typed failures retain
+their original cause while safe Error text and wire fields expose no path, argv,
+environment, status number or native handle. Original and independent cleanup
+failures remain distinct; later cleanup success retains historical diagnostics.
+Existing public contracts, shared framing/start, Unix, parent, helper assets,
+modules/workflows and independent reviewer files are unchanged.
+
+Coherent corrected source checks before this commit: pinned Go1.25.0 Windows
+amd64 full broker race suite PASS47.826s; executing386/WOW64 full broker suite
+PASS40.474s; broker vet and diff check PASS. Meaningful new real native controls
+cover all three pre-canceled controls, waiting serialization, Stop-winning
+admission, completion/cancel priority, blocked-write eventual partial delivery,
+broker-death terminal uncertainty, fatal protocol failure during blocked input,
+and error after an actual full control-pipe write. The latter two targeted controls
+PASS0.877s. Bounded-memory and malformed-payload controls are separately identified
+in tests. Failure tests execute stale identity, missing image, execute-denied owned
+image (exact retained DACL restored), invalid executable, unsupported command
+profile, target-profile refusal before user initialization, and a real ConPTY
+whose injected blocked close reports primary plus cleanup failure before joining.
+No excluded earlier denied-cleanup residue was touched.
+
+This commit freezes a coherent correction milestone for all-twelve compilation,
+exact current-source native CI and the existing independent reviewer's bounded
+re-review. No finding is independently closed by this author report. Unaffected
+original native loader/DLL/TLS/debug-CRT/outer-Job evidence is reused, and the full
+race/386 suites also execute those existing tests. #70's older ab608 images still
+do not bind this changed source closure; reviewed regeneration and real committed-
+image execution, #71 parent assembly and every full Runtime/Slice/M8 gate remain.
+Master alone integrates. No separate Git review was retrieved/retried/substituted.

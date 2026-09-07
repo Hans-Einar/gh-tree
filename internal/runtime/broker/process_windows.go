@@ -10,6 +10,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
 )
 
@@ -73,12 +74,14 @@ func (p *userProcess) take(h windows.Handle, name string) *os.File {
 	return os.NewFile(uintptr(h), name)
 }
 
-func (p *userProcess) prepare(spec StartSpec) error {
-	var err error
+func (p *userProcess) prepare(spec StartSpec) (err error) {
+	stage := api.CwdAcquisition
+	defer func() { err = windowsFailureAt(err, stage) }()
 	p.cwd, err = acquireCwdFault(spec, p.hook, p.fault)
 	if err != nil {
 		return err
 	}
+	stage = api.ProcessContainment
 	p.job, err = newJob()
 	if err != nil {
 		return err
@@ -86,11 +89,13 @@ func (p *userProcess) prepare(spec StartSpec) error {
 	if err = p.check("inner-job-created"); err != nil {
 		return err
 	}
+	stage = api.InputCleanup
 	r, w, err := p.pipe()
 	if err != nil {
 		return err
 	}
 	p.stdin, p.input = r, p.take(w, "user-input")
+	stage = api.OutputCleanup
 	r, w, err = p.pipe()
 	if err != nil {
 		return err
@@ -102,6 +107,7 @@ func (p *userProcess) prepare(spec StartSpec) error {
 	}
 	p.outputs = append(p.outputs, nativeOutput{stream, p.take(r, "user-output")})
 	if spec.Terminal {
+		stage = api.TerminalCleanup
 		err = windows.CreatePseudoConsole(windows.Coord{X: int16(spec.Columns), Y: int16(spec.Rows)}, p.stdin, p.stdout, 0, &p.hpc)
 		if err != nil {
 			return err
@@ -153,7 +159,7 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 		bases = []string{name}
 	} else if strings.ContainsAny(name, `/\:`) {
 		if filepath.VolumeName(name) != "" {
-			return "", "", errors.New("drive-relative executable unsupported")
+			return "", "", ErrWindowsUnsupported
 		}
 		bases = []string{filepath.Join(cwd, name)}
 	} else {
@@ -176,6 +182,7 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 		}
 	}
 	var executable string
+	var lookupErr error
 	for _, base := range bases {
 		for _, ext := range extensions {
 			if ext != "" && (!strings.HasPrefix(ext, ".") || strings.ContainsAny(ext, `/\:`)) {
@@ -185,6 +192,8 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 			if st, err := os.Stat(candidate); err == nil && !st.IsDir() {
 				executable = candidate
 				break
+			} else if err != nil && !errors.Is(err, os.ErrNotExist) && lookupErr == nil {
+				lookupErr = err
 			}
 		}
 		if executable != "" {
@@ -192,6 +201,9 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 		}
 	}
 	if executable == "" {
+		if lookupErr != nil {
+			return "", "", lookupErr
+		}
 		return "", "", os.ErrNotExist
 	}
 	args := append([]string{executable}, spec.Arguments...)
@@ -204,7 +216,7 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 	quoted := make([]string, len(args))
 	for i, arg := range args {
 		if strings.ContainsAny(arg, "\x00\r\n\"%") {
-			return "", "", errors.New("unsafe batch carrier operand")
+			return "", "", ErrWindowsUnsupported
 		}
 		trailing := len(arg) - len(strings.TrimRight(arg, `\`))
 		quoted[i] = `"` + arg + strings.Repeat(`\`, trailing) + `"`
@@ -217,10 +229,13 @@ func resolveWindowsCommand(spec StartSpec, cwd string) (string, string, error) {
 	return cmd, windows.EscapeArg(cmd) + ` /D /V:OFF /S /C "` + strings.Join(quoted, " ") + `"`, nil
 }
 
-func (p *userProcess) start(ctx context.Context, spec StartSpec) error {
+func (p *userProcess) start(ctx context.Context, spec StartSpec) (err error) {
+	stage := api.SupervisorOrBroker
+	defer func() { err = windowsFailureAt(err, stage) }()
 	if err := assertStartupLayout(); err != nil {
 		return err
 	}
+	stage = api.ProcessContainment
 	executable, command, err := resolveWindowsCommand(spec, p.cwd.Path())
 	if err != nil {
 		return err
@@ -294,16 +309,18 @@ func (p *userProcess) start(ctx context.Context, spec StartSpec) error {
 	if err = p.check("user-assigned-inner-job"); err != nil {
 		return err
 	}
+	stage = api.Acquisition
 	if err = p.closeChildHandles(); err != nil {
 		return err
 	}
 	p.debug.fault = p.fault
+	stage = api.CwdAcquisition
 	if err = p.debug.barrier(ctx, p.cwd, p.hook); err != nil {
 		return err
 	}
 	p.attributes.Delete()
 	p.attributes = nil
-	return closeHandle(&p.debug.process.Thread)
+	return windowsCleanupFailure(closeHandle(&p.debug.process.Thread), api.UserProcessWait)
 }
 
 func (p *userProcess) closeChildHandles() error {
@@ -335,36 +352,36 @@ func closeFile(file **os.File) error {
 func (p *userProcess) cleanup(ctx context.Context) error {
 	var result error
 	if p.job != 0 {
-		result = errors.Join(result, windows.TerminateJobObject(p.job, 1))
+		result = errors.Join(result, windowsCleanupFailure(windows.TerminateJobObject(p.job, 1), api.Descendants))
 	}
 	if p.debug.process.Process != 0 && !p.rootWaited {
 		// Assignment may have failed while the root was still suspended.
 		var terminateErr error
 		state, waitErr := windows.WaitForSingleObject(p.debug.process.Process, 0)
 		if waitErr != nil {
-			result = errors.Join(result, waitErr)
+			result = errors.Join(result, windowsCleanupFailure(waitErr, api.UserProcessWait))
 		} else if state != windows.WAIT_OBJECT_0 {
 			terminateErr = windows.TerminateProcess(p.debug.process.Process, 1)
 		}
 		if p.debug.attached {
-			result = errors.Join(result, p.debug.continuation(), p.debug.detach())
+			result = errors.Join(result, windowsCleanupFailure(p.debug.continuation(), api.SupervisorOrBroker), windowsCleanupFailure(p.debug.detach(), api.SupervisorOrBroker))
 		}
 		exit, err := waitProcess(ctx, p.debug.process.Process)
 		if err == nil {
 			p.exit = exit
 			p.rootWaited = true
 		} else {
-			result = errors.Join(result, terminateErr)
+			result = errors.Join(result, windowsCleanupFailure(terminateErr, api.UserProcessWait))
 		}
-		result = errors.Join(result, err)
+		result = errors.Join(result, windowsCleanupFailure(err, api.UserProcessWait))
 	}
 	if p.job != 0 {
-		result = errors.Join(result, waitJob(ctx, p.job))
+		result = errors.Join(result, windowsCleanupFailure(waitJob(ctx, p.job), api.Descendants))
 	}
 	if result != nil {
 		return result
 	}
-	result = errors.Join(result, p.closeChildHandles(), closeFile(&p.input))
+	result = errors.Join(result, windowsCleanupFailure(p.closeChildHandles(), api.Acquisition), windowsCleanupFailure(closeFile(&p.input), api.InputCleanup))
 	if p.hpc != 0 && p.terminalClosed == nil {
 		p.terminalClosed = make(chan struct{})
 		hpc, done := p.hpc, p.terminalClosed
@@ -379,17 +396,17 @@ func (p *userProcess) cleanup(ctx context.Context) error {
 		case <-p.terminalClosed:
 			p.hpc = 0
 		case <-ctx.Done():
-			return errors.Join(result, ctx.Err())
+			return errors.Join(result, windowsCleanupFailure(ctx.Err(), api.TerminalCleanup))
 		}
 	}
 	if p.cwd != nil {
-		result = errors.Join(result, p.cwd.Close())
+		result = errors.Join(result, windowsCleanupFailure(p.cwd.Close(), api.CwdAcquisition))
 	}
 	if p.attributes != nil {
 		p.attributes.Delete()
 		p.attributes = nil
 	}
-	result = errors.Join(result, p.debug.closeDebugHandles(), closeHandle(&p.debug.process.Thread), closeHandle(&p.debug.process.Process), closeHandle(&p.job))
+	result = errors.Join(result, windowsCleanupFailure(p.debug.closeDebugHandles(), api.SupervisorOrBroker), windowsCleanupFailure(closeHandle(&p.debug.process.Thread), api.UserProcessWait), windowsCleanupFailure(closeHandle(&p.debug.process.Process), api.UserProcessWait), windowsCleanupFailure(closeHandle(&p.job), api.ProcessContainment))
 	return result
 }
 

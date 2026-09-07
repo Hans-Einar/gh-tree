@@ -62,6 +62,12 @@ func cloneWindowsFact(f WindowsFact) WindowsFact {
 type WindowsDelivery struct {
 	Accepted, Delivered uint32
 	Completed           bool
+	// Dispatched means the frame may have reached the broker. Completed alone
+	// asserts known native delivery; a transport failure cannot assert no effect.
+	Dispatched bool
+	// Receipt retains a dispatched operation when caller waiting ends first.
+	// Join it with Wait; never replay its input. This is a Runtime-private seam.
+	Receipt *WindowsReceipt
 }
 
 type controlReply struct {
@@ -78,10 +84,12 @@ type WindowsClient struct {
 	read, write    *os.File
 	childHandles   []windows.Handle
 	channel        *Channel
-	controlMu      sync.Mutex
+	controlMu      windowsControlMutex
 	sequence       uint64
 	pendingMu      sync.Mutex
-	pending        map[uint64]chan controlReply
+	pending        map[uint64]*WindowsReceipt
+	inputPending   bool
+	stopSequence   uint64
 	controlsClosed bool
 	outputFiles    []*os.File
 	outputDone     sync.WaitGroup
@@ -140,7 +148,7 @@ func StartWindows(ctx context.Context, config WindowsConfig) (*WindowsClient, Wi
 	config.Spec.Components = append([]string(nil), config.Spec.Components...)
 	config.Spec.Arguments = append([]string(nil), config.Spec.Arguments...)
 	config.Spec.Environment = append([]string(nil), config.Spec.Environment...)
-	c := &WindowsClient{config: config, pending: make(map[uint64]chan controlReply), facts: make(chan WindowsFact, 4), started: make(chan WindowsStartResult, 1), stop: make(chan struct{}), done: make(chan struct{})}
+	c := &WindowsClient{config: config, pending: make(map[uint64]*WindowsReceipt), facts: make(chan WindowsFact, 4), started: make(chan WindowsStartResult, 1), stop: make(chan struct{}), done: make(chan struct{})}
 	c.setupErr = c.create(ctx)
 	go c.run()
 	select {
@@ -172,8 +180,9 @@ func (c *WindowsClient) cwd() string {
 	return filepath.Join(parts...)
 }
 
-func (c *WindowsClient) create(ctx context.Context) error {
-	var err error
+func (c *WindowsClient) create(ctx context.Context) (err error) {
+	stage := api.OuterContainment
+	defer func() { err = windowsFailureAt(err, stage) }()
 	c.job, err = newJob()
 	if err != nil {
 		return err
@@ -182,6 +191,7 @@ func (c *WindowsClient) create(ctx context.Context) error {
 		return err
 	}
 	var childRead, parentWrite, parentRead, childWrite windows.Handle
+	stage = api.ControlCleanup
 	sa := windows.SecurityAttributes{Length: uint32(unsafe.Sizeof(windows.SecurityAttributes{})), InheritHandle: 1}
 	if err = windows.CreatePipe(&childRead, &parentWrite, &sa, 64<<10); err != nil {
 		return err
@@ -206,6 +216,7 @@ func (c *WindowsClient) create(ctx context.Context) error {
 		return err
 	}
 	var parent windows.Handle
+	stage = api.SupervisorOrBroker
 	if err = windows.DuplicateHandle(windows.CurrentProcess(), windows.CurrentProcess(), windows.CurrentProcess(), &parent, windows.PROCESS_QUERY_INFORMATION|windows.SYNCHRONIZE, true, 0); err != nil {
 		return err
 	}
@@ -260,6 +271,7 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err = c.check("broker-created-suspended"); err != nil {
 		return err
 	}
+	stage = api.OuterContainment
 	if err = windows.AssignProcessToJobObject(c.job, c.process.Process); err != nil {
 		return err
 	}
@@ -274,6 +286,7 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err = c.check("broker-before-resume"); err != nil {
 		return err
 	}
+	stage = api.SupervisorOrBroker
 	if err = ctx.Err(); err != nil {
 		return err
 	}
@@ -294,6 +307,7 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	stage = api.ControlCleanup
 	c.channel, err = NewChannel(c.read, c.write, Parent, WindowsBroker, c.config.SessionID, nonce)
 	if err != nil {
 		return err
@@ -316,9 +330,13 @@ func (c *WindowsClient) check(stage string) error {
 	return nil
 }
 
-func (c *WindowsClient) send(op Opcode, payload []byte, reply chan controlReply) (uint64, error) {
+func (c *WindowsClient) send(op Opcode, payload []byte, _ *WindowsReceipt) (uint64, error) {
 	c.controlMu.Lock()
 	defer c.controlMu.Unlock()
+	return c.sendLocked(op, payload)
+}
+
+func (c *WindowsClient) sendLocked(op Opcode, payload []byte) (uint64, error) {
 	if c.channel == nil || c.write == nil {
 		return 0, ErrProtocol
 	}
@@ -326,25 +344,16 @@ func (c *WindowsClient) send(op Opcode, payload []byte, reply chan controlReply)
 	if sequence == 0 {
 		return 0, ErrProtocol
 	}
-	if reply != nil {
+	if op == Stop {
 		c.pendingMu.Lock()
-		if c.controlsClosed {
-			c.pendingMu.Unlock()
-			return 0, io.ErrClosedPipe
-		}
-		if len(c.pending) >= 64 {
-			c.pendingMu.Unlock()
-			return 0, errors.New("native controls busy")
-		}
-		c.pending[sequence] = reply
+		c.stopSequence = sequence
 		c.pendingMu.Unlock()
 	}
 	err := sendControl(c.channel, c.write, op, payload)
 	if err != nil {
-		c.pendingMu.Lock()
-		delete(c.pending, sequence)
-		c.pendingMu.Unlock()
-		return 0, err
+		// The send direction is poisoned. EOF tells the broker to finish its
+		// owned input while the separate reply direction can still drain facts.
+		return 0, errors.Join(err, closeFile(&c.write))
 	}
 	c.sequence = sequence
 	return sequence, nil
@@ -419,16 +428,8 @@ func (c *WindowsClient) run() {
 	var forceAt time.Time
 	seenStreams := make(map[byte]bool)
 	for err == nil {
-		if c.process.Process != 0 {
-			state, e := windows.WaitForSingleObject(c.process.Process, 0)
-			if e != nil {
-				err = e
-				break
-			}
-			if state == windows.WAIT_OBJECT_0 {
-				break
-			}
-		}
+		// Drain the ordered control stream through EOF even when the broker has
+		// already exited. Its last delivery/failure may still be in the pipe.
 		if !forceAt.IsZero() && !time.Now().Before(forceAt) {
 			err = context.DeadlineExceeded
 			break
@@ -486,27 +487,7 @@ func (c *WindowsClient) run() {
 				c.started <- WindowsStartResult{Established: true, Cwd: c.cwd(), Architecture: current.Architecture}
 				startedSent = true
 			case Delivered:
-				if len(f.Payload) != 8 && len(f.Payload) != 17 {
-					err = ErrProtocol
-					break
-				}
-				seq := binary.BigEndian.Uint64(f.Payload)
-				c.pendingMu.Lock()
-				reply := c.pending[seq]
-				delete(c.pending, seq)
-				c.pendingMu.Unlock()
-				// Stop's optional ETX can also report a delivery without a caller.
-				if reply != nil {
-					result := controlReply{delivery: WindowsDelivery{Completed: true}}
-					if len(f.Payload) == 17 {
-						result.delivery.Accepted = binary.BigEndian.Uint32(f.Payload[8:])
-						result.delivery.Delivered = binary.BigEndian.Uint32(f.Payload[12:])
-						if f.Payload[16] != 0 {
-							result.err = io.ErrShortWrite
-						}
-					}
-					reply <- result
-				}
+				err = c.receiveDelivery(f.Payload)
 			case UserExit:
 				if len(f.Payload) != 4 || current.RootExited {
 					err = ErrProtocol
@@ -524,7 +505,7 @@ func (c *WindowsClient) run() {
 				_, err = c.send(Release, nil, nil)
 				forceAt = time.Now().Add(3 * time.Second)
 			case Failure:
-				err = errors.New("native broker reported failure")
+				err = decodeWindowsFailure(f.Payload)
 			default:
 				err = ErrProtocol
 			}
@@ -533,7 +514,11 @@ func (c *WindowsClient) run() {
 			forceAt = time.Now().Add(c.config.GracePeriod + c.config.ForcePeriod)
 			payload := binary.BigEndian.AppendUint32(nil, uint32(c.config.GracePeriod/time.Millisecond))
 			payload = binary.BigEndian.AppendUint32(payload, uint32(c.config.ForcePeriod/time.Millisecond))
-			_, err = c.send(Stop, payload, nil)
+			if _, sendErr := c.send(Stop, payload, nil); sendErr != nil {
+				// Retain this failure but drain the broker's remaining ordered
+				// replies until EOF/deadline. Its last input result may be known.
+				current.Err = errors.Join(current.Err, windowsFailureAt(sendErr, api.ControlCleanup))
+			}
 		case <-ticker.C:
 		}
 	}
@@ -543,15 +528,15 @@ func (c *WindowsClient) run() {
 	if !current.Quiescent && err == nil {
 		err = errors.New("broker exited before user quiescence")
 	}
-	current.Err = err
+	err = windowsFailureAt(err, api.ControlCleanup)
+	current.Err = errors.Join(current.Err, err)
 	close(readerStop)
 	// Every pending request receives a terminal delivery uncertainty; none is
 	// replayed. The parent registry retains its own accepted queue accounting.
 	c.pendingMu.Lock()
 	c.controlsClosed = true
-	for seq, reply := range c.pending {
-		reply <- controlReply{err: errors.Join(err, io.ErrClosedPipe)}
-		delete(c.pending, seq)
+	for _, receipt := range c.pending {
+		c.completeReceiptLocked(receipt, controlReply{delivery: WindowsDelivery{Dispatched: true}, err: errors.Join(err, io.ErrClosedPipe)})
 	}
 	c.pendingMu.Unlock()
 	var cleanupErr error
@@ -564,7 +549,7 @@ func (c *WindowsClient) run() {
 			break
 		}
 		if !reportedFailure {
-			current.Err = errors.Join(err, cleanupErr)
+			current.Err = errors.Join(current.Err, cleanupErr)
 			current.Residuals = c.unprovedBarriers(current, cleanupErr)
 			c.publish(current)
 			reportedFailure = true
@@ -574,7 +559,7 @@ func (c *WindowsClient) run() {
 	current.CleanupComplete = true
 	current.Residuals = nil
 	c.outputMu.Lock()
-	current.Err = errors.Join(err, c.outputErr)
+	current.Err = errors.Join(current.Err, windowsFailureAt(c.outputErr, api.OutputCleanup))
 	c.outputMu.Unlock()
 	c.publish(current)
 }
@@ -598,13 +583,16 @@ func (c *WindowsClient) drain(file *os.File, stream api.OutputStream) {
 	}
 }
 
-func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) error {
+func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) (err error) {
+	stage := api.OuterContainment
+	defer func() { err = windowsCleanupFailure(err, stage) }()
 	if c.job != 0 {
 		if err := windows.TerminateJobObject(c.job, 1); err != nil {
 			return err
 		}
 	}
 	if c.process.Process != 0 {
+		stage = api.SupervisorOrBroker
 		state, err := windows.WaitForSingleObject(c.process.Process, 0)
 		if err != nil {
 			return err
@@ -617,10 +605,12 @@ func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) 
 		}
 	}
 	if c.job != 0 {
+		stage = api.OuterContainment
 		if err := waitJob(ctx, c.job); err != nil {
 			return err
 		}
 	}
+	stage = api.Acquisition
 	for i := range c.childHandles {
 		if err := closeHandle(&c.childHandles[i]); err != nil {
 			return err
@@ -628,53 +618,93 @@ func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) 
 	}
 	// No broker or outer member can retain pipe writers now. EOF and all
 	// callbacks must join before the final observation is published.
+	stage = api.ControlCleanup
 	if err := closeFile(&c.read); err != nil {
 		return err
 	}
 	<-readerDone
 	c.controlMu.Lock()
-	err := closeFile(&c.write)
+	err = closeFile(&c.write)
 	c.controlMu.Unlock()
 	if err != nil {
 		return err
 	}
 	c.outputDone.Wait()
+	stage = api.OutputCleanup
 	for i := range c.outputFiles {
 		if err := closeFile(&c.outputFiles[i]); err != nil {
 			return err
 		}
 	}
 	if c.config.Extraction != nil {
+		stage = api.HelperExtraction
 		if err := c.config.Extraction.Cleanup(); err != nil {
 			return err
 		}
 	}
-	return errors.Join(closeHandle(&c.process.Thread), closeHandle(&c.process.Process), closeHandle(&c.job))
+	return errors.Join(windowsCleanupFailure(closeHandle(&c.process.Thread), api.SupervisorOrBroker), windowsCleanupFailure(closeHandle(&c.process.Process), api.SupervisorOrBroker), windowsCleanupFailure(closeHandle(&c.job), api.OuterContainment))
 }
 
 func (c *WindowsClient) request(ctx context.Context, op Opcode, payload []byte) (WindowsDelivery, error) {
 	if ctx == nil {
 		return WindowsDelivery{}, ErrProtocol
 	}
-	select {
-	case <-c.stop:
-		return WindowsDelivery{}, io.ErrClosedPipe
-	case <-c.done:
-		return WindowsDelivery{}, io.ErrClosedPipe
-	default:
-	}
-	reply := make(chan controlReply, 1)
-	if _, err := c.send(op, append([]byte(nil), payload...), reply); err != nil {
+	if err := c.controlMu.lockContext(ctx, c.stop, c.done); err != nil {
 		return WindowsDelivery{}, err
 	}
-	select {
-	case result := <-reply:
-		return result.delivery, result.err
-	case <-ctx.Done():
-		return WindowsDelivery{}, ctx.Err()
-	case <-c.done:
-		return WindowsDelivery{}, io.ErrClosedPipe
+	// Stop and admission share this short memory lock. Whichever wins defines
+	// whether this operation is admitted; no lock spans native dispatch/waits.
+	c.pendingMu.Lock()
+	err := ctx.Err()
+	if err == nil {
+		select {
+		case <-c.stop:
+			err = io.ErrClosedPipe
+		default:
+		}
 	}
+	isInput := op == WriteInput || op == Interrupt
+	if err == nil && (c.controlsClosed || c.channel == nil || c.write == nil) {
+		err = io.ErrClosedPipe
+	}
+	if err == nil && (len(c.pending) >= 64 || (isInput && c.inputPending)) {
+		err = ErrWindowsControlsBusy
+	}
+	if err == nil && c.sequence+1 == 0 {
+		err = ErrProtocol
+	}
+	if err != nil {
+		c.pendingMu.Unlock()
+		c.controlMu.Unlock()
+		return WindowsDelivery{}, err
+	}
+	expected := uint32(len(payload))
+	if op == Interrupt {
+		expected = 1
+	}
+	receipt := &WindowsReceipt{owner: c, sequence: c.sequence + 1, op: op, expected: expected, done: make(chan struct{})}
+	c.pending[receipt.sequence] = receipt
+	if isInput {
+		c.inputPending = true
+	}
+	c.pendingMu.Unlock()
+	_, err = c.sendLocked(op, append([]byte(nil), payload...))
+	c.controlMu.Unlock()
+	if c.config.hook != nil {
+		c.config.hook("control-dispatched", c)
+	}
+	if err != nil {
+		c.Stop()
+		// A failed send may have delivered bytes. Keep the receipt until the
+		// receiver drains a known answer or records final transport uncertainty.
+		select {
+		case <-receipt.done:
+			return receipt.observe()
+		default:
+			return WindowsDelivery{Dispatched: true, Receipt: receipt}, err
+		}
+	}
+	return receipt.Wait(ctx)
 }
 
 func (c *WindowsClient) Write(ctx context.Context, data []byte) (WindowsDelivery, error) {
@@ -697,7 +727,13 @@ func (c *WindowsClient) Interrupt(ctx context.Context) (WindowsDelivery, error) 
 	}
 	return c.request(ctx, Interrupt, nil)
 }
-func (c *WindowsClient) Stop() { c.stopOnce.Do(func() { close(c.stop) }) }
+func (c *WindowsClient) Stop() {
+	c.stopOnce.Do(func() {
+		c.pendingMu.Lock()
+		close(c.stop)
+		c.pendingMu.Unlock()
+	})
+}
 func (c *WindowsClient) NextFact(ctx context.Context) (WindowsFact, error) {
 	select {
 	case f, ok := <-c.facts:

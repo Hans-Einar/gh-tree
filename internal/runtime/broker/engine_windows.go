@@ -10,6 +10,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
 )
 
@@ -101,6 +102,10 @@ func RunWindowsPrivate() int {
 }
 
 func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.Handle, spec StartSpec) int {
+	return runWindowsEngineOwned(channel, input, output, parent, spec, &userProcess{})
+}
+
+func runWindowsEngineOwned(channel *Channel, input, output *os.File, parent windows.Handle, spec StartSpec, p *userProcess) int {
 	startup, cancelStartup := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancelStartup()
 	incoming := make(chan receivedFrame, 1)
@@ -124,7 +129,6 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		}
 	}()
 	defer func() { close(receiverStop); _ = input.Close(); <-receiverDone }()
-	p := &userProcess{}
 	// The engine exits only after joined local cleanup or a failed result which
 	// delegates residual containment to the still-retained parent outer Job.
 	defer func() {
@@ -133,14 +137,32 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 			_ = closeFile(&p.outputs[i].file)
 		}
 	}()
+	stage := api.Acquisition
+	var joinInput func() error
 	fail := func(e error) int {
-		_ = sendControl(channel, output, Failure, []byte("native startup or cleanup failed"))
+		// Preserve the original source failure and actual independent cleanup
+		// failures in one bounded frame. The outer Job remains the parent's
+		// authority if local cleanup cannot complete within its reporting bound.
+		e = windowsFailureAt(e, stage)
+		if joinInput != nil {
+			e = errors.Join(e, joinInput())
+		}
+		e = errors.Join(e, boundedCleanup(p))
+		for i := range p.outputs {
+			e = errors.Join(e, windowsCleanupFailure(closeFile(&p.outputs[i].file), api.OutputCleanup))
+		}
+		payload, encodeErr := encodeWindowsFailure(e)
+		if encodeErr != nil {
+			payload, _ = encodeWindowsFailure(windowsFailureAt(ErrProtocol, api.ControlCleanup))
+		}
+		_ = sendControl(channel, output, Failure, payload)
 		return 74
 	}
 	if err := p.prepare(spec); err != nil {
 		return fail(err)
 	}
 	for i := range p.outputs {
+		stage = api.OutputCleanup
 		out := &p.outputs[i]
 		// The parent duplicates from its retained exact broker process handle.
 		// This avoids allocating an unknown remote handle if a transfer frame
@@ -148,7 +170,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		payload := []byte{out.stream}
 		payload = binary.BigEndian.AppendUint64(payload, uint64(out.file.Fd()))
 		if err := sendControl(channel, output, OutputTransfer, payload); err != nil {
-			return fail(err)
+			return fail(windowsFailureAt(err, api.ControlCleanup))
 		}
 		select {
 		case got := <-incoming:
@@ -162,6 +184,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 			return fail(err)
 		}
 	}
+	stage = api.ProcessContainment
 	if err := p.start(startup, spec); err != nil {
 		return fail(err)
 	}
@@ -170,6 +193,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 	started = binary.BigEndian.AppendUint16(started, architecture.ProcessMachine)
 	started = binary.BigEndian.AppendUint16(started, architecture.ImageMachine)
 	started = binary.BigEndian.AppendUint32(started, architecture.InitialBreakpoint)
+	stage = api.ControlCleanup
 	if err := sendControl(channel, output, Started, started); err != nil {
 		return fail(err)
 	}
@@ -211,6 +235,18 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 			writes <- writeResult{f.Sequence, uint32(len(owned)), uint32(n), err}
 		}()
 	}
+	joinInput = func() error {
+		err := windowsCleanupFailure(closeFile(&p.input), api.InputCleanup)
+		if writing {
+			result := <-writes
+			writing = false
+			// Even a later native failure cannot erase a known partial write.
+			// The parent receives this before the terminal Failure when the
+			// authenticated control direction still permits delivery.
+			err = errors.Join(err, windowsFailureAt(reportWrite(result), api.ControlCleanup))
+		}
+		return err
+	}
 	stopping := false
 	controlFailed := false
 	gracePeriod, forcePeriod := 2*time.Second, 3*time.Second
@@ -220,7 +256,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 	for {
 		state, err := windows.WaitForSingleObject(p.debug.process.Process, 0)
 		if err != nil {
-			return fail(err)
+			return fail(windowsFailureAt(err, api.UserProcessWait))
 		}
 		if state == windows.WAIT_OBJECT_0 {
 			stopping = true
@@ -272,10 +308,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 					return fail(ErrProtocol)
 				}
 				if stopping || writing {
-					if err = sendControl(channel, output, Failure, []byte("input busy or stopping")); err != nil {
-						return fail(err)
-					}
-					continue
+					return fail(windowsFailureAt(ErrWindowsBusy, api.InputCleanup))
 				}
 				write(f, data)
 			case Resize:
@@ -290,7 +323,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 					return fail(ErrProtocol)
 				}
 				if err = windows.ResizePseudoConsole(p.hpc, windows.Coord{X: int16(columns), Y: int16(rows)}); err != nil {
-					return fail(err)
+					return fail(windowsFailureAt(err, api.TerminalCleanup))
 				}
 				if err = sendControl(channel, output, Delivered, binary.BigEndian.AppendUint64(nil, f.Sequence)); err != nil {
 					return fail(err)
@@ -307,7 +340,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		}
 	}
 	if err := closeFile(&p.input); err != nil {
-		return fail(err)
+		return fail(windowsCleanupFailure(err, api.InputCleanup))
 	}
 	if writing {
 		result := <-writes

@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
 )
 
@@ -60,25 +61,26 @@ func mappedImageMachine(process windows.Handle) (uint16, error) {
 // MachineRoute reports only private Runtime implementation facts. Native32
 // uses its own executable; emulated callers require the indicated native image.
 func MachineRoute() (machine uint16, embedded bool, err error) {
+	defer func() { err = windowsFailureAt(err, api.SupervisorOrBroker) }()
 	var process, native uint16
 	if err = windows.IsWow64Process2(windows.CurrentProcess(), &process, &native); err != nil {
 		return
 	}
 	if native != machine386 && native != machineAMD64 && native != machineARM64 {
-		return 0, false, errors.New("unsupported native Windows machine")
+		return 0, false, ErrWindowsUnsupported
 	}
 	if process != 0 && process != machine386 && process != machineAMD64 {
-		return 0, false, errors.New("unsupported emulated Windows machine")
+		return 0, false, ErrWindowsUnsupported
 	}
 	actual, e := mappedImageMachine(windows.CurrentProcess())
 	if e != nil {
 		return 0, false, e
 	}
 	if actual != machine386 && actual != machineAMD64 && actual != machineARM64 {
-		return 0, false, errors.New("unsupported extension image machine")
+		return 0, false, ErrWindowsUnsupported
 	}
 	if process != 0 && process != actual {
-		return 0, false, errors.New("inconsistent extension machine profile")
+		return 0, false, ErrWindowsUnsupported
 	}
 	return native, actual != native, nil
 }
@@ -96,14 +98,14 @@ func processProfile(process windows.Handle) (startupProfile, error) {
 		return startupProfile{}, err
 	}
 	if native != machine386 && native != machineAMD64 && native != machineARM64 {
-		return startupProfile{}, errors.New("unknown target runtime machine")
+		return startupProfile{}, ErrWindowsUnsupported
 	}
 	actual, err := mappedImageMachine(process)
 	if err != nil {
 		return startupProfile{}, err
 	}
 	if target != 0 && target != actual {
-		return startupProfile{}, errors.New("inconsistent target machine profile")
+		return startupProfile{}, ErrWindowsUnsupported
 	}
 	architecture := WindowsArchitecture{NativeMachine: native, ProcessMachine: target, ImageMachine: actual, InitialBreakpoint: breakpoint}
 	if actual == machine386 && native != machine386 {
@@ -114,10 +116,10 @@ func processProfile(process windows.Handle) (startupProfile, error) {
 		return startupProfile{4, 0x10, 0x2c, true, architecture}, nil
 	}
 	if actual != native && !(native == machineARM64 && actual == machineAMD64) {
-		return startupProfile{}, errors.New("unsupported emulation startup profile")
+		return startupProfile{}, ErrWindowsUnsupported
 	}
 	if actual != machine386 && unsafe.Sizeof(uintptr(0)) != 8 {
-		return startupProfile{}, errors.New("non-native debugger width")
+		return startupProfile{}, ErrWindowsUnsupported
 	}
 	var peb windows.PEB
 	var parameters windows.RTL_USER_PROCESS_PARAMETERS
@@ -126,7 +128,7 @@ func processProfile(process windows.Handle) (startupProfile, error) {
 
 func readPointer(process windows.Handle, address, size uintptr) (uintptr, error) {
 	if address == 0 || (size != 4 && size != 8) || size > unsafe.Sizeof(uintptr(0)) {
-		return 0, errors.New("unsupported remote pointer")
+		return 0, ErrWindowsUnsupported
 	}
 	var bytes [8]byte
 	var got uintptr
@@ -159,8 +161,11 @@ func childCwd(process windows.Handle, profile startupProfile) (windows.Handle, e
 		return 0, errors.New("missing target PEB")
 	}
 	parameters, err := readPointer(process, peb+profile.pebParameters, profile.pointerSize)
-	if err != nil || parameters == 0 {
+	if err != nil {
 		return 0, err
+	}
+	if parameters == 0 {
+		return 0, ErrWindowsUnsupported
 	}
 	h, err := readPointer(process, parameters+profile.parametersCwd, profile.pointerSize)
 	return windows.Handle(h), err
@@ -207,7 +212,9 @@ func (d *debugOwner) detach() error {
 	return err
 }
 
-func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook func(string)) error {
+func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook func(string)) (err error) {
+	stage := api.SupervisorOrBroker
+	defer func() { err = windowsFailureAt(err, stage) }()
 	profile, err := processProfile(d.process.Process)
 	if err != nil {
 		return err
@@ -216,6 +223,7 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 	if err = d.inject("target-profile-acquired"); err != nil {
 		return err
 	}
+	stage = api.CwdAcquisition
 	if err = cwd.Revalidate(); err != nil {
 		return err
 	}
@@ -228,6 +236,7 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 	if err = ctx.Err(); err != nil {
 		return err
 	}
+	stage = api.ProcessContainment
 	count, err := windows.ResumeThread(d.process.Thread)
 	if err != nil {
 		return err
@@ -237,6 +246,7 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 	}
 	nativeBreakSeen, created := false, false
 	for {
+		stage = api.SupervisorOrBroker
 		if err = ctx.Err(); err != nil {
 			return err
 		}
@@ -314,12 +324,13 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 			if hook != nil {
 				hook("cwd-breakpoint")
 			}
+			stage = api.CwdAcquisition
 			remote, e := childCwd(d.process.Process, profile)
 			if e != nil {
 				return e
 			}
 			if remote == 0 {
-				return errors.New("runtime has not acquired cwd")
+				return ErrWindowsUnsupported
 			}
 			var duplicate windows.Handle
 			if e = windows.DuplicateHandle(d.process.Process, remote, windows.CurrentProcess(), &duplicate, 0, false, windows.DUPLICATE_SAME_ACCESS); e != nil {
@@ -347,25 +358,26 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 				return e
 			}
 			if e = cwd.Close(); e != nil {
-				return e
+				return windowsCleanupFailure(e, api.CwdAcquisition)
 			}
 			if hook != nil {
 				hook("guards-released-pending-event")
 			}
 			// Detach at the still-pending approved runtime event. Continuing it
 			// before detach would allow user initialization to race guard release.
+			stage = api.SupervisorOrBroker
 			if e = d.detach(); e != nil {
 				return e
 			}
-			return d.closeDebugHandles()
+			return windowsCleanupFailure(d.closeDebugHandles(), api.SupervisorOrBroker)
 		case 4, 7, 8: // EXIT_THREAD, UNLOAD_DLL, OUTPUT_DEBUG_STRING
 		case 5:
 			return errors.New("user exited before verified runtime startup")
 		default:
-			return errors.New("unsupported loader debug event")
+			return ErrWindowsUnsupported
 		}
 		if err = d.closeDebugHandles(); err != nil {
-			return err
+			return windowsCleanupFailure(err, api.SupervisorOrBroker)
 		}
 		if err = d.continuation(); err != nil {
 			return err
@@ -394,7 +406,7 @@ func assertStartupLayout() error {
 		p, c = 0x10, 0x2c
 	}
 	if unsafe.Offsetof(peb.ProcessParameters) != p || unsafe.Offsetof(parameters.CurrentDirectory)+unsafe.Offsetof(parameters.CurrentDirectory.Handle) != c {
-		return errors.New("pinned x/sys startup layout mismatch")
+		return ErrWindowsUnsupported
 	}
 	return nil
 }
