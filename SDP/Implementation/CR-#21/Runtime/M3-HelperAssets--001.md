@@ -1,5 +1,43 @@
 # M3 Runtime helper assets — Issue #70
 
+## Input-set correction in progress (Master94f00a9e / ledger88)
+
+The fresh re-review at `f6128251a0510021191880be658b705528fcc606` keeps H70-H01
+OPEN: post-selection source insertion is consumed by Go's subsequent selection.
+Existing-byte protection remains valid, and H70-M02/M03 are independently
+RESOLVED. Exact technical732fd9bb CI34071597307 passed20/20, but that does not
+exercise or resolve this continuation. The historical candidate summary below
+is superseded by this section until a new reviewed correction exists.
+
+Bounded native mechanism evidence on Windows amd64 Go1.25.0:
+
+- An atomic NtCreateFile directory with OWNER RIGHTS and denied fresh
+  WRITE_DAC/WRITE_OWNER/addition access blocks ordinary creation and permission
+  override. It returns only granted mask0x13019f, omitting requested security
+  modification rights; both relative child creation and retained restoration
+  refuse AccessDenied. This rejected approach is preserved in the small
+  `helpergen/testdata/atomic-directory-capability.go.txt` probe. Its owned
+  t.TempDir cleanup completed; no permission change outside those new fixtures
+  or rejected-cache cleanup was attempted. It is not product code or a passing
+  immutable-materialization mechanism.
+- `TestDirectoryOplockContinuousInvalidationProbe` passes. A native directory R
+  oplock stays pending without changes. A new file added and removed using a
+  directory mutator handle opened BEFORE watcher acquisition durably breaks
+  it (level1 to0); restoration cannot erase that notification. An unchanged
+  request is canceled and joined; writes after release succeed. Directory
+  watches are advisory, so the proposed acceptance mechanism must reject any
+  invalidated build, never claim the write itself was prevented. The native
+  [oplock contract](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_request_oplock)
+  supplies continuous invalidation rather than a before/after scan.
+
+Next: Master assesses that equivalent consumed-input verification mechanism;
+then wire acquisition before selection, sticky invalidation through actual
+copied-Go exit, materialization-interval validation, and joined release into
+the bounded build path. Actual post-selection source/embed insertion and clean
+build controls, regeneration, exact checker and independent re-review remain.
+No H01 correction, full helper acceptance or newer Windows-source adoption is
+claimed by these probes.
+
 Disposition: corrected bounded candidate frozen for independent re-review.
 Technical source: `732fd9bbfe1dad7430f71ceca8270283b82a29d7`.
 No Runtime contribution, Slice, integration or release
