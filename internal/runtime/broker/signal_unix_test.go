@@ -5,8 +5,10 @@ package broker
 import (
 	"bufio"
 	"context"
+	"crypto/sha256"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -21,6 +23,15 @@ import (
 func TestMain(m *testing.M) {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
+		case "--runtime-fixture-input-count":
+			data := make([]byte, 65536)
+			n, err := io.ReadFull(os.Stdin, data)
+			if err != nil {
+				os.Exit(1)
+			}
+			fmt.Printf("owned-input=%d:%x\n", n, sha256.Sum256(data))
+			time.Sleep(20 * time.Second)
+			os.Exit(0)
 		case supervisorPrivateMarker:
 			os.Exit(RunSupervisor())
 		case "--runtime-fixture-cwd":

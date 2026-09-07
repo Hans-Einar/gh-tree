@@ -13,16 +13,17 @@ import (
 )
 
 type censusWriter struct {
-	bytes.Buffer
-	limit int
+	buffer bytes.Buffer
+	limit  int
 }
 
 func (w *censusWriter) Write(data []byte) (int, error) {
-	if len(data) > w.limit-w.Len() {
+	if len(data) > w.limit-w.buffer.Len() {
 		return 0, ErrCensus
 	}
-	return w.Buffer.Write(data)
+	return w.buffer.Write(data)
 }
+func (w *censusWriter) String() string { return w.buffer.String() }
 
 func census(ctx context.Context) ([]processFact, error) {
 	if err := ctx.Err(); err != nil {

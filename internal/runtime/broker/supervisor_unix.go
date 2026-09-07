@@ -13,10 +13,30 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/unix"
 )
 
 const supervisorPrivateMarker = "--gh-tree-runtime-supervisor-v1"
+
+func unixFailurePayload(phase byte, stage api.RuntimeCleanupStage, err error) []byte {
+	code := api.IOFailure
+	switch {
+	case os.IsPermission(err):
+		code = api.Permission
+	case os.IsNotExist(err) || errors.Is(err, exec.ErrNotFound):
+		code = api.NotFound
+	case errors.Is(err, ErrCwd):
+		code = api.StaleObservation
+	case errors.Is(err, ErrProtocol):
+		code = api.Invalid
+	case errors.Is(err, ErrCensus) || errors.Is(err, context.DeadlineExceeded):
+		code = api.Unavailable
+	case phase != 1:
+		code = api.CleanupIncomplete
+	}
+	return []byte{phase, byte(stage), byte(code)}
+}
 
 type parentFrame struct {
 	frame Frame
@@ -133,6 +153,7 @@ func RunSupervisor() int {
 	unix.CloseOnExec(5)
 	identity, identityErr := ObserveDirectory(cwd, spec.ProjectIdentity.Stamp())
 	startupErr := identityErr
+	startupStage := api.CwdAcquisition
 	if identityErr == nil && !identity.Equal(spec.ProjectIdentity) {
 		startupErr = ErrCwd
 	}
@@ -176,6 +197,7 @@ func RunSupervisor() int {
 	}()
 	defer func() { close(readStop); control.Close(); <-readDone }()
 	if startupErr == nil {
+		startupStage = api.ProcessContainment
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		_, _, startupErr = tree.observe(ctx)
 		cancel()
@@ -197,7 +219,7 @@ func RunSupervisor() int {
 	parentGone := false
 	stopping := startupErr != nil
 	if startupErr != nil {
-		if err := send(Failure, []byte{1}); err != nil {
+		if err := send(Failure, unixFailurePayload(1, startupStage, startupErr)); err != nil {
 			parentGone = true
 		}
 	} else {
@@ -264,7 +286,7 @@ func RunSupervisor() int {
 				return 0
 			}
 			if !parentGone {
-				if err := send(Failure, []byte{2}); err != nil {
+				if err := send(Failure, unixFailurePayload(2, api.Descendants, cleanupErr)); err != nil {
 					parentGone = true
 				}
 			}
@@ -281,7 +303,16 @@ func RunSupervisor() int {
 			}
 			switch event.frame.Opcode {
 			case Stop, Abort:
-				if len(event.frame.Payload) != 0 {
+				if len(event.frame.Payload) == 8 {
+					grace := time.Duration(binary.BigEndian.Uint32(event.frame.Payload)) * time.Millisecond
+					force := time.Duration(binary.BigEndian.Uint32(event.frame.Payload[4:])) * time.Millisecond
+					if grace < time.Millisecond || grace > time.Minute || force < time.Millisecond || force > time.Minute {
+						parentGone = true
+					} else {
+						tree.grace = grace
+						tree.force = force
+					}
+				} else if len(event.frame.Payload) != 0 {
 					parentGone = true
 				}
 				stopping = true
@@ -297,7 +328,7 @@ func RunSupervisor() int {
 				if err != nil || tree.escape {
 					stopping = true
 					if !parentGone {
-						if e := send(Failure, []byte{3}); e != nil {
+						if e := send(Failure, unixFailurePayload(3, api.Descendants, err)); e != nil {
 							parentGone = true
 						}
 					}

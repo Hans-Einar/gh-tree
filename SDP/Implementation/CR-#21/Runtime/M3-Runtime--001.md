@@ -277,6 +277,87 @@ The test harness executes actual native code but does not replace the missing
 production parent ownership path. Windows #69 and assets #70 remain separately
 owned/reviewed. No shared protocol/start source or Windows helper closure changed.
 
+Checkpoint4 exact source6be865b CI34069098071 is terminal with six independent
+native/race jobs SUCCESS (including actual Linux/macOS/FreeBSD package execution).
+The three new native supervisor tests select linux/darwin/freebsd and contain no
+Skip/GOOS bypass; this is native execution evidence for those exact controls.
+The expected missing-helper inventory failure remains, and dependent build/helper
+jobs skip. It is not complete Runtime or full-platform fault acceptance.
+
+## Checkpoint 5: concrete Unix parent client seam
+
+Ownership split under queued #71 is now authoritative: this worker edits only
+Unix broker/client/native hardening and this report. Root Runtime Go/tests/README
+remain at the common6be865b base for the fresh #71 worker. Windows #69 and assets
+#70 are independent contributions; no unreviewed branch integration occurred.
+
+Added real `broker/client_unix.go` with these exact private signatures:
+
+```go
+StartUnix(context.Context, UnixConfig) (*UnixClient, UnixStartResult, error)
+(*UnixClient).Write(context.Context, []byte) (UnixDelivery, error)
+(*UnixClient).Resize(context.Context, uint16, uint16) (UnixDelivery, error)
+(*UnixClient).Interrupt(context.Context) (UnixDelivery, error)
+(*UnixClient).Stop()
+(*UnixClient).NextFact(context.Context) (UnixFact, error)
+(*UnixClient).Wait(context.Context) (UnixFact, error)
+RunUnixPrivate() (bool, int)
+```
+
+UnixConfig carries SessionID, StartSpec, copied-output callback and construction
+GracePeriod/ForcePeriod. UnixStartResult has Established/Cwd. UnixDelivery has
+Accepted/Delivered uint32 and Completed. UnixFact has Established/RootExited,
+ExitCode/Signal int, Quiescent/CleanupComplete, Err and copied []UnixResidual;
+each residual has api.RuntimeCleanupStage and Err. UnixFailure carries safe closed
+api.ErrorCode/cleanup stage, preserving NotFound/Permission/StaleObservation etc.
+No public SessionID allocation, registry, native handle or Application operation
+authority is introduced by this native seam.
+
+The retained client owns acquired cwd, exact supervisor, all pipes/PTY handles,
+independent output workers, decoder and native I/O joins. Failed post-acquisition
+construction returns its owner. Start remains Established after immediate exit
+or later initiating-context cancellation. Stop is an asynchronous coalesced latch;
+Wait timeout leaves ownership active. Input returns actual accepted/delivered
+counts, copies bytes, joins cancellation watchers, refuses late controls and never
+replays partial writes. The configured native budgets use a Unix-only validated
+Stop payload, leaving shared protocol.go/start.go and Windows source closure
+unchanged. The early dispatch checks only fixed markers and delegates to existing
+authenticated supervisor/helper code before any normal application bootstrap.
+
+PTY master gets a separately owned duplicate, made nonblocking before os.NewFile,
+so Fd-based resize ioctls retain poller/deadline/Close behavior. The original master
+and slave both retain immediate cleanup ownership. Remote startup/census failure
+reports are distinguished from local close/join residuals: a later complete native
+barrier clears repaired reported uncertainty while historical diagnostics remain;
+actual local close/wait errors cannot be accidentally cleared.
+
+Actual ordinary-user Linux full broker tests PASS at the new source, including
+natural exit/cwd/output with late Start-context cancellation, persistent-root late
+cancel, all five exposed acquisition checkpoints with retained owners, full64KiB
+input checksum, bounded partial writes and cancellation, Stop unblocking an owned
+writer, late control/capability refusal, typed failed executable startup and cleanup,
+and real PTY resize/input/foreground ETX distinct from whole-session Stop. Earlier
+supervisor/helper/cwd/protocol controls also PASS. Final local native directory:
+`/tmp/gh-tree-runtime-native.sLv3KU`. All nine Unix client test-binary cross-compiles,
+Linux-selected broker vet and staged architecture checks PASS.
+
+Two initial client regressions were exposed and corrected: a native write deadline
+could fire just before context.Err published, losing errors.Is DeadlineExceeded;
+and a repaired failed-start ProcessContainment report was retained as a resource
+residual after complete cleanup. Corrections preserve known byte delivery and
+separate reported versus local residual ownership. The FreeBSD observer writer
+also no longer embeds bytes.Buffer: promoted ReaderFrom could bypass its byte
+ceiling. A dedicated io.Copy negative prevents that regression; corrected native
+FreeBSD execution of this new test remains pending at the new commit.
+
+This is a coherent, callable native-client checkpoint, not final #65 acceptance.
+Remaining Unix-owned work includes comprehensive partial native failure seams,
+callback/close blocking and timeout residual precision, parent-control failure,
+observed escape/unacquirable/helper failure recovery, repeated resource counts,
+and new-client exact native macOS/FreeBSD/race evidence. #71 separately owns all
+twelve public Sessions methods, parent input/event/restart/shutdown orchestration
+and final real-client assembly. No shortened adapter or public stub is supplied.
+
 ## Next permitted work
 
 Commit/push this coherent partial checkpoint before further substantial work.
