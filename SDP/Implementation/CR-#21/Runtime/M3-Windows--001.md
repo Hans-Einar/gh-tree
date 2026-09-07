@@ -140,3 +140,14 @@ Native ARM64/x64-emulation, static DLL/TLS/debug-heap fixtures and remaining adv
 transport/close cases are still required; no complete Windows contribution or
 helper-source freeze is claimed. The final helper closure will need regeneration
 after these broker changes.
+
+## ABI runner diagnostic checkpoint
+
+`TestWindowsTargetABIMatrix` now exercises every supported target machine on the
+actual native host, using only newly built owned test executables. Local native
+amd64 ->386 and amd64 ->amd64 both establish and join. On native ARM64 the matrix
+also requires386/amd64/ARM64; the currently unsupported amd64-emulation path is
+expected to fail until its real loader profile is resolved. A bounded test-only
+diagnostic captures loader events/native64 PEB cwd identity at a candidate barrier
+and kills its owned Job without approving/releasing user startup. This is evidence
+gathering for the missing profile, not a passing product substitute or waived gate.
