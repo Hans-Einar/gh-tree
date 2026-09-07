@@ -3,7 +3,7 @@
 Sprint-004-v04 / I-03 / M3. Full Issue #21 v0.4 objective remains active.
 Repository: Hans-Einar/gh-tree. Canonical worktree:
 C:/Users/hanse/GIT/gh-tree-wt/refactor, branch codereview-21/refactor.
-Recovery tag: checkpoint/m3-runtime-prebinding/20260907-0242Z (the commit containing this status).
+Recovery tag: checkpoint/m3-runtime-prebinding/20260907-0247Z (the commit containing this status).
 This is a recovery marker, not adapter, Slice, stage or release completion.
 
 ## Authoritative state
@@ -21,7 +21,7 @@ The original resume checkpoint3e259652797295504e34bafe2063a8022a503965 and tag
 checkpoint/gh-tree-m3-preparation/20260906-1725Z were rechecked unchanged.
 At this checkpoint, all29 registered worktrees were clean, with no stashes and
 no local branch commits absent from origin. Existing inventory format is reused
-at SDP/Verification/CR-#21/Evidence/Checkpoint-2026PLACEHOLDER/workspace-before.json.
+at SDP/Verification/CR-#21/Evidence/Checkpoint-20260907-0242Z/workspace-before.json.
 That inventory precedes this status commit; it records all exact worktree/ref
 states and post-resume commit history. All authors/reviewers were stopped at
 published boundaries. Before modifying a resumed lane, inspect its actual state.

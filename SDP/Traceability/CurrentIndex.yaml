@@ -2120,7 +2120,7 @@
     "IMPL63"
   ],
   "resumedFrom": "3e259652797295504e34bafe2063a8022a503965",
-  "latestCheckpointTag": "checkpoint/m3-runtime-prebinding/20260907-0242Z",
+  "latestCheckpointTag": "checkpoint/m3-runtime-prebinding/20260907-0247Z",
   "latestCheckpointPurpose": "recoverable_prebinding_snapshot_not_stage_or_slice_completion",
   "externalBlocker": {
     "kind": "review_service_content_access",
