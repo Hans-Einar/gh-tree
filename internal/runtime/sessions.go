@@ -177,6 +177,11 @@ func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, envir
 	// Deduplication lives with the bounded retained records. Evicted IDs/keys do
 	// not become authority to resurrect an old transition.
 	r.registry.mu.Lock()
+	if active := r.registry.transitions[req.Data().OperationID]; active != nil && active != predecessor {
+		r.registry.mu.Unlock()
+		r.admission.Unlock()
+		return refusedStart(errInvalid, ctx.Err() != nil)
+	}
 	for _, old := range r.registry.sessions {
 		old.mu.Lock()
 		same := old.start.Data().OperationID == req.Data().OperationID

@@ -66,14 +66,14 @@ type registry struct {
 	nextID      uint64
 	closed      bool
 	live        int
-	transitions int // admitted restart producers, independent of native sessions
+	transitions map[api.OperationID]*session // admitted subjects, independent of cleaned history
 	sessions    map[domain.SessionID]*session
 	history     []domain.SessionID // order of completed cleanup, oldest first
 	events      *eventBuffer
 }
 
 func newRegistry() *registry {
-	return &registry{sessions: make(map[domain.SessionID]*session), events: newEventBuffer()}
+	return &registry{sessions: make(map[domain.SessionID]*session), transitions: make(map[api.OperationID]*session), events: newEventBuffer()}
 }
 
 // admit receives an already resolved private environment and safe summary. It
@@ -169,7 +169,7 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 			delete(r.sessions, r.history[0])
 			r.history = r.history[1:]
 		}
-		if r.closed && r.live == 0 && r.transitions == 0 {
+		if r.closed && r.live == 0 && len(r.transitions) == 0 {
 			_ = r.events.closeProducers()
 		}
 	}
@@ -220,14 +220,23 @@ func (r *registry) closeAdmission() []*session {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.closed = true
-	ids := make([]domain.SessionID, 0, len(r.sessions))
-	for id := range r.sessions {
+	retained := make(map[domain.SessionID]*session, len(r.sessions))
+	for id, s := range r.sessions {
+		retained[id] = s
+	}
+	for _, s := range r.transitions {
+		s.mu.Lock()
+		retained[s.snapshot.Data().SessionID] = s
+		s.mu.Unlock()
+	}
+	ids := make([]domain.SessionID, 0, len(retained))
+	for id := range retained {
 		ids = append(ids, id)
 	}
 	sort.Slice(ids, func(i, j int) bool { return ids[i].Value() < ids[j].Value() })
 	result := make([]*session, 0, len(ids))
 	for _, id := range ids {
-		result = append(result, r.sessions[id])
+		result = append(result, retained[id])
 	}
 	return result
 }

@@ -16,8 +16,10 @@ import (
 // looked up an old cleaned record but before its worker calls public Stop.
 type evictionRestartContext struct {
 	context.Context
-	entered, resume chan struct{}
-	once            sync.Once
+	entered, resume  chan struct{}
+	once             sync.Once
+	calls            atomic.Int32
+	admitted, finish chan struct{}
 }
 
 func awaitObservationIdle(t *testing.T, s *session) {
@@ -148,19 +150,26 @@ func TestSessionsShutdownFailureDoesNotPollOwner(t *testing.T) {
 
 func (c *evictionRestartContext) Err() error {
 	c.once.Do(func() { close(c.entered); <-c.resume })
+	if c.calls.Add(1) == 2 && c.admitted != nil {
+		close(c.admitted)
+		<-c.finish
+	}
 	return c.Context.Err()
 }
 
 func TestSessionsRestartHistoryEvictionRace(t *testing.T) {
-	sessionsRestartHistory(t, true, false)
+	sessionsRestartHistory(t, true, false, false)
 }
 func TestSessionsRestartHistoryWithoutEviction(t *testing.T) {
-	sessionsRestartHistory(t, false, false)
+	sessionsRestartHistory(t, false, false, false)
 }
 func TestSessionsRestartEvictionRetainsCanceledReplacement(t *testing.T) {
-	sessionsRestartHistory(t, true, true)
+	sessionsRestartHistory(t, true, true, false)
 }
-func sessionsRestartHistory(t *testing.T, evict, cancelReplacement bool) {
+func TestSessionsShutdownRetainsEvictedRestartTransition(t *testing.T) {
+	sessionsRestartHistory(t, true, false, true)
+}
+func sessionsRestartHistory(t *testing.T, evict, cancelReplacement, shutdown bool) {
 	o := testOwner()
 	replacementEntered := make(chan nativeStart, 1)
 	replacementRelease := make(chan struct{})
@@ -193,6 +202,9 @@ func sessionsRestartHistory(t *testing.T, evict, cancelReplacement bool) {
 	base, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	ctx := &evictionRestartContext{Context: base, entered: make(chan struct{}), resume: make(chan struct{})}
+	if evict {
+		ctx.admitted, ctx.finish = make(chan struct{}), make(chan struct{})
+	}
 	done := make(chan api.SessionRestartResult, 1)
 	go func() {
 		result, _ := r.Restart(ctx, must(api.NewSessionRestartRequest(api.SessionRestartRequestData{OperationID: must(api.NewOperationID(4000)), SessionID: sessionID(1)})))
@@ -207,6 +219,31 @@ func sessionsRestartHistory(t *testing.T, evict, cancelReplacement bool) {
 		}
 	}
 	close(ctx.resume)
+	if evict {
+		<-ctx.admitted
+		// Admission has released its lock, but the retained old cleanup result
+		// has not yet returned. No competing lifecycle may steal this key.
+		refused, err := r.Start(context.Background(), engineRequest(4000, false))
+		if !errors.Is(err, errInvalid) || refused.Data().Session.Present() {
+			t.Fatal("eviction released the active restart operation key")
+		}
+		if _, err := r.Restart(context.Background(), must(api.NewSessionRestartRequest(api.SessionRestartRequestData{OperationID: must(api.NewOperationID(4000)), SessionID: sessionID(2)}))); !errors.Is(err, errInvalid) {
+			t.Fatal("another predecessor stole the active restart key")
+		}
+		if shutdown {
+			stoppedContext, stopWait := context.WithCancel(context.Background())
+			stopWait()
+			result := r.Shutdown(stoppedContext)
+			found := false
+			for _, old := range result.Data().Sessions {
+				found = found || old.Data().Session.Data().SessionID == sessionID(1)
+			}
+			if !found || result.Data().Complete {
+				t.Fatal("aggregate omitted admitted evicted transition")
+			}
+		}
+		close(ctx.finish)
+	}
 	if cancelReplacement {
 		config := <-replacementEntered
 		if config.ID.Value() != historyCapacity+2 {
@@ -215,6 +252,12 @@ func sessionsRestartHistory(t *testing.T, evict, cancelReplacement bool) {
 		cancel()
 	}
 	result := <-done
+	if shutdown {
+		if !result.Valid() || !result.Data().Old.Data().CleanupComplete || result.Data().Replacement.Present() {
+			t.Fatal("shutdown transition lost its old subject or admitted a replacement")
+		}
+		return
+	}
 	if !result.Valid() || !result.Data().Old.Data().CleanupComplete || !result.Data().Replacement.Present() {
 		t.Fatal("retained restart result lost")
 	}

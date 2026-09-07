@@ -96,8 +96,9 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 	s.mu.Unlock()
 	// An OperationID already retained by another lifecycle cannot be repurposed.
 	r.registry.mu.Lock()
-	collision := false
+	collision := r.registry.transitions[d.OperationID] != nil
 	closed := r.registry.closed
+	full := len(r.registry.transitions) >= finalCapacity
 	for _, other := range r.registry.sessions {
 		other.mu.Lock()
 		collision = collision || other.start.Data().OperationID == d.OperationID || other.restart != nil && other.restart.request.Data().OperationID == d.OperationID
@@ -112,6 +113,10 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 		r.admission.Unlock()
 		return r.restartRefused(s, ctx, errInvalid)
 	}
+	if full {
+		r.admission.Unlock()
+		return r.restartRefused(s, ctx, errBusy)
+	}
 	if err := ctx.Err(); err != nil {
 		r.admission.Unlock()
 		return r.restartRefused(s, ctx, err)
@@ -121,7 +126,7 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 	s.restart = transition
 	s.mu.Unlock()
 	r.registry.mu.Lock()
-	r.registry.transitions++
+	r.registry.transitions[d.OperationID] = s
 	r.registry.mu.Unlock()
 	r.admission.Unlock()
 	go func() {
@@ -152,9 +157,9 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 		transition.result = owned(api.NewSessionRestartResult(result))
 		transition.err = err
 		r.registry.mu.Lock()
-		r.registry.transitions--
+		delete(r.registry.transitions, d.OperationID)
 		close(transition.done)
-		if r.registry.closed && r.registry.live == 0 && r.registry.transitions == 0 {
+		if r.registry.closed && r.registry.live == 0 && len(r.registry.transitions) == 0 {
 			_ = r.registry.events.closeProducers()
 		}
 		r.registry.mu.Unlock()
@@ -242,7 +247,7 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 		}
 	}
 	r.registry.mu.Lock()
-	if r.registry.transitions == 0 {
+	if len(r.registry.transitions) == 0 {
 		_ = r.registry.events.closeProducers()
 	} else {
 		result.Complete = false
