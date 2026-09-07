@@ -1,7 +1,8 @@
 # M3 Runtime helper assets — Issue #70
 
-Disposition: corrected bounded candidate awaiting final exact-command evidence
-and independent re-review. No Runtime contribution, Slice, integration or release
+Disposition: corrected bounded candidate frozen for independent re-review.
+Technical source: `732fd9bbfe1dad7430f71ceca8270283b82a29d7`.
+No Runtime contribution, Slice, integration or release
 is accepted here. Worker branch: `codex/cr21-runtime-helper-assets`, worktree
 `C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets`.
 
@@ -112,12 +113,27 @@ untouched. Tests are checked in beside the generator; no duplicate archive added
 | amd64 / 0x8664 | 3493376 / `9188bd5063040a2a39b7d5d550b06cd22bebcad73c9406a14f53314b54b44c5b` | 2038259 / `437f614f3ae04390c47f547fd0a7f60608870fb1f63cb136379f0a1b725f0183` |
 | ARM64 / 0xAA64 | 3308544 / `2676e8efdcd53f1a87de64790d22ec2fa2f190419005eba25213978e29696e5d` | 1902326 / `c9952ce13f6f4846c7445226d2bfc91a2826f135623ce0fac965452b2d90c8f4` |
 
+At exact clean technical source `732fd9bb`, the unchanged checker also passed
+with BOTH an empty owned GOMODCACHE and an owned junction to the canonical Go
+installation. It rebuilt both architectures twice from guarded offline snapshots.
+The external observer verified all 54 observed files (the complete Runtime file
+set plus go.mod/go.sum): SHA256, length, nanosecond mtime and file set unchanged.
+The emitted digest is the final 915-input digest above. Final brokerassets tests,
+diff whitespace/scope and clean-tree checks pass. The toolchain junction itself
+was removed. Automatic approval review rejected the proposed PowerShell recursive
+cleanup of these three owned caches with "blocked by policy" before executing
+the command; no bypass or retry was attempted. They remain locally under
+`C:/Users/hanse/AppData/Local/Temp/`:
+`gh-tree-helper-fresh-43f6e3a638ca4bf5afc5ec390cb2f542`,
+`gh-tree-helper-check-fresh-krknen5u`, and `gh-tree-helper-final-xdx2pbor`.
+These are reproducible downloaded dependency caches, not unpublished product or
+verification evidence. No source change remains unpublished after this report
+checkpoint; the rejected cleanup is not the unrelated preserved ACL fixture.
+
 ## Remaining gates
 
-Run the final exact-source checker with an empty cache and selected GOROOT
-junction under the no-rewrite observer, freeze/push the resulting evidence
-checkpoint, then the existing independent reviewer reopens the corrected actual
-source. Final candidate CI and that bounded review are still required. Master
+The existing independent reviewer must reopen the corrected actual source.
+Final candidate CI and that bounded review are still required. Master
 alone coordinates later reviewed Windows-source adoption and regenerated assets;
 Windows candidate5e964336 is not included. Sessions/parent/native ABI/ConPTY,
 ARM64/emulation, full V-RUN/Slice, serial integration and release gates remain
