@@ -2,9 +2,11 @@ package broker
 
 import (
 	"context"
+	"debug/pe"
 	"encoding/binary"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"testing"
@@ -32,6 +34,15 @@ func TestWindowsTargetABIMatrix(t *testing.T) {
 			s := windowsSpec(t)
 			s.Environment = os.Environ()
 			s.Executable = fixtureExecutable(t, arch)
+			image, err := pe.Open(s.Executable)
+			if err != nil {
+				t.Fatal(err)
+			}
+			expectedMachine := map[string]uint16{"386": machine386, "amd64": machineAMD64, "arm64": machineARM64}[arch]
+			if image.Machine != expectedMachine {
+				t.Fatalf("fixture compiler produced %04x for %s", image.Machine, arch)
+			}
+			image.Close()
 			s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "pipe"}
 			current, err := os.Executable()
 			if err != nil {
@@ -58,7 +69,46 @@ func TestWindowsTargetABIMatrix(t *testing.T) {
 				}
 				t.Fatalf("native machine=%04x parent=%s target=%s not established: %+v %v", machine, runtime.GOARCH, arch, start, err)
 			}
-			t.Logf("actual native machine=%04x parent=%s target=%s established and joined", machine, runtime.GOARCH, arch)
+			if start.Architecture.NativeMachine != machine || start.Architecture.ImageMachine != expectedMachine {
+				t.Fatalf("mapped target identity mismatch: %+v", start.Architecture)
+			}
+			wantBreakpoint := uint32(breakpoint)
+			if arch == "386" && machine != machine386 {
+				wantBreakpoint = wowBreakpoint
+			}
+			if start.Architecture.InitialBreakpoint != wantBreakpoint {
+				t.Fatalf("wrong target startup profile: %+v", start.Architecture)
+			}
+			t.Logf("actual native machine=%04x parent=%s target=%s established and joined; kernel processMachine=%04x mappedImage=%04x initialBreakpoint=%08x", machine, runtime.GOARCH, arch, start.Architecture.ProcessMachine, start.Architecture.ImageMachine, start.Architecture.InitialBreakpoint)
+		})
+	}
+}
+
+func TestWindowsEmulatedParentRouting(t *testing.T) {
+	machine, emulated, err := MachineRoute()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Every emulated parent runs the complete matrix above as a child fixture.
+	// Only the native test process dispatches it, preventing recursive runs.
+	if emulated || machine == machine386 {
+		return
+	}
+	arches := []string{"386"}
+	if machine == machineARM64 {
+		arches = append(arches, "amd64")
+	}
+	for _, arch := range arches {
+		t.Run(arch, func(t *testing.T) {
+			exe := fixtureExecutable(t, arch)
+			ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, exe, "-test.run=^TestWindowsTargetABIMatrix$", "-test.v", "-test.timeout=100s")
+			output, err := cmd.CombinedOutput()
+			if err != nil {
+				t.Fatalf("owned emulated %s parent matrix: %v\n%s", arch, err, output)
+			}
+			t.Logf("native %04x actual %s parent matrix:\n%s", machine, arch, output)
 		})
 	}
 }

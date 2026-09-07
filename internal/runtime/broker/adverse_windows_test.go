@@ -1,6 +1,7 @@
 package broker
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"os"
@@ -22,6 +23,115 @@ func handleCount(t *testing.T) uint32 {
 		t.Fatal(err)
 	}
 	return count
+}
+
+func TestWindowsBlockedConPTYCloseRetainsOwner(t *testing.T) {
+	runtime.LockOSThread()
+	defer runtime.UnlockOSThread()
+	s := windowsSpec(t)
+	s.Environment = os.Environ()
+	s.Terminal = true
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Executable = exe
+	s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "pipe"}
+	release := make(chan struct{})
+	p := &userProcess{closeTerminal: func(h windows.Handle) { <-release; windows.ClosePseudoConsole(h) }}
+	if err = p.prepare(s); err != nil {
+		t.Fatal(err)
+	}
+	var readers sync.WaitGroup
+	for _, out := range p.outputs {
+		readers.Add(1)
+		go func(out nativeOutput) {
+			defer readers.Done()
+			buffer := make([]byte, 1024)
+			for {
+				if _, e := out.file.Read(buffer); e != nil {
+					return
+				}
+			}
+		}(out)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err = p.start(ctx, s); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = waitProcess(ctx, p.debug.process.Process); err != nil {
+		t.Fatal(err)
+	}
+	short, stop := context.WithTimeout(context.Background(), 20*time.Millisecond)
+	err = p.cleanup(short)
+	stop()
+	if !errors.Is(err, context.DeadlineExceeded) || p.hpc == 0 || p.job == 0 || p.terminalClosed == nil {
+		t.Errorf("blocked close lost ownership: error=%v hpc=%x job=%x", err, p.hpc, p.job)
+	}
+	close(release)
+	if err = p.cleanup(ctx); err != nil {
+		t.Fatal(err)
+	}
+	readers.Wait()
+	for i := range p.outputs {
+		if err = closeFile(&p.outputs[i].file); err != nil {
+			t.Error(err)
+		}
+	}
+	if p.hpc != 0 || p.job != 0 {
+		t.Fatal("released close did not join")
+	}
+}
+
+func TestWindowsStopJoinsBlockedInputAndReportsPartial(t *testing.T) {
+	s := windowsSpec(t)
+	s.Environment = os.Environ()
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Executable = exe
+	s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(api.OutputStream, []byte) {}}
+	if _, embedded, e := MachineRoute(); e != nil {
+		t.Fatal(e)
+	} else if embedded {
+		config.Extraction = extractedNativeFixture(t)
+		config.Image = config.Extraction.Path()
+	}
+	client, start, err := StartWindows(ctx, config)
+	if err != nil || !start.Established {
+		t.Fatalf("start %+v %v", start, err)
+	}
+	defer client.Stop()
+	data := bytes.Repeat([]byte{0x41}, MaxFrame-headerSize)
+	first, err := client.Write(ctx, data)
+	if err != nil || first.Delivered != uint32(len(data)) {
+		t.Fatalf("initial fill %+v %v", first, err)
+	}
+	type delivered struct {
+		fact WindowsDelivery
+		err  error
+	}
+	done := make(chan delivered, 1)
+	go func() { fact, e := client.Write(ctx, data); done <- delivered{fact, e} }()
+	select {
+	case result := <-done:
+		t.Fatalf("input was not blocked: %+v", result)
+	case <-time.After(50 * time.Millisecond):
+	}
+	client.Stop()
+	result := <-done
+	if result.err == nil || result.fact.Accepted != uint32(len(data)) || result.fact.Delivered >= result.fact.Accepted {
+		t.Fatalf("missing copied/partial-write facts: %+v", result)
+	}
+	final, err := client.Wait(ctx)
+	if err != nil || !final.CleanupComplete {
+		t.Fatalf("blocked input did not join: %+v %v", final, err)
+	}
 }
 
 // Snapshot only this test process's kernel handle table. Classify the three

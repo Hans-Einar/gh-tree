@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sync"
 	"time"
@@ -30,17 +31,33 @@ type WindowsConfig struct {
 }
 
 type WindowsStartResult struct {
-	Established bool
-	Cwd         string
+	Established  bool
+	Cwd          string
+	Architecture WindowsArchitecture
 }
 type WindowsFact struct {
+	Architecture    WindowsArchitecture
 	Established     bool
 	RootExited      bool
 	ExitCode        uint32
 	Quiescent       bool
 	CleanupComplete bool
 	Err             error
+	Residuals       []WindowsResidual
 }
+
+// A residual identifies a still-unproved cleanup barrier, never a PID/handle.
+// Err on a fully cleaned fact is historical diagnostics; Residuals is then empty.
+type WindowsResidual struct {
+	Stage api.RuntimeCleanupStage
+	Err   error
+}
+
+func cloneWindowsFact(f WindowsFact) WindowsFact {
+	f.Residuals = append([]WindowsResidual(nil), f.Residuals...)
+	return f
+}
+
 type WindowsDelivery struct {
 	Accepted, Delivered uint32
 	Completed           bool
@@ -138,9 +155,20 @@ func StartWindows(ctx context.Context, config WindowsConfig) (*WindowsClient, Wi
 		}
 		return c, result, nil
 	case <-ctx.Done():
+		c.mu.Lock()
+		latest := c.latest
+		c.mu.Unlock()
+		if latest.Established {
+			return c, WindowsStartResult{Established: true, Cwd: c.cwd(), Architecture: latest.Architecture}, nil
+		}
 		c.Stop()
 		return c, WindowsStartResult{}, ctx.Err()
 	}
+}
+
+func (c *WindowsClient) cwd() string {
+	parts := append([]string{c.config.Spec.RootLocator}, c.config.Spec.Components...)
+	return filepath.Join(parts...)
 }
 
 func (c *WindowsClient) create(ctx context.Context) error {
@@ -295,11 +323,33 @@ func (c *WindowsClient) send(op Opcode, payload []byte, reply chan controlReply)
 
 func (c *WindowsClient) publish(f WindowsFact) {
 	c.mu.Lock()
-	c.latest = f
+	c.latest = cloneWindowsFact(f)
 	c.mu.Unlock()
 	// At most Established, root/quiescent, retained failure and final cleanup
 	// facts are published. Registry observation does not depend on consumption.
-	c.facts <- f
+	c.facts <- cloneWindowsFact(f)
+}
+
+func (c *WindowsClient) unprovedBarriers(f WindowsFact, cause error) []WindowsResidual {
+	var stages []api.RuntimeCleanupStage
+	if !f.Established {
+		stages = append(stages, api.Acquisition, api.CwdAcquisition)
+	}
+	if !f.Quiescent {
+		stages = append(stages, api.UserProcessWait, api.Descendants, api.InputCleanup)
+		if c.config.Spec.Terminal {
+			stages = append(stages, api.TerminalCleanup)
+		}
+	}
+	stages = append(stages, api.SupervisorOrBroker, api.OuterContainment, api.OutputCleanup, api.ControlCleanup)
+	if c.config.Extraction != nil {
+		stages = append(stages, api.HelperExtraction)
+	}
+	result := make([]WindowsResidual, 0, len(stages))
+	for _, stage := range stages {
+		result = append(result, WindowsResidual{stage, cause})
+	}
+	return result
 }
 
 func (c *WindowsClient) run() {
@@ -397,17 +447,14 @@ func (c *WindowsClient) run() {
 				if c.config.Spec.Terminal {
 					want = 1
 				}
-				if current.Established || len(f.Payload) != 0 || len(seenStreams) != want {
+				if current.Established || len(f.Payload) != 10 || len(seenStreams) != want {
 					err = ErrProtocol
 					break
 				}
 				current.Established = true
+				current.Architecture = WindowsArchitecture{NativeMachine: binary.BigEndian.Uint16(f.Payload), ProcessMachine: binary.BigEndian.Uint16(f.Payload[2:]), ImageMachine: binary.BigEndian.Uint16(f.Payload[4:]), InitialBreakpoint: binary.BigEndian.Uint32(f.Payload[6:])}
 				c.publish(current)
-				cwd := c.config.Spec.RootLocator
-				for _, part := range c.config.Spec.Components {
-					cwd += `\` + part
-				}
-				c.started <- WindowsStartResult{true, cwd}
+				c.started <- WindowsStartResult{Established: true, Cwd: c.cwd(), Architecture: current.Architecture}
 				startedSent = true
 			case Delivered:
 				if len(f.Payload) != 8 && len(f.Payload) != 17 {
@@ -489,12 +536,14 @@ func (c *WindowsClient) run() {
 		}
 		if !reportedFailure {
 			current.Err = errors.Join(err, cleanupErr)
+			current.Residuals = c.unprovedBarriers(current, cleanupErr)
 			c.publish(current)
 			reportedFailure = true
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
 	current.CleanupComplete = true
+	current.Residuals = nil
 	c.outputMu.Lock()
 	current.Err = errors.Join(err, c.outputErr)
 	c.outputMu.Unlock()
@@ -635,13 +684,16 @@ func (c *WindowsClient) Wait(ctx context.Context) (WindowsFact, error) {
 	select {
 	case <-c.done:
 		c.mu.Lock()
-		f := c.latest
+		f := cloneWindowsFact(c.latest)
 		c.mu.Unlock()
 		return f, f.Err
 	case <-ctx.Done():
 		c.mu.Lock()
-		f := c.latest
+		f := cloneWindowsFact(c.latest)
 		c.mu.Unlock()
+		if !f.CleanupComplete && len(f.Residuals) == 0 {
+			f.Residuals = c.unprovedBarriers(f, ctx.Err())
+		}
 		return f, errors.Join(f.Err, ctx.Err())
 	}
 }

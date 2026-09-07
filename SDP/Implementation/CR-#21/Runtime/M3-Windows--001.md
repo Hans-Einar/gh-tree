@@ -151,3 +151,32 @@ expected to fail until its real loader profile is resolved. A bounded test-only
 diagnostic captures loader events/native64 PEB cwd identity at a candidate barrier
 and kills its owned Job without approving/releasing user startup. This is evidence
 gathering for the missing profile, not a passing product substitute or waived gate.
+
+## Mapped-machine and adverse transport checkpoint
+
+Actual40e7e103 CI34068927027 passed native Windows amd64 job101582615826 and
+native ARM64 job101582615856, including the previously expected-to-fail target
+matrix. That is positive exact-source evidence, not evidence that the anticipated
+failure happened. The next implementation now reads the actual mapped PE machine
+through the retained process's PEB image base, and chooses embedded routing from
+that image versus the native machine. IsWow64Process2's processMachine alone is
+insufficient. Target profiles explicitly distinguish native, x86 WOW64 and x64 on
+ARM64, with mapped-machine/initial-breakpoint facts in private Started messages.
+Tests assert the compiled PE machine and actual child mapped machine, and run
+real emulated parent executables through their own complete matrix. Local native
+amd64 and386-parent matrices pass; corrected ARM64 evidence is pending.
+
+Real blocked input now stops and joins with accepted/native-delivered partial
+counts reported before Quiescent. A real ConPTY with an explicitly injected
+blocking close retains its owner after the reporting deadline, then completes
+the actual ClosePseudoConsole and joins after test release. This tests the injected
+blocking path, not an assertion that this host runs an older Windows close ABI.
+The already recorded native ConPTY lifecycle remains independent positive proof.
+
+The client checks known establishment before responding to a raced Start context
+cancellation; an already established session is not stopped/retracted by that
+path. Role-private copied typed residuals identify still-unproved cleanup barriers;
+full cleanup clears them while retaining historical diagnostics separately.
+Full native amd64 broker tests and vet pass before this checkpoint. No helper
+freeze, complete native fault matrix, independent implementation acceptance or
+parent Sessions integration is claimed.

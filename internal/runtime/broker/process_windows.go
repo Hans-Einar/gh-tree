@@ -34,6 +34,7 @@ type userProcess struct {
 	exit                  uint32
 	rootWaited            bool
 	hook                  func(string)
+	closeTerminal         func(windows.Handle)
 }
 
 func (p *userProcess) pipe() (windows.Handle, windows.Handle, error) {
@@ -349,7 +350,11 @@ func (p *userProcess) cleanup(ctx context.Context) error {
 	if p.hpc != 0 && p.terminalClosed == nil {
 		p.terminalClosed = make(chan struct{})
 		hpc, done := p.hpc, p.terminalClosed
-		go func() { windows.ClosePseudoConsole(hpc); close(done) }()
+		closer := p.closeTerminal
+		if closer == nil {
+			closer = windows.ClosePseudoConsole
+		}
+		go func() { closer(hpc); close(done) }()
 	}
 	if p.terminalClosed != nil {
 		select {

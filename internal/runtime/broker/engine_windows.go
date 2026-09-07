@@ -165,7 +165,12 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 	if err := p.start(startup, spec); err != nil {
 		return fail(err)
 	}
-	if err := sendControl(channel, output, Started, nil); err != nil {
+	architecture := p.debug.architecture
+	started := binary.BigEndian.AppendUint16(nil, architecture.NativeMachine)
+	started = binary.BigEndian.AppendUint16(started, architecture.ProcessMachine)
+	started = binary.BigEndian.AppendUint16(started, architecture.ImageMachine)
+	started = binary.BigEndian.AppendUint32(started, architecture.InitialBreakpoint)
+	if err := sendControl(channel, output, Started, started); err != nil {
 		return fail(err)
 	}
 	// One bounded input operation may be in flight. Receive and Stop remain
@@ -176,6 +181,17 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		err                 error
 	}
 	writes := make(chan writeResult, 1)
+	reportWrite := func(result writeResult) error {
+		body := binary.BigEndian.AppendUint64(nil, result.sequence)
+		body = binary.BigEndian.AppendUint32(body, result.accepted)
+		body = binary.BigEndian.AppendUint32(body, result.delivered)
+		if result.err != nil {
+			body = append(body, 1)
+		} else {
+			body = append(body, 0)
+		}
+		return sendControl(channel, output, Delivered, body)
+	}
 	var writing bool
 	defer func() {
 		_ = closeFile(&p.input)
@@ -282,15 +298,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 			}
 		case result := <-writes:
 			writing = false
-			body := binary.BigEndian.AppendUint64(nil, result.sequence)
-			body = binary.BigEndian.AppendUint32(body, result.accepted)
-			body = binary.BigEndian.AppendUint32(body, result.delivered)
-			if result.err != nil {
-				body = append(body, 1)
-			} else {
-				body = append(body, 0)
-			}
-			if err = sendControl(channel, output, Delivered, body); err != nil {
+			if err = reportWrite(result); err != nil {
 				return fail(err)
 			}
 		case <-ticker.C:
@@ -300,8 +308,11 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		return fail(err)
 	}
 	if writing {
-		<-writes
+		result := <-writes
 		writing = false
+		if err := reportWrite(result); err != nil {
+			return fail(err)
+		}
 	}
 	cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), forcePeriod)
 	cleanupErr := p.cleanup(cleanupCtx)

@@ -20,6 +20,43 @@ const (
 	wowBreakpoint = 0x4000001f
 )
 
+type WindowsArchitecture struct {
+	NativeMachine, ProcessMachine, ImageMachine uint16
+	InitialBreakpoint                           uint32
+}
+
+func mappedImageMachine(process windows.Handle) (uint16, error) {
+	var info windows.PROCESS_BASIC_INFORMATION
+	if err := windows.NtQueryInformationProcess(process, windows.ProcessBasicInformation, unsafe.Pointer(&info), uint32(unsafe.Sizeof(info)), nil); err != nil {
+		return 0, err
+	}
+	var peb windows.PEB
+	base, err := readPointer(process, uintptr(unsafe.Pointer(info.PebBaseAddress))+unsafe.Offsetof(peb.ImageBaseAddress), unsafe.Sizeof(uintptr(0)))
+	if err != nil || base == 0 {
+		return 0, errors.Join(err, errors.New("missing mapped image"))
+	}
+	var dos [64]byte
+	var got uintptr
+	if err = windows.ReadProcessMemory(process, base, &dos[0], 64, &got); err != nil {
+		return 0, err
+	}
+	if got != 64 || dos[0] != 'M' || dos[1] != 'Z' {
+		return 0, errors.New("invalid mapped DOS header")
+	}
+	offset := uintptr(binary.LittleEndian.Uint32(dos[60:]))
+	if offset < 64 || offset > 1<<20 || base+offset < base {
+		return 0, errors.New("invalid mapped PE offset")
+	}
+	var nt [6]byte
+	if err = windows.ReadProcessMemory(process, base+offset, &nt[0], 6, &got); err != nil {
+		return 0, err
+	}
+	if got != 6 || nt[0] != 'P' || nt[1] != 'E' || nt[2] != 0 || nt[3] != 0 {
+		return 0, errors.New("invalid mapped PE signature")
+	}
+	return binary.LittleEndian.Uint16(nt[4:]), nil
+}
+
 // MachineRoute reports only private Runtime implementation facts. Native32
 // uses its own executable; emulated callers require the indicated native image.
 func MachineRoute() (machine uint16, embedded bool, err error) {
@@ -33,13 +70,24 @@ func MachineRoute() (machine uint16, embedded bool, err error) {
 	if process != 0 && process != machine386 && process != machineAMD64 {
 		return 0, false, errors.New("unsupported emulated Windows machine")
 	}
-	return native, process != 0, nil
+	actual, e := mappedImageMachine(windows.CurrentProcess())
+	if e != nil {
+		return 0, false, e
+	}
+	if actual != machine386 && actual != machineAMD64 && actual != machineARM64 {
+		return 0, false, errors.New("unsupported extension image machine")
+	}
+	if process != 0 && process != actual {
+		return 0, false, errors.New("inconsistent extension machine profile")
+	}
+	return native, actual != native, nil
 }
 
 type startupProfile struct {
 	pointerSize                  uintptr
 	pebParameters, parametersCwd uintptr
 	wow                          bool
+	architecture                 WindowsArchitecture
 }
 
 func processProfile(process windows.Handle) (startupProfile, error) {
@@ -50,20 +98,30 @@ func processProfile(process windows.Handle) (startupProfile, error) {
 	if native != machine386 && native != machineAMD64 && native != machineARM64 {
 		return startupProfile{}, errors.New("unknown target runtime machine")
 	}
-	if target == machine386 && native != machine386 {
-		if unsafe.Sizeof(uintptr(0)) == 4 {
-			return startupProfile{4, 0x10, 0x2c, false}, nil
-		}
-		return startupProfile{4, 0x10, 0x2c, true}, nil
+	actual, err := mappedImageMachine(process)
+	if err != nil {
+		return startupProfile{}, err
 	}
-	if target != 0 {
-		// x64-on-ARM64 has a distinct loader ABI. Enable only with its actual
-		// native event-sequence evidence; it must never borrow WOW64's profile.
-		return startupProfile{}, errors.New("unverified emulation startup profile")
+	if target != 0 && target != actual {
+		return startupProfile{}, errors.New("inconsistent target machine profile")
+	}
+	architecture := WindowsArchitecture{NativeMachine: native, ProcessMachine: target, ImageMachine: actual, InitialBreakpoint: breakpoint}
+	if actual == machine386 && native != machine386 {
+		if unsafe.Sizeof(uintptr(0)) == 4 {
+			return startupProfile{4, 0x10, 0x2c, false, architecture}, nil
+		}
+		architecture.InitialBreakpoint = wowBreakpoint
+		return startupProfile{4, 0x10, 0x2c, true, architecture}, nil
+	}
+	if actual != native && !(native == machineARM64 && actual == machineAMD64) {
+		return startupProfile{}, errors.New("unsupported emulation startup profile")
+	}
+	if actual != machine386 && unsafe.Sizeof(uintptr(0)) != 8 {
+		return startupProfile{}, errors.New("non-native debugger width")
 	}
 	var peb windows.PEB
 	var parameters windows.RTL_USER_PROCESS_PARAMETERS
-	return startupProfile{unsafe.Sizeof(uintptr(0)), unsafe.Offsetof(peb.ProcessParameters), unsafe.Offsetof(parameters.CurrentDirectory) + unsafe.Offsetof(parameters.CurrentDirectory.Handle), false}, nil
+	return startupProfile{unsafe.Sizeof(uintptr(0)), unsafe.Offsetof(peb.ProcessParameters), unsafe.Offsetof(parameters.CurrentDirectory) + unsafe.Offsetof(parameters.CurrentDirectory.Handle), false, architecture}, nil
 }
 
 func readPointer(process windows.Handle, address, size uintptr) (uintptr, error) {
@@ -115,6 +173,7 @@ type debugOwner struct {
 	attached               bool
 	pendingPID, pendingTID uint32
 	owned                  []windows.Handle
+	architecture           WindowsArchitecture
 }
 
 func (d *debugOwner) continuation() error {
@@ -145,6 +204,7 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 	if err != nil {
 		return err
 	}
+	d.architecture = profile.architecture
 	if err = cwd.Revalidate(); err != nil {
 		return err
 	}
