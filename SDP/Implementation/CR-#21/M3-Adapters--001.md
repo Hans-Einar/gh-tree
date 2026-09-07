@@ -318,3 +318,12 @@ Standard parsers avoid handwritten JSON/PE validation and extra generated output
 Positive byte-reader and negative path/native-I/O/recursive-import fixtures use
 the existing test format. Separate helper candidate review includes this small
 delta; no extra review round or broader Composition ownership is authorized.
+
+#71 queues a fresh Runtime parent Sessions worker after a slot and actual native
+client seam are available. Exact common root foundations: 6be865b. #65 author
+now retains only Unix broker/client/native hardening and its report; #71 owns
+root Runtime Go/tests/README plus M3-Sessions--001. No new branch/worker yet.
+The Issue preserves all12 methods, ordering/reservations, input split accounting,
+retained cleanup ownership and separate fresh native/parent reviews. Test-only
+owners may support early state proofs; final acceptance requires real clients.
+No unreviewed native merge, production placeholder or public contract change.

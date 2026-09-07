@@ -825,9 +825,10 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "a6e79eaa44ad485589b4d8322b7e9efcd9f911bf",
+      "lastCheckpoint": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "subContributions": [
-        "IMPL69"
+        "IMPL69",
+        "IMPL71"
       ],
       "latestVerification": {
         "head": "a6e79eaa44ad485589b4d8322b7e9efcd9f911bf",
@@ -964,6 +965,17 @@
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
       "technicalSource": "b72ad94c60eb38d7c4ebe70fafd10b21a3289037",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets-Review--001.md"
+    },
+    {
+      "id": "IMPL71",
+      "kind": "runtime_parent_contribution",
+      "issue": 71,
+      "state": "queued_waiting_slot_and_actual_native_seam",
+      "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
+      "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
+      "branch": null,
+      "worktree": null,
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md"
     }
   ],
   "productFindings": [
