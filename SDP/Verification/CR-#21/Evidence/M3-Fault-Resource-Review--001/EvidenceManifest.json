@@ -1,0 +1,149 @@
+{
+  "reviewedHead": "3772fafc903ccb153a8604230b4143b7e7433e0f",
+  "executableTestSource": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
+  "baseline": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+  "persistenceTree": "8cc553a579d373754aab1d4ad9aff9d02e1049fd",
+  "toolchain": "Go 1.25.0; CGO_ENABLED=0; GOTOOLCHAIN=local",
+  "windows": "Windows-11-10.0.26200-SP0",
+  "commands": [
+    {
+      "platform": "windows/amd64",
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-overlay",
+        "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907\\overlay.json",
+        "./internal/persistence",
+        "-run",
+        "TestReviewMultipleClose|TestReviewInventoryHardMatching|TestCommitFaultAndCancellationResources|TestAdmissionRefusal|TestWindowsCommitNativeSharing|TestCommitProcessCrashBoundaries|TestWindowsPublicCommitAndLoadsReleaseAllRequestHandles",
+        "-count=1",
+        "-v",
+        "-timeout=90s"
+      ],
+      "exit": 0,
+      "seconds": 6.907
+    },
+    {
+      "platform": "windows/386",
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-overlay",
+        "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907\\overlay.json",
+        "./internal/persistence",
+        "-run",
+        "TestReviewMultipleClose|TestReviewInventoryHardMatching|TestCommitFaultAndCancellationResources|TestAdmissionRefusal|TestWindowsCommitNativeSharing|TestCommitProcessCrashBoundaries|TestWindowsPublicCommitAndLoadsReleaseAllRequestHandles",
+        "-count=1",
+        "-v",
+        "-timeout=90s"
+      ],
+      "exit": 0,
+      "seconds": 7.429
+    },
+    {
+      "buildCommand": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-overlay",
+        "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907\\overlay.json",
+        "-c",
+        "-o",
+        "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907\\review-linux.test",
+        "./internal/persistence"
+      ],
+      "command": [
+        "wsl.exe",
+        "--",
+        "bash",
+        "/mnt/c/Users/hanse/.codex/tmp/m3-fault-resource-review-20260907/run-linux.sh"
+      ],
+      "exit": 0,
+      "seconds": 4.748
+    },
+    {
+      "command": [
+        "wsl.exe",
+        "--",
+        "bash",
+        "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907\\partial-gc-off.sh"
+      ],
+      "environment": "GOGC=off; ordinary UID/GID65534; same owned Linux ext4 stage",
+      "exit": 0
+    }
+  ],
+  "linuxBinarySHA256": "084d6a6327d1972f6a54f0a07c3186d77365dd0cad605203c56def1102b7c1e8",
+  "overlayRule": "Add internal/persistence/reviewer_fault_test.go and reviewer_fault_linux_test.go mapped to the matching absolute .go.txt files in this directory. No existing product/test source is replaced.",
+  "sourceCleanBefore": true,
+  "localRawEvidence": "C:\\Users\\hanse\\.codex\\tmp\\m3-fault-resource-review-20260907",
+  "priorCI": {
+    "run": 34080235390,
+    "source": "75137a0ecc624559efe2a3c61c0236f9c5155e4e",
+    "conclusion": "cancelled",
+    "unsuccessfulJobs": [
+      {
+        "name": "Test (macos-latest)",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Test (windows-11-arm)",
+        "conclusion": "cancelled"
+      },
+      {
+        "name": "Native FreeBSD amd64 (new stack)",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Runtime helper source closure and reproducibility (M3)",
+        "conclusion": "skipped"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "ci-native-excerpts.log",
+      "bytes": 3639,
+      "sha256": "641de6169f27cefd0f10235106ac483fe8b4264dbdc9b47c9a5bb2a0a0676352"
+    },
+    {
+      "path": "ci-status.json",
+      "bytes": 2604,
+      "sha256": "8eb6a96832dd4fdb4d52986c9dce7c06cd3b142131aa14886eca3c2c27bbfebb"
+    },
+    {
+      "path": "linux-amd64.log",
+      "bytes": 18317,
+      "sha256": "d99f380b738febdef0fd0642b4a07d33c99c98b23f344c5868ae701452006281"
+    },
+    {
+      "path": "linux-partial-gc-off.log",
+      "bytes": 223,
+      "sha256": "a3d27d1e72c38082dee0b32bb2fc6a60145c65fdf5014c0877e61e863c7c6ef8"
+    },
+    {
+      "path": "reviewer_fault_linux_test.go.txt",
+      "bytes": 3222,
+      "sha256": "1ab6010fe444ff5ae5c7122899015027de951e066b657bf9559d3b185c4e1114"
+    },
+    {
+      "path": "reviewer_fault_test.go.txt",
+      "bytes": 4606,
+      "sha256": "a830c092aed442210d79107f94c5726832b590f4ff801ec60f3c0cc468e78029"
+    },
+    {
+      "path": "run-linux.sh.txt",
+      "bytes": 639,
+      "sha256": "24ef56ec4c0d9c4cbfc6d8162f6fecc7bb7df2449ac7ebead2da8f3c115e5002"
+    },
+    {
+      "path": "windows-386.log",
+      "bytes": 16560,
+      "sha256": "8400b940129679b888faa00d06dc756e17d759c171e28fdedc9b83e1c3cacf7b"
+    },
+    {
+      "path": "windows-amd64.log",
+      "bytes": 16560,
+      "sha256": "8d1286f2acfe7ff9b90743cfb59d5e328672b7d1c6b957843b1286526dbfeac7"
+    }
+  ],
+  "fileHashConvention": "UTF-8 evidence files normalized to LF; hashes cover committed content."
+}

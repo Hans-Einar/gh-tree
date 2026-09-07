@@ -1,0 +1,49 @@
+package persistence
+
+import (
+ "context"
+ "errors"
+ "fmt"
+ "os"
+ "path/filepath"
+ "reflect"
+ "testing"
+ "golang.org/x/sys/unix"
+)
+
+func TestReviewInventoryCapacityAndNativeError(t *testing.T) {
+ root:=physicalStoreTemp(t)
+ s:=newTestStore(t,root)
+ for _,v:=range []string{"first","second","third"} {
+  loaded,err:=s.LoadUserConfig(context.Background());if err!=nil {t.Fatal(err)}
+  expected,_:=loaded.Observation().Data().Version.Value()
+  result,err:=s.CommitUserConfig(context.Background(),userProposal(t,expected,v));assertCommitted(t,result,err)
+ }
+ baseline,err:=s.LoadUserConfig(context.Background());if err!=nil {t.Fatal(err)}
+ want:=recoveryRecords(t,baseline.Observation().Data().Recovery)
+ before:=storeFileBytes(t,root)
+ bad:=filepath.Join(root,recoveryPrefix("config.json")+"unsupported")
+ if err:=os.Symlink("config.json",bad);err!=nil {t.Fatal(err)}
+ options:=s.options;options.RecoveryMaxBytes=1;options.RecoveryMaxRecords=1
+ limited,err:=New(context.Background(),options);if err!=nil {t.Fatal(err)}
+ loaded,err:=limited.LoadUserConfig(context.Background())
+ if !errors.Is(err,unix.ELOOP)||!errors.Is(err,errRecoveryCapacity)||!loaded.Valid()||!reflect.DeepEqual(recoveryRecords(t,loaded.Observation().Data().Recovery),want)||!reflect.DeepEqual(loaded.Document(),baseline.Document()) {t.Fatalf("lost independent errors/facts: %v",err)}
+ expected,_:=baseline.Observation().Data().Version.Value()
+ result,err:=limited.CommitUserConfig(context.Background(),userProposal(t,expected,"refused"))
+ if !errors.Is(err,unix.ELOOP)||!errors.Is(err,errRecoveryCapacity)||!result.Valid()||result.Data().PublicationKnown||!reflect.DeepEqual(recoveryRecords(t,result.Data().Recovery),want)||result.Data().CurrentVersion!=loaded.Observation().Data().Version||!result.Data().ProposedVersion.Present() {t.Fatalf("refusal lost independent facts/errors: %v",err)}
+ for name,raw:=range before {got,err:=os.ReadFile(filepath.Join(root,name));if err!=nil||string(got)!=raw {t.Fatal("capacity/native refusal changed prior bytes")}}
+ entries,err:=os.ReadDir(root);if err!=nil||len(entries)!=len(before)+1 {t.Fatal("capacity/native refusal prepared or removed artifact")}
+ if target,err:=os.Readlink(bad);err!=nil||target!="config.json" {t.Fatal("refusal changed unsupported object")}
+ t.Logf("ELOOP and capacity both retained with all %d exact records and unchanged bytes/names",len(want))
+}
+
+func TestReviewInventoryHardDirectoryBound(t *testing.T) {
+ root:=physicalStoreTemp(t)
+ for i:=0;i<16385;i++ {f,err:=os.Create(filepath.Join(root,fmt.Sprintf("unrelated-%05d",i)));if err!=nil {t.Fatal(err)};if err:=f.Close();err!=nil {t.Fatal(err)}}
+ c,err:=nativeAcquire(context.Background(),root);if err!=nil {t.Fatal(err)}
+ names,records,size,err:=inventoryRecovery(context.Background(),c.parent(),"config.json",256,1<<30)
+ if closeErr:=c.close();closeErr!=nil {t.Fatal(closeErr)}
+ if !errors.Is(err,errRecoveryCapacity)||len(names)!=0||records!=0||size!=0 {t.Fatalf("directory scan not bounded: %d %d %d %v",len(names),records,size,err)}
+ entries,err:=os.ReadDir(root);if err!=nil||len(entries)!=16385 {t.Fatal("inventory changed unrelated entries")}
+ t.Log("16385 unrelated entries: explicit bounded refusal; every entry retained")
+}

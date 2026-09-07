@@ -1,0 +1,11 @@
+set -eu
+stage=$(mktemp -d /tmp/gh-tree-independent-faults.XXXXXX)
+mkdir "$stage/tmp"
+cp '/mnt/c/Users/hanse/.codex/tmp/m3-fault-resource-review-20260907/review-linux.test' "$stage/review.test"
+chmod 755 "$stage/review.test"
+chown -R 65534:65534 "$stage"
+printf 'NATIVE_STAGE=%s\n' "$stage"
+uname -a
+findmnt -T "$stage" -n -o FSTYPE
+runuser -u nobody -- id
+runuser -u nobody -- env TMPDIR="$stage/tmp" "$stage/review.test" -test.run='TestReviewMultipleClose|TestReviewInventory|TestAdmissionRefusal|TestCommitFaultAndCancellationResources|TestUnixCommitNative|TestCommitProcessCrashBoundaries' -test.count=1 -test.v=true -test.timeout=120s

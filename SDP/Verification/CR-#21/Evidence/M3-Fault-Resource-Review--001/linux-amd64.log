@@ -1,0 +1,217 @@
+NATIVE_STAGE=/tmp/gh-tree-independent-faults.Aqy4P4
+Linux OpticStudio 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+ext4
+uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+=== RUN   TestAdmissionRefusalPreservesAllExistingRecoveryFacts
+=== RUN   TestAdmissionRefusalPreservesAllExistingRecoveryFacts/records
+=== RUN   TestAdmissionRefusalPreservesAllExistingRecoveryFacts/bytes
+--- PASS: TestAdmissionRefusalPreservesAllExistingRecoveryFacts (0.33s)
+    --- PASS: TestAdmissionRefusalPreservesAllExistingRecoveryFacts/records (0.08s)
+    --- PASS: TestAdmissionRefusalPreservesAllExistingRecoveryFacts/bytes (0.24s)
+=== RUN   TestCommitFaultAndCancellationResources
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.manifest
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.manifest.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.manifest.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload.journal
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.payload.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw.journal
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.raw.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.original
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.original.journal
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.original.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.original.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.publication
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.publication.journal
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.publication.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.publication.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.ready.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.ready.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/manifest-flushed
+=== RUN   TestCommitFaultAndCancellationResources/failure/prepare.close
+=== RUN   TestCommitFaultAndCancellationResources/failure/final-check
+=== RUN   TestCommitFaultAndCancellationResources/failure/before-publication
+=== RUN   TestCommitFaultAndCancellationResources/failure/native-return-lost
+=== RUN   TestCommitFaultAndCancellationResources/failure/directory-flush
+=== RUN   TestCommitFaultAndCancellationResources/failure/outcome-delivery
+=== RUN   TestCommitFaultAndCancellationResources/failure/close.artifact
+=== RUN   TestCommitFaultAndCancellationResources/failure/close.lock
+=== RUN   TestCommitFaultAndCancellationResources/failure/close.parents
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.manifest
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.manifest.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.manifest.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.original
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.publication
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.ready.journal.write
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.ready.journal.flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/manifest-flushed
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/prepare.close
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/final-check
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/before-publication
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/native-return-lost
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/directory-flush
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/outcome-delivery
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/close.artifact
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/close.lock
+=== RUN   TestCommitFaultAndCancellationResources/cancellation/close.parents
+--- PASS: TestCommitFaultAndCancellationResources (2.13s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.manifest (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.manifest.journal.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.manifest.journal.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload.journal (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload.journal.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.payload.journal.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.raw.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.original (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.original.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.original.journal.write (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.original.journal.flush (0.07s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.publication (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.publication.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.publication.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.publication.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.ready.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.ready.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/manifest-flushed (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/prepare.close (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/final-check (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/before-publication (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/native-return-lost (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/directory-flush (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/outcome-delivery (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/close.artifact (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/close.lock (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/failure/close.parents (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.manifest (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.manifest.journal.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.manifest.journal.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal.write (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.payload.journal.flush (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw (0.02s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.raw.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.original (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.original.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.publication (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal.write (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.publication.journal.flush (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.ready.journal.write (0.03s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.ready.journal.flush (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/manifest-flushed (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/prepare.close (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/final-check (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/before-publication (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/native-return-lost (0.05s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/directory-flush (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/outcome-delivery (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/close.artifact (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/close.lock (0.04s)
+    --- PASS: TestCommitFaultAndCancellationResources/cancellation/close.parents (0.04s)
+=== RUN   TestUnixCommitNativePermissionFailures
+=== RUN   TestUnixCommitNativePermissionFailures/prepare.manifest
+=== RUN   TestUnixCommitNativePermissionFailures/prepare.payload
+=== RUN   TestUnixCommitNativePermissionFailures/prepare.raw
+=== RUN   TestUnixCommitNativePermissionFailures/prepare.original
+=== RUN   TestUnixCommitNativePermissionFailures/prepare.publication
+=== RUN   TestUnixCommitNativePermissionFailures/before-publication
+--- PASS: TestUnixCommitNativePermissionFailures (0.06s)
+    --- PASS: TestUnixCommitNativePermissionFailures/prepare.manifest (0.00s)
+    --- PASS: TestUnixCommitNativePermissionFailures/prepare.payload (0.00s)
+    --- PASS: TestUnixCommitNativePermissionFailures/prepare.raw (0.01s)
+    --- PASS: TestUnixCommitNativePermissionFailures/prepare.original (0.01s)
+    --- PASS: TestUnixCommitNativePermissionFailures/prepare.publication (0.02s)
+    --- PASS: TestUnixCommitNativePermissionFailures/before-publication (0.02s)
+=== RUN   TestUnixCommitNativePartialWriteFixture
+    commit_fault_unix_test.go:90: private process file-size-limit fixture
+--- SKIP: TestUnixCommitNativePartialWriteFixture (0.00s)
+=== RUN   TestUnixCommitNativePartialWrite
+    commit_fault_unix_test.go:160: NATIVE_PARTIAL_WRITE=40000 NOT_COMMITTED MANIFEST_RETAINED RESOURCES_CLOSED
+        PASS
+--- PASS: TestUnixCommitNativePartialWrite (0.01s)
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/lock
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.payload
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.payload.flush
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.raw.flush
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.original.journal
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.ready.journal.flush
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/manifest-flushed
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.close
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/before-publication
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/native-return-lost
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/directory-flush
+=== RUN   TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/outcome-delivery
+--- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts (0.21s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/lock (0.00s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.payload (0.01s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.payload.flush (0.01s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.raw.flush (0.01s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.original.journal (0.02s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.ready.journal.flush (0.02s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/manifest-flushed (0.03s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/prepare.close (0.02s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/before-publication (0.03s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/native-return-lost (0.02s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/directory-flush (0.02s)
+    --- PASS: TestCommitProcessCrashBoundariesReleaseLockAndRetainFacts/outcome-delivery (0.02s)
+=== RUN   TestReviewInventoryCapacityAndNativeError
+    reviewer_fault_linux_test.go:37: ELOOP and capacity both retained with all 11 exact records and unchanged bytes/names
+--- PASS: TestReviewInventoryCapacityAndNativeError (0.08s)
+=== RUN   TestReviewInventoryHardDirectoryBound
+    reviewer_fault_linux_test.go:48: 16385 unrelated entries: explicit bounded refusal; every entry retained
+--- PASS: TestReviewInventoryHardDirectoryBound (0.20s)
+=== RUN   TestReviewMultipleCloseFailuresKeepFacts
+=== RUN   TestReviewMultipleCloseFailuresKeepFacts/prepublication=false
+    reviewer_fault_test.go:73: all 4 native close attempts restored exact resource baseline; distinct errors and current/proposed/recovery retained
+=== RUN   TestReviewMultipleCloseFailuresKeepFacts/prepublication=true
+    reviewer_fault_test.go:73: all 4 native close attempts restored exact resource baseline; distinct errors and current/proposed/recovery retained
+--- PASS: TestReviewMultipleCloseFailuresKeepFacts (0.09s)
+    --- PASS: TestReviewMultipleCloseFailuresKeepFacts/prepublication=false (0.04s)
+    --- PASS: TestReviewMultipleCloseFailuresKeepFacts/prepublication=true (0.04s)
+=== RUN   TestReviewInventoryHardMatchingBound
+    reviewer_fault_test.go:89: 1281 real matching files: 1280 measured names; explicit capacity refusal; all files retained
+--- PASS: TestReviewInventoryHardMatchingBound (0.02s)
+PASS

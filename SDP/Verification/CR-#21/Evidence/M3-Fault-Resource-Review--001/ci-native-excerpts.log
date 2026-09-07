@@ -1,0 +1,28 @@
+JOB 101614565164 https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099/job/101614565164
+Full UTF-8 log SHA256 10f47512a2db658be1c84279e91d69fd4ad82c1475bc498e745dccf49870b54c
+130: Test (windows-11-arm)	Run actions/setup-go@v6	2026-09-07T03:42:08.0727311Z go version go1.25.0 windows/arm64
+198: Test (windows-11-arm)	Record actual native environment	2026-09-07T03:42:09.5327080Z source=ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8 ref=refs/heads/codereview-21/layer-persistence run=34080421099 attempt=1
+199: Test (windows-11-arm)	Record actual native environment	2026-09-07T03:42:09.5333113Z runner=Windows/ARM64 image=win11-arm64 version=20260830.155.1
+201: Test (windows-11-arm)	Record actual native environment	2026-09-07T03:42:09.5397330Z host=Arm64 shell=7.6.4
+202: Test (windows-11-arm)	Record actual native environment	2026-09-07T03:42:09.5740387Z go version go1.25.0 windows/arm64
+261: Test (windows-11-arm)	Run go test ./...	2026-09-07T03:44:17.2081444Z ok  	github.com/Hans-Einar/gh-tree/internal/persistence	17.120s
+269: Test (windows-11-arm)	Run go vet ./...	﻿2026-09-07T03:44:17.4378559Z ##[group]Run go vet ./...
+275: Test (windows-11-arm)	Run go build -trimpath ./cmd/gh-tree	﻿2026-09-07T03:44:22.2539049Z ##[group]Run go build -trimpath ./cmd/gh-tree
+JOB 101614565186 https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099/job/101614565186
+Full UTF-8 log SHA256 88100423c3657cc14cda81ed7e8e5b186e49d29b440deaad01332f49c7768d34
+137: Test (macos-latest)	Run actions/setup-go@v6	2026-09-07T03:40:51.6189350Z go version go1.25.0 darwin/arm64
+205: Test (macos-latest)	Record actual native environment	2026-09-07T03:40:54.0281860Z source=ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8 ref=refs/heads/codereview-21/layer-persistence run=34080421099 attempt=1
+206: Test (macos-latest)	Record actual native environment	2026-09-07T03:40:54.0290370Z runner=macOS/ARM64 image=macos26 version=20260831.0337.3
+208: Test (macos-latest)	Record actual native environment	2026-09-07T03:40:54.0333680Z host=Arm64 shell=7.6.4
+209: Test (macos-latest)	Record actual native environment	2026-09-07T03:40:54.1083900Z go version go1.25.0 darwin/arm64
+268: Test (macos-latest)	Run go test ./...	2026-09-07T03:41:47.0705690Z ok  	github.com/Hans-Einar/gh-tree/internal/persistence	5.743s
+276: Test (macos-latest)	Run go vet ./...	﻿2026-09-07T03:41:47.1330880Z ##[group]Run go vet ./...
+282: Test (macos-latest)	Run go build -trimpath ./cmd/gh-tree	﻿2026-09-07T03:41:50.8925980Z ##[group]Run go build -trimpath ./cmd/gh-tree
+JOB 101614565392 https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099/job/101614565392
+Full UTF-8 log SHA256 44319fcf1c4e71eb7c7b11c07f15a54103a6a716dd1b1c137a0379409692fa08
+450: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4546630Z source=ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8
+456: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4564622Z uid=1001(ghci) gid=1001(ghci) groups=1001(ghci)
+457: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4565076Z go version go1.25.0 freebsd/amd64
+506: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4589044Z lsextattr_namespace=user exit=0
+507: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4589647Z lsextattr: /home/ghci/tmp/metadata-profile.Pu0JQ3: failed: Operation not permitted
+508: Native FreeBSD amd64 (new stack)	Execute on FreeBSD 15.0 amd64 guest disk	2026-09-07T03:42:25.4590278Z lsextattr_namespace=system exit=1

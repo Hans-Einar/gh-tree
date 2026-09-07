@@ -1,0 +1,5 @@
+=== RUN   TestUnixCommitNativePartialWrite
+    commit_fault_unix_test.go:160: NATIVE_PARTIAL_WRITE=40000 NOT_COMMITTED MANIFEST_RETAINED RESOURCES_CLOSED
+        PASS
+--- PASS: TestUnixCommitNativePartialWrite (0.01s)
+PASS

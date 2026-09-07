@@ -1,0 +1,109 @@
+{
+  "source": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
+  "run": 34080421099,
+  "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "id": 101614565077,
+      "name": "Test (windows-latest)",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565086,
+      "name": "Accepted target inventory and M3 prerequisites",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565107,
+      "name": "Race detector",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565140,
+      "name": "Test (ubuntu-latest)",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565164,
+      "name": "Test (windows-11-arm)",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565186,
+      "name": "Test (macos-latest)",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614565392,
+      "name": "Native FreeBSD amd64 (new stack)",
+      "conclusion": "failure"
+    },
+    {
+      "id": 101614622727,
+      "name": "Build and architecture freebsd/amd64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622742,
+      "name": "Build and architecture freebsd/arm64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622744,
+      "name": "Build and architecture windows/arm64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622747,
+      "name": "Build and architecture windows/amd64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622758,
+      "name": "Build and architecture windows/386",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622763,
+      "name": "Build and architecture linux/386",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622765,
+      "name": "Build and architecture linux/arm64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622771,
+      "name": "Build and architecture linux/amd64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622777,
+      "name": "Build and architecture freebsd/386",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622793,
+      "name": "Build and architecture linux/arm",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622801,
+      "name": "Build and architecture darwin/arm64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614622802,
+      "name": "Build and architecture darwin/amd64",
+      "conclusion": "success"
+    },
+    {
+      "id": 101614623502,
+      "name": "Runtime helper source closure and reproducibility (M3)",
+      "conclusion": "skipped"
+    }
+  ]
+}

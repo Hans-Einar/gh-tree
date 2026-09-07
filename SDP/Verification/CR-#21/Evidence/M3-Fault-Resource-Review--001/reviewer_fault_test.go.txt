@@ -1,0 +1,90 @@
+package persistence
+
+import (
+ "context"
+ "errors"
+ "fmt"
+ "os"
+ "path/filepath"
+ "reflect"
+ "runtime/debug"
+ "strings"
+ "testing"
+
+ "github.com/Hans-Einar/gh-tree/internal/application/api"
+)
+
+func TestReviewMultipleCloseFailuresKeepFacts(t *testing.T) {
+ previous := debug.SetGCPercent(-1)
+ defer debug.SetGCPercent(previous)
+ for _, before := range []bool{false, true} {
+  t.Run(fmt.Sprintf("prepublication=%v", before), func(t *testing.T) {
+   root := physicalStoreTemp(t)
+   s := newTestStore(t, root)
+   loaded, err := s.LoadUserConfig(context.Background())
+   if err != nil { t.Fatal(err) }
+   absent, _ := loaded.Observation().Data().Version.Value()
+   seeded, err := s.CommitUserConfig(context.Background(), userProposal(t, absent, "old"))
+   assertCommitted(t, seeded, err)
+   loaded, err = s.LoadUserConfig(context.Background())
+   if err != nil { t.Fatal(err) }
+   expected, _ := loaded.Observation().Data().Version.Value()
+   baseline := recoveryRecords(t, loaded.Observation().Data().Recovery)
+   check := testRequestResources(t)
+   marker := errors.New("independent before-publication error")
+   var closeErrors []error
+   stages := make(map[string]int)
+   ctx, cancel := context.WithCancel(context.Background())
+   defer cancel()
+   s.hook = func(at string) error {
+    if before && at == "before-publication" { return marker }
+    if strings.HasPrefix(at, "close.") {
+     stages[at]++
+     closeErr := fmt.Errorf("independent close delivery %s/%d", at, stages[at])
+     closeErrors = append(closeErrors, closeErr)
+     cancel()
+     return closeErr
+    }
+    return nil
+   }
+   result, err := s.CommitUserConfig(ctx, userProposal(t, expected, "new"))
+   d := result.Data()
+   if !result.Valid() || d.PublicationKnown == before || !d.CancellationAsked || !errors.Is(err, errCleanupIncomplete) || (before && !errors.Is(err, marker)) { t.Fatalf("lost outcome/errors: %+v %v", d, err) }
+   if before && (d.Outcome != api.NotCommitted || d.CurrentVersion != loaded.Observation().Data().Version) { t.Fatalf("bad refusal: %+v",d) }
+   if !before {
+    want := api.CommittedDurabilityUncertain
+    if nativePublicationDurability() == api.SupportedCrashBarrierComplete { want = api.Committed }
+    if d.Outcome != want || d.CurrentVersion != d.ProposedVersion { t.Fatalf("close changed known effect: %+v",d) }
+   }
+   if stages["close.artifact"] != 2 || stages["close.lock"] != 1 || stages["close.parents"] != 1 { t.Fatalf("not all request closes attempted: %v", stages) }
+   for _, closeErr := range closeErrors { if !errors.Is(err, closeErr) { t.Fatal("lost a distinct close error") } }
+   for at, count := range stages {
+    got := 0
+    for _, diagnostic := range d.Diagnostics { if diagnostic.Data().Code == api.CleanupIncomplete && diagnostic.Data().Reason == "storage-"+at { got++ } }
+    if got < count { t.Fatalf("lost per-close diagnostics for %s: %d/%d", at, got, count) }
+   }
+   check(t)
+   gotRecords := recoveryRecords(t, d.Recovery)
+   for id, record := range baseline { if !reflect.DeepEqual(gotRecords[id], record) { t.Fatal("close discarded prior record") } }
+   restarted, loadErr := newTestStore(t, root).LoadUserConfig(context.Background())
+   if loadErr != nil || !restarted.Valid() || restarted.Observation().Data().Version != d.CurrentVersion { t.Fatalf("restart failed: %v",loadErr) }
+   for id, record := range recoveryRecords(t,restarted.Observation().Data().Recovery) { if !reflect.DeepEqual(gotRecords[id],record) { t.Fatal("restart changed a stable record") } }
+   check(t)
+   t.Logf("all %d native close attempts restored exact resource baseline; distinct errors and current/proposed/recovery retained",len(closeErrors))
+  })
+ }
+}
+
+func TestReviewInventoryHardMatchingBound(t *testing.T) {
+ root := physicalStoreTemp(t)
+ prefix := recoveryPrefix("config.json")
+ for i:=0; i<1281; i++ { if err:=os.WriteFile(filepath.Join(root,fmt.Sprintf("%sorphan-%04d",prefix,i)), []byte("x"),0600);err!=nil {t.Fatal(err)} }
+ c,err:=nativeAcquire(context.Background(),root)
+ if err!=nil {t.Fatal(err)}
+ names,records,size,err:=inventoryRecovery(context.Background(),c.parent(),"config.json",1,1)
+ if closeErr:=c.close();closeErr!=nil {t.Fatal(closeErr)}
+ if !errors.Is(err,errRecoveryCapacity) || len(names)!=1280 || records!=1281 || size!=1280 {t.Fatalf("unbounded or truncated without error: names=%d records=%d size=%d err=%v",len(names),records,size,err)}
+ entries,err:=os.ReadDir(root)
+ if err!=nil || len(entries)!=1281 {t.Fatal("inventory evicted or created entries")}
+ t.Log("1281 real matching files: 1280 measured names; explicit capacity refusal; all files retained")
+}
