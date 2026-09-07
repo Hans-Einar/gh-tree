@@ -1,9 +1,9 @@
 {
   "stage": "M3",
-  "state": "independent_work_git_review_blocked",
-  "resumeRequiresExplicitUserInstruction": false,
+  "state": "paused_user_requested_wip_stop",
+  "resumeRequiresExplicitUserInstruction": true,
   "workerBranchesOrWorktreesCreated": true,
-  "implementationAgentsStarted": true,
+  "implementationAgentsStarted": false,
   "verifiedM2Base": "d60afe8fb763269964bcdc05958c8cdbc7849dea",
   "preparationCheckpoint": "3cf264141764385eb6afe3f7e4e25a7504020690",
   "assignments": [
@@ -34,7 +34,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "blocked_review"
+      "dispatch": "paused_user_stop"
     },
     {
       "key": "github",
@@ -57,7 +57,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "accepted_held"
+      "dispatch": "paused_user_stop"
     },
     {
       "key": "persistence",
@@ -80,7 +80,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "bounded_windows_byte_correction"
+      "dispatch": "paused_user_stop"
     },
     {
       "key": "discovery",
@@ -100,7 +100,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "accepted_held"
+      "dispatch": "paused_user_stop"
     },
     {
       "key": "runtime",
@@ -121,7 +121,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "parent_platform_binding",
+      "dispatch": "paused_user_stop",
       "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2",
       "subContributions": [
         69,

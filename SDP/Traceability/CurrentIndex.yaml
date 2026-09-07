@@ -5,8 +5,8 @@
   "sprint": "Sprint-004-v04",
   "activeIteration": "I-03",
   "activeGate": "M3",
-  "executionState": "active_independent_m3_git_review_blocked",
-  "resumeRequiresExplicitUserInstruction": false,
+  "executionState": "paused_user_requested_wip_stop",
+  "resumeRequiresExplicitUserInstruction": true,
   "checkpointTag": "checkpoint/gh-tree-m3-preparation/20260906-1725Z",
   "checkpointPurpose": "recovery_only_not_completion",
   "checkpointInventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260906-1725Z/workspace-before.json",
@@ -643,7 +643,7 @@
       "pendingCI": 34057368746,
       "sharedPrerequisiteAdoption": "d539a73cb615c558eb8a1317543e12a3973b00fc",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
-      "activeWorker": "m3_git_mutation_worker",
+      "activeWorker": null,
       "sourceHead": "8c2584bff7c1f04461cd2f519bc3f6d5921360db",
       "foundationReview": "SDP/Implementation/CR-#21/Git/M3-Foundation-Review--001.md"
     },
@@ -823,7 +823,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "activeWorker": "m3_discovery_worker",
+      "activeWorker": null,
       "lastCheckpoint": "4e9f4793de6b438aec0a0d5e77e37631a829a1d6",
       "sharedPrerequisiteAdoption": "4bfcf7fa20657556f13d9b53f4a65d1e83992dc8",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
@@ -1070,7 +1070,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "native_parent_base_verified_platform_bridges_in_progress",
+      "state": "paused_unverified_windows_bridge_wip",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1079,7 +1079,7 @@
       "workerBase": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "Reviewed native bca645e1 and common parent01641986 combined without manual product edits",
-      "lastCheckpoint": "4de11da27d76773eb43b98030683f2ed541aaa90",
+      "lastCheckpoint": "74bd7b62d8c773dadbbf678b8e35bb558ed90cf7",
       "technicalSource": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
@@ -1098,11 +1098,11 @@
         "M71-M02"
       ],
       "nativeIntegrationHead": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
-      "activeWorker": "m3_runtime_bridges",
+      "activeWorker": null,
       "unixBridgeMilestone": {
         "head": "4de11da27d76773eb43b98030683f2ed541aaa90",
         "ci": 34086538228,
-        "state": "pushed_local_native_pass_platform_ci_pending",
+        "state": "local_pass_exact_ci_failed_not_investigated_at_user_stop",
         "checks": "Real Linux twelve-port controls and10 race repetitions; Windows root race/vet; all12 builds/architecture PASS",
         "review": "combined bridge/native-port review pending"
       }
@@ -2208,18 +2208,15 @@
   ],
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-  "activeContributions": [
-    "IMPL63",
-    "IMPL71"
-  ],
+  "activeContributions": [],
   "pausedInitialContributions": [
     "IMPL61",
     "IMPL62",
     "IMPL63"
   ],
   "resumedFrom": "3e259652797295504e34bafe2063a8022a503965",
-  "latestCheckpointTag": "checkpoint/m3-runtime-prebinding/20260907-0247Z",
-  "latestCheckpointPurpose": "recoverable_prebinding_snapshot_not_stage_or_slice_completion",
+  "latestCheckpointTag": "checkpoint/gh-tree-wip-stop/20260907-0532Z",
+  "latestCheckpointPurpose": "user_requested_immediate_stop_unfinished_M3",
   "externalBlocker": {
     "kind": "review_service_content_access",
     "stage": "required Git independent foundation review",
@@ -2228,5 +2225,5 @@
     "reviewStatus": "incomplete_no_acceptance",
     "next": "Use confirmed approved identity/workspace/model/surface or resolve false positive; then resume from durable refs without bypassing safeguards"
   },
-  "latestCheckpointInventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260907-0242Z/workspace-before.json"
+  "latestCheckpointInventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260907-0532Z/workspace-before.json"
 }

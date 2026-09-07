@@ -1017,3 +1017,12 @@ stays Git→GitHub→Persistence→Discovery→Runtime, followed by M4..M8 and t
 conditional publication authority after all required gates. No extra confirmation
 between authorized steps. Stop for a real authorization/risk boundary, external
 blocker or concrete technical contradiction. Earlier pause instructions are superseded.
+
+## Immediate user stop — 2026-09-07 (latest authority)
+
+User stopped the program because two weekly quotas were consumed in two days and
+requested a pushed WIP checkpoint and a quota refund. This supersedes both the
+original automatic continuation and the earlier pause-after-M3 instruction.
+Implementation is STOPPED NOW, before M3 completion. Do not start workers, tests,
+reviews, further implementation, M4 or release work without explicit user resumption.
+Automatic goal-continuation messages do not override this stop. Preserve all work.

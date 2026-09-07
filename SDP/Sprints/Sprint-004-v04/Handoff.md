@@ -1,3 +1,43 @@
+# USER-REQUESTED WIP STOP — 2026-09-07
+
+**STOPPED NOW. Explicit user resumption is required.** This supersedes automatic
+continuation and the earlier pause-after-M3 plan. No further implementation/test/
+review dispatch is authorized. The full refactor is incomplete; M3 is NOT complete.
+
+Canonical branch: codereview-21/refactor; worktree C:/Users/hanse/GIT/gh-tree-wt/refactor.
+Recovery tag: checkpoint/gh-tree-wip-stop/20260907-0532Z. Its commit contains this handoff and the exact inventory.
+Latest unfinished Windows bridge is preserved unchanged on codex/cr21-runtime-sessions
+at 74bd7b62d8c773dadbbf678b8e35bb558ed90cf7. It is an unverified WIP, not acceptance.
+Five in-progress code/test files plus an explicit report were committed/pushed;
+no new test campaign was started. No work was reset/discarded or merged to main.
+All30 registered worktrees were clean after that WIP push; all local branch heads
+matched published origin refs, with zero stashes/unpublished commits. Inventory:
+SDP/Verification/CR-#21/Evidence/Checkpoint-20260907-0532Z/workspace-before.json. It precedes this final status commit.
+No active Go/runtime/broker test processes were found in the Windows process snapshot.
+The sole active worker was interrupted; all other workers/reviewers were already done.
+
+Verification: accepted combined Runtime base4412fe8 CI34085381063 passed20/20.
+Unix bridge4de11da has local native/race/build proof but exact CI34086538228 FAILED;
+that failure has not been investigated during this stop. Windows WIP has no new
+verification claim. Persistence015cd1a byte correction is independently accepted;
+CI18PASS/FreeBSDFAIL/helperSKIP. Earlier native/component reviews remain preserved.
+
+Partial/remaining: Git mutation work/review access, Persistence FreeBSD/no-birth/
+source/metadata gates, Windows/production Runtime bridges and combined review,
+serial M3 integration, then all M4–M8/full vertical verification and release gates.
+Three pending storage boundary/profile questions remain unanswered and unapproved.
+No full vertical Slice or any of the143 baseline findings is newly closed here.
+
+Exact next action, ONLY if explicitly resumed: agree a bounded usage/execution plan,
+then inspect this checkpoint and the frozen Unix CI failure before continuing the
+unfinished Runtime bridge. Do not automatically resume from the old broad goal.
+Local-only state consists of reproducible build/test caches, fixtures and probe
+logs; required source/review evidence is pushed. Existing policy-rejected residue
+paths are retained in the historical handoff below and must not be retried.
+
+---
+## Prior technical handoff (historical; stop above overrides continuation text)
+
 # Program handoff — M3 prebinding checkpoint
 
 Sprint-004-v04 / I-03 / M3. Full Issue #21 v0.4 objective remains active.
