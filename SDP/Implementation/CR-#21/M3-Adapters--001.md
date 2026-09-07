@@ -375,3 +375,28 @@ review remain required. No ACL/trust-scope exception or new compiler framework.
 existing reviewer confirms W69-M01/M02 next. #65 Unix candidatefe4fd426 is frozen
 for a separate fresh review of Unix/shared broker protocol, with exact native CI
 still pending. Parent #71 stays separate; no native/Runtime/integration completion.
+
+Master accepts standalone Windows bd78dea at independent review9b06f8bd; both
+W69 findings resolved. Pushed checkpoint/m3-windows-native-reviewed/20260907-0206Z
+marks this bounded source, not #69/full Runtime/Slice completion. Helper binding
+and later integration remain mandatory. Unix reviewc3f23b8 finds M65-U01 named
+FIFO admission and U02 natural-exit construction-budget loss; a fresh author may
+correct Unix-only source/tests/report and obtain bounded independent confirmation.
+
+#71 first parent milestone dispatch: clean pushed codex/cr21-runtime-sessions
+at c3f23b8, common root foundations6be865b. The native base retains known Unix
+findings under separate correction. Implement common lifecycle/queues/events and
+12 methods through unexported test-only native-owner construction; no production
+constructor/placeholder/platform fallback or unreviewed merge. Master supplies
+reviewed real native/assets bindings before platform assembly and final acceptance.
+
+#70 mechanism adjustment from actual native evidence: directory R oplocks also
+break on harmless child-directory reads with host last-access updates, so that
+variant is not adopted. One-shot ReadDirectoryChangesW filtered to FILE_NAME and
+DIR_NAME may implement continuous name-set invalidation while per-file/path
+guards retain their duties. Acquire before selection; every completion/error,
+including overflow/zero bytes, rejects output; never rearm away a change; cancel
+and join safely after actual build. Actual read-only build and post-selection
+insertion/restoration/native lifecycle tests plus independent review still gate it.
+Source: https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw .
+No ACL/privilege/trust exception or new compiler framework is authorized.

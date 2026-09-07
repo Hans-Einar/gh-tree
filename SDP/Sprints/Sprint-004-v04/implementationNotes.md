@@ -453,3 +453,8 @@ Runtime partials are durable: Unix a6e79eaa has native FreeBSD correction proof;
 Windows fb1a9ec has actual client/extraction/386/race/thread-lifetime controls;
 helper4b31ac4 contains only its tested parser policy prerequisite. CurrentIndex
 and Handoff distinguish failing full gates and uncommitted ongoing author work.
+
+Standalone Windows native bd78dea is independently accepted at9b06f8bd and tagged
+for recovery; binding/parent/full Runtime remain. Unix reviewc3f23b8 requires two
+corrections. #71 common parent engine now has a separate pushed base; #70 H01
+continues with precise one-shot name-change invalidation after native evidence.

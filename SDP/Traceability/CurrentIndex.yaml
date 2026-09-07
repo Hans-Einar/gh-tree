@@ -801,7 +801,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "unix_native_candidate_independent_review_ready",
+      "state": "unix_native_correction_authorized",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -825,19 +825,25 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
+      "lastCheckpoint": "c3f23b89610a8695125fcd881711a929c7828374",
       "subContributions": [
         "IMPL69",
         "IMPL71"
       ],
       "latestVerification": {
-        "head": "a57d496d3abbcfb875d41a62250caddcb89a7941",
-        "run": 34072812802,
-        "result": "6 native/race SUCCESS; expected helper prerequisite FAIL. Finalfe4fd426 local Linux/9-target compile/vet/architecture PASS, exact native CI pending"
+        "head": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
+        "run": 34073961901,
+        "result": "6 native/race SUCCESS; expected helper prerequisite FAIL; two independent MEDIUM findings require correction"
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
-      "nativeReviewScope": "broker Unix-selected files and shared protocol/start; root Sessions foundations remain #71 scope"
+      "nativeReviewScope": "broker Unix-selected files and shared protocol/start; root Sessions foundations remain #71 scope",
+      "nativeReviewHead": "c3f23b89610a8695125fcd881711a929c7828374",
+      "nativeDisposition": "CHANGES_REQUIRED",
+      "nativeFindings": [
+        "M65-U01",
+        "M65-U02"
+      ]
     },
     {
       "id": "IMPL66",
@@ -930,13 +936,13 @@
       "id": "IMPL69",
       "kind": "runtime_platform_contribution",
       "issue": 69,
-      "state": "corrected_candidate_independent_rereview_ready",
+      "state": "standalone_native_accepted_held_for_binding",
       "branch": "codex/cr21-runtime-windows",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
       "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
-      "lastCheckpoint": "6decc16a952dad45a07e7e35ea01a11e5df32c00",
+      "lastCheckpoint": "9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8",
       "subContributions": [
         "IMPL70"
       ],
@@ -959,13 +965,15 @@
         "reviewed regenerated committed helper binding",
         "parent/combined/full-stack integration"
       ],
-      "reviewHead": "35a7632c97920b68e5c428bbbbf37494a056d8ea",
-      "disposition": "CHANGES_REQUIRED",
-      "findings": [
+      "reviewHead": "9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8",
+      "disposition": "ACCEPT standalone native source; helper binding/parent/full Runtime remain open",
+      "findings": [],
+      "privateSeamDecision": "bounded awaitable delivery receipt; ctx-safe serialized admission,64 receipts/64KiB copied payload; typed closed failure Stage/Class; no shared/public contract change",
+      "resolvedFindings": [
         "W69-M01",
         "W69-M02"
       ],
-      "privateSeamDecision": "bounded awaitable delivery receipt; ctx-safe serialized admission,64 receipts/64KiB copied payload; typed closed failure Stage/Class; no shared/public contract change"
+      "checkpointTag": "checkpoint/m3-windows-native-reviewed/20260907-0206Z"
     },
     {
       "id": "IMPL70",
@@ -1002,18 +1010,21 @@
         "H70-M02",
         "H70-M03"
       ],
-      "mechanismDecision": "Retain one-shot native directory R oplocks from before selection through copied-Go exit; reject every break/unexpected completion, including insert/remove restoration; safe cancel/join and stable paths/per-file guards. Native build integration and independent review still required."
+      "mechanismDecision": "One-shot ReadDirectoryChangesW FILE_NAME|DIR_NAME request per input directory, before selection through actual build; latch any completion/error/overflow and cancel/join. Oplock variant invalidates legitimate child reads/last-access metadata and is not adopted. Native actual-build and independent proof still required."
     },
     {
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "queued_waiting_slot_and_actual_native_seam",
+      "state": "first_parent_engine_dispatch_ready",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
-      "branch": null,
-      "worktree": null,
-      "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md"
+      "branch": "codex/cr21-runtime-sessions",
+      "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-sessions",
+      "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md",
+      "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
+      "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
+      "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied"
     }
   ],
   "productFindings": [
@@ -2091,8 +2102,8 @@
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
     "IMPL65",
-    "IMPL69",
-    "IMPL70"
+    "IMPL70",
+    "IMPL71"
   ],
   "pausedInitialContributions": [
     "IMPL61",

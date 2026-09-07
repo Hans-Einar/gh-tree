@@ -1,6 +1,13 @@
 # M3 Windows native review -- 001
 
-Disposition: **CHANGES_REQUIRED** — W69-M01 and W69-M02, both MEDIUM (P2).
+Current disposition: **ACCEPT — standalone Windows native candidate**, following
+the bounded re-review below at `6decc16a952dad45a07e7e35ea01a11e5df32c00`.
+W69-M01 and W69-M02 are resolved. Helper binding, parent integration and the
+remaining program gates are explicitly not accepted by this record.
+
+Initial disposition: **CHANGES_REQUIRED** — W69-M01 and W69-M02, both MEDIUM (P2).
+The initial review and rejected-source evidence below remain historical; their
+original artifact versions are preserved at `35a7632c97920b68e5c428bbbbf37494a056d8ea`.
 Date: 2026-09-07. Reviewer: fresh independent `m3_runtime_windows_review`;
 not the Windows author or Master. Authority: #69 under #65/#21, Sprint-004-v04 /
 I-03 / M3; Master dispatch `81cce6f278162bf2f8c71f60621c0cdde915a07d`, ledger85.
@@ -148,7 +155,9 @@ The loader overlay derives a separately named test from the existing owned C
 compiler/runner and selects x86. Only owned temporary directories/processes are
 used. The specifically excluded earlier denied-ACL directory was untouched.
 
-Reproduction from this checkout, with an explicit native Go path:
+Initial reproduction uses the checkout at report35a7632, with an explicit native
+Go path. The current additive test/runner is adapted to the corrected receipt seam
+and writes new `--002` logs, preserving the original `--001` failure logs:
 
 ```powershell
 $reviewGo = 'C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe'
@@ -199,3 +208,97 @@ corrections, then freezes the corrected candidate for bounded independent re-rev
 Master alone records integration. This report closes neither #65/#69 nor a Slice,
 M3, the Runtime adapter or release. The unrelated blocked Git foundation review
 was not retrieved, retried, substituted or rephrased.
+
+## Bounded correction re-review — 2026-09-07
+
+**ACCEPT — standalone Windows native candidate.** W69-M01 and W69-M02 resolved;
+no new blocking finding. This supersedes the initial CHANGES_REQUIRED disposition
+for the corrected source only. Independent reviewer remains separate from the
+correcting author and its failure-semantics worker.
+
+Authority: Master `828d316523bd596f481d7c65b774a9e0d012eb7c`, ledger89, and the
+new #69/#71 comments explicitly approving bounded Runtime-private receipt and
+failure semantics. No frozen public API or shared protocol framing changed.
+Clean pushed review candidate `6decc16a952dad45a07e7e35ea01a11e5df32c00` contains
+technical source `bd78deafd4dd36e22d5b106eb7ef9c4edcd2e832`; their sole difference
+is the author report. Broker subtree: `04afda252be325beaa6bf1f22c154a094b8daed9`.
+The review inspected the complete diff since35a7632 and all eight changed/new
+Windows implementation/test files. The ninth changed file is the author report.
+Unchanged startup/ABI/loader/cwd/extraction evidence above is reused.
+
+W69-M01: `request` now uses cancellable control serialization and checks context,
+Stop, closed ownership and receipt/input capacity at admission under pendingMu.
+Stop shares that admission lock. A provably unadmitted request has no receipt.
+Possible dispatch retains a `WindowsReceipt` with `Dispatched:true`; cancellation
+only ends waiting. Known native completion, including partial delivery/error,
+remains observable via the returned receipt. Ordered replies drain through EOF,
+including after broker exit or an ambiguous full-write/error; final transport
+uncertainty does not claim known delivery. Known results cannot be overwritten
+by later EOF. Receipt observation prefers available terminal completion, retires
+admission exactly once for either success or terminal error, and repeated/concurrent
+Wait remains stable. At most64 completed/uncompleted unobserved receipts are
+retained; one native input operation is admitted at once. Cleanup does not wait
+for receipt consumption, and no observation resends input.
+
+W69-M02: the small validated closed Failure record preserves Cause, Stage and
+Cleanup separately. Win32 errno and NTSTATUS map by typed native status; stale
+cwd, missing command, permission, unsupported/profile, invalid executable,
+protocol, cancellation and timeout remain distinguishable. Local failures can
+retain their original cause, while wire messages carry no private path/argv/env
+text. Primary and independent cleanup-stage failures survive together. The engine
+joins a pending write and publishes its known result before a later failure when
+the reply direction still works. Malformed/unknown/duplicate/trailing failure
+fields fail closed. Successful outer cleanup clears residual ownership without
+erasing historical failure facts.
+
+Independent execution on the corrected source, same local Windows/Go toolchain:
+
+| Check | Result |
+|---|---|
+| Focused native race suite: `go test -race ./internal/runtime/broker -run 'TestWindows(CanceledControlAdmission\|CompletionWinsCanceledWait\|CanceledInputRetains\|Failure\|AmbiguousSend\|DeliveryReceipt)' -count=1 -timeout=120s -v` (the selector uses ordinary `|` characters) | PASS9.066s, exit0. All three controls before cancellation, waiting for serialization and Stop; completion/cancellation; eventual known partial and broker-death unknown receipts; malformed-control failure while input blocks; ambiguous successful native send/error; receipt bounds/validation; native stale/missing/permission/invalid-image/unsupported/profile failures; malformed Failure payloads; original failure plus an actual blocked real ConPTY cleanup timeout and subsequent join. |
+| Adapted original independent probes, amd64 with `--race` | PASS3.741s, exit0. Pre-canceled Write has no user input; pre-canceled Resize leaves observed geometry80x24. Canceled 65,484-byte blocked input returns pending dispatch/receipt, then that returned Receipt.Wait observes Accepted65484/Delivered0/Completedtrue plus short-write after native cleanup. Sixteen concurrent waits using the already expired context retain the same known completion; admission retires once. Distinct native missing/cwd causes and stages survive. |
+| Same adapted original probes with `--arch 386` | PASS5.252s, exit0, executing WOW64 parent and real extracted native helper; same absence/preservation/retirement assertions. |
+| `go vet ./internal/runtime/broker`; product diff isolation; UTF-8 evidence and Git whitespace checks | PASS. |
+
+The adapted post-send probe reads the **returned** Receipt.Wait, not the old
+private reply channel. It still checks native effects, actual partial counts,
+successful Stop before receipt consumption, and no replay. The original failed
+probe is available at35a7632; source/runner updates do not overwrite its logs.
+The accepted native failure tests temporarily change only a newly created fixture
+image DACL, restore its exact saved ACL through a retained handle and join fixture
+cleanup. No previously rejected ACL/cache residue was accessed.
+
+Reproduce the current independent probes with the existing runner and explicit
+Go path above, adding `--race` for amd64 or `--arch 386`. The original additional
+WOW64 C loader proof is reused; this review did not repeat the broad unchanged
+native matrix or create source/binary/cache archives.
+
+| Updated/new evidence | SHA-256 of LF blob |
+|---|---|
+| M3-Windows-Review--001-controls.go.txt | E86D65BD27380EEB5FA377690A5A4F490C3653018190845BCC50AD0D1C665330 |
+| M3-Windows-Review--001-run.py | EFE69ED3573A89E46FB9E3DABE618BAA38577F69472AE19D2FC0E0F6A8EA8F59 |
+| M3-Windows-Review--002-controls-amd64-race.log | 3EB1AEA8639F7EA31CC5105FD66F7A9431BA11B028B6898FE973856B5AB5562F |
+| M3-Windows-Review--002-controls-386.log | 4D04D361E722C089D44F10B54E754E3FBD64C688F569177AF724D96E12652B90 |
+
+Independently queried [CI34073256923](https://github.com/Hans-Einar/gh-tree/actions/runs/34073256923),
+attempt1, exact technical sourcebd78deaf. Six independent jobs succeeded: Windows
+amd64101594439386 (actual broker54.808s), Windows ARM64101594439292 (actual
+broker56.583s), Linux101594439330, macOS101594439389, FreeBSD101594439302 and
+race101594439205. Native job logs explicitly identify Go1.25.0 and their actual
+amd64/arm64 architecture. Source equivalence frombd78deaf to6decc16 is verified.
+
+Overall CI remains **failure**, solely inventory101594439384: missing helpergen
+Go source. Cross-build101594535941 and helper reproducibility101594536162 are
+skipped. The separately reported local all12 builds are not a substitute for
+those gates and were not redundantly rerun by this reviewer.
+
+Next permitted action: Master may coordinate the separately reviewed #70
+generator/assets against this accepted final broker closure, regenerate and
+verify exact committed-image execution before native-source binding/integration.
+#71 must retain/observe returned receipts, account eventual native delivery
+without replay and join its own producers before public cleanup. Its parent
+registry/Sessions behavior has not been accepted here. Full native/helper
+integration, serial Git-first order, vertical/full-stack/package-manager/host
+verification and M8 remain required. This bounded ACCEPT is neither full #69/#65
+completion nor Runtime/Slice/release acceptance. The unrelated blocked Git review
+and separately dispatched Unix review remain untouched.

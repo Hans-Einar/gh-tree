@@ -56,15 +56,15 @@ Current status-only commits do not change that verified product tree.
 | GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
 | Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
-| Runtime#65 | codereview-21/layer-runtime | fe4fd4266d3798132d4cca15ce54dc991ad147b1 | complete Unix native candidate for fresh review; root Sessions remains #71; earlier a57d CI6PASS, exact final native CI pending |
-| Windows Runtime#69 | codex/cr21-runtime-windows | 6decc16a952dad45a07e7e35ea01a11e5df32c00 | corrected bd78dea native CI34073256923 6PASS/helper prerequisite FAIL; W69-M01/M02 confirmation pending |
+| Runtime#65 | codereview-21/layer-runtime | c3f23b89610a8695125fcd881711a929c7828374 | Unix fe4fd426 CI6PASS, independent M65-U01/U02 need correction; root Sessions remains #71 |
+| Windows Runtime#69 | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | standalone bd78dea ACCEPT, both findings resolved; native CI6PASS; helper-image binding and parent integration pending |
 | Helper assets#70 | codex/cr21-runtime-helper-assets | f6128251a0510021191880be658b705528fcc606 | technical732fd9bb CI20PASS; M02/M03 independently resolved, H01 HIGH remains for post-selection source insertion; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
 local changes, so inspect before handoff/integration. At the historical access-hold
 checkpoint all26 worktrees were clean with no stashes/unpublished branch commits.
-Two more separate Runtime worktrees now exist; do not reuse that old clean-state
+Three more separate Runtime worktrees now exist; do not reuse that old clean-state
 claim as current inventory. Root canonical changes remain governance/evidence only.
 
 ## Verification and unresolved work
@@ -205,3 +205,13 @@ its existing reviewer; Unix nativefe4fd426 goes to a fresh independent reviewer
 #70 continuous directory R-oplock proof2b510264 is approved only for bounded
 build-path implementation and independent verification, not acceptance. No
 security-permission exception or privileged mechanism was adopted.
+
+Windows standalone acceptance is durable at review9b06f8bd and pushed tag
+checkpoint/m3-windows-native-reviewed/20260907-0206Z. #69 remains open for binding.
+Unix c3f23b8 requires two bounded corrections (anonymous endpoints and startup
+cleanup periods). Parent #71 has a clean pushed separate development branch
+codex/cr21-runtime-sessions at c3f23b8, worktree runtime-sessions, beginning only
+the common lifecycle/12-method engine with test-only native owners. No production
+stub, native acceptance or unreviewed merge; reviewed platform binding comes later.
+Helper H01 now uses the authorized one-shot name-change notification proposal
+after oplocks invalidated unchanged reads. Actual build integration/review remains.

@@ -555,6 +555,14 @@
       "from": "IMPL65",
       "relation": "delegates_parent_sessions_scope",
       "to": "IMPL71"
+    },
+    {
+      "from": "IMPL69",
+      "relation": "standalone_native_source_accepted",
+      "to": "bd78deafd4dd36e22d5b106eb7ef9c4edcd2e832",
+      "reviewHead": "9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8",
+      "ci": 34073256923,
+      "remaining": "committed helper binding, parent and complete Runtime integration"
     }
   ],
   "errata": [
