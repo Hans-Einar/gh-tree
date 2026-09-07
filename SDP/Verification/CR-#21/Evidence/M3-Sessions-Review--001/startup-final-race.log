@@ -1,0 +1,28 @@
+=== RUN   TestReviewConfirmationStartupSequencePreservesEstablishment
+--- PASS: TestReviewConfirmationStartupSequencePreservesEstablishment (0.00s)
+=== RUN   TestReviewConfirmationTwoReceiptsAtSequenceBoundary
+--- PASS: TestReviewConfirmationTwoReceiptsAtSequenceBoundary (0.00s)
+=== RUN   TestSessionsSequenceRefusesOptionalEffectsBeforeNativeDelivery
+--- PASS: TestSessionsSequenceRefusesOptionalEffectsBeforeNativeDelivery (0.00s)
+=== RUN   TestSessionsResizeReservationSurvivesOutputAndNativeCleanup
+--- PASS: TestSessionsResizeReservationSurvivesOutputAndNativeCleanup (0.00s)
+=== RUN   TestSessionsExhaustedNativeResidualRemainsOwnedUntilRepair
+--- PASS: TestSessionsExhaustedNativeResidualRemainsOwnedUntilRepair (0.00s)
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/established
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/known-start-plus-error
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/failed-partial-acquisition
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/failed-without-native-resource
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/canceled-known-start
+=== RUN   TestSessionsStartupReservationSurvivesOutputStopAndCancellation/canceled-partial-acquisition
+--- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation (0.01s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/established (0.00s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/known-start-plus-error (0.00s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/failed-partial-acquisition (0.00s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/failed-without-native-resource (0.00s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/canceled-known-start (0.00s)
+    --- PASS: TestSessionsStartupReservationSurvivesOutputStopAndCancellation/canceled-partial-acquisition (0.00s)
+=== RUN   TestSessionsStartupReservationHandsOffToPendingReceipts
+--- PASS: TestSessionsStartupReservationHandsOffToPendingReceipts (0.00s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime	1.544s

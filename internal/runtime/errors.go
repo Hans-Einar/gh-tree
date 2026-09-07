@@ -12,10 +12,13 @@ func diagnostic(code api.ErrorCode, reason, message string) api.Diagnostic {
 }
 
 var (
-	errInvalid   = diagnostic(api.Invalid, "runtime.invalid", "Invalid Runtime request.")
-	errBusy      = diagnostic(api.Busy, "runtime.capacity", "Runtime capacity is awaiting cleanup or acknowledgment.")
-	errClosed    = diagnostic(api.Unavailable, "runtime.closed", "Runtime admission is closed.")
-	errExhausted = diagnostic(api.Unavailable, "runtime.sequence_exhausted", "Runtime identity or sequence space is exhausted.")
-	errNotFound  = diagnostic(api.NotFound, "runtime.session_missing", "The session is unknown or its cleaned history was evicted.")
-	errCursor    = diagnostic(api.Invalid, "runtime.event_cursor", "The event cursor was not delivered or precedes acknowledgment.")
+	errInvalid     = diagnostic(api.Invalid, "runtime.invalid", "Invalid Runtime request.")
+	errBusy        = diagnostic(api.Busy, "runtime.capacity", "Runtime capacity is awaiting cleanup or acknowledgment.")
+	errClosed      = diagnostic(api.Unavailable, "runtime.closed", "Runtime admission is closed.")
+	errExhausted   = diagnostic(api.Unavailable, "runtime.sequence_exhausted", "Runtime identity or sequence space is exhausted.")
+	errNotFound    = diagnostic(api.NotFound, "runtime.session_missing", "The session is unknown or its cleaned history was evicted.")
+	errCursor      = diagnostic(api.Invalid, "runtime.event_cursor", "The event cursor was not delivered or precedes acknowledgment.")
+	errUnsupported = diagnostic(api.Unsupported, "runtime.capability", "This session does not support that operation.")
+	errConflict    = diagnostic(api.Conflict, "runtime.restart_conflict", "A replacement transition already owns this session.")
+	errCleanup     = diagnostic(api.CleanupIncomplete, "runtime.cleanup_pending", "Runtime still owns incomplete cleanup barriers.")
 )

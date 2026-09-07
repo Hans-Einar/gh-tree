@@ -1,0 +1,8 @@
+=== RUN   TestReviewConfirmationStartupSequencePreservesEstablishment
+    reviewer_confirmation_test.go:47: established Start panicked after exhausted output/Stop publication: invalid boundary value: established session identity/cwd barrier; final acquired cwd=true
+--- FAIL: TestReviewConfirmationStartupSequencePreservesEstablishment (0.00s)
+=== RUN   TestReviewConfirmationTwoReceiptsAtSequenceBoundary
+--- PASS: TestReviewConfirmationTwoReceiptsAtSequenceBoundary (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/runtime	0.437s
+FAIL

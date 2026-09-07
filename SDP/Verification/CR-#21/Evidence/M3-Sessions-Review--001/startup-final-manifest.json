@@ -1,0 +1,56 @@
+{
+  "source": "8b891c453e1399f2f0e83ae30946c45eebc6a2dc",
+  "technical": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
+  "priorReview": "15eed03fed36f844d6f7d50001a62760c5dddec0",
+  "runtimeTree": "b18b70ee01bde714173550d37592f0734f5b911d",
+  "date": "2026-09-07",
+  "go": "go version go1.25.0 windows/amd64",
+  "checks": [
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/confirmation-overlay.json",
+        "-run",
+        "^(TestReviewConfirmation|TestSessionsStartupReservation|TestSessionsResizeReservationSurvivesOutputAndNativeCleanup|TestSessionsExhaustedNativeResidualRemainsOwnedUntilRepair|TestSessionsSequenceRefusesOptionalEffectsBeforeNativeDelivery)",
+        "-v",
+        "-count=1",
+        "-timeout=40s"
+      ],
+      "exitCode": 0,
+      "log": "startup-final-race.log"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "vet",
+        "./internal/runtime"
+      ],
+      "exitCode": 0,
+      "log": "startup-final-vet.log"
+    }
+  ],
+  "files": {
+    "reviewer_confirmation_test.go.txt": {
+      "bytes": 4773,
+      "sha256": "50e81e1755ba9cbd8dab2bbfe13c0bf1df2b7afebb89a290858efae082f4786b"
+    },
+    "reviewer_sessions_test.go.txt": {
+      "bytes": 8854,
+      "sha256": "82dbfcddf70a8a562f11656c51e7045dcb2f88f6992132ea7e195f68df64a99a"
+    },
+    "startup-final-race.log": {
+      "bytes": 2334,
+      "sha256": "13548521b7648e018a521e224f1eba91727539b430da3c512c9db3e1b8f7947f"
+    },
+    "startup-final-vet.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": "Independent remaining M71-M02 startup and materially affected reservation confirmation; no native processes/source integration. Prior resolved H01/M01 proof reused.",
+  "result": "All selected checks pass. Exact bounded common-parent acceptance recorded in report; production/native/full Runtime gates remain."
+}

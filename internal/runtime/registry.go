@@ -14,29 +14,71 @@ const liveCapacity = 64
 const historyCapacity = 256
 
 type session struct {
-	mu          sync.Mutex
-	start       api.SessionStartRequest
-	environment []string
-	snapshot    api.SessionSnapshot
-	output      outputRing
-	input       *inputQueue
+	mu                sync.Mutex
+	start             api.SessionStartRequest
+	environment       []string
+	snapshot          api.SessionSnapshot
+	unpublished       api.Optional[api.SessionSnapshot] // observed facts awaiting a fresh version
+	output            outputRing
+	input             *inputQueue
+	owner             nativeOwner
+	changed           chan struct{}
+	startDone         chan struct{}
+	startPending      bool
+	startReserved     bool // startup result publication, independent of caller waiting
+	established       bool
+	startErr          error
+	stopAsked         bool
+	stopSent          bool
+	nativeClean       bool
+	producers         int
+	controlBusy       bool
+	controlReserved   bool // numerical publication slot, held through native receipt observation
+	observing         bool
+	reobserve         bool // one coalesced external recovery request across an error
+	acquired          api.Optional[api.AcquiredCwd]
+	exit              api.Optional[api.SessionExit]
+	diagnostics       map[api.RuntimeCleanupStage]api.Diagnostic
+	nativeDiagnostics map[string]api.Diagnostic
+	restart           *restartTransition
+}
+
+// Public snapshots remain immutable at their published sequence. Unavoidable
+// native facts may accumulate privately when only reserved versions remain.
+func (s *session) latestLocked() api.SessionSnapshotData {
+	if pending, ok := s.unpublished.Value(); ok {
+		return pending.Data()
+	}
+	return s.snapshot.Data()
+}
+
+func (s *session) hintAvailableLocked() bool {
+	reserved := uint64(1) // the one reliable final
+	if s.startReserved {
+		reserved++
+	}
+	if s.controlReserved {
+		reserved++
+	}
+	return math.MaxUint64-s.snapshot.Data().Sequence.Value() > reserved
 }
 
 // registry synchronizes membership, allocation, final reservation and admission.
 // The lock order is registry -> session -> events; no path reverses that order.
 // OS calls/waits and native callbacks must occur after releasing these locks.
 type registry struct {
-	mu       sync.Mutex
-	nextID   uint64
-	closed   bool
-	live     int
-	sessions map[domain.SessionID]*session
-	history  []domain.SessionID // order of completed cleanup, oldest first
-	events   *eventBuffer
+	mu          sync.Mutex
+	nextID      uint64
+	closed      bool
+	live        int
+	transitions map[api.OperationID]*session // admitted subjects, independent of cleaned history
+	sessions    map[domain.SessionID]*session
+	history     []domain.SessionID // order of completed cleanup, oldest first
+	events      *eventBuffer
 }
 
 func newRegistry() *registry {
-	return &registry{sessions: make(map[domain.SessionID]*session), events: newEventBuffer()}
+	return &registry{sessions: make(map[domain.SessionID]*session), transitions: make(map[api.OperationID]*session), events: newEventBuffer()}
 }
 
 // admit receives an already resolved private environment and safe summary. It
@@ -72,7 +114,7 @@ func (r *registry) admit(ctx context.Context, request api.SessionStartRequest, e
 	if err := r.events.reserve(id); err != nil {
 		return nil, err
 	}
-	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue()}
+	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue(), changed: make(chan struct{}), startDone: make(chan struct{}), startPending: true, startReserved: true, diagnostics: make(map[api.RuntimeCleanupStage]api.Diagnostic)}
 	r.nextID++
 	r.live++
 	r.sessions[id] = s
@@ -80,6 +122,63 @@ func (r *registry) admit(ctx context.Context, request api.SessionStartRequest, e
 		panic(err)
 	} // validated admission owns a reservation
 	return s, nil
+}
+
+// change performs a coherent memory-only read/modify/publication. Callers must
+// not call native code or wait in edit. Numerical space for the final is kept
+// even when an effectively infinite producer exhausts the session sequence.
+func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.SessionSnapshotData) error) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	d := s.latestLocked()
+	if d.Phase == api.Cleaned {
+		return errClosed
+	}
+	if d.Sequence.Value() == math.MaxUint64 {
+		return errExhausted
+	}
+	if err := edit(&d); err != nil {
+		return err
+	}
+	// Validate and retain actual observations even when no unreserved hint
+	// version remains. Optional producers refuse before effects; admitted native
+	// observations still reach the reserved control publication or final.
+	if kind != api.RuntimeCleaned && !s.hintAvailableLocked() {
+		pending, err := api.NewSessionSnapshot(d)
+		if err != nil {
+			return err
+		}
+		s.unpublished = api.Some(pending)
+		close(s.changed)
+		s.changed = make(chan struct{})
+		return errExhausted
+	}
+	d.Sequence, _ = api.NewSessionSequence(d.Sequence.Value() + 1)
+	next, err := api.NewSessionSnapshot(d)
+	if err != nil {
+		return err
+	}
+	if err = r.events.publish(next, kind); err != nil {
+		return err
+	}
+	s.snapshot = next
+	s.unpublished = api.None[api.SessionSnapshot]()
+	close(s.changed)
+	s.changed = make(chan struct{})
+	if d.Phase == api.Cleaned {
+		r.live--
+		r.history = append(r.history, d.SessionID)
+		if len(r.history) > historyCapacity {
+			delete(r.sessions, r.history[0])
+			r.history = r.history[1:]
+		}
+		if r.closed && r.live == 0 && len(r.transitions) == 0 {
+			_ = r.events.closeProducers()
+		}
+	}
+	return nil
 }
 
 func (r *registry) lookup(id domain.SessionID) (*session, error) {
@@ -126,14 +225,23 @@ func (r *registry) closeAdmission() []*session {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.closed = true
-	ids := make([]domain.SessionID, 0, len(r.sessions))
-	for id := range r.sessions {
+	retained := make(map[domain.SessionID]*session, len(r.sessions))
+	for id, s := range r.sessions {
+		retained[id] = s
+	}
+	for _, s := range r.transitions {
+		s.mu.Lock()
+		retained[s.snapshot.Data().SessionID] = s
+		s.mu.Unlock()
+	}
+	ids := make([]domain.SessionID, 0, len(retained))
+	for id := range retained {
 		ids = append(ids, id)
 	}
 	sort.Slice(ids, func(i, j int) bool { return ids[i].Value() < ids[j].Value() })
 	result := make([]*session, 0, len(ids))
 	for _, id := range ids {
-		result = append(result, r.sessions[id])
+		result = append(result, retained[id])
 	}
 	return result
 }

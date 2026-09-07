@@ -1,0 +1,118 @@
+{
+  "source": "78a67e1198466e05bc5f2544b3c4a495dc45a52c",
+  "technical": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
+  "runtimeTree": "b6b34b0aaad51a4f07929dfde936c0bb1376b3f4",
+  "date": "2026-09-07",
+  "host": "Windows-11-10.0.26200-SP0",
+  "go": "go version go1.25.0 windows/amd64",
+  "raceCompiler": "Existing PATH gcc (GNU Octave bundled toolchain); no install/settings change",
+  "scope": "Root common Runtime only; no native owners/processes/bridges/assets proof",
+  "overlay": {
+    "virtual": "C:\\Users\\hanse\\GIT\\gh-tree-wt\\runtime-sessions\\internal\\runtime\\reviewer_sessions_test.go",
+    "backing": "C:\\Users\\hanse\\GIT\\gh-tree-wt\\runtime-sessions\\SDP\\Verification\\CR-#21\\Evidence\\M3-Sessions-Review--001\\reviewer_sessions_test.go.txt"
+  },
+  "checks": [
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-run",
+        "^TestReviewRestartHistoryEvictionRace$",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/overlay.json",
+        "-v",
+        "-count=1",
+        "-timeout=30s"
+      ],
+      "exitCode": 1,
+      "log": "history-race.log",
+      "interpretation": "Expected failing independent regression at rejected source"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-run",
+        "^TestReview(ShutdownReobservesRetainedFailure|ResizeAtSequenceLimitPreservesDeliveredGeometry)$",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/overlay.json",
+        "-v",
+        "-count=1",
+        "-timeout=30s"
+      ],
+      "exitCode": 1,
+      "log": "reviewer-race.log",
+      "interpretation": "Expected failing independent regression at rejected source"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-count=1",
+        "-timeout=60s"
+      ],
+      "exitCode": 0,
+      "log": "baseline-race.log"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "vet",
+        "./internal/runtime"
+      ],
+      "exitCode": 0,
+      "log": null
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-run",
+        "^TestReview(RestartHistoryWithoutEviction|TerminalUnknownReceiptReleasesOnlyAfterObservation|ConcurrentKnownDeliveryWithErrorPreservesEffect|NativeCallsDoNotHoldRegistrySessionEventLocks)$",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/overlay.json",
+        "-v",
+        "-count=1",
+        "-timeout=30s"
+      ],
+      "exitCode": 0,
+      "log": "positive-race.log"
+    }
+  ],
+  "files": {
+    "baseline-race.log": {
+      "bytes": 59,
+      "sha256": "77d7487399f8060cca3d90d76a486569ce9a5261a762b8cbe32a64639d9220fe"
+    },
+    "history-race.log": {
+      "bytes": 667,
+      "sha256": "822924afb3b723622d20e9c0d6c9364b0bf7ac6700a59c572d4d9eff4b899828"
+    },
+    "positive-race.log": {
+      "bytes": 606,
+      "sha256": "97a77caa7b53dc091db103a98e10c444511c3edbf31134b80cce214c55bc976b"
+    },
+    "reviewer-race.log": {
+      "bytes": 685,
+      "sha256": "31e4eba88d55d0a9fa0e77e4b5525d3fc62912c91fd1eb65fba5c422c01a3e90"
+    },
+    "reviewer_sessions_test.go.txt": {
+      "bytes": 8854,
+      "sha256": "82dbfcddf70a8a562f11656c51e7045dcb2f88f6992132ea7e195f68df64a99a"
+    }
+  },
+  "notes": [
+    "One reviewer fixture compile typo corrected before final probes.",
+    "Baseline tests and positives pass; three deterministic regressions fail at frozen candidate.",
+    "No product/test file modifications or source copies.",
+    "Log transport line endings normalized to LF without changing output text; original capture commit retained."
+  ]
+}

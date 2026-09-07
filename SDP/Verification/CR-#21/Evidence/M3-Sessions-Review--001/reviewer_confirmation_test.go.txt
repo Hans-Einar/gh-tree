@@ -1,0 +1,118 @@
+package runtime
+
+import (
+	"context"
+	"errors"
+	"math"
+	"testing"
+
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
+)
+
+func TestReviewConfirmationStartupSequencePreservesEstablishment(t *testing.T) {
+	o := testOwner()
+	entered := make(chan nativeStart, 1)
+	release := make(chan struct{})
+	r := newSessions(func(_ context.Context, c nativeStart) (nativeOwner, nativeStartFact, error) {
+		entered <- c
+		<-release
+		return o, established(c), nil
+	}, nil, sessionBudgets{})
+	type observation struct {
+		result     api.SessionStartResult
+		err        error
+		panicValue any
+	}
+	done := make(chan observation, 1)
+	go func() {
+		var observed observation
+		defer func() { observed.panicValue = recover(); done <- observed }()
+		observed.result, observed.err = r.Start(context.Background(), engineRequest(8001, false))
+	}()
+	c := <-entered
+	s := must(r.registry.lookup(c.ID))
+	s.mu.Lock()
+	d := s.snapshot.Data()
+	d.Sequence = sequence(math.MaxUint64 - 2)
+	s.snapshot = must(api.NewSessionSnapshot(d))
+	s.mu.Unlock()
+	// At this counter capture refuses and latches Stop before the legitimate
+	// native starter returns its already established ownership/cwd barrier.
+	c.Output(api.Stdout, []byte("refused output"))
+	close(release)
+	observed := <-done
+	o.facts <- cleanedFact()
+	final := awaitPhase(t, r, c.ID, api.Cleaned)
+	if observed.panicValue != nil {
+		t.Fatalf("established Start panicked after exhausted output/Stop publication: %v; final acquired cwd=%v", observed.panicValue, final.Data().AcquiredCwd.Present())
+	}
+	if !observed.result.Valid() || !observed.result.Data().Established || !mustValue(observed.result.Data().Session).Data().AcquiredCwd.Present() {
+		t.Fatal("actual establishment result lost", observed.err)
+	}
+}
+
+func TestReviewConfirmationTwoReceiptsAtSequenceBoundary(t *testing.T) {
+	o := testOwner()
+	input := &controlledReceipt{done: make(chan struct{}), observed: make(chan struct{}), delivery: nativeDelivery{Completed: true, Dispatched: true, Accepted: 1, Delivered: 1}}
+	control := &controlledReceipt{done: make(chan struct{}), observed: make(chan struct{}), delivery: nativeDelivery{Dispatched: true}, err: errUnsupported}
+	o.write = func(context.Context, []byte) (nativeDelivery, error) {
+		return nativeDelivery{Dispatched: true, Receipt: input}, nil
+	}
+	o.resize = func(context.Context, api.Geometry) (nativeDelivery, error) {
+		return nativeDelivery{Dispatched: true, Receipt: control}, nil
+	}
+	r, configs := testEngine(o)
+	id := startID(t, r, engineRequest(8002, true))
+	c := <-configs
+	before := must(r.Snapshot(context.Background(), id)).Data().Display.Data().Geometry
+	must(r.Write(context.Background(), must(api.NewSessionWriteRequest(api.SessionWriteRequestData{SessionID: id, Bytes: []byte{1}}))))
+	<-input.observed
+	s := must(r.registry.lookup(id))
+	s.mu.Lock()
+	d := s.snapshot.Data()
+	d.Sequence = sequence(math.MaxUint64 - 2)
+	s.snapshot = must(api.NewSessionSnapshot(d))
+	s.mu.Unlock()
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan struct{})
+	go func() {
+		_, _ = r.Resize(ctx, must(api.NewSessionResizeRequest(api.SessionResizeRequestData{SessionID: id, Geometry: must(api.NewGeometry(api.GeometryData{Rows: 70, Columns: 120}))})))
+		close(done)
+	}()
+	<-control.observed
+	cancel()
+	<-done
+	c.Output(api.TerminalOutput, []byte("cannot spend reserved control version"))
+	o.facts <- cleanedFact()
+	reviewUntil(t, func() bool { s.mu.Lock(); defer s.mu.Unlock(); return s.nativeClean })
+	if r.Shutdown(ctx).Data().Complete {
+		t.Fatal("two outstanding receipts fabricated cleanup")
+	}
+	close(control.done)
+	reviewUntil(t, func() bool { s.mu.Lock(); defer s.mu.Unlock(); return !s.controlBusy })
+	if r.Shutdown(ctx).Data().Complete {
+		t.Fatal("completed control abandoned accepted input")
+	}
+	if got := must(r.Snapshot(context.Background(), id)); got.Data().Phase == api.Cleaned || got.Data().Display.Data().Geometry != before {
+		t.Fatal("unknown control fabricated geometry/final")
+	}
+	close(input.done)
+	final := awaitPhase(t, r, id, api.Cleaned)
+	if final.Data().Sequence.Value() != math.MaxUint64 || final.Data().OutputRange.Data().End != 0 || final.Data().Display.Data().Geometry != before {
+		t.Fatal("final sequence/effect facts lost")
+	}
+	e := must(r.NextEvent(context.Background(), cursor(0)))
+	if e.Data().Kind != api.RuntimeCleaned {
+		t.Fatal("reliable final missing")
+	}
+	if err := r.AckEvents(e.Data().Sequence); err != nil {
+		t.Fatal(err)
+	}
+	if !r.Shutdown(context.Background()).Data().Complete {
+		t.Fatal("observed receipts and ACK did not complete shutdown")
+	}
+	_, err := r.Write(context.Background(), must(api.NewSessionWriteRequest(api.SessionWriteRequestData{SessionID: id, Bytes: []byte{2}})))
+	if !errors.Is(err, errClosed) {
+		t.Fatal("cleaned input reopened", err)
+	}
+}
