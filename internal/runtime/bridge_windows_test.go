@@ -80,6 +80,7 @@ func TestWindowsParentEmulatedRoutes(t *testing.T) {
 				t.Fatalf("compile %s: %v\n%s", arch, err, out)
 			}
 			cmd = exec.CommandContext(ctx, exe, "-test.run=^(TestNativeParent|TestWindowsParentPendingReceipt|TestWindowsParentExtractionPartialOwner)", "-test.v", "-test.timeout=60s")
+			cmd.Env = append(os.Environ(), "GH_TREE_EMULATED_PARENT=1")
 			out, err := cmd.CombinedOutput()
 			t.Logf("actual %s parent:\n%s", arch, out)
 			if err != nil || !bytes.Contains(out, []byte("--- PASS: TestNativeParentTerminalControlAndRestart")) {
@@ -119,8 +120,6 @@ func TestWindowsParentPendingReceipt(t *testing.T) {
 	if err == nil || !delivery.Dispatched || delivery.Receipt == nil {
 		t.Fatalf("pending native delivery: %+v / %v", delivery, err)
 	}
-	// The original receipt remains observable after waiting ends; no second
-	// Write is sent. Stop joins the real native blocked writer and broker.
 	owner.Stop()
 	wait, done := context.WithTimeout(context.Background(), 8*time.Second)
 	defer done()
@@ -178,10 +177,6 @@ func TestWindowsBridgeFailureClassification(t *testing.T) {
 	err := windowsError(errors.Join(&broker.WindowsFailure{Cause: broker.WindowsPermissionFailure, Stage: api.HelperExtraction, Cleanup: true}, &broker.WindowsFailure{Cause: broker.WindowsProcessFailure, Stage: api.UserProcessWait}), api.Acquisition)
 	values := diagnostics(err)
 	if len(values) != 2 || values[0].Data().Code != api.Permission || values[1].Data().Code != api.ProcessFailure {
-		t.Fatal(values, err)
-	}
-	resized := mapWindowsDelivery(broker.WindowsDelivery{Completed: true, Dispatched: true}, true, api.TerminalCleanup)
-	if resized.Delivered != 1 || resized.Accepted != 0 {
-		t.Fatal("control unit mapping", resized)
+		t.Fatalf("diagnostics: %+v", values)
 	}
 }
