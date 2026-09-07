@@ -159,6 +159,9 @@ func admit(root string) error {
 	if strings.Join(strings.Fields(string(b)), " ") != "go1.25.0 windows amd64" {
 		return fmt.Errorf("wrong Go executable: %s", b)
 	}
+	if e := prepareModules(root); e != nil {
+		return e
+	}
 	_, e = goCommand(root, "amd64", "", "mod", "verify")
 	return e
 }

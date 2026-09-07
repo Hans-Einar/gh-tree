@@ -23,7 +23,7 @@
     "-ldflags=-buildid="
   ],
   "optionsDigest": "a8a185711d1607dac79355cbc694addab0ccd2684f63073ca8111f9c6219357c",
-  "sourceDigest": "b22395a0763d7a41f1f4681d1f171aa0090af2e63a1ae13afd8c6214d6db5fce",
+  "sourceDigest": "5c8f02ba57b335162667bf656d043ebbe83ec562243230e912e2e413162dd292",
   "sources": [
     {
       "path": "module/golang.org/x/sys@v0.44.0/go.mod",
@@ -137,8 +137,8 @@
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/main.go",
-      "sha256": "5788d3208ed11b3a963358fbc27c14b88b7a8a76d5ece3e66c8f3d0e875c70e9",
-      "length": 16693
+      "sha256": "a6b15a472af7cae4f8cf093f354456102c46b4194f616fe4d0220982b941d6cd",
+      "length": 16749
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/path_other.go",
@@ -149,6 +149,11 @@
       "path": "recipe/internal/runtime/cmd/helpergen/path_windows.go",
       "sha256": "702d0d223da3ba549289393168e91d3857e4920d0ff30d51cb6edb1f604b04ce",
       "length": 975
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/prepare.go",
+      "sha256": "d8cd0690b924d602647ff1dee7e8a2b6686ed5a2969a7f642133c2e658b3f370",
+      "length": 1703
     },
     {
       "path": "repo/go.mod",

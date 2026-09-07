@@ -8,9 +8,17 @@ outside the selected root. Both that positive/negative native control and
 `TestActualSelectedDependencyClosure` pass on native Go1.25.0 amd64. Regeneration
 retains the exact ab608 broker images and updates recipe provenance to 902 inputs,
 digest `b22395a0763d7a41f1f4681d1f171aa0090af2e63a1ae13afd8c6214d6db5fce`.
-H01 immutable build consumption and M02 fresh-cache admission remain open; this
-is a tested partial correction checkpoint only. Independent re-review and final
-exact-source checker/CI remain required after all corrections.
+M02 now prepares pinned modules with Go's checksum mechanism inside the existing
+command using temporary byte-identical go.mod/go.sum copies; attempted pin
+rewrites refuse. Fresh, selected-only, populated/offline and inconsistent-pin
+controls pass with an owned file proxy. Actual generation and the exact `go run
+./internal/runtime/cmd/helpergen -check` both passed with distinct empty owned
+GOMODCACHE directories. An external Python observer confirmed all 45 Runtime
+files' bytes, lengths, mtimes and file set unchanged in check mode. The current
+903-input digest is `5c8f02ba57b335162667bf656d043ebbe83ec562243230e912e2e413162dd292`.
+H01 immutable build consumption remains open; this is a tested partial
+correction checkpoint only. Independent re-review and final exact-source
+checker/CI remain required after all corrections.
 
 Disposition: bounded candidate frozen for independent review; final Windows
 source adoption/regeneration and integrated/native Runtime acceptance remain open.
