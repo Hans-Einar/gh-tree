@@ -5,8 +5,10 @@ isolated milestones. All six Storage methods now exist: an explicit-location
 constructor, typed loads and versioned native commits with retained originals,
 bounded append-only manifest facts and stable recovery IDs. The package is not
 connected to the product entry point and is not yet accepted. The worker report
-records remaining native/fault/profile gates and the newly exposed Windows
-creation-time tunneling regression during repeated publication/recovery.
+records the accepted Windows incarnation correction and the current bounded
+fault/resource/admission candidate. Full native-profile/adapter gates remain.
+The milestone paragraphs below retain their historical status; the report's
+current handoff identifies the latest source, independent reviews and evidence.
 
 The codec maps all specified schema0/schema1 user configuration, preferences,
 and run configuration fields to the accepted immutable API documents. Only

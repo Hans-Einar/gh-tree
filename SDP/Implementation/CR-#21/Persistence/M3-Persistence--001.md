@@ -1,7 +1,7 @@
 # M3 Persistence contribution — Issue #63
 
-State: IN PROGRESS; all six Storage methods now exist in the P3c checkpoint.
-Complete adversarial/native/fault verification and adapter acceptance are pending.
+State: IN PROGRESS; all six Storage methods exist. Bounded P3k fault/resource/
+admission candidate is prepared for independent review; full adapter gates remain.
 Branch: `codereview-21/layer-persistence`.
 Initial base: `412f33e477cec03cb6eafe7b846c9bcdd02c0a25`.
 Worker owns only `internal/persistence/` and this report. Master supplies separate
@@ -694,35 +694,46 @@ behavior and does not treat the failed macOS run as passing native evidence.
 
 ## Current handoff and exact next permitted action
 
-The Windows12-commit regression is corrected by the reviewed private P3j profile;
-its old failed source/evidence remains in P3i and M3-Identity-Review--001. The
-complete adapter remains partial and nonaccepted. Next: fresh independent review
-of the bounded P3j product/test source, with exact native/source CI, before Master
-considers its disposition. No full contribution acceptance is claimed here.
+Candidate: `ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8`; product changes at
+`faec6489f1988dd881269d6985cafd0fa14ee57c` and
+`75137a0ecc624559efe2a3c61c0236f9c5155e4e`; ff40e32 corrects only the Unix test
+counter/report. P3j identity is already independently accepted in
+M3-Identity-Code-Review--001 atbfdc79c/report53de3e1. Early M363-PR01/02/03 remain
+resolved in their separately confirmed cases at91acac5. Neither review is replaced
+by this author report.
 
-P3d–P3h record actual implemented journal, Expected-anchor/missing-parent,
-cooperative multiprocess, eight crash stages, late-write, independent-current,
-external target-gap and load-with-recovery-error controls. Their explicit earlier
-pending statements are historical checkpoints, not claims those tests are absent.
-The independent audit confirmed the three early defects corrected at91acac5;
-its canonical M3-Protocol-Review--001 contains the separate exact evidence. Unix's
-last staging-name check to name-based syscall interval remains expressly unproved
-and must not be folded into the accepted arbitrary target-editor gap.
+Final local evidence: native Windows full `go test ./... -count=1` PASS
+(Persistence9.167s); bounded Windows race PASS10.987s; native386/WOW64
+admission/fault/sharing/12-crash selector PASS5.428s plus vet. Corrected source
+Linux/ext4 UID/GID65534 repeats the targeted selector successfully under
+`/tmp/gh-tree-persistence-faults.ChGJU6`. Final Linux test binary SHA256
+`20e6b6b38febc3930b228b694ae46ea8bc5322ace0cddf6f9740de7d33f100f3`.
+The shared local evidence directory above retains the compact scripts/logs,
+including the original macOS fixture failure. No duplicate checkout/archive added.
 
-Finish remaining preparation/write/flush/close/native/crash/resource/permission
-coverage against actual source and exact source CI. FreeBSD ordinary-user system
-EA enumeration EPERM remains a strict failure and supported positive writes are
-unresolved; no EPERM-as-empty or metadata-loss exception. No-birth Unix persistent
-association remains unproved. Corrected Darwin already has native P2f/P3a CI
-evidence recorded above. Preserve the rejected denied-ACL cleanup fixture and
-all prior evidence. Freeze/push a complete candidate for Master's separate fresh
-review only after these contribution gates are satisfied; no integration here.
+Exact-source [CI34080421099](https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099)
+atff40e32 is terminal:18 SUCCESS, native FreeBSD FAILURE, Runtime helper SKIP.
+Native Windows amd64/ARM64 and macOS ARM64 test/vet/build PASS, as do Linux/race
+and all12 architecture jobs. The [macOS job](https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099/job/101614565186)
+confirms Go1.25.0 darwin/arm64 and Persistence5.743s; the
+[Windows ARM64 job](https://github.com/Hans-Einar/gh-tree/actions/runs/34080421099/job/101614565164)
+confirms native arm64 execution at the same exact source. The aggregate run is
+failing; ordinary-user FreeBSD system-EA EPERM remains in its actual log.
+Superseded75137a0 run34080235390 ended canceled:
+16 successes, macOS fixture failure, FreeBSD failure, Windows ARM64 cancellation,
+helper skip. It is not passing complete evidence.
 
-Master authorized this independent bounded work while the separate Git review
-remains blocked by its external access condition. The author freezes this bounded
-correction for separate review; no blocked review was retried or substituted.
+Next: Master assigns a separate fresh review of this bounded admission/resource/
+fault contribution and exact native evidence. Full #63 remains open for the
+FreeBSD user profile decision, no-birth persistent incarnation association and
+Unix final source-name-check/name-syscall interval. No privilege/helper,
+EPERM-as-empty, metadata loss, read-only/platform reduction or unreviewed native
+primitive was adopted. The source interval is distinct from the explicitly
+accepted arbitrary target-editor gap. No physical power-loss/device-flush-failure
+claim follows from injected boundary delivery errors or process-kill controls.
 
-SLICE(S): SLC-01/04/05/09/10/12/13 foundations only. REVIEW: pending fresh reviewer.
-INTEGRATION: none. TAG: none. All full Slices and baseline findings remain open.
-NEXT: independently review frozen P3j source and native evidence; then complete
-separately authorized remaining adapter work and all required exact gates.
+Only internal/persistence and this report changed. No integration, tag, full
+Slice/baseline closure or release. Git-first serial integration remains held
+behind the separate blocked Git review, which was not retried or substituted.
+All preserved denied-ACL fixtures remain untouched. Final report-only checkpoint
+does not change the tested executable candidate.
