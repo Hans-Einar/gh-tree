@@ -5,11 +5,12 @@ Application--Runtime 1.0.0 contract, shared BoundaryTypes, CwdAcquisition,
 WindowsBroker, and Feasibility/Runtime RTF-02. No old launch/terminal/process
 implementation is imported or moved here.
 
-This is an explicit partial M3 checkpoint. The current implementation contains
-the private registry, bounded memory/framed transports and native Unix cwd,
-helper and supervisor components. It has no exported Sessions constructor,
-complete parent native client, public lifecycle stubs, or Composition
-cutover. Passing these tests does not establish process containment or cleanup.
+This is an explicit partial M3 checkpoint. Issue #71 adds the common twelve-method
+Sessions engine through `newSessions`, an unexported constructor taking a retained
+`nativeOwner` startup seam. Only test-controlled owners currently construct that
+engine. Real platform bridges, production construction and Composition cutover
+remain pending reviewed native clients and their matching helper assets. Passing
+the common engine tests does not establish native containment or cleanup.
 The mandatory M1 helper prerequisite currently fails because the native broker,
 entry, verifier, embedded images, and provenance manifest are not yet implemented.
 
@@ -70,7 +71,8 @@ as UID/GID65534 proves the acquisition/substitution tests; Fchdir in the private
 supervisor and native macOS/FreeBSD execution remain separate required proof.
 
 Real supervisor/helper, Job/ConPTY, complete failure-unwind and all twelve
-Sessions methods remain required by #65 before M3 Runtime acceptance.
+Sessions methods bound to real native clients remain required by #65 before M3
+Runtime acceptance.
 
 `broker/signal_unix.go` now implements the actual session-local signal helper and
 its acquisition owner: inherited anonymous pipe direction/type and poller checks,
@@ -102,3 +104,30 @@ grandchild cleanup, a real shell with foreground/background pipeline groups,
 acquisition/error/cancel/input/resize ownership and all twelve Sessions methods
 still need assembly and full failure verification. The CLI has no private-mode
 dispatch cutover; tests dispatch the actual native functions in their own binary.
+
+`sessions.go`, `controls.go` and `lifecycle.go` now assemble the common engine.
+Admitted startup retains an ID and reliable final reservation even when native
+acquisition fails. Start contexts govern establishment; persistent established
+owners survive later request cancellation. Root exit closes input admission while
+output continues until the native output/cleanup barrier. A public Cleaned fact
+also requires the parent input writer and every accepted control observer to
+finish. Native receipt cancellation never releases parent ownership or authorizes
+replay. A 65536-byte parent write keeps one queue reservation while splitting into
+at most 65484-byte native chunks. One control admission at a time bounds pending
+resize/interrupt work; overlapping controls return Busy, and Stop bypasses that
+admission. Event consumers never participate in these native waits.
+
+Lifecycle-key checks use retained session records. Restart retains its replacement
+identity as soon as admission occurs, including cancellation during startup, and
+reuses the private original environment plus the latest delivered geometry. An
+old session with an existing replacement transition cannot create another one.
+Shutdown closes admission atomically, retains unfinished Start/Restart work and
+reports native/parent/event-transfer residuals. Cleanup and final ACK remain
+separate: resource completion alone does not make aggregate shutdown successful.
+
+Eleven deterministic engine tests in `sessions_test.go` add startup cancellation,
+late raw output, pending input/control receipt barriers, exact input splitting,
+restart identity/geometry/deduplication, shutdown races, repaired cleanup,
+exhausted final sequence space and known cleanup with a historical error. These
+supplement the buffer/registry tests. The bounded report and next native binding
+gate are in `SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md`.
