@@ -563,6 +563,14 @@
       "reviewHead": "9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8",
       "ci": 34073256923,
       "remaining": "committed helper binding, parent and complete Runtime integration"
+    },
+    {
+      "from": "IMPL70",
+      "relation": "bounded_generator_assets_policy_accepted",
+      "to": "b6f161f5189d70b66b95129237b51f9984d58e35",
+      "reviewHead": "6f385a9cab6798661970c4dc2a0aa56edba6c97b",
+      "ci": 34075549875,
+      "imageSource": "ab608327e63727f66ffb1aa7b3200c2865307cf5"
     }
   ],
   "errata": [

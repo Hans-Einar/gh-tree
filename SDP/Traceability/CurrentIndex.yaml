@@ -801,7 +801,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "unix_native_correction_authorized",
+      "state": "corrected_unix_candidate_independent_rereview_ready",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -825,15 +825,15 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "c3f23b89610a8695125fcd881711a929c7828374",
+      "lastCheckpoint": "d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7",
       "subContributions": [
         "IMPL69",
         "IMPL71"
       ],
       "latestVerification": {
-        "head": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
-        "run": 34073961901,
-        "result": "6 native/race SUCCESS; expected helper prerequisite FAIL; two independent MEDIUM findings require correction"
+        "head": "71b95a32265270c43da58ff41f67ab370a39a245",
+        "run": 34076324950,
+        "result": "6 native/race SUCCESS incl corrected FreeBSD malformed-start fixture; expected helper prerequisite FAIL; M65-U01/U02 await independent confirmation"
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
@@ -843,7 +843,9 @@
       "nativeFindings": [
         "M65-U01",
         "M65-U02"
-      ]
+      ],
+      "nativeTechnicalSource": "71b95a32265270c43da58ff41f67ab370a39a245",
+      "nativeProductSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c"
     },
     {
       "id": "IMPL66",
@@ -979,7 +981,7 @@
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "input_set_corrected_candidate_rereview_ready",
+      "state": "generator_assets_policy_accepted_held_for_new_source_binding",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -991,22 +993,21 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "4d59b27fb15d5f7885c92ac98dce365063c60a5e",
+      "lastCheckpoint": "6f385a9cab6798661970c4dc2a0aa56edba6c97b",
       "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
       "technicalSource": "b6f161f5189d70b66b95129237b51f9984d58e35",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets-Review--001.md",
-      "reviewHead": "f6128251a0510021191880be658b705528fcc606",
-      "disposition": "CHANGES_REQUIRED",
-      "findings": [
-        "H70-H01"
-      ],
+      "reviewHead": "6f385a9cab6798661970c4dc2a0aa56edba6c97b",
+      "disposition": "ACCEPT bounded generator/assets/policy at b6f161f, images bind ab608327; newer native binding pending",
+      "findings": [],
       "latestVerification": {
         "head": "b6f161f5189d70b66b95129237b51f9984d58e35",
         "run": 34075549875,
         "result": "SUCCESS; targeted post-selection/child-start name mutations reject actual successful builds; unchanged/checker/no-rewrite local proof; H01 independent confirmation pending"
       },
       "resolvedFindings": [
+        "H70-H01",
         "H70-M02",
         "H70-M03"
       ],
@@ -1016,7 +1017,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "common_parent_engine_implementation",
+      "state": "common_parent_milestone_independent_review_ready",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1024,7 +1025,15 @@
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md",
       "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
-      "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied"
+      "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied",
+      "lastCheckpoint": "78a67e1198466e05bc5f2544b3c4a495dc45a52c",
+      "technicalSource": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
+      "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
+      "latestVerification": {
+        "head": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
+        "run": 34076409741,
+        "result": "6 native/race SUCCESS, expected helper prerequisite FAIL; local root race/vet/all12 architecture/build PASS. Common controlled-owner proof only, real bridges/constructor pending"
+      }
     }
   ],
   "productFindings": [
@@ -2111,8 +2120,8 @@
     "IMPL63"
   ],
   "resumedFrom": "3e259652797295504e34bafe2063a8022a503965",
-  "latestCheckpointTag": "checkpoint/m3-access-hold/20260906-2225Z",
-  "latestCheckpointPurpose": "External review-access hold; all code and current reports pushed; recovery marker only",
+  "latestCheckpointTag": "checkpoint/m3-runtime-prebinding/20260907-0242Z",
+  "latestCheckpointPurpose": "recoverable_prebinding_snapshot_not_stage_or_slice_completion",
   "externalBlocker": {
     "kind": "review_service_content_access",
     "stage": "required Git independent foundation review",
@@ -2120,5 +2129,6 @@
     "reviewSource": "855a144689dae3ce69fdc6bb1fa2d303c7e27da0",
     "reviewStatus": "incomplete_no_acceptance",
     "next": "Use confirmed approved identity/workspace/model/surface or resolve false positive; then resume from durable refs without bypassing safeguards"
-  }
+  },
+  "latestCheckpointInventory": "SDP/Verification/CR-#21/Evidence/Checkpoint-20260907-0242Z/workspace-before.json"
 }

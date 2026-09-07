@@ -34,7 +34,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "initial"
+      "dispatch": "blocked_review"
     },
     {
       "key": "github",
@@ -57,7 +57,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "initial"
+      "dispatch": "accepted_held"
     },
     {
       "key": "persistence",
@@ -80,7 +80,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "initial"
+      "dispatch": "partial_scope_decision_pending"
     },
     {
       "key": "discovery",
@@ -100,7 +100,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "queued"
+      "dispatch": "accepted_held"
     },
     {
       "key": "runtime",
@@ -121,8 +121,13 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "active",
-      "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2"
+      "dispatch": "native_and_parent_gates",
+      "workerBase": "26d5f4fe7b87c8ad19a8a335bc4af19e06b647e2",
+      "subContributions": [
+        69,
+        70,
+        71
+      ]
     }
   ],
   "workerBase": "412f33e477cec03cb6eafe7b846c9bcdd02c0a25"

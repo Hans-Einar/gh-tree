@@ -458,3 +458,8 @@ Standalone Windows native bd78dea is independently accepted at9b06f8bd and tagge
 for recovery; binding/parent/full Runtime remain. Unix reviewc3f23b8 requires two
 corrections. #71 common parent engine now has a separate pushed base; #70 H01
 continues with precise one-shot name-change invalidation after native evidence.
+
+Prebinding checkpoint checkpoint/m3-runtime-prebinding/20260907-0242Z captures all published lanes.
+Helper H01/M02/M03 now independently resolved; actual Windows-image binding,
+Unix correction confirmation and parent common review are next. See consolidated
+Handoff and existing inventory; full Issue21 objective and serial gates remain.

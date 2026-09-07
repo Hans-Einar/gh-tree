@@ -400,3 +400,9 @@ and join safely after actual build. Actual read-only build and post-selection
 insertion/restoration/native lifecycle tests plus independent review still gate it.
 Source: https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw .
 No ACL/privilege/trust exception or new compiler framework is authorized.
+
+Prebinding recovery checkpoint checkpoint/m3-runtime-prebinding/20260907-0242Z: all29 worktrees clean, no stashes or
+unpublished branch commits. Windows standalone and helper generator/assets/policy
+are independently accepted; Unix correction and common parent reviews are next.
+Current Handoff consolidates authoritative refs/gates without historical duplicate
+narratives. No full adapter/Slice/integration acceptance is implied.
