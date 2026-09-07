@@ -503,8 +503,9 @@ limits, and BC--Application--Persistence, Concurrency limits:
 
 > On Unix, the selected name-based publication protocol requires exclusive
 > cooperative ownership of the generated preparation source while it can be used
-> by an active request. From exclusive creation through the selected publication
-> call, other actors must not modify the prepared payload's bytes/metadata or
+> by an active request. From exclusive creation until the object becomes the
+> published target at the native publication point, other actors must not modify
+> the prepared payload's bytes/metadata or
 > rename, unlink or substitute its generated source entries. Cooperating gh-tree
 > instances satisfy this through the permanent store lock and request ownership.
 > This is an environmental trust condition, not kernel-enforced exclusion of
@@ -514,19 +515,47 @@ limits, and BC--Application--Persistence, Concurrency limits:
 > the existing target-editor gap remains. Late writes through an editor's retained
 > original handle and changes to the published target after publication remain
 > permitted and do not retroactively invalidate a known committed operation. The
-> new condition concerns preparation sources before/during publication, not those
-> already authorized original/target edits. Windows retained-handle publication
-> and its stronger native source binding are unchanged.
+> new condition ends at the native publication point, even if syscall-return
+> delivery or request cleanup is pending. Retained payload/publication aliases
+> then name the published object; their changed bytes can be legitimate recovery
+> observations. Raw-backup and manifest integrity remain separate obligations.
+> Windows retained-handle publication binds source object identity; no Windows
+> content/metadata trust exception is proposed. Windows prepared-byte integrity
+> remains the separate product gate M363-SRC-H01. Approval here cannot close it.
 >
 > Exclusive creation, no-follow acquisition, exact source/target/metadata checks,
 > manifest association and observed-drift refusal remain mandatory. Before native
 > invocation, detected source drift refuses without publishing. If evidence after
-> an issued call makes attribution uncertain, report Indeterminate with actual
-> effects/current/recovery facts; never invent NotCommitted, rollback or replay.
+> an issued call makes proposal attribution uncertain, report Indeterminate,
+> PublicationKnown=false and storage EffectIndeterminate with actual known
+> current/proposed/recovery facts and diagnostics; never invent NotCommitted,
+> rollback or replay. A known namespace return can remain a diagnostic fact.
 > A different current target alone is not proof of source drift and cannot erase
 > an independently known committed effect. An undetected breach of the stated
 > preparation-ownership condition is outside this cooperative guarantee; successful
 > Renameat/Linkat is not evidence of kernel-enforced source identity exclusion.
+
+Proposed corresponding qualification to Storage--001's native-success prose and
+Application--Persistence's PublicationKnown prose/outcome table: a known committed
+proposal requires observed native success attributable to the prepared proposal
+under the selected preparation boundary. Mere success of an issued namespace call
+with actually uncertain proposal attribution uses the existing Indeterminate
+shape above. Genuine known publication remains committed despite permitted target
+edits or later close/flush/observation errors. No public API result shape changes.
+
+Independent draft review M363-BCS-M01 requires these lifetime/scope/outcome
+clarifications. The Unix condition covers source names AND prepared bytes/metadata;
+it is not presented as namespace-only. The separately reproduced Windows
+M363-SRC-H01 remains open under existing authority: an ordinary second writable
+handle can alter prepared bytes before actual publication in both presence modes.
+A fresh #63 worker may correct only that bounded prepared-byte product defect,
+including actual acquisition/guard lifetime, native adverse/positive controls and
+existing M3-Persistence report. Preserve original/target late writes, class65,
+permissions/metadata checks, identity/recovery/outcomes and no API/trust/privilege
+change. A guard acquired after an earlier writable handle escaped is insufficient.
+A write-sharing guard must not be claimed as metadata exclusion; report any
+concrete remaining metadata boundary separately. No postcheck-only repair or
+blanket Indeterminate substitute. Independent confirmation precedes acceptance.
 
 Impact/acceptance before any refreeze:
 - Independent reviewer must challenge the exact wording against physical scope,

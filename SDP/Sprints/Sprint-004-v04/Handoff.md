@@ -35,7 +35,7 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 |---|---|---|---|
 | Git/git-implementation | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | Facts foundation only; required review blocked, mutation methods incomplete |
 | GitHub/github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | All5 methods independently accepted; held for Git-first integration |
-| Persistence/persistence-implementation | codereview-21/layer-persistence | 82610b891a82e7b12eb0d13d6be82bc15342f1c4 | Identity and bounded protocol/fault-resource deltas accepted; full adapter gates open |
+| Persistence/persistence-implementation | codereview-21/layer-persistence | f6d07fbfd972e06ce04122b78f2338013c5b7ba3 | Prior bounded deltas accepted; Windows prepared-byte defect and full adapter gates open |
 | Discovery/discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | All2 methods independently accepted; prior serial gates held |
 | Native Runtime/runtime-implementation | codereview-21/layer-runtime | 99af6bf2217f91c1f3b870a1f7389bb71269c669 | Linux correction frozen for independent review and exact integrated CI |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
@@ -72,7 +72,10 @@ acceptance does not close a full Runtime adapter or vertical Slice.
   ACCEPT; earlier identity/protocol corrections remain accepted. CI34080421099:
   18PASS/native FreeBSDFAIL/helperSKIP. Remaining assessment82610b8 distinguishes
   explicit proven write-profile selection from the unresolved source-name binding
-  interval. No no-birth mechanism or boundary waiver is claimed.
+  interval. Reviewf6d07fb reproduces HIGH M363-SRC-H01 on Windows: a second writable
+  handle changes prepared bytes before publication, yet known committed intent is
+  claimed. Fresh bounded correction and independent confirmation are required.
+  No no-birth mechanism, Windows trust exception or boundary waiver is claimed.
 
 ## Blockers and authority boundaries
 
@@ -93,7 +96,7 @@ source after the last check. Frozen authority permits a target-editor race but n
 source-namespace exception. Master must identify a demonstrated binding mechanism
 or obtain an explicit reviewed boundary decision; neither is adopted. Draft
 BC-CHANGE-PER-SOURCE-01 in M3-Adapters defines preparation-source cooperative
-ownership, awaits fresh independent review, then user decision. It changes no
+ownership, has corrected M363-BCS-M01 wording awaiting confirmation, then user decision. It changes no
 frozen authority. No-birth
 write refusal may be scoped to proven profiles only if no accepted capability is
 removed. See M3-Remaining-Gates-Assessment--001 for exact clauses and options.

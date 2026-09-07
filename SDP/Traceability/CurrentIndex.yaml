@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "bounded_fault_resource_accepted_full_adapter_open",
+      "state": "windows_prepared_byte_correction_pending_unix_boundary_decision",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,14 +713,14 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "82610b891a82e7b12eb0d13d6be82bc15342f1c4",
+      "lastCheckpoint": "f6d07fbfd972e06ce04122b78f2338013c5b7ba3",
       "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
         "head": "bfdc79c2289274636f66574a3c86f467bb993615",
         "run": 34066675310,
         "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
-      "activeWorker": null,
+      "activeWorker": "m3_persistence_prepared_bytes_fix",
       "pendingNativeFinding": "FreeBSD user trust/scope decision; explicit proven no-birth profile inventory; source-publication binding or reviewed authority decision",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
@@ -768,8 +768,17 @@
       "sourceBoundaryProposal": {
         "id": "BC-CHANGE-PER-SOURCE-01",
         "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
-        "state": "draft_independent_review_then_user_decision",
-        "scope": "Unix preparation-source cooperative ownership only; no frozen or product change"
+        "state": "wording_corrected_confirmation_then_user_decision",
+        "scope": "Unix preparation-source cooperative ownership only; no frozen or product change",
+        "reviewHead": "f6d07fbfd972e06ce04122b78f2338013c5b7ba3",
+        "review": "SDP/Implementation/CR-#21/Persistence/M3-Source-Boundary-Review--001.md"
+      },
+      "preparedByteFinding": {
+        "id": "M363-SRC-H01",
+        "severity": "HIGH",
+        "state": "open",
+        "platform": "Windows",
+        "scope": "prepared bytes changed through separate writable handle before publication; both native presence modes reproduced"
       }
     },
     {
@@ -2167,7 +2176,8 @@
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL65"
+    "IMPL65",
+    "IMPL63"
   ],
   "pausedInitialContributions": [
     "IMPL61",

@@ -80,7 +80,7 @@
         "SLC-12",
         "SLC-13"
       ],
-      "dispatch": "partial_scope_decision_pending"
+      "dispatch": "bounded_windows_byte_correction"
     },
     {
       "key": "discovery",
