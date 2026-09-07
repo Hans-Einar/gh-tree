@@ -1,12 +1,14 @@
 package broker
 
 import (
+	"encoding/binary"
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+	"unsafe"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
@@ -23,6 +25,7 @@ type AcquiredDirectory struct {
 	anchor         windows.Handle
 	anchorName     string
 	anchorIdentity fileIdentity
+	anchorOwned    bool
 	spec           StartSpec
 	path           string
 }
@@ -98,14 +101,20 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 	if barrier != nil {
 		barrier("project-acquired")
 	}
-	n, err := FreshNonce()
-	if err != nil {
+	if err = a.pinExisting(); err != nil {
 		return a, err
 	}
-	a.anchorName = ".gh-tree-start-" + hex.EncodeToString(n[:])
-	a.anchor, err = openRelative(a.target, a.anchorName, windows.FILE_GENERIC_READ|windows.DELETE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE|windows.FILE_DELETE_ON_CLOSE)
-	if err != nil {
-		return a, err
+	if a.anchor == 0 {
+		n, e := FreshNonce()
+		if e != nil {
+			return a, e
+		}
+		a.anchorName = ".gh-tree-start-" + hex.EncodeToString(n[:])
+		a.anchor, err = openRelative(a.target, a.anchorName, windows.FILE_GENERIC_READ|windows.DELETE, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE|windows.FILE_DELETE_ON_CLOSE)
+		if err != nil {
+			return a, err
+		}
+		a.anchorOwned = true
 	}
 	a.anchorIdentity, err = identity(a.anchor)
 	if err != nil {
@@ -115,6 +124,60 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 		barrier("anchor-acquired")
 	}
 	return a, a.Revalidate()
+}
+
+// Enumerate through the acquired directory handle, with a fixed 64KiB bound.
+// Entry names are observations only; each candidate is independently acquired
+// handle-relative with actual data/list-read access and no delete sharing.
+func (a *AcquiredDirectory) pinExisting() error {
+	var aligned [8192]uint64
+	buffer := unsafe.Slice((*byte)(unsafe.Pointer(&aligned[0])), 65536)
+	err := windows.GetFileInformationByHandleEx(a.target, windows.FileIdBothDirectoryRestartInfo, &buffer[0], uint32(len(buffer)))
+	if err == windows.ERROR_NO_MORE_FILES {
+		return nil
+	}
+	if err != nil {
+		return err
+	}
+	for offset, entries := 0, 0; entries < 256; entries++ {
+		if offset > len(buffer)-104 {
+			return ErrCwd
+		}
+		entry := buffer[offset:]
+		next := int(binary.LittleEndian.Uint32(entry))
+		length := int(binary.LittleEndian.Uint32(entry[60:]))
+		if length%2 != 0 || length < 0 || length > len(entry)-104 {
+			return ErrCwd
+		}
+		units := make([]uint16, length/2)
+		for j := range units {
+			units[j] = binary.LittleEndian.Uint16(entry[104+j*2:])
+		}
+		name := windows.UTF16ToString(units)
+		if name != "" && name != "." && name != ".." && !strings.ContainsAny(name, ":/\\\x00") {
+			h, e := openRelative(a.target, name, windows.FILE_GENERIC_READ, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, windows.FILE_OPEN, 0)
+			if e == nil {
+				var info windows.ByHandleFileInformation
+				e = windows.GetFileInformationByHandle(h, &info)
+				if e == nil && info.FileAttributes&windows.FILE_ATTRIBUTE_REPARSE_POINT == 0 {
+					a.anchor = h
+					a.anchorName = name
+					return nil
+				}
+				if e = windows.CloseHandle(h); e != nil {
+					return e
+				}
+			}
+		}
+		if next == 0 {
+			return nil
+		}
+		if next < 104 || next > len(entry) {
+			return ErrCwd
+		}
+		offset += next
+	}
+	return nil
 }
 
 func (a *AcquiredDirectory) child(parent windows.Handle, name string) (windows.Handle, error) {

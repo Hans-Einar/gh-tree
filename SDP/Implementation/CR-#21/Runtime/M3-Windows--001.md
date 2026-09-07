@@ -103,3 +103,40 @@ directory removal. Full broker tests pass. Test-only cross-ABI executable builde
 now exist for upcoming native386/WOW64/ARM64 controls; their implementation is
 excluded from ordinary product startup. They build only this owned test package,
 and remove only the exact generated executables/empty fixture directory.
+
+## Partial checkpoint 5
+
+Local full native386/WOW64 suite passes, including386 parent -> extracted native64
+test broker -> native64 user and native64 broker ->386 user; native32 direct
+startup layout also runs. Native amd64 race suite passes (23.666s), native386
+suite passes (16.921s), and vet passes at this checkpoint's source.
+
+Cancellation passes at eight cwd/Job/ConPTY/CreateProcess/assignment/pre-resume
+barriers, with no user initialization and joined resources. Missing executable,
+stale cwd and parent Start cancellation retain cleanup ownership. Separate
+primary-thread checks retain a test proof duplicate that prevents thread-ID reuse,
+then assert the actual original CreateProcess thread handle no longer denotes
+that owned thread, for user and broker success/canceled startup paths. Aggregate
+kernel counts cover only the current test process's File/Pipe, Job and Process
+objects, classified through new probe capabilities; they do not claim Thread/Event
+pool coverage. Those owned object counts and goroutine counts stay flat across
+eight repeated ConPTY cycles. Earlier total-handle comparisons included Go's
+expanding scheduler Thread/Event pool and were replaced with explicit type counts;
+primary-thread closure remains independently tested, not excluded from proof.
+
+Existing readable children can now serve as preserved data/list-read anchors,
+selected by bounded enumeration of the acquired directory handle. Empty/no-usable-
+child cases retain exclusive temporary anchors. Native tests prove existing child
+preservation and delete interlock.
+
+CI at prior2f388202 exposed SDDL alias `LA` in the ACL test; that test now compares
+binary trustees, ACE masks/types/flags and protection. Product extraction also
+checks those exact properties after directory creation and read-only image reopen.
+This preserves the current-user plus SYSTEM requirement; no alias spelling is
+treated as a different trustee. Corrected full native386/race tests pass locally;
+the new native Windows CI result is still pending.
+
+Native ARM64/x64-emulation, static DLL/TLS/debug-heap fixtures and remaining adverse
+transport/close cases are still required; no complete Windows contribution or
+helper-source freeze is claimed. The final helper closure will need regeneration
+after these broker changes.

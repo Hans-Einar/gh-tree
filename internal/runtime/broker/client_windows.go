@@ -26,6 +26,7 @@ type WindowsConfig struct {
 	Output      func(api.OutputStream, []byte)
 	GracePeriod time.Duration
 	ForcePeriod time.Duration
+	hook        func(string, *WindowsClient)
 }
 
 type WindowsStartResult struct {
@@ -53,28 +54,29 @@ type controlReply struct {
 // WindowsClient owns one exact broker process, its outer Job, and all parent
 // transport workers. There is no SessionID allocator or second session registry.
 type WindowsClient struct {
-	config       WindowsConfig
-	job          windows.Handle
-	process      windows.ProcessInformation
-	read, write  *os.File
-	childHandles []windows.Handle
-	channel      *Channel
-	controlMu    sync.Mutex
-	sequence     uint64
-	pendingMu    sync.Mutex
-	pending      map[uint64]chan controlReply
-	outputFiles  []*os.File
-	outputDone   sync.WaitGroup
-	outputMu     sync.Mutex
-	outputErr    error
-	facts        chan WindowsFact
-	started      chan WindowsStartResult
-	stop         chan struct{}
-	stopOnce     sync.Once
-	done         chan struct{}
-	mu           sync.Mutex
-	latest       WindowsFact
-	setupErr     error
+	config         WindowsConfig
+	job            windows.Handle
+	process        windows.ProcessInformation
+	read, write    *os.File
+	childHandles   []windows.Handle
+	channel        *Channel
+	controlMu      sync.Mutex
+	sequence       uint64
+	pendingMu      sync.Mutex
+	pending        map[uint64]chan controlReply
+	controlsClosed bool
+	outputFiles    []*os.File
+	outputDone     sync.WaitGroup
+	outputMu       sync.Mutex
+	outputErr      error
+	facts          chan WindowsFact
+	started        chan WindowsStartResult
+	stop           chan struct{}
+	stopOnce       sync.Once
+	done           chan struct{}
+	mu             sync.Mutex
+	latest         WindowsFact
+	setupErr       error
 }
 
 func StartWindows(ctx context.Context, config WindowsConfig) (*WindowsClient, WindowsStartResult, error) {
@@ -211,6 +213,9 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	if c.config.hook != nil {
+		c.config.hook("broker-created-suspended", c)
+	}
 	if err = windows.AssignProcessToJobObject(c.job, c.process.Process); err != nil {
 		return err
 	}
@@ -218,6 +223,12 @@ func (c *WindowsClient) create(ctx context.Context) error {
 		if err = closeHandle(&c.childHandles[i]); err != nil {
 			return err
 		}
+	}
+	if err = ctx.Err(); err != nil {
+		return err
+	}
+	if c.config.hook != nil {
+		c.config.hook("broker-before-resume", c)
 	}
 	if err = ctx.Err(); err != nil {
 		return err
@@ -260,6 +271,10 @@ func (c *WindowsClient) send(op Opcode, payload []byte, reply chan controlReply)
 	}
 	if reply != nil {
 		c.pendingMu.Lock()
+		if c.controlsClosed {
+			c.pendingMu.Unlock()
+			return 0, io.ErrClosedPipe
+		}
 		if len(c.pending) >= 64 {
 			c.pendingMu.Unlock()
 			return 0, errors.New("native controls busy")
@@ -457,6 +472,7 @@ func (c *WindowsClient) run() {
 	// Every pending request receives a terminal delivery uncertainty; none is
 	// replayed. The parent registry retains its own accepted queue accounting.
 	c.pendingMu.Lock()
+	c.controlsClosed = true
 	for seq, reply := range c.pending {
 		reply <- controlReply{err: errors.Join(err, io.ErrClosedPipe)}
 		delete(c.pending, seq)
@@ -479,7 +495,9 @@ func (c *WindowsClient) run() {
 		time.Sleep(20 * time.Millisecond)
 	}
 	current.CleanupComplete = true
-	current.Err = err
+	c.outputMu.Lock()
+	current.Err = errors.Join(err, c.outputErr)
+	c.outputMu.Unlock()
 	c.publish(current)
 }
 
@@ -532,8 +550,8 @@ func (c *WindowsClient) finish(ctx context.Context, readerDone <-chan struct{}) 
 	}
 	// No broker or outer member can retain pipe writers now. EOF and all
 	// callbacks must join before the final observation is published.
-	if c.read != nil {
-		_ = c.read.Close()
+	if err := closeFile(&c.read); err != nil {
+		return err
 	}
 	<-readerDone
 	c.controlMu.Lock()

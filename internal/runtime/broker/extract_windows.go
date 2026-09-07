@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"unsafe"
 
@@ -137,6 +138,9 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	if err = directoryAttributes(i.directory); err != nil {
 		return i, err
 	}
+	if err = validateImageACL(i.directory, user.User.Sid); err != nil {
+		return i, err
+	}
 	writer, err := createProtected(i.directory, i.name, sd, windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.DELETE, windows.FILE_NON_DIRECTORY_FILE)
 	if err != nil {
 		return i, err
@@ -168,6 +172,9 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 		return i, err
 	}
 	i.guard = os.NewFile(uintptr(guard), "owned-helper-readonly-guard")
+	if err = validateImageACL(guard, user.User.Sid); err != nil {
+		return i, err
+	}
 	actual, err := identity(guard)
 	if err != nil {
 		return i, err
@@ -198,6 +205,54 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 		return i, err
 	}
 	return i, nil
+}
+
+func validateImageACL(h windows.Handle, user *windows.SID) error {
+	sd, err := windows.GetSecurityInfo(h, windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION)
+	if err != nil {
+		return err
+	}
+	control, _, err := sd.Control()
+	if err != nil {
+		return err
+	}
+	acl, defaulted, err := sd.DACL()
+	if err != nil {
+		return err
+	}
+	if control&windows.SE_DACL_PROTECTED == 0 || defaulted || acl == nil || acl.AceCount != 2 {
+		return errors.New("helper DACL is not exact protected ownership")
+	}
+	system, err := windows.CreateWellKnownSid(windows.WinLocalSystemSid)
+	if err != nil {
+		return err
+	}
+	foundUser, foundSystem := false, false
+	for index := uint32(0); index < 2; index++ {
+		var ace *windows.ACCESS_ALLOWED_ACE
+		if err = windows.GetAce(acl, index, &ace); err != nil {
+			return err
+		}
+		if ace.Header.AceType != windows.ACCESS_ALLOWED_ACE_TYPE || ace.Header.AceFlags != 0 || ace.Mask != 0x1f01ff {
+			return errors.New("unexpected helper access rule")
+		}
+		sid := (*windows.SID)(unsafe.Pointer(&ace.SidStart))
+		isUser, isSystem := sid.Equals(user), sid.Equals(system)
+		if !isUser && !isSystem {
+			return errors.New("unexpected helper trustee")
+		}
+		if isUser {
+			foundUser = true
+		}
+		if isSystem {
+			foundSystem = true
+		}
+	}
+	runtime.KeepAlive(sd)
+	if !foundUser || !foundSystem {
+		return errors.New("missing helper owner trustee")
+	}
+	return nil
 }
 
 func deleteExact(h windows.Handle) error {

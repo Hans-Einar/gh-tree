@@ -4,9 +4,9 @@ import (
 	"context"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
+	"unsafe"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
 	"golang.org/x/sys/windows"
@@ -36,13 +36,45 @@ func TestWindowsExtractionIdentityACLAndInterlock(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		text := sd.String()
+		control, _, err := sd.Control()
+		if err != nil {
+			t.Fatal(err)
+		}
+		acl, defaulted, err := sd.DACL()
+		if err != nil {
+			t.Fatal(err)
+		}
 		user, err := windows.GetCurrentProcessToken().GetTokenUser()
 		if err != nil {
 			t.Fatal(err)
 		}
-		if !strings.Contains(text, "D:P") || !strings.Contains(text, "(A;;FA;;;SY)") || !strings.Contains(text, "(A;;FA;;;"+user.User.Sid.String()+")") {
-			t.Fatalf("incorrect protected ACL: %s", text)
+		if defaulted || acl == nil || acl.AceCount != 2 || control&windows.SE_DACL_PROTECTED == 0 {
+			t.Fatalf("incorrect protected ACL: %s", sd.String())
+		}
+		system, err := windows.CreateWellKnownSid(windows.WinLocalSystemSid)
+		if err != nil {
+			t.Fatal(err)
+		}
+		seenUser, seenSystem := false, false
+		for n := uint32(0); n < 2; n++ {
+			var ace *windows.ACCESS_ALLOWED_ACE
+			if err = windows.GetAce(acl, n, &ace); err != nil {
+				t.Fatal(err)
+			}
+			if ace.Header.AceType != 0 || ace.Header.AceFlags != 0 || ace.Mask != 0x1f01ff {
+				t.Fatal("non-full-access or inherited/non-allow ACE")
+			}
+			sid := (*windows.SID)(unsafe.Pointer(&ace.SidStart))
+			if sid.Equals(user.User.Sid) {
+				seenUser = true
+			} else if sid.Equals(system) {
+				seenSystem = true
+			} else {
+				t.Fatalf("unexpected trustee %s", sid.String())
+			}
+		}
+		if !seenUser || !seenSystem {
+			t.Fatalf("missing exact owner trustees: %s", sd.String())
 		}
 	}
 	path := image.Path()

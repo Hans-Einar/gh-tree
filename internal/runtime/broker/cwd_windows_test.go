@@ -95,6 +95,33 @@ func TestWindowsCwdStaleAndReparseRefused(t *testing.T) {
 	}
 }
 
+func TestWindowsExistingDataAnchorPreserved(t *testing.T) {
+	s := windowsSpec(t)
+	path := filepath.Join(s.RootLocator, "existing-data")
+	if err := os.WriteFile(path, []byte("preserved"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	a, err := AcquireCwd(s)
+	if a != nil {
+		defer a.Close()
+	}
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.anchorOwned || a.anchorName != "existing-data" {
+		t.Fatalf("existing readable child not pinned: %+v", a)
+	}
+	if err = os.Remove(path); err == nil {
+		t.Fatal("existing data pin allowed deletion")
+	}
+	if err = a.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if data, err := os.ReadFile(path); err != nil || string(data) != "preserved" {
+		t.Fatalf("existing anchor lost: %q %v", data, err)
+	}
+}
+
 func makeJunction(t *testing.T, path, target string) {
 	t.Helper()
 	if err := os.Mkdir(path, 0700); err != nil {
