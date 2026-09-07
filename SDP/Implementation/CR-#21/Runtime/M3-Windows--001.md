@@ -345,3 +345,68 @@ unchanged and must not cancel source CI. Keep the candidate/worktree clean and
 stopped for the existing independent reviewer's bounded correction review.
 No author acceptance, integration, complete native adapter, Slice or release
 disposition is granted by these passing source checks.
+
+## Integrated extraction cleanup investigation — 2026-09-07
+
+Authority: Masterd55d56f0a50e7c27e8c8b15e22e397826f7601f3 / ledger98. Work is on
+`codereview-21/layer-runtime`, starting clean/pushed
+`bab42e903f94edba3fe35d20187087aa0e2eddb1`; the accepted standalone Windows branch
+remains untouched. Windows product source remains bd78dea. Only
+`extract_windows_test.go` and this report change; no native product, shared/Unix,
+parent, generator, assets, helper closure or integration metadata changes.
+
+Original failure remains attributable to source
+`941f4be195bf1a0fefdb13d41e13435e0628bf76`,
+[CI34081403751/job101617232026](https://github.com/Hans-Einar/gh-tree/actions/runs/34081403751/job/101617232026),
+attempt1: native Go1.25.0 Windows ARM64 / imagewin11-arm64 20260830.155.1 /
+Windows10.0.26200. Nineteen other jobs passed. TestWindowsExtractedBrokerLifecycle
+failed before inspecting object absence: Established, RootExited/exit0, Quiescent
+and CleanupComplete were true, Residuals empty, with historical
+`Windows runtime permission denied at helper extraction during cleanup`.
+The original raw UTF-8 job log is23466 bytes, SHA256
+`dee16351e09ab2d29b1b68d05120c1928b73ef22a2daf3517f25286589a75485`.
+Its underlying NTSTATUS was not logged; no claim about its external trigger or
+antivirus is supported by that historical log.
+
+Additive local diagnostics reproduced the same natural lifecycle failure on the
+first amd64 run and identified actual `STATUS_CANNOT_DELETE`0xc0000121, mapped
+Win32ERROR_ACCESS_DENIED5. That initial diagnostic run intentionally still failed
+the original nil-error assertion (exit1,2.177s); its independent native proofs
+nevertheless established broker exit, outer Job zero, all client/extraction
+handles released, and exact image plus directory absent. The owner had repaired
+a refused cleanup attempt and correctly retained its historical diagnostic.
+
+A deterministic owned SEC_IMAGE mapped-view control now forces that same native
+refusal through real extraction cleanup after root exit/broker exit/outer Job0.
+While the mapped view remains, cleanup is incomplete and the exact image remains.
+After releasing only the test-owned view/section, the ordinary owner completes
+cleanup and preserves the original typed cause. Separate broker/process and Job
+proof duplicates remain open through successful deletion, so those process-handle
+references are not demonstrated to be the blocking resource. The control does
+not infer the historical hosted runner's exact source of a retained image view.
+[Microsoft's mapping profile](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga)
+defines SEC_IMAGE; the native controlled result is the implementation evidence.
+
+The lifecycle assertion now checks final root/start/quiescence facts, exact broker
+wait and outer Job-zero through retained proof capabilities, joined client owner,
+closed client/child/output/image/chain handles, and actual absence of both exact
+objects before considering an error. It accepts only an entirely matching error
+tree: WindowsFailure Permission / HelperExtraction / Cleanup, whose original
+native leaf is STATUS_CANNOT_DELETE. Generic Win32/NT access denial, cancellation,
+timeouts, wrong stage, non-cleanup errors and any mixed process/other error fail.
+The historical error is retained and logged, not erased or normalized to success.
+Negative diagnostic controls and the mapped-view refusal/release/repair control
+exercise this narrow rule. No product defect or product change is established.
+
+Pinned Go1.25.0 targeted selection
+`TestWindows(ExtractionMappedImageCleanupRepair|ExtractedBrokerLifecycle|RepairedExtractionDiagnosticIsNarrow)$`:
+amd64 PASS1.724s, final amd64 race PASS5.244s, executing386/WOW64 PASS3.016s;
+broker vet and diff check PASS. The 386 natural lifecycle independently observed
+the same0xc0000121 historical refusal with all final proofs passing. Test failure
+teardown releases only its own mapping and joins the native owner before existing
+exact cleanup runs. Earlier excluded ACL/cache residues remain untouched.
+
+Next: push this coherent test-only refinement, run exact integrated native CI
+(including the deterministic ARM64 control), then freeze evidence for Master's
+verification disposition. Existing helper source/bytes stay unchanged. This
+investigation grants no full Runtime, parent, Slice, main or release acceptance.
