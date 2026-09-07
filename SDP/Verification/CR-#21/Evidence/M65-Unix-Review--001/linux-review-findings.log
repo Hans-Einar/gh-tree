@@ -1,0 +1,12 @@
+uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+=== RUN   TestReviewRejectsNamedAndUnlinkedDirectionalFIFO
+    reviewer_unix_test.go:34: named transport admitted: unlinked=false write=false err=<nil>
+    reviewer_unix_test.go:34: named transport admitted: unlinked=false write=true err=<nil>
+    reviewer_unix_test.go:34: named transport admitted: unlinked=true write=false err=<nil>
+    reviewer_unix_test.go:34: named transport admitted: unlinked=true write=true err=<nil>
+--- FAIL: TestReviewRejectsNamedAndUnlinkedDirectionalFIFO (0.00s)
+=== RUN   TestReviewNaturalExitUsesConstructionBudgets
+    reviewer_unix_test.go:56: natural cleanup ignored grace20ms/force200ms: elapsed=1.202308979s rootExited=true quiescent=false err=context deadline exceeded
+    reviewer_unix_test.go:59: eventual cleanup: elapsed=2.091319854s complete=true residuals=0 err=<nil>
+--- FAIL: TestReviewNaturalExitUsesConstructionBudgets (2.09s)
+FAIL

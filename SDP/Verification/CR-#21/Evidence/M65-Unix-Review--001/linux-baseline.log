@@ -1,0 +1,132 @@
+uid=65534(nobody) gid=65534(nobody) groups=65534(nobody)
+=== RUN   TestNativeUnixClientControlEOFIsResidualWithoutQuiescenceProof
+--- PASS: TestNativeUnixClientControlEOFIsResidualWithoutQuiescenceProof (2.02s)
+=== RUN   TestNativeUnixClientObservedEscapeRemainsResidual
+--- PASS: TestNativeUnixClientObservedEscapeRemainsResidual (0.07s)
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers/cwd
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers/control-pipes
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers/io
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers/supervisor-created
+=== RUN   TestNativeUnixClientCancellationAtAcquisitionBarriers/start-sent
+--- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers (0.04s)
+    --- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers/cwd (0.00s)
+    --- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers/control-pipes (0.00s)
+    --- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers/io (0.00s)
+    --- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers/supervisor-created (0.00s)
+    --- PASS: TestNativeUnixClientCancellationAtAcquisitionBarriers/start-sent (0.04s)
+=== RUN   TestNativeUnixClientPreAcquisitionCancellationOwnsNothing
+--- PASS: TestNativeUnixClientPreAcquisitionCancellationOwnsNothing (0.00s)
+=== RUN   TestNativeUnixUserRootDoesNotInheritPrivateEndpoints
+--- PASS: TestNativeUnixUserRootDoesNotInheritPrivateEndpoints (0.06s)
+=== RUN   TestNativeUnixClientNaturalExitAndIndependentStartContext
+--- PASS: TestNativeUnixClientNaturalExitAndIndependentStartContext (0.05s)
+=== RUN   TestNativeUnixClientLateStartCancelDoesNotKillPersistentRoot
+--- PASS: TestNativeUnixClientLateStartCancelDoesNotKillPersistentRoot (0.07s)
+=== RUN   TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin
+--- PASS: TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin (0.10s)
+=== RUN   TestNativeUnixClientOutputCallbackPanicIsOwned
+--- PASS: TestNativeUnixClientOutputCallbackPanicIsOwned (0.00s)
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/cwd
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/control-request-pipe
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/control-pipes
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/input-pipe
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/stdout-pipe
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/pty-pair
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/pty-master
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/io
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-0
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-1
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-2
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-3
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-4
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/output-reader-0
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/output-reader-1
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/supervisor-created
+=== RUN   TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/start-sent
+--- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner (0.05s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/cwd (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/control-request-pipe (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/control-pipes (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/input-pipe (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/stdout-pipe (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/pty-pair (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/pty-master (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/io (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-0 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-1 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-2 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-3 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/child-endpoint-4 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/output-reader-0 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/output-reader-1 (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/supervisor-created (0.00s)
+    --- PASS: TestNativeUnixClientEveryPartialCheckpointRetainsAndClosesOwner/start-sent (0.04s)
+=== RUN   TestNativeUnixClientInputFullAndCanceledPartialAreNotReplayed
+--- PASS: TestNativeUnixClientInputFullAndCanceledPartialAreNotReplayed (0.08s)
+=== RUN   TestNativeUnixClientStopUnblocksOwnedWriterAndRejectsNewControls
+--- PASS: TestNativeUnixClientStopUnblocksOwnedWriterAndRejectsNewControls (0.06s)
+=== RUN   TestNativeUnixClientFailedStartPreservesTypedFacts
+--- PASS: TestNativeUnixClientFailedStartPreservesTypedFacts (0.00s)
+=== RUN   TestNativeUnixClientPTYResizeInputAndETX
+--- PASS: TestNativeUnixClientPTYResizeInputAndETX (0.02s)
+=== RUN   TestNativeCwdAcquiresOriginalObjectAndRefusesRelocation
+--- PASS: TestNativeCwdAcquiresOriginalObjectAndRefusesRelocation (0.00s)
+=== RUN   TestNativeCwdRejectsStaleAndLinkedComponents
+=== RUN   TestNativeCwdRejectsStaleAndLinkedComponents/stale
+=== RUN   TestNativeCwdRejectsStaleAndLinkedComponents/symlink
+=== RUN   TestNativeCwdRejectsStaleAndLinkedComponents/root-redirect
+--- PASS: TestNativeCwdRejectsStaleAndLinkedComponents (0.00s)
+    --- PASS: TestNativeCwdRejectsStaleAndLinkedComponents/stale (0.00s)
+    --- PASS: TestNativeCwdRejectsStaleAndLinkedComponents/symlink (0.00s)
+    --- PASS: TestNativeCwdRejectsStaleAndLinkedComponents/root-redirect (0.00s)
+=== RUN   TestNativeCwdReplacementAtAcquisitionBarrier
+=== RUN   TestNativeCwdReplacementAtAcquisitionBarrier/root-acquired
+=== RUN   TestNativeCwdReplacementAtAcquisitionBarrier/project-acquired
+--- PASS: TestNativeCwdReplacementAtAcquisitionBarrier (0.00s)
+    --- PASS: TestNativeCwdReplacementAtAcquisitionBarrier/root-acquired (0.00s)
+    --- PASS: TestNativeCwdReplacementAtAcquisitionBarrier/project-acquired (0.00s)
+=== RUN   TestNativeCwdPartialAcquisitionCloseAndUnknownIdentityProfile
+--- PASS: TestNativeCwdPartialAcquisitionCloseAndUnknownIdentityProfile (0.00s)
+=== RUN   TestNativeAnonymousPipeEndpointProfile
+    endpoints_unix_test.go:25: native pipe write=false access=0 fstatfs=<nil>
+    endpoints_unix_test.go:25: native pipe write=true access=1 fstatfs=<nil>
+--- PASS: TestNativeAnonymousPipeEndpointProfile (0.00s)
+=== RUN   TestNativeUnixClientUnacquirableHelperCanRecover
+--- PASS: TestNativeUnixClientUnacquirableHelperCanRecover (0.54s)
+=== RUN   TestStartCodecRoundtripCopyAndRefusals
+--- PASS: TestStartCodecRoundtripCopyAndRefusals (0.00s)
+=== RUN   TestFramesRejectMalformedLengthsVersionsAndOpcodes
+--- PASS: TestFramesRejectMalformedLengthsVersionsAndOpcodes (0.00s)
+=== RUN   TestChannelReplayForeignBindingPoisonsConnection
+--- PASS: TestChannelReplayForeignBindingPoisonsConnection (0.00s)
+=== RUN   TestConcurrentSendFramesRemainWholeWithShortWrites
+--- PASS: TestConcurrentSendFramesRemainWholeWithShortWrites (0.00s)
+=== RUN   TestFirstFrameAndWriteFailure
+--- PASS: TestFirstFrameAndWriteFailure (0.00s)
+=== RUN   TestNativeUnixClientRepeatedPipesAndPTYDoNotLeak
+    resources_unix_test.go:67: Linux process fd count 6→6
+    resources_unix_test.go:69: linux: 102 owned native descriptor objects closed; goroutines 2→2
+--- PASS: TestNativeUnixClientRepeatedPipesAndPTYDoNotLeak (0.68s)
+=== RUN   TestNativeAcquiredSignalHelpers
+    signal_unix_test.go:450: native Linux uid=65534 gid=65534
+        PASS foreign SID acquisition refused; control fixture remains alive
+        PASS vanished candidate refuses or acquires only the new helper's own group
+        PASS close before Commit leaves member alive
+        PASS wrong Commit nonce rejected without signal
+        PASS last original member exits after Joined; acquired helper signals only its pinned group
+        PASS STOP helper parked, KILL helper joined stopped group, all owned waiters joined
+        PASS full SID census contains only owning supervisor fixture
+--- PASS: TestNativeAcquiredSignalHelpers (0.02s)
+=== RUN   TestNativeSignalPrivateEntryFailsWithoutEndpoints
+--- PASS: TestNativeSignalPrivateEntryFailsWithoutEndpoints (0.00s)
+=== RUN   TestNativeCensusObservesCurrentIdentity
+--- PASS: TestNativeCensusObservesCurrentIdentity (0.00s)
+=== RUN   TestNativeSupervisorAcquiredCwdNaturalExitAndRelease
+--- PASS: TestNativeSupervisorAcquiredCwdNaturalExitAndRelease (0.05s)
+=== RUN   TestNativeSupervisorRootExitsBeforeGrandchildCleanup
+--- PASS: TestNativeSupervisorRootExitsBeforeGrandchildCleanup (2.09s)
+=== RUN   TestNativeSupervisorPTYJobControlResizeAndRelease
+--- PASS: TestNativeSupervisorPTYJobControlResizeAndRelease (2.05s)
+PASS

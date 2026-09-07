@@ -1,0 +1,61 @@
+//go:build linux || darwin
+
+package broker
+
+import (
+ "context"
+ "errors"
+ "os"
+ "path/filepath"
+ "testing"
+ "time"
+
+ "golang.org/x/sys/unix"
+)
+
+// Independent negative: a named FIFO has the same type/access mode as an
+// anonymous pipe, but cannot establish the frozen private-endpoint authority.
+func TestReviewRejectsNamedAndUnlinkedDirectionalFIFO(t *testing.T) {
+ name := filepath.Join(t.TempDir(), "review-owned-control-fifo")
+ if err := unix.Mkfifo(name, 0600); err != nil { t.Fatal(err) }
+ reader, err := unix.Open(name, unix.O_RDONLY|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+ if err != nil { t.Fatal(err) }
+ defer unix.Close(reader)
+ writer, err := unix.Open(name, unix.O_WRONLY|unix.O_NONBLOCK|unix.O_CLOEXEC, 0)
+ if err != nil { t.Fatal(err) }
+ defer unix.Close(writer)
+ for _, unlinked := range []bool{false, true} {
+  if unlinked { if err := os.Remove(name); err != nil { t.Fatal(err) } }
+  for _, side := range []struct{ fd int; write bool }{{reader, false}, {writer, true}} {
+   fd, err := unix.FcntlInt(uintptr(side.fd), unix.F_DUPFD_CLOEXEC, 0)
+   if err != nil { t.Fatal(err) }
+   accepted, err := inheritedPipe(fd, side.write)
+   if accepted != nil { accepted.Close() } else { unix.Close(fd) }
+   if !errors.Is(err, ErrProtocol) { t.Errorf("named transport admitted: unlinked=%t write=%t err=%v", unlinked, side.write, err) }
+  }
+ }
+}
+
+// The native construction budgets apply to natural-root-exit cleanup too.
+// This fixture owns its child and grandchild; they ignore TERM and require
+// the normal acquired STOP/KILL path. Always join that existing owner.
+func TestReviewNaturalExitUsesConstructionBudgets(t *testing.T) {
+ config, _ := unixClientFixture(t, "--runtime-fixture-tree-root")
+ config.GracePeriod = 20*time.Millisecond
+ config.ForcePeriod = 200*time.Millisecond
+ startCtx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+ defer cancel()
+ began := time.Now()
+ c, start, err := StartUnix(startCtx, config)
+ if c != nil { defer requireUnixClientCleanup(t, c) }
+ if err != nil || !start.Established { t.Fatal(start, err) }
+ observation, stop := context.WithTimeout(context.Background(), 1200*time.Millisecond)
+ fact, waitErr := c.Wait(observation)
+ stop()
+ if !fact.CleanupComplete {
+  t.Errorf("natural cleanup ignored grace20ms/force200ms: elapsed=%v rootExited=%t quiescent=%t err=%v", time.Since(began), fact.RootExited, fact.Quiescent, waitErr)
+ }
+ final, finalErr := c.Wait(startCtx)
+ t.Logf("eventual cleanup: elapsed=%v complete=%t residuals=%d err=%v", time.Since(began), final.CleanupComplete, len(final.Residuals), finalErr)
+ if !final.CleanupComplete { t.Fatal("owned fixture did not clean", final, finalErr) }
+}

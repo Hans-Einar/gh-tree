@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "sourceSHA": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
+  "branch": "codereview-21/layer-runtime",
+  "role": "fresh independent Unix reviewer",
+  "native": {
+    "distribution": "openSUSE-Leap-15.5 WSL",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "architecture": "amd64",
+    "uid": 65534,
+    "gid": 65534,
+    "ownedDirectory": "/tmp/gh-tree-unix-review-fe4fd426.jLhLxC"
+  },
+  "builder": {
+    "path": "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "goVersion": "go1.25.0",
+    "GOOS": "linux",
+    "GOARCH": "amd64",
+    "CGO_ENABLED": "0"
+  },
+  "commands": [
+    {
+      "command": "go test -c -o <owned-temp>/broker-baseline.test ./internal/runtime/broker",
+      "exit": 0
+    },
+    {
+      "command": "broker-baseline.test -test.v -test.count=1 -test.timeout=120s",
+      "exit": 0,
+      "result": "unmodified native suite PASS"
+    },
+    {
+      "command": "go test -overlay <overlay.json> -c -o <owned-temp>/broker-review.test ./internal/runtime/broker",
+      "exit": 0
+    },
+    {
+      "command": "broker-review.test -test.v -test.run=TestReview -test.count=1 -test.timeout=30s",
+      "exit": 1,
+      "result": "two expected independent negative failures; owned native cleanup complete"
+    }
+  ],
+  "overlay": {
+    "replace": "internal/runtime/broker/reviewer_unix_test.go",
+    "with": "reviewer_unix_test.go.txt",
+    "productEdits": false
+  },
+  "files": [
+    {
+      "path": "linux-baseline.log",
+      "bytes": 9828,
+      "sha256": "67792a0b56b167ee2160d44e778d2c4e9c66e9156b0ba95043dc8ae1c9466435"
+    },
+    {
+      "path": "linux-review-findings.log",
+      "bytes": 938,
+      "sha256": "b9c8cfb414fe029bef71f8ad46e60858b205fc26cb5ed358e3571a4818731301"
+    },
+    {
+      "path": "reviewer_unix_test.go.txt",
+      "bytes": 2667,
+      "sha256": "0c6de2ba4381f359abc71c8192c4beefee98d1126caa8b242ea82a61d33b780a"
+    }
+  ],
+  "ci": {
+    "run": 34073961901,
+    "attempt": 1,
+    "sourceSHA": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
+    "sixNativeRaceJobs": "success",
+    "prerequisiteJob": {
+      "id": 101596402839,
+      "result": "failure",
+      "reason": "M3 prerequisite missing: internal/runtime/broker/cmd Go source"
+    },
+    "dependentBuildAndHelperJobs": "skipped"
+  },
+  "limits": [
+    "No Darwin/FreeBSD execution of the independent negative overlay yet.",
+    "Hosted native and race evidence is separately identified from local CGO0 execution.",
+    "No whole Runtime, parent Sessions, Windows, helper asset, full Slice, integrated-source or release acceptance."
+  ]
+}
