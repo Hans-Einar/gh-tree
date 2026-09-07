@@ -551,3 +551,10 @@ of complete write/recovery proof for XFS/Btrfs/tmpfs/HFS/UFS/ZFS. Before closing
 identity gate, verify the explicit refusal and that no separately accepted ordinary
 profile is excluded. FreeBSD's user decision remains independent and cannot be
 closed by declaring its ordinary profile read-only.
+
+Linux correction99af6bf freezes the demonstrated retained-/proc ESRCH case while
+preserving all unrelated errors and existing failed-start assertions. Fresh bounded
+review owns only M3-Unix-Integration-Review--001.md; it may reuse the now-idle Runtime
+worktree without product edits. Exact CI34084151911 is pending; no passing rerun or
+unreviewed product merge closes this gate. #71 author may read/prepare real bridge
+milestones now but must await Master-published accepted native/parent integration.
