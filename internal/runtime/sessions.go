@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math"
 	"reflect"
 	"sort"
 	"strings"
@@ -254,6 +253,9 @@ func (r *sessions) acquire(ctx context.Context, s *session) {
 	}
 	s.mu.Unlock()
 	_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
+		// Consume the startup slot in the same transaction that publishes its
+		// native facts. Stop/output hints cannot spend it before this point.
+		s.startReserved = false
 		s.established = fact.Established
 		if fact.Cwd.Present() {
 			s.acquired = fact.Cwd
@@ -296,7 +298,7 @@ func (r *sessions) capture(s *session, stream api.OutputStream, data []byte) {
 		return
 	}
 	err := r.registry.change(s, api.OutputAvailable, func(d *api.SessionSnapshotData) error {
-		if !s.hintAvailableLocked() || s.startPending && d.Sequence.Value() >= math.MaxUint64-2 {
+		if !s.hintAvailableLocked() {
 			return errExhausted
 		}
 		seq := owned(api.NewSessionSequence(d.Sequence.Value() + 1))

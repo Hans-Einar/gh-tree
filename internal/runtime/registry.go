@@ -25,6 +25,7 @@ type session struct {
 	changed         chan struct{}
 	startDone       chan struct{}
 	startPending    bool
+	startReserved   bool // startup result publication, independent of caller waiting
 	established     bool
 	startErr        error
 	stopAsked       bool
@@ -52,6 +53,9 @@ func (s *session) latestLocked() api.SessionSnapshotData {
 
 func (s *session) hintAvailableLocked() bool {
 	reserved := uint64(1) // the one reliable final
+	if s.startReserved {
+		reserved++
+	}
 	if s.controlReserved {
 		reserved++
 	}
@@ -109,7 +113,7 @@ func (r *registry) admit(ctx context.Context, request api.SessionStartRequest, e
 	if err := r.events.reserve(id); err != nil {
 		return nil, err
 	}
-	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue(), changed: make(chan struct{}), startDone: make(chan struct{}), startPending: true, diagnostics: make(map[api.RuntimeCleanupStage]api.Diagnostic)}
+	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue(), changed: make(chan struct{}), startDone: make(chan struct{}), startPending: true, startReserved: true, diagnostics: make(map[api.RuntimeCleanupStage]api.Diagnostic)}
 	r.nextID++
 	r.live++
 	r.sessions[id] = s
