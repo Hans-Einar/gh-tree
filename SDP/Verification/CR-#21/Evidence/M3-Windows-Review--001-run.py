@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--go", required=True)
 parser.add_argument("--arch", choices=["amd64", "386"], default="amd64")
 parser.add_argument("--wow64-loader", action="store_true")
+parser.add_argument("--race", action="store_true")
 args = parser.parse_args()
 evidence = Path(__file__).resolve().parent
 repo = evidence.parents[3]
@@ -37,12 +38,15 @@ overlay_path.write_text(json.dumps({"Replace": overlay}, indent=2), encoding="ut
 env = os.environ.copy()
 env.update(GOARCH=args.arch, CGO_ENABLED="0")
 command = [args.go, "test", "-overlay", str(overlay_path), "./internal/runtime/broker", "-run", selector, "-count=1", "-timeout=120s", "-v"]
+if args.race:
+    env["CGO_ENABLED"] = "1"
+    command.insert(2, "-race")
 result = subprocess.run(command, cwd=repo, env=env, text=True, encoding="utf-8", errors="strict", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=180)
-suffix = "wow64-loader" if args.wow64_loader else "controls-" + args.arch
-log = evidence / ("M3-Windows-Review--001-" + suffix + ".log")
+suffix = "wow64-loader" if args.wow64_loader else "controls-" + args.arch + ("-race" if args.race else "")
+log = evidence / ("M3-Windows-Review--002-" + suffix + ".log")
 source = evidence / "M3-Windows-Review--001-controls.go.txt"
-metadata = {"sourceCommit": "5e9643364f62dcc51a967fbf94775e5350cd2bc9", "command": command,
-            "GOARCH": args.arch, "CGO_ENABLED": "0", "exitCode": result.returncode,
+metadata = {"sourceCommit": "6decc16a952dad45a07e7e35ea01a11e5df32c00", "command": command,
+            "GOARCH": args.arch, "CGO_ENABLED": env["CGO_ENABLED"], "exitCode": result.returncode,
             "testSHA256": hashlib.sha256(source.read_bytes()).hexdigest()}
 # Preserve evidence content while normalizing line endings/trailing whitespace.
 normalized = "\n".join(line.rstrip() for line in result.stdout.splitlines()) + "\n"

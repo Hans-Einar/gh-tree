@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"io"
 	"os"
 	"strings"
 	"sync"
@@ -65,6 +66,9 @@ func TestReviewWindowsCanceledControls(t *testing.T) {
 			t.Logf("already canceled %s result=%+v error=%v", op, delivery, err)
 			if !errors.Is(err, context.Canceled) {
 				t.Errorf("canceled control did not refuse: %+v %v", delivery, err)
+			}
+			if delivery.Dispatched || delivery.Receipt != nil {
+				t.Errorf("pre-canceled control admitted dispatch: %+v", delivery)
 			}
 			if op == "write" {
 				// Give the real user fixture a bounded observation interval.
@@ -138,36 +142,45 @@ func TestReviewWindowsCanceledInflightDelivery(t *testing.T) {
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("expected blocked write deadline: %+v %v", returned, err)
 	}
-	client.pendingMu.Lock()
-	var abandoned <-chan controlReply
-	for _, pending := range client.pending {
-		abandoned = pending
+	if !returned.Dispatched || returned.Completed || returned.Receipt == nil {
+		t.Fatalf("post-send timeout lost observation owner: %+v %v", returned, err)
 	}
+	client.pendingMu.Lock()
 	count := len(client.pending)
 	client.pendingMu.Unlock()
 	if count != 1 {
 		t.Fatalf("expected one retained in-flight request, got %d", count)
 	}
 	client.Stop()
-	var actual controlReply
-	select {
-	case actual = <-abandoned:
-	case <-live.Done():
-		t.Fatal("native in-flight operation did not finish")
-	}
 	final, waitErr := client.Wait(live)
 	if !final.CleanupComplete {
 		t.Fatalf("join %+v %v", final, waitErr)
 	}
+	actual, actualErr := returned.Receipt.Wait(live)
+	if !actual.Dispatched || !actual.Completed || !errors.Is(actualErr, io.ErrShortWrite) {
+		t.Fatalf("missing known native completion: %+v %v", actual, actualErr)
+	}
+	var observers sync.WaitGroup
+	for n := 0; n < 16; n++ {
+		observers.Add(1)
+		go func() {
+			defer observers.Done()
+			again, e := returned.Receipt.Wait(short)
+			if again != actual || !errors.Is(e, io.ErrShortWrite) {
+				t.Errorf("repeated canceled observer lost known reply: %+v %v", again, e)
+			}
+		}()
+	}
+	observers.Wait()
 	client.pendingMu.Lock()
 	left := len(client.pending)
 	client.pendingMu.Unlock()
-	t.Logf("public canceled return=%+v error=%v; inaccessible later reply=%+v error=%v; final=%+v waitError=%v pendingAfterJoin=%d", returned, err, actual.delivery, actual.err, final, waitErr, left)
-	if actual.delivery.Accepted != uint32(len(data)) || actual.delivery.Delivered >= actual.delivery.Accepted {
-		t.Fatalf("fixture did not establish native partial delivery: %+v %v", actual.delivery, actual.err)
+	t.Logf("canceled return=%+v error=%v; returned receipt reply=%+v error=%v; final=%+v waitError=%v pendingAfterObservation=%d", returned, err, actual, actualErr, final, waitErr, left)
+	if actual.Accepted != uint32(len(data)) || actual.Delivered >= actual.Accepted {
+		t.Fatalf("fixture did not establish native partial delivery: %+v %v", actual, actualErr)
 	}
-	if returned.Accepted == 0 && returned.Delivered == 0 && !returned.Completed && final.Err == nil && left == 0 {
-		t.Error("post-send cancellation drops eventual accepted/partial delivery facts from every exported observation")
+	if left != 0 {
+		t.Error("terminal receipt observation did not retire ownership")
 	}
 }
 
@@ -206,6 +219,16 @@ func TestReviewWindowsFailureClassification(t *testing.T) {
 			t.Fatalf("join %+v %v", final, waitErr)
 		}
 		observations[mode] = startErr.Error()
+		var failure *WindowsFailure
+		if !errors.As(startErr, &failure) {
+			t.Fatalf("untyped failure: %v", startErr)
+		}
+		if mode == "stale-cwd" && (!errors.Is(startErr, ErrCwd) || failure.Cause != WindowsCwdFailure || failure.Stage != api.CwdAcquisition || failure.Cleanup) {
+			t.Fatalf("stale classification: %+v", failure)
+		}
+		if mode == "missing-executable" && (!errors.Is(startErr, os.ErrNotExist) || failure.Cause != WindowsNotFoundFailure || failure.Stage != api.ProcessContainment || failure.Cleanup) {
+			t.Fatalf("missing classification: %+v", failure)
+		}
 		t.Logf("%s error=%T(%v) ErrCwd=%v os.ErrNotExist=%v final=%+v", mode, startErr, startErr, errors.Is(startErr, ErrCwd), errors.Is(startErr, os.ErrNotExist), final)
 	}
 	if observations["missing-executable"] == observations["stale-cwd"] {
