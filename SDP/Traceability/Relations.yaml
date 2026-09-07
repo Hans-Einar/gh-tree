@@ -584,6 +584,14 @@
       "from": "IMPL71",
       "relation": "requires_reviewed_native_image_binding",
       "to": "IMPL72"
+    },
+    {
+      "from": "IMPL65",
+      "relation": "unix_shared_native_source_accepted",
+      "to": "71b95a32265270c43da58ff41f67ab370a39a245",
+      "productSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c",
+      "reviewHead": "f85294d5511a3255e36d5874f268ced832f69fca",
+      "ci": 34076324950
     }
   ],
   "errata": [

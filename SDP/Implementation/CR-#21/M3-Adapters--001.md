@@ -416,3 +416,17 @@ or TestMain are delegated. Real embedded emulated-parent/native-broker tests and
 canonical source verification precede separate binding review and any integration.
 Existing Unix reviewer confirms d0a7682/71b95a3; fresh reviewer assesses parent
 common78a67e1/fff5ee4. All three tasks have disjoint frozen/development worktrees.
+
+Unix/shared native correction is independently accepted at f85294d; U01/U02
+resolved without shared Windows closure changes. Binding #72 now freezes b9def1f
+(technical cf16072) with20 successful CI jobs including real committed images on
+native Windows amd64/ARM64; fresh binding review next. Parent review c436773
+requires M71-H01 predecessor-eviction panic, M01 Shutdown observation repair and
+M02 sequence-boundary delivered-geometry corrections. Fresh root-only author
+correction is authorized, then bounded confirmation; no native bridges yet.
+
+#63 resumes a fresh remaining fault/resource/admission pass at53de3e1: compare
+actual clauses with existing tests, correct only concrete gaps, reuse accepted
+identity/protocol proof. FreeBSD user decision/no-birth/source-name interval
+remain open; no privilege/profile/metadata or contract waiver. Separate review
+will assess the bounded source. All canonical serial gates remain unchanged.

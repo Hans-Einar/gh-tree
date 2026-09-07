@@ -142,3 +142,12 @@ Unix corrected d0a7682 is queued for existing reviewer confirmation; parent comm
 78a67e1 is queued for fresh independent review. This work follows the clean29-tree
 recovery inventory, so inspect the now-active worktrees instead of reusing that
 historical clean-state assertion.
+
+Latest follow-up: Unix/shared native review f85294d independently accepts corrected
+71b95a3/product4df4385. Binding #72 freezes b9def1f (technical cf16072), CI34078800342
+20PASS, for fresh review of actual committed-image/source execution. Parent review
+c436773 requires an eviction-triggered Restart panic fix, Shutdown reobservation
+and truthful geometry/sequence-boundary handling; root-only correction follows.
+Persistence #63 also resumes concrete remaining fault/resource coverage from
+53de3e1 while all explicit platform/trust blockers stay open. CurrentIndex holds
+exact refs; prior recovery inventory remains a historical clean snapshot.

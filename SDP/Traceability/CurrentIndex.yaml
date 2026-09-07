@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "bounded_identity_accepted_adapter_open",
+      "state": "remaining_fault_resource_pass_authorized",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -720,7 +720,7 @@
         "run": 34066675310,
         "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
-      "activeWorker": null,
+      "activeWorker": "m3_persistence_completion_worker",
       "pendingNativeFinding": "FreeBSD user scope decision, no-birth association, Unix source-name interval and full fault/resource gates remain",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
@@ -757,7 +757,9 @@
       "identityLocalChecks": "Independent native Windows amd64/386 and Linux protocol controls PASS; actual native ARM64 CI PASS",
       "identityCodeReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Code-Review--001.md",
       "identityCodeReviewHead": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
-      "identityDisposition": "ACCEPT bounded correction; no implementation findings; no full adapter or integration acceptance"
+      "identityDisposition": "ACCEPT bounded correction; no implementation findings; no full adapter or integration acceptance",
+      "remainingPassBase": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+      "remainingPassScope": "Concrete remaining native fault/resource/admission gaps only; existing profile/trust decisions not waived"
     },
     {
       "id": "IMPL64",
@@ -801,7 +803,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "corrected_unix_candidate_independent_rereview_ready",
+      "state": "unix_shared_native_accepted_held_for_runtime_integration",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -825,7 +827,7 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "d0a7682e761a7c076feeaf2e4d1ab0476edf3ae7",
+      "lastCheckpoint": "f85294d5511a3255e36d5874f268ced832f69fca",
       "subContributions": [
         "IMPL69",
         "IMPL71",
@@ -839,14 +841,15 @@
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
       "nativeReviewScope": "broker Unix-selected files and shared protocol/start; root Sessions foundations remain #71 scope",
-      "nativeReviewHead": "c3f23b89610a8695125fcd881711a929c7828374",
-      "nativeDisposition": "CHANGES_REQUIRED",
-      "nativeFindings": [
+      "nativeReviewHead": "f85294d5511a3255e36d5874f268ced832f69fca",
+      "nativeDisposition": "ACCEPT Unix/shared native candidate only",
+      "nativeFindings": [],
+      "nativeTechnicalSource": "71b95a32265270c43da58ff41f67ab370a39a245",
+      "nativeProductSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c",
+      "resolvedNativeFindings": [
         "M65-U01",
         "M65-U02"
-      ],
-      "nativeTechnicalSource": "71b95a32265270c43da58ff41f67ab370a39a245",
-      "nativeProductSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c"
+      ]
     },
     {
       "id": "IMPL66",
@@ -1018,7 +1021,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "common_parent_independent_review_ready",
+      "state": "common_parent_correction_authorized",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1027,7 +1030,7 @@
       "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied",
-      "lastCheckpoint": "78a67e1198466e05bc5f2544b3c4a495dc45a52c",
+      "lastCheckpoint": "c436773ea9f6debb70918c18d48c0c6a7d89302e",
       "technicalSource": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
@@ -1035,13 +1038,20 @@
         "run": 34076409741,
         "result": "6 native/race SUCCESS, expected helper prerequisite FAIL; local root race/vet/all12 architecture/build PASS. Common controlled-owner proof only, real bridges/constructor pending"
       },
-      "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation"
+      "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation",
+      "reviewHead": "c436773ea9f6debb70918c18d48c0c6a7d89302e",
+      "disposition": "CHANGES_REQUIRED",
+      "findings": [
+        "M71-H01",
+        "M71-M01",
+        "M71-M02"
+      ]
     },
     {
       "id": "IMPL72",
       "kind": "runtime_helper_binding_contribution",
       "issue": 72,
-      "state": "dispatch_ready",
+      "state": "independent_binding_review_ready",
       "branch": "codex/cr21-runtime-helper-binding",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-binding",
       "workerBase": "7e19d617ae430cd2c7ad414b9ea4622eb1e00617",
@@ -1051,7 +1061,15 @@
       ],
       "scope": "three generated brokerassets, exact root helper_binding_windows_test.go and report only",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-HelperBinding--001.md",
-      "pending": "regenerate stale ab608 assets against accepted Windows source and verify actual committed-image execution"
+      "pending": "regenerate stale ab608 assets against accepted Windows source and verify actual committed-image execution",
+      "lastCheckpoint": "b9def1ff383bad3bcd2da53a1062eee93fae7255",
+      "technicalSource": "cf160729581911c1cb02a24a458ec703337fb063",
+      "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperBinding-Review--001.md",
+      "latestVerification": {
+        "head": "cf160729581911c1cb02a24a458ec703337fb063",
+        "run": 34078800342,
+        "result": "20 SUCCESS incl actual native amd64/ARM64 committed-image binding; independent review pending"
+      }
     }
   ],
   "productFindings": [
@@ -2128,7 +2146,7 @@
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL65",
+    "IMPL63",
     "IMPL71",
     "IMPL72"
   ],
