@@ -1,6 +1,6 @@
 # M3 Runtime contribution — #65
 
-State: FROZEN UNIX CORRECTION CANDIDATE / #65 OVERALL INCOMPLETE / NOT ACCEPTED
+State: LINUX CENSUS CORRECTION CANDIDATE / NATIVE INTEGRATION GATE PENDING / #65 INCOMPLETE
 
 Parent: #21; worker authority: #65. Branch: `codereview-21/layer-runtime`.
 Worktree: `C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation`.
@@ -657,3 +657,57 @@ The exact failure was sent to Master for the Windows owner; this author neither
 changes that source nor relaxes its assertion. The original510139d FreeBSD failure
 remains recorded above. Only this report changes after941f4be; source is frozen
 clean/pushed for Master inspection and coordinated remaining integration work.
+
+## Linux retained proc-record correction
+
+Fresh bounded worker `m3_runtime_unix_integration_fix`, Master dispatch c545039 /
+ledger99; clean/pushed base fd3abeac967a695bcdad15918a723ff8bab751df. Original
+[CI34082980191](https://github.com/Hans-Einar/gh-tree/actions/runs/34082980191),
+technical2bc27e0, has19SUCCESS/1FAILURE. Linux101621669773 reports
+`TestNativeUnixClientFailedStartPreservesTypedFacts` at client_unix_test.go337:
+fully clean, unestablished final with `Unix native failure (code 12, stage 2)`
+instead of NotFound. The original source/run are preserved. That safe wire class
+is IOFailure/ProcessContainment; it does not identify the underlying native errno.
+
+A separate deterministic native control demonstrates a product census gap:
+opening a live owned `/proc/PID/stat`, closing that exact child's input and
+waiting for its successful exit leaves the retained stat descriptor returning
+ESRCH3. Fresh pathname open returns ENOENT2. Linux
+[proc_single_show at v6.18](https://github.com/torvalds/linux/blob/v6.18/fs/proc/base.c#L750)
+returns ESRCH when the inode's task has gone. The previous census recognized only
+ENOENT after reading. Supervisor startup performs this census before executable
+lookup, so a disappearing unrelated process can prevent reaching the intended
+NotFound case. This is a plausible explanation of the original CI failure,
+not proven attribution of its unavailable native errno.
+
+Only census_linux.go, new census_linux_test.go and this report change. The actual
+bounded stat read/close is factored into readLinuxStat and now omits the exact
+native read-ESRCH disappearance, as it already omitted read-ENOENT. No open-error
+classification, PID signaling, membership/quiescence rule, retry, protocol or
+startup-result rule changes. Close errors take precedence over disappearance and
+join any read error; permission, I/O, descriptor, malformed and oversized inputs
+still invalidate census. Windows/shared/helper-source closure and generated assets
+are unchanged. The existing typed NotFound test is byte-for-byte unchanged.
+
+Native regression first FAILS after mechanical reader extraction but before the
+ESRCH correction: `exited retained proc object was not omitted ... read
+/proc/29/stat: no such process`. With the correction, the retained-fd test,
+13 bounded read/close/invalid-input subtests, valid-bytes/failed-close control and
+unchanged typed failed-start test PASS20 repetitions. The live positive proves
+an actual record; exact wait, direct native ESRCH probe and closed-descriptor
+assertions prove omission represents task disappearance and owner completion.
+No sleep, unrelated process signal or passing rerun substitutes for that control.
+
+Execution: Go1.25.0-built Linux/amd64, UID/GID65534 on existing WSL openSUSE,
+kernel6.18.33.2, owned ext4 `/tmp/gh-tree-unix-census.kU76jV`. Full actual broker
+suite PASS, including complete SID cleanup, retained descendants, EOF/escape
+residuals, acquisition failures and repeated resources. Linux-selected vet and
+all four Linux test-binary target compilations PASS. Local UTF8 logs/binaries
+remain under C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907/ (esrch-before.log,
+esrch-fixed.log, esrch-full.log); regression source is committed, no product state
+exists only in those reproducible local fixtures. No owned native process remains.
+
+Next gate: push this coherent correction, inspect exact integrated native/race/
+helper/all12 CI, and obtain a separate bounded independent census/cleanup review.
+This author does not accept the correction, integrate parent Sessions, close #65,
+or claim any full adapter/Slice/canonical/release completion.

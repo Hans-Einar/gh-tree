@@ -2,10 +2,12 @@ package broker
 
 import (
 	"context"
+	"errors"
 	"io"
 	"os"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 func census(ctx context.Context) ([]processFact, error) {
@@ -35,25 +37,13 @@ func census(ctx context.Context) ([]processFact, error) {
 			if err != nil {
 				return nil, err
 			}
-			data, err := io.ReadAll(io.LimitReader(f, 8193))
-			closeErr := f.Close()
-			if os.IsNotExist(err) {
-				continue
-			}
+			p, present, err := readLinuxStat(pid, f)
 			if err != nil {
 				return nil, err
 			}
-			if closeErr != nil {
-				return nil, closeErr
+			if present {
+				result = append(result, p)
 			}
-			if len(data) > 8192 {
-				return nil, ErrCensus
-			}
-			p, err := parseLinuxStat(pid, string(data))
-			if err != nil {
-				return nil, err
-			}
-			result = append(result, p)
 		}
 		if readErr == io.EOF {
 			return result, nil
@@ -62,6 +52,29 @@ func census(ctx context.Context) ([]processFact, error) {
 			return nil, readErr
 		}
 	}
+}
+
+// readLinuxStat owns one opened proc stat file, including its close result.
+func readLinuxStat(pid int, f io.ReadCloser) (processFact, bool, error) {
+	data, readErr := io.ReadAll(io.LimitReader(f, 8193))
+	closeErr := f.Close()
+	if closeErr != nil {
+		return processFact{}, false, errors.Join(readErr, closeErr)
+	}
+	// An opened proc stat inode does not keep its task alive. Linux's
+	// proc_single_show returns ESRCH if that task exited after the open.
+	// This record disappeared; other failures still invalidate the census.
+	if os.IsNotExist(readErr) || errors.Is(readErr, syscall.ESRCH) {
+		return processFact{}, false, nil
+	}
+	if readErr != nil {
+		return processFact{}, false, readErr
+	}
+	if len(data) > 8192 {
+		return processFact{}, false, ErrCensus
+	}
+	p, err := parseLinuxStat(pid, string(data))
+	return p, err == nil, err
 }
 
 func parseLinuxStat(want int, line string) (processFact, error) {
