@@ -1,0 +1,10 @@
+Job https://github.com/Hans-Einar/gh-tree/actions/runs/34068851101/job/101583102130; attempt 2
+Selected diagnostic context, not full job log:
+2026-09-07T00:14:12.2364743Z windows
+2026-09-07T00:14:12.2365128Z amd64
+2026-09-07T00:14:13.4396895Z helpergen: go mod verify: exit status 1
+2026-09-07T00:14:13.4397907Z go: github.com/charmbracelet/x/termios@v0.1.1: module lookup disabled by GOPROXY=off
+2026-09-07T00:14:13.4398632Z 
+2026-09-07T00:14:13.4410008Z exit status 1
+2026-09-07T00:14:13.7215031Z [31;1mException: [0mD:\a\_temp\3206bf8a-0b68-4150-8af4-6b5296489f5b.ps1:6[0m
+2026-09-07T00:14:13.7215977Z [31;1m[0m[36;1mLine |[0m

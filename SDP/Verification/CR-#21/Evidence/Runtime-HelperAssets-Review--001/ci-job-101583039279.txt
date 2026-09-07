@@ -1,0 +1,10 @@
+Job https://github.com/Hans-Einar/gh-tree/actions/runs/34068851101/job/101583039279; attempt 2
+Selected diagnostic context, not full job log:
+2026-09-07T00:16:07.1336948Z ?   	github.com/Hans-Einar/gh-tree/internal/runtime/broker/cmd	[no test files]
+2026-09-07T00:16:07.1337898Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/brokerassets	4.398s
+2026-09-07T00:16:07.1338731Z --- FAIL: TestActualSelectedDependencyClosure (1.89s)
+2026-09-07T00:16:07.1340046Z     closure_test.go:24: The system cannot find the path specified.
+2026-09-07T00:16:07.1342151Z FAIL
+2026-09-07T00:16:07.1342579Z FAIL	github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen	2.095s
+2026-09-07T00:16:07.1343204Z ok  	github.com/Hans-Einar/gh-tree/internal/terminal	(cached)
+2026-09-07T00:16:07.1343749Z ok  	github.com/Hans-Einar/gh-tree/internal/tree	(cached)

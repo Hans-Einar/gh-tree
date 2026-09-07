@@ -1,0 +1,26 @@
+=== RUN   TestReviewerCachePinIntegrity
+    reviewer_test.go:20: POSITIVE: capture refused a forged cached sum against checked-in go.sum: go list -mod=readonly -deps -json ./internal/runtime/broker/cmd: exit status 1
+        verifying example.com/helperfixture@v1.0.0: checksum mismatch
+        	downloaded: h1:JN2W0hFwwuH4Og3zVbTwO8SEQjqPy4AX37S2MWrgwGc=
+        	go.sum:     h1:a2U8O8Lz2Nlg4icDb3RWD/PikbBFCEv/xxCKkr77LkQ=
+        
+        SECURITY ERROR
+        This download does NOT match an earlier download recorded in go.sum.
+        The bits may have been replaced on the origin server, or an attacker may
+        have intercepted the download attempt.
+        
+        For more information, see 'go help module-auth'.
+--- PASS: TestReviewerCachePinIntegrity (0.10s)
+=== RUN   TestReviewerJunctionClosure
+    reviewer_test.go:37: existing file through canonical GOROOT junction: contained="" error=The system cannot find the path specified.
+    reviewer_test.go:38: FINDING: canonical toolchain junction refuses existing source
+--- FAIL: TestReviewerJunctionClosure (0.00s)
+=== RUN   TestReviewerLiveModuleBuildInputs
+    reviewer_test.go:57: before/after source provenance identical=true
+    reviewer_test.go:62: arch=amd64 independent images match=true builtUnrecordedModuleBytes=true imageSHA=f0e449a4dc608af06524e7c637135d7f9be69a60205c4994559bb1373e7ae3e7
+    reviewer_test.go:62: arch=arm64 independent images match=true builtUnrecordedModuleBytes=true imageSHA=ed7014fee4386945a4d9e12f1f5c3a4c1ee5f223684f8fd0776f3cbf28ccb91a
+    reviewer_test.go:66: FINDING: both clean builds consumed live module bytes absent from their accepted provenance
+--- FAIL: TestReviewerLiveModuleBuildInputs (15.47s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen	15.973s
+FAIL
