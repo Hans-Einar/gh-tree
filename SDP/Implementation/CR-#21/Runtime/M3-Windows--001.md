@@ -180,3 +180,22 @@ full cleanup clears them while retaining historical diagnostics separately.
 Full native amd64 broker tests and vet pass before this checkpoint. No helper
 freeze, complete native fault matrix, independent implementation acceptance or
 parent Sessions integration is claimed.
+
+## Native loader and batch fixtures
+
+Test-only C sources under `broker/cmd/fixtures` compile an owned DLL and executable
+using the already installed Visual Studio toolchain in a temporary directory.
+Both images have actual TLS callbacks; the static import's DllMain and both TLS
+callbacks inspect debugger/anchor visibility and native heap operations. Both
+images link the static debug CRT (`/MTd`); explicit debug-heap allocation and
+`_CrtCheckMemory` checks run. Native x64 MSVC19.43.34810/link14.43.34810.0 passes:
+`NATIVE_DLL_TLS_DEBUG_HEAP exe=0 dll=0`. The first compiler wrapper used ordinary
+Go argv quoting for cmd's `/C` carrier and failed before compilation; explicit
+reviewable CmdLine quoting corrected the test wrapper. No compiler install/global
+environment change or product runtime compilation is introduced. Hosted ARM64
+toolchain execution remains a real required gate, with missing tools failing.
+
+The actual reviewed cmd/bat carrier also passes literal empty/whitespace/Unicode,
+metacharacter and trailing-backslash arguments through an owned `.cmd` shim into
+the native fixture. Quotes, percent and CR/LF operands refuse before execution.
+Targeted loader/batch tests pass; these add no product source-closure change.
