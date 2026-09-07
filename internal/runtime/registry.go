@@ -31,6 +31,9 @@ type session struct {
 	nativeClean  bool
 	producers    int
 	controlBusy  bool
+	observing    bool
+	acquired     api.Optional[api.AcquiredCwd]
+	exit         api.Optional[api.SessionExit]
 	diagnostics  map[api.RuntimeCleanupStage]api.Diagnostic
 	restart      *restartTransition
 }
@@ -39,13 +42,14 @@ type session struct {
 // The lock order is registry -> session -> events; no path reverses that order.
 // OS calls/waits and native callbacks must occur after releasing these locks.
 type registry struct {
-	mu       sync.Mutex
-	nextID   uint64
-	closed   bool
-	live     int
-	sessions map[domain.SessionID]*session
-	history  []domain.SessionID // order of completed cleanup, oldest first
-	events   *eventBuffer
+	mu          sync.Mutex
+	nextID      uint64
+	closed      bool
+	live        int
+	transitions int // admitted restart producers, independent of native sessions
+	sessions    map[domain.SessionID]*session
+	history     []domain.SessionID // order of completed cleanup, oldest first
+	events      *eventBuffer
 }
 
 func newRegistry() *registry {
@@ -107,11 +111,17 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 	if d.Phase == api.Cleaned {
 		return errClosed
 	}
-	if d.Sequence.Value() == math.MaxUint64 || (kind != api.RuntimeCleaned && d.Sequence.Value() == math.MaxUint64-1) {
+	if d.Sequence.Value() == math.MaxUint64 {
 		return errExhausted
 	}
 	if err := edit(&d); err != nil {
 		return err
+	}
+	// Private ownership still accepts cleanup facts after hint sequence space is
+	// exhausted. Only the final can consume the last version; output refuses in
+	// its edit before touching the ring. Never reuse a published snapshot version.
+	if kind != api.RuntimeCleaned && d.Sequence.Value() == math.MaxUint64-1 {
+		return errExhausted
 	}
 	d.Sequence, _ = api.NewSessionSequence(d.Sequence.Value() + 1)
 	next, err := api.NewSessionSnapshot(d)
@@ -131,7 +141,7 @@ func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.
 			delete(r.sessions, r.history[0])
 			r.history = r.history[1:]
 		}
-		if r.closed && r.live == 0 {
+		if r.closed && r.live == 0 && r.transitions == 0 {
 			_ = r.events.closeProducers()
 		}
 	}

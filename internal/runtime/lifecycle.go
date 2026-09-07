@@ -8,10 +8,11 @@ import (
 )
 
 type restartTransition struct {
-	request api.SessionRestartRequest
-	done    chan struct{}
-	result  api.SessionRestartResult
-	err     error
+	request     api.SessionRestartRequest
+	done        chan struct{}
+	result      api.SessionRestartResult
+	err         error
+	replacement *session // protected by predecessor session mutex
 }
 
 func (r *sessions) Stop(ctx context.Context, request api.SessionStopRequest) (api.SessionStopResult, error) {
@@ -29,6 +30,16 @@ func (r *sessions) Stop(ctx context.Context, request api.SessionStopRequest) (ap
 		return s.stopResult(ctx.Err() != nil), errUnsupported
 	}
 	r.requestStop(s)
+	s.mu.Lock()
+	owner := s.owner
+	reobserve := owner != nil && !s.observing && !s.nativeClean
+	if reobserve {
+		s.observing = true
+	}
+	s.mu.Unlock()
+	if reobserve {
+		go r.observe(s, owner)
+	}
 	wait, cancel := context.WithTimeout(ctx, r.budgets.grace+r.budgets.force)
 	defer cancel()
 	err = r.waitCleanup(wait, s)
@@ -89,12 +100,17 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 	// An OperationID already retained by another lifecycle cannot be repurposed.
 	r.registry.mu.Lock()
 	collision := false
+	closed := r.registry.closed
 	for _, other := range r.registry.sessions {
 		other.mu.Lock()
 		collision = collision || other.start.Data().OperationID == d.OperationID || other.restart != nil && other.restart.request.Data().OperationID == d.OperationID
 		other.mu.Unlock()
 	}
 	r.registry.mu.Unlock()
+	if closed {
+		r.admission.Unlock()
+		return r.restartRefused(s, ctx, errClosed)
+	}
 	if collision {
 		r.admission.Unlock()
 		return r.restartRefused(s, ctx, errInvalid)
@@ -107,6 +123,9 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 	s.mu.Lock()
 	s.restart = transition
 	s.mu.Unlock()
+	r.registry.mu.Lock()
+	r.registry.transitions++
+	r.registry.mu.Unlock()
 	r.admission.Unlock()
 	go func() {
 		old, err := r.Stop(ctx, owned(api.NewSessionStopRequest(api.SessionStopRequestData{OperationID: d.OperationID, SessionID: d.SessionID})))
@@ -135,7 +154,13 @@ func (r *sessions) Restart(ctx context.Context, request api.SessionRestartReques
 		result.Diagnostics = diagnostics(err)
 		transition.result = owned(api.NewSessionRestartResult(result))
 		transition.err = err
+		r.registry.mu.Lock()
+		r.registry.transitions--
 		close(transition.done)
+		if r.registry.closed && r.registry.live == 0 && r.registry.transitions == 0 {
+			_ = r.registry.events.closeProducers()
+		}
+		r.registry.mu.Unlock()
 	}()
 	return r.waitRestart(ctx, s, transition)
 }
@@ -154,7 +179,14 @@ func (r *sessions) waitRestart(ctx context.Context, s *session, transition *rest
 			return transition.result.Clone(), transition.err
 		default:
 		}
-		return r.restartRefused(s, ctx, ctx.Err())
+		s.mu.Lock()
+		replacement := transition.replacement
+		s.mu.Unlock()
+		result := api.SessionRestartResultData{Old: s.stopResult(true), CancellationAsked: true, Diagnostics: diagnostics(ctx.Err())}
+		if replacement != nil {
+			result.Replacement = api.Some(replacement.startResult(true))
+		}
+		return owned(api.NewSessionRestartResult(result)), ctx.Err()
 	}
 }
 
@@ -173,6 +205,17 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 	for _, s := range all {
 		_ = r.waitCleanup(wait, s)
 	}
+	for _, s := range all {
+		s.mu.Lock()
+		transition := s.restart
+		s.mu.Unlock()
+		if transition != nil {
+			select {
+			case <-transition.done:
+			case <-wait.Done():
+			}
+		}
+	}
 	result := api.RuntimeShutdownResultData{AdmissionClosed: true, Complete: true}
 	for _, s := range all {
 		stop := s.stopResult(ctx.Err() != nil)
@@ -186,7 +229,14 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 			result.Residuals = append(result.Residuals, residuals...)
 		}
 	}
-	_ = r.registry.events.closeProducers()
+	r.registry.mu.Lock()
+	if r.registry.transitions == 0 {
+		_ = r.registry.events.closeProducers()
+	} else {
+		result.Complete = false
+		result.Residuals = append(result.Residuals, owned(api.NewRuntimeResidual(api.RuntimeResidualData{Stage: api.ControlCleanup, Detail: errCleanup})))
+	}
+	r.registry.mu.Unlock()
 	r.registry.events.mu.Lock()
 	pending := len(r.registry.events.reservations)
 	if pending != 0 {

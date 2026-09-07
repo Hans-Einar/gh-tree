@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"reflect"
 	"sort"
 	"strings"
@@ -192,6 +193,18 @@ func (r *sessions) start(ctx context.Context, req api.SessionStartRequest, envir
 		return refusedStart(err, ctx.Err() != nil)
 	}
 	s, err := r.registry.admit(ctx, req, env, display, caps, predecessor)
+	if err == nil {
+		if oldID, present := predecessor.Value(); present {
+			old, lookupErr := r.registry.lookup(oldID)
+			if lookupErr == nil {
+				old.mu.Lock()
+				if old.restart != nil {
+					old.restart.replacement = s
+				}
+				old.mu.Unlock()
+			}
+		}
+	}
 	r.admission.Unlock()
 	if err != nil {
 		return refusedStart(err, ctx.Err() != nil)
@@ -231,6 +244,7 @@ func (r *sessions) acquire(ctx context.Context, s *session) {
 	_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
 		s.established = fact.Established
 		if fact.Cwd.Present() {
+			s.acquired = fact.Cwd
 			d.AcquiredCwd = fact.Cwd
 		}
 		if fact.Established && !s.stopAsked {
@@ -249,6 +263,7 @@ func (r *sessions) acquire(ctx context.Context, s *session) {
 		s.nativeClean = true
 	} else {
 		s.producers++
+		s.observing = true
 		go r.writeLoop(s)
 	}
 	close(s.startDone)
@@ -269,6 +284,9 @@ func (r *sessions) capture(s *session, stream api.OutputStream, data []byte) {
 		return
 	}
 	err := r.registry.change(s, api.OutputAvailable, func(d *api.SessionSnapshotData) error {
+		if d.Sequence.Value() >= math.MaxUint64-1 || s.startPending && d.Sequence.Value() >= math.MaxUint64-2 {
+			return errExhausted
+		}
 		seq := owned(api.NewSessionSequence(d.Sequence.Value() + 1))
 		if err := s.output.append(stream, seq, data); err != nil {
 			return err
@@ -295,9 +313,11 @@ func (r *sessions) observe(s *session, owner nativeOwner) {
 				s.established = true
 			}
 			if fact.Cwd.Present() {
+				s.acquired = fact.Cwd
 				d.AcquiredCwd = fact.Cwd
 			}
 			if fact.Exit.Present() {
+				s.exit = fact.Exit
 				d.Exit = fact.Exit
 				s.stopAsked = true
 			}
@@ -327,10 +347,17 @@ func (r *sessions) observe(s *session, owner nativeOwner) {
 			r.requestStop(s)
 		}
 		if complete {
+			s.mu.Lock()
+			s.observing = false
+			s.mu.Unlock()
 			r.finalize(s)
 			return
 		}
 		if err != nil {
+			s.mu.Lock()
+			s.observing = false
+			s.stopSent = false
+			s.mu.Unlock()
 			return
 		} // retained owner; a later Stop may restart observation
 	}
@@ -350,7 +377,14 @@ func (r *sessions) requestStop(s *session) {
 			d.Phase = api.Stopping
 		}
 		if discarded := s.input.close(); discarded != 0 {
-			s.diagnostics[api.InputCleanup] = diagnostic(api.IOFailure, "runtime.input_discarded", fmt.Sprintf("Accepted input: %d queued bytes discarded before native delivery; do not replay.", discarded))
+			message := fmt.Sprintf("Accepted input: %d queued bytes discarded before native delivery; do not replay.", discarded)
+			if previous, ok := s.diagnostics[api.InputCleanup]; ok {
+				message = previous.Data().Message + " " + message
+			}
+			s.diagnostics[api.InputCleanup] = diagnostic(api.IOFailure, "runtime.input_discarded", message)
+		}
+		if s.snapshot.Data().Phase == api.Stopping {
+			return errBusy
 		}
 		return nil
 	})
@@ -372,6 +406,12 @@ func (r *sessions) finalize(s *session) {
 			return errBusy
 		}
 		d.Phase = api.Cleaned
+		if s.acquired.Present() {
+			d.AcquiredCwd = s.acquired
+		}
+		if s.exit.Present() {
+			d.Exit = s.exit
+		}
 		d.Cleanup = owned(api.NewSessionCleanup(api.SessionCleanupData{State: api.CleanupComplete}))
 		return nil
 	})

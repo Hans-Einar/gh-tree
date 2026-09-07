@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"math"
 	"reflect"
 	"sync"
 	"sync/atomic"
@@ -389,5 +390,83 @@ func TestSessionsFailedCleanupRepairAndCanceledRestart(t *testing.T) {
 	request := must(api.NewSessionRestartRequest(api.SessionRestartRequestData{OperationID: must(api.NewOperationID(2)), SessionID: id}))
 	if restart, err := r.Restart(ctx, request); !errors.Is(err, context.Canceled) || restart.Data().Replacement.Present() {
 		t.Fatal("canceled replacement admission")
+	}
+}
+
+func TestSessionsSequenceExhaustionKeepsFinalAndNativeOwnership(t *testing.T) {
+	o := testOwner()
+	r, configs := testEngine(o)
+	id := startID(t, r, engineRequest(1, false))
+	config := <-configs
+	s := must(r.registry.lookup(id))
+	s.mu.Lock()
+	d := s.snapshot.Data()
+	d.Sequence = sequence(math.MaxUint64 - 1)
+	s.snapshot = must(api.NewSessionSnapshot(d))
+	s.mu.Unlock()
+	config.Output(api.Stdout, []byte("must refuse without offset movement"))
+	if o.stops.Load() != 1 {
+		t.Fatal("exhaustion did not latch owned Stop")
+	}
+	exit := must(api.NewSessionExit(api.SessionExitData{Code: api.Some(5), Cause: api.RequestedExit}))
+	o.facts <- nativeFact{Exit: api.Some(exit), CleanupComplete: true}
+	final := awaitPhase(t, r, id, api.Cleaned).Data()
+	if final.Sequence.Value() != math.MaxUint64 || final.OutputRange.Data().End != 0 || !final.Exit.Present() {
+		t.Fatal("exhausted state/final reservation")
+	}
+}
+
+func TestSessionsCanceledRestartRetainsAlreadyAdmittedReplacement(t *testing.T) {
+	first, second := testOwner(), testOwner()
+	entered := make(chan nativeStart, 1)
+	release := make(chan struct{})
+	var starts atomic.Int32
+	r := newSessions(func(ctx context.Context, c nativeStart) (nativeOwner, nativeStartFact, error) {
+		if starts.Add(1) == 1 {
+			return first, established(c), nil
+		}
+		entered <- c
+		<-release
+		return second, nativeStartFact{}, ctx.Err()
+	}, nil, sessionBudgets{})
+	id := startID(t, r, engineRequest(1, false))
+	first.facts <- cleanedFact()
+	awaitPhase(t, r, id, api.Cleaned)
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan api.SessionRestartResult, 1)
+	req := must(api.NewSessionRestartRequest(api.SessionRestartRequestData{OperationID: must(api.NewOperationID(2)), SessionID: id}))
+	go func() { result, _ := r.Restart(ctx, req); done <- result }()
+	replacementConfig := <-entered
+	cancel()
+	result := <-done
+	if !result.Data().Old.Data().CleanupComplete || !result.Data().Replacement.Present() {
+		t.Fatal("canceled restart lost admitted replacement")
+	}
+	replacement := mustValue(mustValue(result.Data().Replacement).Data().Session)
+	if replacement.Data().SessionID != replacementConfig.ID || replacement.Data().Phase != api.Starting {
+		t.Fatal("wrong replacement facts")
+	}
+	close(release)
+	awaitPhase(t, r, replacementConfig.ID, api.Stopping)
+	second.facts <- cleanedFact()
+	awaitPhase(t, r, replacementConfig.ID, api.Cleaned)
+}
+
+func TestSessionsFailureBeforeNativeAcquisitionStillOwnsFinal(t *testing.T) {
+	var starts atomic.Int32
+	r := newSessions(func(context.Context, nativeStart) (nativeOwner, nativeStartFact, error) {
+		starts.Add(1)
+		return nil, nativeStartFact{}, errUnsupported
+	}, nil, sessionBudgets{})
+	request := engineRequest(1, false)
+	result, err := r.Start(context.Background(), request)
+	if !errors.Is(err, errUnsupported) || !result.Data().Session.Present() || result.Data().Established {
+		t.Fatal("failed admitted start")
+	}
+	id := mustValue(result.Data().Session).Data().SessionID
+	awaitPhase(t, r, id, api.Cleaned)
+	repeated, err := r.Start(context.Background(), request)
+	if !errors.Is(err, errUnsupported) || mustValue(repeated.Data().Session).Data().SessionID != id || starts.Load() != 1 {
+		t.Fatal("failed start duplicate reran native acquisition")
 	}
 }
