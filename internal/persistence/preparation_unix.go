@@ -17,6 +17,8 @@ import (
 type nativeMetadata = unixMetadata
 type nativeStoreLock = unixStoreLock
 
+const nativePreparedBytesGuarded = false
+
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return unixLock(ctx, parent, basename, wait)
 }
@@ -105,6 +107,9 @@ func nativeCreateFile(parent *nativeObject, name string, userOnly bool) (*native
 }
 func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
 	return nativeCreateFile(parent, name, userOnly)
+}
+func nativeCreatePayloadMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
+	return nativeCreateFileMetadata(parent, name, userOnly, metadata)
 }
 func nativeInspectMetadata(object *nativeObject) (nativeMetadata, error) {
 	return unixInspectMetadata(object)

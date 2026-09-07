@@ -14,6 +14,8 @@ import (
 type nativeMetadata = winMetadata
 type nativeStoreLock = winStoreLock
 
+const nativePreparedBytesGuarded = true
+
 func nativeLock(ctx context.Context, parent *nativeObject, basename string, wait time.Duration) (*nativeStoreLock, error) {
 	return winLock(ctx, parent, basename, wait)
 }
@@ -89,6 +91,18 @@ func nativeCreateFile(parent *nativeObject, name string, userOnly bool) (*native
 	return nativeCreateFileMetadata(parent, name, userOnly, nil)
 }
 func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
+	return winCreateArtifact(parent, name, userOnly, metadata, winShareAll)
+}
+
+func nativeCreatePayloadMetadata(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata) (*nativeObject, error) {
+	// Exclusion begins with FILE_CREATE, before another handle or writable
+	// section can exist. Keep this exact creator open through publication: a
+	// later no-write-sharing reopen could not revoke an earlier writable map.
+	// DELETE sharing permits the retained-handle hardlink/rename protocol.
+	return winCreateArtifact(parent, name, userOnly, metadata, windows.FILE_SHARE_READ|windows.FILE_SHARE_DELETE)
+}
+
+func winCreateArtifact(parent *nativeObject, name string, userOnly bool, metadata *nativeMetadata, share uint32) (*nativeObject, error) {
 	var security *windows.SECURITY_DESCRIPTOR
 	var err error
 	if userOnly {
@@ -102,7 +116,7 @@ func nativeCreateFileMetadata(parent *nativeObject, name string, userOnly bool, 
 	}
 	object, err := winOpenWithSecurity(parent.handle(), name,
 		windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.DELETE|windows.WRITE_DAC|windows.WRITE_OWNER,
-		winShareAll, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE, security)
+		share, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE, security)
 	if err != nil {
 		return nil, err
 	}

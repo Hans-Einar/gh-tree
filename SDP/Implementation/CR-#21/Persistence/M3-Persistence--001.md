@@ -692,7 +692,7 @@ retaining/explicitly closing its directory descriptor; exact baseline and actual
 open/close negative checks remain unchanged. This correction changes no product
 behavior and does not treat the failed macOS run as passing native evidence.
 
-## Current handoff and exact next permitted action
+## P3k handoff (superseded by the bounded P3l handoff below)
 
 Candidate: `ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8`; product changes at
 `faec6489f1988dd881269d6985cafd0fa14ee57c` and
@@ -737,3 +737,82 @@ Slice/baseline closure or release. Git-first serial integration remains held
 behind the separate blocked Git review, which was not retried or substituted.
 All preserved denied-ACL fixtures remain untouched. Final report-only checkpoint
 does not change the tested executable candidate.
+
+## P3l Windows prepared-byte correction — current handoff
+
+Bounded author `m3_persistence_prepared_bytes_fix`, #63/#21, Master scope
+canonical21b512d / ledger102. Started from clean, remotely equal
+`f6d07fbfd972e06ce04122b78f2338013c5b7ba3` on
+`codereview-21/layer-persistence`. M363-SRC-H01 is the independent HIGH finding
+in M3-Source-Boundary-Review--001; this milestone addresses **prepared bytes**
+only. No complete adapter acceptance, Unix proposal approval or metadata exception.
+
+Windows payload creation now uses exclusive FILE_CREATE with READ|DELETE sharing,
+excluding other data-write/append opens from the object's birth. The request keeps
+that creator handle alongside the unchanged read/delete `.publication` publisher
+through the actual class65 call. The ordinary `.payload` hardlink and recorded
+ObjectID/FileID profile are unchanged. A later reopen is not the byte guard.
+After known publication, the creator closes before native-return/outcome-delivery
+seams; the publisher retains identity independently and subsequent target writes
+are allowed. Genuine sharing refusals during the short native guard lifetime are
+still possible. A close error retains the known effect and its separate
+CleanupIncomplete diagnostic. Prepublication failure/cancel still drains every
+owned handle. Unix creation/close behavior is unchanged through a small platform
+selector; no new public interface, journal shape, primitive or dependency.
+
+Native Windows11 build26200 / NTFS, existing Go1.25.0:
+
+- Replayed the unchanged independent probe against additive overlays of the exact
+  f6d07fb product: both absence/presence reproduce foreign prepared bytes with
+  AppliedVerified/known publication, exit1 as expected. Existing rejected source
+  and evidence remain unchanged. Local replay log SHA256
+  `6d1361185a1d392c16638f45c8696823ce8135ccfb54099bef345811aceec412`.
+- New native tests exercise nine preparation phases and both payload names:
+  114 actual sharing refusals for write-data, append-data and generic-write;
+  read handles cannot create writable sections/views. A real readonly mapping
+  survives through publication, and a target write before result delivery produces
+  distinct Current/Proposed versions without losing known publication.
+- A retained writable view continues writing after its file/section handles close;
+  a later deny-write-sharing open refuses, and exclusive prepared creation cannot
+  adopt or truncate that existing object. The initial test incorrectly expected
+  the later guard open to succeed; observed native sharing refusal corrected that
+  fixture assumption. No product permission relaxation followed.
+- Full Persistence tests PASS amd648.231s and native386/WOW64 8.649s; full native
+  amd64 race PASS32.023s. Existing identity/metadata/recovery/late-original/native
+  publication, 70 fault/cancel/resource and twelve crash controls execute in those
+  suites. Test mapping-pointer conversions initially failed vet; bounded native
+  copies removed the unsafe conversion. Final corrected mapping selectors PASS
+  three repeats under amd64 race1.956s and native3860.533s; amd64/386 vet PASS.
+  Exact-source CI/native ARM64 and separate independent review remain pending.
+
+Compact local replay scripts/logs are under
+`C:/Users/hanse/.codex/tmp/m3-prepared-bytes-20260907`; product regressions are
+committed in `internal/persistence/prepared_bytes_windows_test.go`. No duplicate
+source archive or new evidence format was added.
+
+**Separate concrete Windows metadata gate:** an ordinary READ|WRITE_DAC/share-all
+handle can still change the prepared object's ordered DACL after the last policy
+check. The bounded probe adds a redundant allow ACE for the same current user
+(no broader access), verifies different ordered DACL bytes, and observes that
+exact DACL on the published target with known success in both presence modes.
+It uses only owned temporary files, without privilege changes or denied ACLs.
+This is evidence of a remaining metadata boundary, not a passing metadata-integrity
+claim; the byte-sharing guard does not exclude WRITE_DAC. Master authorized the
+single source/log in the existing protocol evidence directory:
+`prepared-byte-metadata-boundary-windows_test.go.txt` / `.log`.
+Native probe exit0 means the counterexample prerequisites were established;
+package0.589s. Source SHA256
+`677cfaaf27e7b9c5c700f038a6eecad3d216a99353c329b4001ebc7395ca8b01`;
+log SHA256 `cf9414298301b817e972fc1b45400356cfe9d3e703a6aba02269b8c0ca8236cc`.
+Replay using an additive overlay for
+`internal/persistence/metadata_boundary_probe_windows_test.go`, then
+`go test -overlay <overlay.json> ./internal/persistence -run
+'^TestPreparedByteGuardSeparateMetadataBoundary$' -count=1 -v`.
+
+Next: push this coherent bounded source, inspect exact native ARM64/full CI, then
+fresh independent confirmation of the byte correction and classification of the
+separate metadata obligation. FreeBSD authority/native metadata, no-birth profile
+and the unapproved Unix source/bytes/metadata condition remain open. No frozen
+record, original permission policy, manifest/raw recovery protection or scope
+waiver changed. Preserved policy-rejected ACL/cache residue and blocked Git review
+were untouched. No integration, completion tag, full Slice or release claim.

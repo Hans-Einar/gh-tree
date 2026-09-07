@@ -1,0 +1,10 @@
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary/false
+    metadata_boundary_probe_windows_test.go:99: prepared byte guard retained; separate WRITE_DAC changed ordered DACL before publication; actual known result=true nilError=true
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary/true
+    metadata_boundary_probe_windows_test.go:99: prepared byte guard retained; separate WRITE_DAC changed ordered DACL before publication; actual known result=true nilError=true
+--- PASS: TestPreparedByteGuardSeparateMetadataBoundary (0.03s)
+    --- PASS: TestPreparedByteGuardSeparateMetadataBoundary/false (0.01s)
+    --- PASS: TestPreparedByteGuardSeparateMetadataBoundary/true (0.02s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.589s

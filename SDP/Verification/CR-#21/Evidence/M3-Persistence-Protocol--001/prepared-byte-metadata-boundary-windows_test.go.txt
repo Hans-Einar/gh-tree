@@ -1,0 +1,102 @@
+package persistence
+
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"golang.org/x/sys/windows"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestPreparedByteGuardSeparateMetadataBoundary(t *testing.T) {
+	for _, present := range []bool{false, true} {
+		t.Run(fmt.Sprint(present), func(t *testing.T) {
+			root := physicalStoreTemp(t)
+			if present {
+				if err := os.WriteFile(filepath.Join(root, "config.json"), []byte(`{"schemaVersion":1}`), 0600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			s := newTestStore(t, root)
+			loaded, err := s.LoadUserConfig(context.Background())
+			if err != nil {
+				t.Fatal(err)
+			}
+			v, _ := loaded.Observation().Data().Version.Value()
+			var changed []byte
+			s.hook = func(at string) error {
+				if at != "before-publication" {
+					return nil
+				}
+				c, err := nativeAcquire(context.Background(), root)
+				if err != nil {
+					return err
+				}
+				defer c.close()
+				entries, err := os.ReadDir(root)
+				if err != nil {
+					return err
+				}
+				for _, entry := range entries {
+					if strings.HasSuffix(entry.Name(), ".publication") {
+						o, err := winOpen(c.parent().handle(), entry.Name(), windows.FILE_GENERIC_READ|windows.WRITE_DAC, winShareAll, windows.FILE_OPEN, windows.FILE_NON_DIRECTORY_FILE)
+						if err != nil {
+							return err
+						}
+						defer o.close()
+						before, err := winInspectSecurity(o.handle())
+						if err != nil {
+							return err
+						}
+						user, err := windows.GetCurrentProcessToken().GetTokenUser()
+						if err != nil {
+							return err
+						}
+						sid := user.User.Sid.String()
+						sd, err := windows.SecurityDescriptorFromString("D:P(A;;FA;;;" + sid + ")(A;;FR;;;" + sid + ")")
+						if err != nil {
+							return err
+						}
+						acl, _, err := sd.DACL()
+						if err != nil {
+							return err
+						}
+						if err := windows.SetSecurityInfo(o.handle(), windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION|windows.PROTECTED_DACL_SECURITY_INFORMATION, nil, nil, acl, nil); err != nil {
+							return err
+						}
+						after, err := winInspectSecurity(o.handle())
+						if err != nil {
+							return err
+						}
+						if bytes.Equal(before.dacl, after.dacl) {
+							return fmt.Errorf("DACL did not change")
+						}
+						changed = after.dacl
+						return nil
+					}
+				}
+				return fmt.Errorf("missing prepared object")
+			}
+			r, err := s.CommitUserConfig(context.Background(), userProposal(t, v, "proposed"))
+			assertCommitted(t, r, err)
+			c, err := nativeAcquire(context.Background(), root)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer c.close()
+			o, err := nativeOpenDocument(c.parent(), "config.json")
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer o.close()
+			after, err := winInspectSecurity(o.handle())
+			if err != nil || len(changed) == 0 || !bytes.Equal(changed, after.dacl) {
+				t.Fatal("metadata counterexample incomplete", err)
+			}
+			t.Logf("prepared byte guard retained; separate WRITE_DAC changed ordered DACL before publication; actual known result=%v nilError=%v", r.Data().PublicationKnown, err == nil)
+		})
+	}
+}

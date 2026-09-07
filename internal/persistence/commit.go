@@ -442,7 +442,11 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 			if original != nil {
 				initial = &metadata
 			}
-			object, err = nativeCreateFileMetadata(c.parent(), artifact.Name, proposed.family != api.RunConfig, initial)
+			if artifact.Kind == api.RetainedPayload {
+				object, err = nativeCreatePayloadMetadata(c.parent(), artifact.Name, proposed.family != api.RunConfig, initial)
+			} else {
+				object, err = nativeCreateFileMetadata(c.parent(), artifact.Name, proposed.family != api.RunConfig, initial)
+			}
 		}
 		if err != nil {
 			return result, err
@@ -545,10 +549,11 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	if err := s.checkpoint(ctx, stage); err != nil {
 		return result, err
 	}
-	// Close every preparation handle except the payload and exact original;
-	// their retained handles are needed for final identity checks/publication.
+	// Keep the publisher and exact original for final identity checks. Windows
+	// also retains the payload creator's continuous write-sharing exclusion;
+	// the separately opened publisher binds the publication hardlink's name.
 	for i := len(owned) - 1; i >= 0; i-- {
-		if owned[i] == publisher || owned[i] == original {
+		if owned[i] == publisher || owned[i] == original || (nativePreparedBytesGuarded && owned[i] == payload) {
 			continue
 		}
 		object := owned[i]
@@ -599,6 +604,23 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 		return result, err
 	}
 	r.Outcome, r.PublicationKnown, r.Durability = api.CommittedDurabilityUncertain, true, api.DurabilityUncertain
+	var preparedCloseErr error
+	if nativePreparedBytesGuarded {
+		// Publication is already known. Release byte exclusion before any
+		// outcome delivery/observation so the published target and its retained
+		// alias can receive ordinary later writes. Closing does not revoke the
+		// publisher's independent retained identity or erase the native effect.
+		for i, object := range owned {
+			if object == payload {
+				owned = append(owned[:i], owned[i+1:]...)
+				break
+			}
+		}
+		preparedCloseErr = s.closeResource("close.artifact", payload.close)
+		if preparedCloseErr != nil {
+			r.Diagnostics = append(r.Diagnostics, storageDiagnostic("close.artifact", preparedCloseErr))
+		}
+	}
 	// Losing delivery of the native return is an explicit test seam. Production
 	// reaches this point only after the actual selected native call succeeded.
 	var lostReturnErr error
@@ -618,7 +640,7 @@ func (s *Store) commit(ctx context.Context, valid bool, expected api.StorageVers
 	}
 	// Outcome and current observation are independent. A later editor can make
 	// current differ from proposed without erasing this known publication.
-	resultErr = errors.Join(lostReturnErr, barrierErr)
+	resultErr = errors.Join(preparedCloseErr, lostReturnErr, barrierErr)
 	stage = "outcome-delivery"
 	if s.hook != nil {
 		resultErr = errors.Join(resultErr, s.hook(stage))
