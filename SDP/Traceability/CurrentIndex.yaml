@@ -825,16 +825,17 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
+      "lastCheckpoint": "0dfd8879bdeb57563a73f9edf9c6b4b92317c6a8",
       "subContributions": [
         "IMPL69",
         "IMPL71"
       ],
       "latestVerification": {
-        "head": "a6e79eaa44ad485589b4d8322b7e9efcd9f911bf",
-        "run": 34068364364,
-        "result": "6 SUCCESS including corrected native FreeBSD; inventory/helper prerequisites FAIL; dependent cross/helper jobs skipped"
-      }
+        "head": "9a73ffc1691b62a63a816411dbbcd56907433d08",
+        "run": 34071112204,
+        "result": "2 SUCCESS, 5 FAILURE incl PTY fixture and race cleanup cases plus expected inventory. Corrected0dfd887 local native/compile/vet PASS; exact CI pending"
+      },
+      "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08"
     },
     {
       "id": "IMPL66",
@@ -927,13 +928,13 @@
       "id": "IMPL69",
       "kind": "runtime_platform_contribution",
       "issue": 69,
-      "state": "independent_review_ready",
+      "state": "correction_authorized_changes_required",
       "branch": "codex/cr21-runtime-windows",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
       "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
-      "lastCheckpoint": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+      "lastCheckpoint": "35a7632c97920b68e5c428bbbbf37494a056d8ea",
       "subContributions": [
         "IMPL70"
       ],
@@ -948,13 +949,19 @@
       "latestVerification": {
         "head": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
         "run": 34071023665,
-        "result": "pending exact native CI; local amd64 race/386/vet/all12 compilation PASS"
+        "result": "6 native/race SUCCESS; expected inventory prerequisite FAIL, dependent matrix/helper skipped; independent review finds two MEDIUM defects"
       },
       "dependentGates": [
         "independent native review",
         "exact native CI",
         "reviewed regenerated committed helper binding",
         "parent/combined/full-stack integration"
+      ],
+      "reviewHead": "35a7632c97920b68e5c428bbbbf37494a056d8ea",
+      "disposition": "CHANGES_REQUIRED",
+      "findings": [
+        "W69-M01",
+        "W69-M02"
       ]
     },
     {

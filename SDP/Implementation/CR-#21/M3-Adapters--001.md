@@ -338,3 +338,9 @@ within -check; no product runtime download/compiler, pin mutation or CI waiver.
 DLL/TLS/ConPTY/failure/resource controls. Fresh independent review of this native
 candidate proceeds while #70 corrects H01. Exact source/native CI and later
 regenerated helper binding remain mandatory; no premature Runtime acceptance.
+
+#69 review35a7632 requires W69-M01 canceled control/effect ownership and M02
+typed native failure/stage correction. Fresh Windows-only author correction is
+authorized, preserving all native resource and shared/public contracts, followed
+by exact source/native tests and bounded independent confirmation. #71 must use
+the resulting truthful seam, not reconstruct discarded facts or parse generic text.

@@ -57,7 +57,7 @@ Current status-only commits do not change that verified product tree.
 | Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
-| Windows Runtime#69 | codex/cr21-runtime-windows | 5e9643364f62dcc51a967fbf94775e5350cd2bc9 | complete standalone native candidate frozen for fresh review; local race/386/all12 PASS, exact CI34071023665 pending; helper binding later |
+| Windows Runtime#69 | codex/cr21-runtime-windows | 35a7632c97920b68e5c428bbbbf37494a056d8ea | source5e964336 CHANGES_REQUIRED: W69-M01 canceled/lost control effects and M02 erased error classification; native CI6PASS/helper prerequisite FAIL |
 | Helper assets#70 | codex/cr21-runtime-helper-assets | c5f36edfcfd2e418f28e32fc0613143ed31649c5 | corrected technical732fd9bb, CI34071597307 SUCCESS; all3 findings await bounded independent confirmation; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
@@ -176,3 +176,17 @@ gh-tree-helper-check-fresh-krknen5u, and gh-tree-helper-final-xdx2pbor. The temp
 Go-root junction was removed before that rejection. These are reproducible caches,
 not unpushed implementation/evidence; do not confuse them with the older denied-ACL
 fixture, which remains separately untouched.
+
+#69 independent source review35a7632 requires W69-M01 cancellation/delivery
+ownership and W69-M02 closed typed native cause/stage corrections. Fresh bounded
+author work may change only the already owned Windows files/tests/report; shared
+wire/start remain coordinated and no public contract changes. Preserve late known
+effects without replay and validate bounded failure transport. Then targeted
+verification/push and existing reviewer confirmation; no native acceptance yet.
+
+#65 Unix client seam9a73ffc is committed; its actual CI34071112204 failed PTY
+marker/foreground cases and race cleanup timing. Corrected0dfd887 uses real
+foreground readiness/non-echoable markers and test-only GORACE atexit adjustment,
+keeping product2s/3s bounds; adds truthful residual/late-output ownership controls.
+Local native/9-target compile/vet PASS; exact corrected CI remains required.
+#71 parent scope remains queued; native client signatures are in broker source.
