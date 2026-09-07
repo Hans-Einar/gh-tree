@@ -1,0 +1,13 @@
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication/false
+    review_source_windows_test.go:47: mutated=true valid=true outcome=3 known=true err=<nil> proposedEqualsCurrent=false target={"schemaVersion":1,"stripPrefixes":["changed"]} recovery=3
+    review_source_windows_test.go:49: contract violation reproduced: prepared bytes changed before publication yet intended proposal was reported AppliedVerified
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication/true
+    review_source_windows_test.go:47: mutated=true valid=true outcome=3 known=true err=<nil> proposedEqualsCurrent=false target={"schemaVersion":1,"stripPrefixes":["changed"]} recovery=5
+    review_source_windows_test.go:49: contract violation reproduced: prepared bytes changed before publication yet intended proposal was reported AppliedVerified
+--- FAIL: TestReviewWindowsPreparationBytesBeforePublication (0.04s)
+    --- FAIL: TestReviewWindowsPreparationBytesBeforePublication/false (0.02s)
+    --- FAIL: TestReviewWindowsPreparationBytesBeforePublication/true (0.02s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/persistence	0.590s
+FAIL

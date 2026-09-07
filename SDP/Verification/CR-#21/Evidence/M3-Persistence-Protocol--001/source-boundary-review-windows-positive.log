@@ -1,0 +1,16 @@
+=== RUN   TestCommitExternalComparisonGapAndAbsenceCompetitor
+=== RUN   TestCommitExternalComparisonGapAndAbsenceCompetitor/absence
+=== RUN   TestCommitExternalComparisonGapAndAbsenceCompetitor/presence
+--- PASS: TestCommitExternalComparisonGapAndAbsenceCompetitor (0.05s)
+    --- PASS: TestCommitExternalComparisonGapAndAbsenceCompetitor/absence (0.02s)
+    --- PASS: TestCommitExternalComparisonGapAndAbsenceCompetitor/presence (0.02s)
+=== RUN   TestCommitDetectedExternalChangeRefusesBeforePublication
+--- PASS: TestCommitDetectedExternalChangeRefusesBeforePublication (0.02s)
+=== RUN   TestCommitOutcomeDeliveryPreservesCancellationAndIndependentCurrent
+--- PASS: TestCommitOutcomeDeliveryPreservesCancellationAndIndependentCurrent (0.02s)
+=== RUN   TestCommitAllFamiliesAndRestartRecovery
+--- PASS: TestCommitAllFamiliesAndRestartRecovery (0.07s)
+=== RUN   TestManifestRestartStableRecoveryIDsAndLateOriginalWrites
+--- PASS: TestManifestRestartStableRecoveryIDsAndLateOriginalWrites (0.04s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.764s

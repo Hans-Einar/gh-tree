@@ -1,0 +1,13 @@
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication/false
+    review_source_windows_test.go:45: open C:\Users\hanse\AppData\Local\Temp\TestReviewWindowsPreparationBytesBeforePublicationfalse1955933487\001\config.json: The system cannot find the file specified.
+=== RUN   TestReviewWindowsPreparationBytesBeforePublication/true
+    review_source_windows_test.go:47: mutated=false valid=true outcome=1 known=false err=storage-final-check: Storage final-check did not complete without diagnostics.
+        Access is denied. proposedEqualsCurrent=false target={"schemaVersion":1} recovery=5
+    review_source_windows_test.go:48: counterexample prerequisites not established
+--- FAIL: TestReviewWindowsPreparationBytesBeforePublication (0.10s)
+    --- FAIL: TestReviewWindowsPreparationBytesBeforePublication/false (0.07s)
+    --- FAIL: TestReviewWindowsPreparationBytesBeforePublication/true (0.03s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/persistence	0.619s
+FAIL

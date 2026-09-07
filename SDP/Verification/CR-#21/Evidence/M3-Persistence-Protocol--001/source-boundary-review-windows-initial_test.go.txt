@@ -1,0 +1,52 @@
+//go:build windows
+
+package persistence
+
+import (
+ "context"
+ "fmt"
+ "os"
+ "path/filepath"
+ "strings"
+ "testing"
+
+ "github.com/Hans-Einar/gh-tree/internal/application/api"
+ "golang.org/x/sys/windows"
+)
+
+func TestReviewWindowsPreparationBytesBeforePublication(t *testing.T) {
+ for _, present := range []bool{false,true} {
+  t.Run(fmt.Sprint(present),func(t *testing.T){
+   root:=physicalStoreTemp(t)
+   if present { if err:=os.WriteFile(filepath.Join(root,"config.json"),[]byte(`{"schemaVersion":1}`),0600); err!=nil {t.Fatal(err)} }
+   s:=newTestStore(t,root)
+   loaded,err:=s.LoadUserConfig(context.Background()); if err!=nil {t.Fatal(err)}
+   version,_:=loaded.Observation().Data().Version.Value()
+   mutated:=false
+   foreign:=[]byte(`{"schemaVersion":1,"stripPrefixes":["changed"]}`)
+   s.hook=func(at string) error {
+    if at!="before-publication" {return nil}
+    entries,err:=os.ReadDir(root); if err!=nil {return err}
+    for _,entry:=range entries {
+     if !strings.HasSuffix(entry.Name(),".publication") {continue}
+     c,err:=nativeAcquire(context.Background(),root); if err!=nil {return err}
+     defer c.close()
+     o,err:=winOpen(c.parent().handle(),entry.Name(),windows.FILE_GENERIC_WRITE,winShareAll,windows.FILE_OPEN,windows.FILE_NON_DIRECTORY_FILE); if err!=nil {return err}
+     defer o.close()
+     if err:=o.file.Truncate(0); err!=nil {return err}
+     n,err:=o.file.WriteAt(foreign,0); if err!=nil {return err}; if n!=len(foreign) {return fmt.Errorf("short write %d",n)}
+     if err:=o.file.Sync(); err!=nil {return err}
+     mutated=true
+     return nil
+    }
+    return fmt.Errorf("no owned publication source")
+   }
+   result,err:=s.CommitUserConfig(context.Background(),userProposal(t,version,"proposed"))
+   actual,readErr:=os.ReadFile(filepath.Join(root,"config.json")); if readErr!=nil {t.Fatal(readErr)}
+   d:=result.Data(); proposed,_:=d.ProposedVersion.Value(); current,_:=d.CurrentVersion.Value()
+   t.Logf("mutated=%v valid=%v outcome=%v known=%v err=%v proposedEqualsCurrent=%v target=%s recovery=%d",mutated,result.Valid(),d.Outcome,d.PublicationKnown,err,proposed==current,actual,len(d.Recovery))
+   if !mutated || !result.Valid() || err!=nil || d.Outcome!=api.CommittedDurabilityUncertain || !d.PublicationKnown || proposed==current || string(actual)!=string(foreign) { t.Fatal("counterexample prerequisites not established") }
+   t.Fatalf("contract violation reproduced: prepared bytes changed before publication yet intended proposal was reported AppliedVerified")
+  })
+ }
+}
