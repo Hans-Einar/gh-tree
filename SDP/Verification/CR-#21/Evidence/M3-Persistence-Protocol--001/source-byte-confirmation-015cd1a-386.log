@@ -1,0 +1,36 @@
+=== RUN   TestCommitLatePayloadWriteKeepsIDAndAllowsFreshExpectedIntent
+--- PASS: TestCommitLatePayloadWriteKeepsIDAndAllowsFreshExpectedIntent (0.04s)
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary/false
+    metadata_boundary_probe_windows_test.go:99: prepared byte guard retained; separate WRITE_DAC changed ordered DACL before publication; actual known result=true nilError=true
+=== RUN   TestPreparedByteGuardSeparateMetadataBoundary/true
+    metadata_boundary_probe_windows_test.go:99: prepared byte guard retained; separate WRITE_DAC changed ordered DACL before publication; actual known result=true nilError=true
+--- PASS: TestPreparedByteGuardSeparateMetadataBoundary (0.03s)
+    --- PASS: TestPreparedByteGuardSeparateMetadataBoundary/false (0.01s)
+    --- PASS: TestPreparedByteGuardSeparateMetadataBoundary/true (0.02s)
+=== RUN   TestWindowsPreparedBytesGuardLifetime
+=== RUN   TestWindowsPreparedBytesGuardLifetime/false
+    prepared_bytes_windows_test.go:182: 51 actual writer-sharing refusals across 9 stages; read mapping retained; postpublication target write accepted
+=== RUN   TestWindowsPreparedBytesGuardLifetime/true
+    prepared_bytes_windows_test.go:182: 63 actual writer-sharing refusals across 9 stages; read mapping retained; postpublication target write accepted
+--- PASS: TestWindowsPreparedBytesGuardLifetime (0.04s)
+    --- PASS: TestWindowsPreparedBytesGuardLifetime/false (0.01s)
+    --- PASS: TestWindowsPreparedBytesGuardLifetime/true (0.02s)
+=== RUN   TestWindowsEarlierWritableMappingCannotBecomePreparedPayload
+--- PASS: TestWindowsEarlierWritableMappingCannotBecomePreparedPayload (0.01s)
+=== RUN   TestReviewPreparedByteCorrectionAndGuardClose
+=== RUN   TestReviewPreparedByteCorrectionAndGuardClose/present=false/closeError=false
+    review_prepared_bytes_windows_test.go:65: both prepared aliases refuse writes; guard close releases target; injectedError=false; known effect/current/recovery/resources retained
+=== RUN   TestReviewPreparedByteCorrectionAndGuardClose/present=false/closeError=true
+    review_prepared_bytes_windows_test.go:65: both prepared aliases refuse writes; guard close releases target; injectedError=true; known effect/current/recovery/resources retained
+=== RUN   TestReviewPreparedByteCorrectionAndGuardClose/present=true/closeError=false
+    review_prepared_bytes_windows_test.go:65: both prepared aliases refuse writes; guard close releases target; injectedError=false; known effect/current/recovery/resources retained
+=== RUN   TestReviewPreparedByteCorrectionAndGuardClose/present=true/closeError=true
+    review_prepared_bytes_windows_test.go:65: both prepared aliases refuse writes; guard close releases target; injectedError=true; known effect/current/recovery/resources retained
+--- PASS: TestReviewPreparedByteCorrectionAndGuardClose (0.11s)
+    --- PASS: TestReviewPreparedByteCorrectionAndGuardClose/present=false/closeError=false (0.03s)
+    --- PASS: TestReviewPreparedByteCorrectionAndGuardClose/present=false/closeError=true (0.03s)
+    --- PASS: TestReviewPreparedByteCorrectionAndGuardClose/present=true/closeError=false (0.03s)
+    --- PASS: TestReviewPreparedByteCorrectionAndGuardClose/present=true/closeError=true (0.03s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/persistence	0.668s

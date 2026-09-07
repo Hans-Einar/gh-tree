@@ -1,0 +1,69 @@
+//go:build windows
+package persistence
+import (
+ "context"
+ "errors"
+ "fmt"
+ "os"
+ "path/filepath"
+ "runtime/debug"
+ "strings"
+ "testing"
+ "github.com/Hans-Einar/gh-tree/internal/application/api"
+ "golang.org/x/sys/windows"
+)
+func TestReviewPreparedByteCorrectionAndGuardClose(t *testing.T) {
+ oldGC:=debug.SetGCPercent(-1); defer debug.SetGCPercent(oldGC)
+ checkResources:=testRequestResources(t)
+ for _,present:=range []bool{false,true} {
+  for _,closeError:=range []bool{false,true} {
+   t.Run(fmt.Sprintf("present=%v/closeError=%v",present,closeError),func(t *testing.T){
+    root:=physicalStoreTemp(t)
+    if present { if err:=os.WriteFile(filepath.Join(root,"config.json"),[]byte(`{"schemaVersion":1}`),0600); err!=nil {t.Fatal(err)} }
+    s:=newTestStore(t,root); loaded,err:=s.LoadUserConfig(context.Background()); if err!=nil {t.Fatal(err)}
+    v,_:=loaded.Observation().Data().Version.Value()
+    denied:=0; closed:=false; injected:=errors.New("review guard close delivery")
+    late:=[]byte(`{"schemaVersion":1,"stripPrefixes":["later"]}`)
+    s.hook=func(at string) error {
+     if at=="before-publication" {
+      entries,err:=os.ReadDir(root); if err!=nil {return err}
+      c,err:=nativeAcquire(context.Background(),root); if err!=nil {return err}; defer c.close()
+      for _,entry:=range entries {
+       if !strings.HasSuffix(entry.Name(),".payload") && !strings.HasSuffix(entry.Name(),".publication") {continue}
+       o,err:=winOpen(c.parent().handle(),entry.Name(),windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE,winShareAll,windows.FILE_OPEN,windows.FILE_NON_DIRECTORY_FILE)
+       if o!=nil {o.close(); return fmt.Errorf("prepared writer admitted")}
+       if !errors.Is(err,windows.ERROR_SHARING_VIOLATION) {return fmt.Errorf("wrong prepared refusal: %w",err)}
+       denied++
+      }
+     }
+     if at=="close.artifact" && !closed {
+      // The new close happens directly after known publication, before the
+      // native-return/outcome hooks and before final request cleanup.
+      closed=true
+      c,err:=nativeAcquire(context.Background(),root); if err!=nil {return err}; defer c.close()
+      o,err:=winOpen(c.parent().handle(),"config.json",windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE,winShareAll,windows.FILE_OPEN,windows.FILE_NON_DIRECTORY_FILE); if err!=nil {return err}; defer o.close()
+      if err:=o.file.Truncate(0); err!=nil {return err}
+      if n,err:=o.file.WriteAt(late,0); err!=nil || n!=len(late) {return fmt.Errorf("late write %d: %w",n,err)}
+      if err:=o.file.Sync(); err!=nil {return err}
+      if closeError {return injected}
+     }
+     return nil
+    }
+    r,err:=s.CommitUserConfig(context.Background(),userProposal(t,v,"proposed")); d:=r.Data()
+    if denied!=2 || !closed || !r.Valid() || d.Outcome!=api.CommittedDurabilityUncertain || !d.PublicationKnown || d.CurrentVersion==d.ProposedVersion {t.Fatalf("facts denied=%d closed=%v result=%+v err=%v",denied,closed,d,err)}
+    if closeError {
+     if !errors.Is(err,injected) {t.Fatalf("lost guard close error %v",err)}
+     found:=false; for _,diag:=range d.Diagnostics {if diag.Data().Code==api.CleanupIncomplete {found=true}}
+     if !found {t.Fatal("lost CleanupIncomplete")}
+    } else if err!=nil {t.Fatal(err)}
+    actual,err:=os.ReadFile(filepath.Join(root,"config.json")); if err!=nil || string(actual)!=string(late) {t.Fatal("late target observation",err)}
+    checkResources(t)
+    reloaded,err:=newTestStore(t,root).LoadUserConfig(context.Background()); if err!=nil || !reloaded.Valid() || reloaded.Observation().Data().Version!=d.CurrentVersion {t.Fatal("fresh current/recovery",err)}
+    returned:=map[api.RecoveryID]bool{}; for _,rec:=range d.Recovery {returned[rec.Data().Record.Data().RecoveryID]=true}
+    for _,rec:=range reloaded.Observation().Data().Recovery {if !returned[rec.Data().Record.Data().RecoveryID] {t.Fatal("new recovery ID")}}
+    checkResources(t)
+    t.Logf("both prepared aliases refuse writes; guard close releases target; injectedError=%v; known effect/current/recovery/resources retained",closeError)
+   })
+  }
+ }
+}
