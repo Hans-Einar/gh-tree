@@ -6,8 +6,8 @@ split within Runtime. Frozen Application--Runtime/BoundaryTypes 1.0.0,
 WindowsBroker/CwdAcquisition and Verification govern this contribution. No
 acceptance, integration, full adapter or native platform completion is claimed.
 
-Current disposition: **W69-M01/M02 corrected source pending current CI and bounded
-independent re-review**. Latest candidate status and outstanding dependent gates are
+Current disposition: **W69-M01/M02 corrected source frozen for bounded independent
+re-review; current native CI complete**. Latest candidate status and dependent gates are
 at the end of this record; earlier partial checkpoints are historical evidence.
 
 ## Partial checkpoint 1
@@ -322,3 +322,26 @@ race/386 suites also execute those existing tests. #70's older ab608 images stil
 do not bind this changed source closure; reviewed regeneration and real committed-
 image execution, #71 parent assembly and every full Runtime/Slice/M8 gate remain.
 Master alone integrates. No separate Git review was retrieved/retried/substituted.
+
+Final correction evidence: clean/pushed technical source
+`bd78deafd4dd36e22d5b106eb7ef9c4edcd2e832`, broker subtree
+`04afda252be325beaa6bf1f22c154a094b8daed9`. All twelve local
+`CGO_ENABLED=0 go build ./...` selections passed at that exact source after its
+commit. This is compilation evidence, separately from native execution.
+
+[CI34073256923](https://github.com/Hans-Einar/gh-tree/actions/runs/34073256923),
+attempt1, completed at exact bd78dea with six successful independent jobs:
+Windows amd64101594439386, native Windows ARM64101594439292,
+Linux101594439330, macOS101594439389, FreeBSD101594439302 and race101594439205.
+Windows job logs bind the source and actual Go1.25.0 host architecture; real broker
+tests pass54.808s on amd64 and56.583s on ARM64, followed by successful full vet/build.
+The run's overall conclusion is FAILURE: inventory101594439384 explicitly reports
+`M3 prerequisite missing: internal/runtime/cmd/helpergen Go source`; dependent
+cross-build101594535941 and helper-reproducibility101594536162 are SKIPPED.
+This standalone-source prerequisite remains separate #70 work and was not waived.
+
+The final report-only commit uses `[skip ci]`, leaves the tested broker subtree
+unchanged and must not cancel source CI. Keep the candidate/worktree clean and
+stopped for the existing independent reviewer's bounded correction review.
+No author acceptance, integration, complete native adapter, Slice or release
+disposition is granted by these passing source checks.
