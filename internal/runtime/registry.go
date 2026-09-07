@@ -14,12 +14,25 @@ const liveCapacity = 64
 const historyCapacity = 256
 
 type session struct {
-	mu          sync.Mutex
-	start       api.SessionStartRequest
-	environment []string
-	snapshot    api.SessionSnapshot
-	output      outputRing
-	input       *inputQueue
+	mu           sync.Mutex
+	start        api.SessionStartRequest
+	environment  []string
+	snapshot     api.SessionSnapshot
+	output       outputRing
+	input        *inputQueue
+	owner        nativeOwner
+	changed      chan struct{}
+	startDone    chan struct{}
+	startPending bool
+	established  bool
+	startErr     error
+	stopAsked    bool
+	stopSent     bool
+	nativeClean  bool
+	producers    int
+	controlBusy  bool
+	diagnostics  map[api.RuntimeCleanupStage]api.Diagnostic
+	restart      *restartTransition
 }
 
 // registry synchronizes membership, allocation, final reservation and admission.
@@ -72,7 +85,7 @@ func (r *registry) admit(ctx context.Context, request api.SessionStartRequest, e
 	if err := r.events.reserve(id); err != nil {
 		return nil, err
 	}
-	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue()}
+	s := &session{start: request.Clone(), environment: append([]string(nil), env...), snapshot: snapshot, input: newInputQueue(), changed: make(chan struct{}), startDone: make(chan struct{}), startPending: true, diagnostics: make(map[api.RuntimeCleanupStage]api.Diagnostic)}
 	r.nextID++
 	r.live++
 	r.sessions[id] = s
@@ -80,6 +93,49 @@ func (r *registry) admit(ctx context.Context, request api.SessionStartRequest, e
 		panic(err)
 	} // validated admission owns a reservation
 	return s, nil
+}
+
+// change performs a coherent memory-only read/modify/publication. Callers must
+// not call native code or wait in edit. Numerical space for the final is kept
+// even when an effectively infinite producer exhausts the session sequence.
+func (r *registry) change(s *session, kind api.RuntimeEventKind, edit func(*api.SessionSnapshotData) error) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	d := s.snapshot.Data()
+	if d.Phase == api.Cleaned {
+		return errClosed
+	}
+	if d.Sequence.Value() == math.MaxUint64 || (kind != api.RuntimeCleaned && d.Sequence.Value() == math.MaxUint64-1) {
+		return errExhausted
+	}
+	if err := edit(&d); err != nil {
+		return err
+	}
+	d.Sequence, _ = api.NewSessionSequence(d.Sequence.Value() + 1)
+	next, err := api.NewSessionSnapshot(d)
+	if err != nil {
+		return err
+	}
+	if err = r.events.publish(next, kind); err != nil {
+		return err
+	}
+	s.snapshot = next
+	close(s.changed)
+	s.changed = make(chan struct{})
+	if d.Phase == api.Cleaned {
+		r.live--
+		r.history = append(r.history, d.SessionID)
+		if len(r.history) > historyCapacity {
+			delete(r.sessions, r.history[0])
+			r.history = r.history[1:]
+		}
+		if r.closed && r.live == 0 {
+			_ = r.events.closeProducers()
+		}
+	}
+	return nil
 }
 
 func (r *registry) lookup(id domain.SessionID) (*session, error) {
