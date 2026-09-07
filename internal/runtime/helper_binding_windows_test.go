@@ -65,7 +65,7 @@ func bindingMachine(t *testing.T) (uint16, uint16) {
 func TestWindowsCommittedHelperBinding(t *testing.T) {
 	native, actual := bindingMachine(t)
 	if native != actual {
-		t.Fatal("matrix driver must execute natively")
+		t.Skip("matrix driver runs on native amd64/ARM64; emulated parents execute the selected binding fixture")
 	}
 	arches := []string{"386"}
 	helperArch := "amd64"
@@ -79,8 +79,10 @@ func TestWindowsCommittedHelperBinding(t *testing.T) {
 				t.Fatal("native ARM64 unexpectedly embeds a helper")
 			}
 		}
+	case pe.IMAGE_FILE_MACHINE_I386:
+		t.Skip("native 32-bit Windows uses its own executable and has no embedded-helper route")
 	default:
-		t.Fatal("committed helper binding needs native amd64 or ARM64")
+		t.Fatal("unsupported native machine")
 	}
 	manifestBytes, err := os.ReadFile("brokerassets/manifest.json")
 	if err != nil {
@@ -179,11 +181,7 @@ func (o *bindingOutput) append(stream api.OutputStream, b []byte) {
 func (o *bindingOutput) text() string {
 	o.mu.Lock()
 	defer o.mu.Unlock()
-	b := make([]byte, o.ring.end-o.ring.start)
-	for i := range b {
-		b[i] = o.ring.bytes[(o.ring.start+uint64(i))%outputCapacity]
-	}
-	return string(b)
+	return o.textLocked()
 }
 func (o *bindingOutput) wait(t *testing.T, marker string) {
 	t.Helper()
