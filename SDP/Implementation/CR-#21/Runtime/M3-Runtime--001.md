@@ -609,3 +609,32 @@ This integrates native components on the Runtime layer branch only. Common
 Sessions corrections/production bridges/constructor remain #71 work; no complete
 #65/Runtime/Slice or canonical program integration is claimed. The program
 CurrentIndex/Handoff on codereview-21/refactor records the resolved merge SHA.
+
+## Combined-native blocked-output fixture correction
+
+Master dispatch `73a8005f4a0fc366d359ff9f33705321978eb8cd`, ledger97; base/native
+integration `510139d18da16a0d42c62ee88fba8053813f2b13`. Exact CI34080586354 has
+19SUCCESS/1FAILURE: FreeBSD101614974148, artifact10003581444, reports only
+`TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin` failing because the
+final fully clean fact had no historical native timeout. The fixture released
+its callback after a100ms caller wait; the native20ms output-join period starts
+only after the exact supervisor joins, so these two timeouts are independent.
+No product defect or erased native diagnostic is established by that failure.
+
+Only `client_unix_test.go` and this report change. The fixture keeps every
+original assertion, observes the actual native `errUnixJoinTimeout` in current
+facts while the callback remains blocked, verifies its OutputCleanup residual
+and retained callback, then releases and requires complete cleanup plus that
+genuine historical error. The observation loop uses the existing5s context;
+it never substitutes a longer sleep, fabricated error or changed product bound.
+Deferred callback release/native cleanup is registered even for a retained owner
+returned with startup error. Product, shared, Windows and helper/image bytes are
+unchanged from accepted integration510139d.
+
+Targeted actual Linux execution PASS20/20 as UID/GID65534 in owned ext4
+`/tmp/gh-tree-unix-output-sync.TcMNhu` (existing openSUSE-Leap-15.5 WSL). All nine
+Unix broker test-binary target selections compile with Windows Go1.25.0/CGO0.
+Local UTF8 log: `C:/Users/hanse/.codex/tmp/gh-tree-unix-fix-20260907/output-sync-native.log`.
+Exact new-head FreeBSD/full native CI remains required. Master inspects this
+bounded fixture correction and the integration gate; no new whole native
+product review or full #65/Slice acceptance is claimed.

@@ -116,17 +116,19 @@ func TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	c, _, err := StartUnix(ctx, config)
-	if err != nil {
-		t.Fatal(err)
-	}
 	defer func() {
 		select {
 		case <-release:
 		default:
 			close(release)
 		}
-		requireUnixClientCleanup(t, c)
+		if c != nil {
+			requireUnixClientCleanup(t, c)
+		}
 	}()
+	if err != nil {
+		t.Fatal(err)
+	}
 	select {
 	case <-entered:
 	case <-ctx.Done():
@@ -146,6 +148,31 @@ func TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin(t *testing.T) {
 	}
 	if !found {
 		t.Fatal("missing retained output owner residual")
+	}
+	// The caller's deadline is independent of the native output-join period,
+	// which starts only after the supervisor joins. Keep the callback blocked
+	// until a real native timeout is observable; an elapsed caller wait cannot
+	// manufacture the historical diagnostic asserted after cleanup below.
+	poll := time.NewTicker(time.Millisecond)
+	defer poll.Stop()
+	for !errors.Is(f.Err, errUnixJoinTimeout) {
+		select {
+		case <-ctx.Done():
+			t.Fatal("native output-join timeout was not observed", f, ctx.Err())
+		case <-poll.C:
+			// The already expired wait context returns current native facts
+			// immediately. f.Err excludes this caller's context error.
+			f, _ = c.Wait(short)
+		}
+	}
+	found = false
+	for _, r := range f.Residuals {
+		if r.Stage == api.OutputCleanup && errors.Is(r.Err, errUnixJoinTimeout) {
+			found = true
+		}
+	}
+	if !found || f.CleanupComplete || c.activeCallbacks.Load() == 0 {
+		t.Fatal("native timeout lost the blocked output owner", f)
 	}
 	close(release)
 	f, err = c.Wait(ctx)
