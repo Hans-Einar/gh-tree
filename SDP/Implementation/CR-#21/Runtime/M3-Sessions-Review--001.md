@@ -1,8 +1,14 @@
 # M3 Sessions common-parent independent review — #71
 
-Disposition: **CHANGES_REQUIRED**. One HIGH and two MEDIUM implementation
-findings remain open at frozen source `78a67e1198466e05bc5f2544b3c4a495dc45a52c`
-(technical `fff5ee4a30f3b2d67997fcf74fb864a1174fead0`).
+Current disposition: **CHANGES_REQUIRED** at corrected frozen source
+`f4e48b3a72ee0b049aeadb66954ae4f07bb2f8b8` (technical
+`4495635dbb52ba2a281e52a08fe1f84d7bb9fd07`). M71-H01 and M71-M01 are independently
+confirmed resolved. M71-M02 remains open for the startup publication interaction
+documented below; its original resize reproduction now passes.
+
+Initial rejected source `78a67e1198466e05bc5f2544b3c4a495dc45a52c` (technical
+`fff5ee4a30f3b2d67997fcf74fb864a1174fead0`) had one HIGH and two MEDIUM findings.
+That source and its original evidence remain preserved.
 
 Date: 2026-09-07. Role: fresh independent reviewer, separate from the author.
 Authority: #71 first common-engine milestone under #65/#21; Sprint-004-v04 /
@@ -36,7 +42,7 @@ owned Unix/Windows/helper implementation is re-reviewed or adopted here, and
 known M65-U01/U02 on this development base remain in their separate correction
 history. The separate blocked Git review remains untouched.
 
-## Findings
+## Initial source findings
 
 ### M71-H01 — Restart re-looks up an evictable predecessor and panics
 
@@ -162,13 +168,72 @@ positive Delivered unit. Closed native cause/stage normalization, actual native
 resource joins and retained receipt behavior require real binding verification.
 No missing bridge is scored as a defect in this bounded candidate.
 
+## Independent correction confirmation — 2026-09-07
+
+Master dispatch: `56a6840ab26b88c9f9c10b913e90e957a0a69869` / ledger96. Fresh
+correction author stopped at the clean, pushed source above. This same independent
+reviewer inspected the actual root diff since `c436773`, including the additional
+active-transition key/subject map, both new regression files and report. No
+native implementation, production constructor or bridge changed. Unaffected
+native/helper/architecture evidence was not repeated.
+
+| Finding | Independent corrected-source disposition |
+|---|---|
+| M71-H01 | RESOLVED. The admitted predecessor is passed directly through cleanup and replacement; active operation keys and Shutdown subjects remain retained outside public history eviction. Original eviction/no-eviction probes pass. Changed source and tests also cover canceled replacement attribution, colliding lifecycle keys and aggregate capture without reauthorizing already evicted public IDs. |
+| M71-M01 | RESOLVED. Stop/Shutdown share a synchronized observer handoff; one coalesced external recovery request survives an incomplete-error return. Original repair probe passes. Before/after error, concurrent cleanup callers, pending receipts, and bounded repeated persistent failure tests pass under race instrumentation. |
+| M71-M02 | PARTIALLY CORRECTED, STILL OPEN. Controls reserve a publication slot and preserve final geometry while output/native facts compete; direct refusal and the original counter-edge probe pass. Startup establishment has no equivalent protected slot, producing the failure below. |
+
+The independent run of the complete current root suite with the **unchanged
+original reviewer overlay** passes under race instrumentation, including every
+original adversary and positive control. `go vet ./internal/runtime` passes.
+An additional independent combined-input/control test at MaxUint64-2 also passes:
+native cleanup and a terminal-unknown control cannot abandon the outstanding
+input receipt; the control reservation prevents output offset movement, unknown
+delivery leaves geometry unchanged, and final/ACK/Shutdown complete only after
+both observations. No data race was reported.
+
+Remaining M71-M02 location: `sessions.go` `capture` / `requestStop` / `acquire`
+and `startResult`, with `registry.change`'s unpublished-fact path.
+`TestReviewConfirmationStartupSequencePreservesEstablishment` positions only a
+Starting session's sequence at MaxUint64-2 while its controlled native starter
+is at a return barrier. Output correctly refuses, but its `requestStop` consumes
+the last nonfinal version by publishing Stopping. The native starter then returns
+valid Established plus acquired cwd. `acquire` retains those facts privately in
+`unpublished` because no hint version remains; `startResult` uses the stale public
+snapshot without acquired cwd and panics in `NewSessionStartResult`:
+`invalid boundary value: established session identity/cwd barrier`.
+After native cleanup, the final has acquired cwd=true, confirming the known fact
+existed and was lost specifically at result formation.
+
+This is still an explicit extreme-counter fixture, not a claim that ordinary
+startup can practically produce that many callbacks. It directly exercises the
+required refusal/never-wrap and coherent known-start facts at the boundary already
+covered by M02. The test catches the panic in its caller solely to record the
+failure and finish the controlled owner; no product panic recovery is proposed.
+
+Required remaining correction: protect startup/establishment publication from
+concurrent output and Stop hints, or otherwise guarantee a fresh coherent public
+result retaining actual Established/cwd facts. Preserve cancellation attribution,
+the reserved final and immutable previously returned versions. Merely exposing
+new unpublished facts under an old public sequence or masking the panic is not
+sufficient. Recheck successful and failed/canceled startup with stopping at the
+same sequence boundary.
+
+Evidence is additive in the existing folder: `reviewer_confirmation_test.go.txt`,
+`confirmation-original-and-root-race.log`, `confirmation-interactions-race.log`,
+`confirmation-vet.log`, and `confirmation-manifest.json`. The manifest pins the
+corrected source/runtime tree, exact commands/statuses and hashes. The initial
+report evidence and manifest are unchanged. No source archive, native process,
+product correction or integration was created by this confirmation.
+
 ## Exact next permitted action
 
-Master assigns a fresh author to correct only M71-H01/M01/M02 in the authorized
-root Runtime scope, commit/test/push the changed source, then return its exact
-SHA to this independent reviewer for affected re-review. Preserve the original
-rejected source and this compact evidence. No author correction is included in
-this review commit.
+Master assigns a fresh author to finish only the remaining M71-M02 startup
+publication interaction in the authorized root Runtime scope, commit/test/push
+the changed source, then return its exact SHA to this independent reviewer for
+affected re-review. Reuse resolved H01/M01 evidence unless those paths change.
+Preserve both rejected sources and the compact evidence. No author correction
+is included in this review commit.
 
 Even after these corrections pass, any acceptance is limited to the common
 parent engine. Reviewed real native clients/assets, production construction,

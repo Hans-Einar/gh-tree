@@ -158,3 +158,11 @@ and helper sources/images). Local Windows race, all12 architecture, vet and
 unchanged955-input helper rebuild pass; exact integrated native CI is pending.
 Canonical program still has no M3 product integration. Parent corrected
 f4e48b3/technical4495635 is frozen for independent confirmation of M71 findings.
+
+Current rework gates: parent review15eed03 resolves H01/M01 but keeps M02 for an
+established-start sequence/cwd publication panic. Native integration510139d
+CI34080586354 has19 successes and one FreeBSD blocked-output fixture failure;
+actual final fact is clean/error nil, so its historical-timeout synchronization
+is being checked without weakening native ownership. Persistence sourceff40e32/
+report3772faf awaits fresh bounded fault/resource review; CI18PASS/known FreeBSD
+failure. CurrentIndex and separate branch reports contain exact refs.

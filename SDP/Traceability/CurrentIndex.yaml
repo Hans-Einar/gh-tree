@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "remaining_fault_resource_pass_authorized",
+      "state": "bounded_fault_resource_candidate_independent_review_ready",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,7 +713,7 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
+      "lastCheckpoint": "3772fafc903ccb153a8604230b4143b7e7433e0f",
       "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
         "head": "bfdc79c2289274636f66574a3c86f467bb993615",
@@ -737,11 +737,11 @@
         "confirmedSource": "91acac5ecff941f95dbdaf00c86e9ced64b2a76f",
         "scope": "bounded confirmation only; full candidate not accepted"
       },
-      "sourceHead": "bfdc79c2289274636f66574a3c86f467bb993615",
+      "sourceHead": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
       "latestVerification": {
-        "head": "bfdc79c2289274636f66574a3c86f467bb993615",
-        "run": 34066675310,
-        "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
+        "head": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
+        "run": 34080421099,
+        "result": "18 SUCCESS, known native FreeBSD FAILURE, helper skip; bounded admission/fault/resource review pending"
       },
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
       "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
@@ -759,7 +759,8 @@
       "identityCodeReviewHead": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
       "identityDisposition": "ACCEPT bounded correction; no implementation findings; no full adapter or integration acceptance",
       "remainingPassBase": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
-      "remainingPassScope": "Concrete remaining native fault/resource/admission gaps only; existing profile/trust decisions not waived"
+      "remainingPassScope": "Concrete remaining native fault/resource/admission gaps only; existing profile/trust decisions not waived",
+      "remainingPassReview": "SDP/Implementation/CR-#21/Persistence/M3-Fault-Resource-Review--001.md"
     },
     {
       "id": "IMPL64",
@@ -803,7 +804,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "native_components_integrated_pending_exact_ci",
+      "state": "native_integration_fixture_correction_authorized",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -834,9 +835,9 @@
         "IMPL72"
       ],
       "latestVerification": {
-        "head": "71b95a32265270c43da58ff41f67ab370a39a245",
-        "run": 34076324950,
-        "result": "6 native/race SUCCESS incl corrected FreeBSD malformed-start fixture; expected helper prerequisite FAIL; M65-U01/U02 await independent confirmation"
+        "head": "510139d18da16a0d42c62ee88fba8053813f2b13",
+        "run": 34080586354,
+        "result": "19 SUCCESS, FreeBSD blocked-output test FAILURE; returned fact is fully clean/error nil, fixture expected historical join timeout. Exact native cause/synchronization correction required."
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
@@ -1025,7 +1026,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "common_parent_corrected_candidate_rereview_ready",
+      "state": "remaining_startup_sequence_correction_authorized",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1034,7 +1035,7 @@
       "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied",
-      "lastCheckpoint": "f4e48b3a72ee0b049aeadb66954ae4f07bb2f8b8",
+      "lastCheckpoint": "15eed03fed36f844d6f7d50001a62760c5dddec0",
       "technicalSource": "4495635dbb52ba2a281e52a08fe1f84d7bb9fd07",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
@@ -1043,14 +1044,17 @@
         "result": "6 native/race SUCCESS, expected helper prerequisite FAIL; local root race/vet/all12 architecture/build PASS. Common controlled-owner proof only, real bridges/constructor pending"
       },
       "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation",
-      "reviewHead": "c436773ea9f6debb70918c18d48c0c6a7d89302e",
+      "reviewHead": "15eed03fed36f844d6f7d50001a62760c5dddec0",
       "disposition": "CHANGES_REQUIRED",
       "findings": [
-        "M71-H01",
-        "M71-M01",
         "M71-M02"
       ],
-      "correctionChecks": "Root race/vet/all12 architecture/build PASS; original reviewer overlay10x race PASS; exact source CI and independent confirmation pending"
+      "correctionChecks": "Root race/vet/all12 architecture/build PASS; original reviewer overlay10x race PASS; exact source CI and independent confirmation pending",
+      "resolvedFindings": [
+        "M71-H01",
+        "M71-M01"
+      ],
+      "remainingFinding": "Original resize case corrected; established Start at near-exhaustion can panic when its cwd remains unpublished"
     },
     {
       "id": "IMPL72",

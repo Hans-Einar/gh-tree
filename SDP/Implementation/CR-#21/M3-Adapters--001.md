@@ -438,3 +438,14 @@ unchanged955-input helper rebuild pass. Exact committed-head native CI next;
 no manual product changes and no canonical program integration. Parent corrected
 4495635/reportf4e48b3 now returns to its independent reviewer; real bridges and
 full Runtime are still separate required work.
+
+Parent re-review15eed03 resolves H01/M01 and original resize case, but M02 stays
+open: early output/Stop can consume established startup publication at sequence
+exhaustion and panic. Same author corrects only this remaining root scope, then
+bounded confirmation. Native integration510139d CI19PASS/1FreeBSD failure reports
+fully clean late-output facts/error nil where a fixture expected a historical
+join timeout. Existing Unix author may inspect/correct only client_unix_test.go
+and its report; retain actual caller-vs-native deadline distinction and full
+assertions, no product/period changes without evidence and Master coordination.
+Persistence3772faf/ff40e32 now receives fresh bounded admission/fault/resource
+review; source CI18PASS/FreeBSD failure, all hard profile/identity gates still open.
