@@ -1,0 +1,49 @@
+{
+  "source": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
+  "baseline": "fd3abeac967a695bcdad15918a723ff8bab751df",
+  "branch": "codereview-21/layer-runtime",
+  "builder": "go1.25.0 windows/amd64; GOOS=linux GOARCH=amd64 CGO_ENABLED=0",
+  "buildCommand": "go test -overlay <overlay.json> -c -o <temporary>/broker.test ./internal/runtime/broker",
+  "overlay": {
+    "internal/runtime/broker/review_census_linux_test.go": "review_census_linux_test.go.txt"
+  },
+  "native": "openSUSE-Leap-15.5 WSL; Linux6.18.33.2-microsoft-standard-WSL2 amd64; UID/GID65534",
+  "nativeDirectory": "/tmp/gh-tree-census-review-1_2m5lic",
+  "nativeCommand": "setpriv --reuid=65534 --regid=65534 --clear-groups <nativeDirectory>/broker.test -test.v -test.count=1 -test.timeout=120s",
+  "nativeExit": 0,
+  "exactExecutableInventory": [],
+  "ci": {
+    "run": 34084151911,
+    "attempt": 1,
+    "source": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
+    "successfulJobs": 20
+  },
+  "scope": "CHANGES_REQUIRED M65-I01; read-side correction accepted; native probe PASS demonstrates remaining acquisition predicate gap",
+  "localReproducibleOnly": [
+    "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-linux-census-review-99af6bf",
+    "/tmp/gh-tree-census-review-1_2m5lic",
+    "/broker.test"
+  ],
+  "files": {
+    "C:\\Users\\hanse\\GIT\\gh-tree-wt\\runtime-implementation\\SDP\\Verification\\CR-#21\\Evidence\\M65-Unix-Integration-Review--001\\review_census_linux_test.go.txt": {
+      "bytes": 2456,
+      "sha256": "17eb7f1be97785c9ae91ce820cba0c3f33d94b04392327ecdaa4b75995434e33"
+    },
+    "C:\\Users\\hanse\\GIT\\gh-tree-wt\\runtime-implementation\\SDP\\Verification\\CR-#21\\Evidence\\M65-Unix-Integration-Review--001\\native-linux.log": {
+      "bytes": 19921,
+      "sha256": "df00080437d586656aa9f36467c8df9fd038297f8794615f55e992f51f23a61c"
+    },
+    "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-linux-census-review-99af6bf\\broker.test": {
+      "bytes": 5336685,
+      "sha256": "36267446881f60d71dbeafb56680e32c8e0d9280ca6669226a0f6a73edc06b30"
+    },
+    "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-linux-census-review-99af6bf\\failed-harness.log": {
+      "bytes": 52,
+      "sha256": "abe86e2606a09bed6d2f149ad8b6a8a3687167940a3be009aac6bbbcef815494"
+    },
+    "C:\\Users\\hanse\\.codex\\tmp\\gh-tree-linux-census-review-99af6bf\\run-native.py": {
+      "bytes": 817,
+      "sha256": "479757d55c84fd15adf54f5caebc3e7d0cff3983798e342a7e07c361970272eb"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+package broker
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"syscall"
+	"testing"
+
+	"golang.org/x/sys/unix"
+)
+
+func TestReviewLinuxRetainedProcDisappearanceAndLivePeer(t *testing.T) {
+	if os.Getuid() != 65534 { t.Fatal("expected ordinary fixture uid", os.Getuid()) }
+	start := func() (*exec.Cmd, *os.File, func()) {
+		r, w, err := os.Pipe()
+		if err != nil { t.Fatal(err) }
+		cmd := exec.Command("/bin/cat")
+		cmd.Stdin, cmd.Stdout, cmd.Stderr = r, io.Discard, io.Discard
+		if err := cmd.Start(); err != nil { r.Close(); w.Close(); t.Fatal(err) }
+		r.Close()
+		waited := false
+		finish := func() {
+			if waited { return }; waited = true
+			w.Close()
+			if err := cmd.Wait(); err != nil { t.Error("exact child wait", err) }
+		}
+		t.Cleanup(finish)
+		return cmd, w, finish
+	}
+	gone, _, reapGone := start()
+	peer, _, _ := start()
+	procPath := fmt.Sprintf("/proc/%d", gone.Process.Pid)
+	dir, err := os.Open(procPath)
+	if err != nil { t.Fatal(err) }; defer dir.Close()
+	stat, err := os.Open(procPath + "/stat")
+	if err != nil { t.Fatal(err) }; defer stat.Close()
+	reapGone()
+	if f, err := os.Open(procPath + "/stat"); !errors.Is(err, syscall.ENOENT) {
+		if f != nil { f.Close() }; t.Fatal("fresh path after exact wait", err)
+	}
+	fd, openErr := unix.Openat(int(dir.Fd()), "stat", unix.O_RDONLY|unix.O_CLOEXEC, 0)
+	if fd >= 0 { unix.Close(fd) }
+	if !errors.Is(openErr, syscall.ESRCH) { t.Fatal("retained proc-directory acquisition", fd, openErr) }
+	wrapped := &os.PathError{Op: "open", Path: procPath + "/stat", Err: openErr}
+	if os.IsNotExist(wrapped) { t.Fatal("expected current census open predicate to miss ESRCH", wrapped) }
+	p, present, err := readLinuxStat(gone.Process.Pid, stat)
+	if err != nil || present || p != (processFact{}) { t.Fatal("read correction", p, present, err) }
+	if _, err := stat.Stat(); !errors.Is(err, os.ErrClosed) { t.Fatal("read owner not closed", err) }
+	all, err := census(context.Background())
+	if err != nil { t.Fatal("full census while live peer retained", err) }
+	seenPeer := false
+	for _, p := range all {
+		if p.pid == peer.Process.Pid { seenPeer = p.live }
+		if p.pid == gone.Process.Pid { t.Fatal("reaped owned task retained in census", p) }
+	}
+	if !seenPeer { t.Fatal("unrelated live peer omitted") }
+	t.Log("uid65534; exact child exit0; fresh open ENOENT; retained-directory open ESRCH; current open predicate misses ESRCH; corrected retained read omitted and closed; live peer remains in full census")
+}
