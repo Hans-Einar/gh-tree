@@ -35,12 +35,12 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 |---|---|---|---|
 | Git/git-implementation | codereview-21/layer-git | 25240dd2acc40cb93003674844c248cdceac5920 | Facts foundation only; required review blocked, mutation methods incomplete |
 | GitHub/github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | All5 methods independently accepted; held for Git-first integration |
-| Persistence/persistence-implementation | codereview-21/layer-persistence | f6d07fbfd972e06ce04122b78f2338013c5b7ba3 | Prior bounded deltas accepted; Windows prepared-byte defect and full adapter gates open |
+| Persistence/persistence-implementation | codereview-21/layer-persistence | 015cd1a437b1e7fd914383b7943a702f1227ccd8 | Windows byte correction frozen for independent review; other gates open |
 | Discovery/discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | All2 methods independently accepted; prior serial gates held |
-| Native Runtime/runtime-implementation | codereview-21/layer-runtime | bf8df249b256aba54a89a86c6cce0986ebae73a0 | CI20PASS/read correction accepted; bounded open-side M65-I01 correction pending |
+| Native Runtime/runtime-implementation | codereview-21/layer-runtime | bca645e10979d2b2852d3b547d7a40c07633c9e1 | Native components accepted, CI20PASS; recovery tag below |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
 | Helper/runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | Generator/assets/policy independently accepted |
-| Parent/runtime-sessions | codex/cr21-runtime-sessions | 01641986c702b9c6a1abd176586b4d58b39f13fa | Common12-method engine accepted; production bridges pending |
+| Parent/runtime-sessions | codex/cr21-runtime-sessions | 4412fe8e889c71c837a3364dd6bb2a3c47dde8c3 | Accepted native/common engine combined; exact CI pending, real bridges next |
 | Binding/runtime-helper-binding | codex/cr21-runtime-helper-binding | f926195ffebc5b99921f6b0127bbe23ad7555a5a | Actual committed helpers independently accepted; integrated into native branch |
 
 No M3 adapter has been integrated into canonical. Common-parent/native component
@@ -48,35 +48,26 @@ acceptance does not close a full Runtime adapter or vertical Slice.
 
 ## Verification and exact next actions
 
-- Native integration510139d combines Unix reviewf85294d and binding reviewf926195f
-  (including Windows/helper). Product closure remains unchanged through test2bc27e0.
-  CI34082980191:19PASS, Linux FAIL. Both Windows native architectures, FreeBSD,
-  macOS/race, exact955-input helper reproduction and all12 builds pass. Linux
-  TestNativeUnixClientFailedStartPreservesTypedFacts returned code12/stage2 instead
-  of NotFound. Linux-only99af6bf fixes demonstrated retained-proc ESRCH disappearance
-  and preserves independent close/read errors. Deterministic negative-before/positive-
-  after,20 targeted repeats/full native Linux broker/vet/build checks pass. Exact
-  CI34084151911 passes20/20. Reviewbf8df249 accepts read handling but retains
-  M65-I01 for acquisition-side ESRCH. Same-author predicate correction and bounded
-  confirmation precede further integration.
-- Prior FreeBSD blocked-output fixture now observes actual join-timeout fact before
-  releasing its callback. Windows extraction fixture now proves full native cleanup
-  and admits only the exact repaired historical STATUS_CANNOT_DELETE; deterministic
-  owned SEC_IMAGE refusal/release control confirms it. Original failures remain in
-  reports; neither test correction changed product code or waived cleanup.
-- Parent technical5a14f7d/review01641986 resolves all M71 findings (Restart retention,
-  Shutdown repair, sequence/startup publication). Controlled-owner race/vet/all12
-  tests pass; CI34081419821 has6 successes and expected missing-helper prerequisite
-  failure/dependent skips. After native gate passes, Master integrates reviewed
-  native sources into this branch; fresh #71 worker supplies real platform bridges,
-  production constructor and early private entry, then native/independent review.
+- Native tested sourcee39ff4c/reviewbca645e1 resolves all scoped census findings;
+  CI34084970413 has20 successes. Pushed annotated recovery tag:
+  checkpoint/m3-runtime-native/20260907-0502Z. Original failed cases remain in reports.
+- Parent4412fe8 combines accepted common01641986 and nativebca645e1 with no manual
+  product edits. All17 parent root files, native/helper/policy subtrees and the exact
+  binding test match accepted sources. Local Windows root race10.524s, vet and all12
+  architecture checks pass. Exact CI34085381063 pending. Once it passes, release
+  prepared #71 worker to real private Unix/Windows bridges, production constructor/
+  Runtime-only early entry, then native twelve-port/independent review. Actual main/
+  legacy cutover remains M6. No production stub or native ownership shortcut.
 - Persistence technicalff40e32/review5380629 has bounded admission/fault/resource
   ACCEPT; earlier identity/protocol corrections remain accepted. CI34080421099:
   18PASS/native FreeBSDFAIL/helperSKIP. Remaining assessment82610b8 distinguishes
   explicit proven write-profile selection from the unresolved source-name binding
   interval. Reviewf6d07fb reproduces HIGH M363-SRC-H01 on Windows: a second writable
   handle changes prepared bytes before publication, yet known committed intent is
-  claimed. Fresh bounded correction and independent confirmation are required.
+  claimed. Correction015cd1a retains a continuous native byte guard from exclusive
+  creation through publication; local amd64/386/race controls pass. CI34085358603
+  and independent confirmation pending. A separate prepared-DACL mutation through
+  WRITE_DAC is durably reproduced; byte exclusion does not waive metadata integrity.
   No no-birth mechanism, Windows trust exception or boundary waiver is claimed.
 
 ## Blockers and authority boundaries

@@ -595,3 +595,19 @@ control and full Linux/resource suite prove the case; CI99af6bf is20/20PASS.
 Same author may correct only this acquisition predicate and its focused control,
 then the independent reviewer confirms this delta. No signaling/cleanup/other
 platform changes, whole-review restart or parent merge before confirmation.
+
+Native Runtime e39ff4c/reviewbca645e1 is accepted with CI34084970413 20PASS and pushed
+checkpoint/m3-runtime-native/20260907-0502Z. Master combined it with common parent
+01641986 at4412fe8 on codex/cr21-runtime-sessions. Local root race/vet/all12 architecture
+and exact component-tree checks pass; CI34085381063 pending. After that gate #71's
+prepared fresh author may implement private Unix bridge, private Windows bridge,
+production constructor/Runtime-only early entry and full twelve-port native proof,
+with coherent pushed milestones and separate review. Existing root-only scope and
+helper_binding_windows_test.go exception remain; no broker edits or M6 host cutover.
+
+Persistence byte correction015cd1a is frozen for original independent reviewer's
+bounded confirmation of M363-SRC-H01. Same existing Source-Boundary review record
+may append this product result and classify the separately preserved WRITE_DAC
+prepared-metadata counterexample. Native amd64/386/race/guard/mapping controls pass;
+exactCI34085358603 pending. No metadata exclusion, Windows trust exception, Unix
+approval, profile reduction or full adapter acceptance may be inferred.

@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "windows_prepared_byte_correction_pending_unix_boundary_decision",
+      "state": "windows_prepared_byte_correction_independent_review",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,15 +713,15 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "f6d07fbfd972e06ce04122b78f2338013c5b7ba3",
+      "lastCheckpoint": "015cd1a437b1e7fd914383b7943a702f1227ccd8",
       "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
         "head": "bfdc79c2289274636f66574a3c86f467bb993615",
         "run": 34066675310,
         "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
-      "activeWorker": "m3_persistence_prepared_bytes_fix",
-      "pendingNativeFinding": "FreeBSD user trust/scope decision; explicit proven no-birth profile inventory; source-publication binding or reviewed authority decision",
+      "activeWorker": null,
+      "pendingNativeFinding": "FreeBSD user decision; no-birth refusal/profile gate; reviewed Unix source trust choice awaits user; separate Windows prepared metadata mutation pending independent classification",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
       "earlyProtocolReview": {
@@ -739,9 +739,9 @@
       },
       "sourceHead": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
       "latestVerification": {
-        "head": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
-        "run": 34080421099,
-        "result": "18 SUCCESS, known native FreeBSD FAILURE, helper skip; bounded admission/fault/resource review5380629 ACCEPT"
+        "head": "015cd1a437b1e7fd914383b7943a702f1227ccd8",
+        "run": 34085358603,
+        "result": "in progress; native amd64/386 full Persistence/race/targeted mapping controls/vet PASS; separate prepared-DACL mutation proof remains open"
       },
       "identityProposalReview": "SDP/Implementation/CR-#21/Persistence/M3-Identity-Review--001.md",
       "identityProposalDisposition": "ACCEPT bounded private mechanism, no BC change; full adapter acceptance pending",
@@ -778,9 +778,10 @@
       "preparedByteFinding": {
         "id": "M363-SRC-H01",
         "severity": "HIGH",
-        "state": "open",
+        "state": "correction_review_pending",
         "platform": "Windows",
-        "scope": "prepared bytes changed through separate writable handle before publication; both native presence modes reproduced"
+        "scope": "prepared bytes changed through separate writable handle before publication; both native presence modes reproduced",
+        "source": "015cd1a437b1e7fd914383b7943a702f1227ccd8"
       }
     },
     {
@@ -825,7 +826,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "native_linux_open_correction",
+      "state": "native_components_accepted_integrated_into_parent",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -847,18 +848,18 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "activeWorker": "m3_runtime_unix_integration_fix",
+      "activeWorker": null,
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "bf8df249b256aba54a89a86c6cce0986ebae73a0",
+      "lastCheckpoint": "bca645e10979d2b2852d3b547d7a40c07633c9e1",
       "subContributions": [
         "IMPL69",
         "IMPL71",
         "IMPL72"
       ],
       "latestVerification": {
-        "head": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
-        "run": 34084151911,
-        "result": "20 SUCCESS; independent full Linux suite/resource controls PASS. Read-side correction accepted, M65-I01 open-side ESRCH remains."
+        "head": "e39ff4c72a4ec3f175d36f3c436ed3aa2a28030c",
+        "run": 34084970413,
+        "result": "20 SUCCESS; independent native correction ACCEPT bca645e1/M65-I01 resolved"
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
@@ -876,11 +877,12 @@
       "nativeIntegrationChecks": "Reviewed product and helper closure unchanged; local race/vet/architecture/exact955-input rebuild passed. Latest integrated CI retains one Linux native failure.",
       "nativeIntegrationTestSource": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
       "integrationCorrectionReview": {
-        "head": "bf8df249b256aba54a89a86c6cce0986ebae73a0",
+        "head": "bca645e10979d2b2852d3b547d7a40c07633c9e1",
         "report": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Integration-Review--001.md",
         "finding": "M65-I01",
-        "scope": "read-side accepted; native acquisition ESRCH predicate remains"
-      }
+        "scope": "bounded read/open correction ACCEPT; M65-I01 resolved"
+      },
+      "nativeRecoveryTag": "checkpoint/m3-runtime-native/20260907-0502Z"
     },
     {
       "id": "IMPL66",
@@ -1054,7 +1056,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "common_parent_engine_accepted_held_for_native_gate",
+      "state": "accepted_parent_native_combination_exact_ci_pending",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1062,14 +1064,14 @@
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md",
       "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
-      "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied",
-      "lastCheckpoint": "01641986c702b9c6a1abd176586b4d58b39f13fa",
+      "nativeBaseState": "Reviewed native bca645e1 and common parent01641986 combined without manual product edits",
+      "lastCheckpoint": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
       "technicalSource": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
-        "head": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
-        "run": 34081419821,
-        "result": "6 native/race SUCCESS; expected missing helper inventory failure/dependent skips. Independent bounded common-engine ACCEPT01641986; production bridge/native gate remains."
+        "head": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
+        "run": 34085381063,
+        "result": "in progress; local root race10.524s/vet/all12 architecture PASS,17 parent root files and native/helper/policy subtrees plus binding test match accepted sources exactly"
       },
       "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation",
       "reviewHead": "01641986c702b9c6a1abd176586b4d58b39f13fa",
@@ -1080,7 +1082,9 @@
         "M71-H01",
         "M71-M01",
         "M71-M02"
-      ]
+      ],
+      "nativeIntegrationHead": "4412fe8e889c71c837a3364dd6bb2a3c47dde8c3",
+      "activeWorker": "m3_runtime_bridges_read_only_until_ci"
     },
     {
       "id": "IMPL72",
@@ -2184,8 +2188,8 @@
   "activeContribution": "M3-ADAPTERS",
   "integrationHead": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
   "activeContributions": [
-    "IMPL65",
-    "IMPL63"
+    "IMPL63",
+    "IMPL71"
   ],
   "pausedInitialContributions": [
     "IMPL61",
