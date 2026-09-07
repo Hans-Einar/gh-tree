@@ -1,0 +1,9 @@
+=== RUN   TestReviewShutdownReobservesRetainedFailure
+    reviewer_sessions_test.go:125: Shutdown never reobserved a repairable owner: calls=1; first complete=false second complete=false; explicit Stop consumed repair and cleaned
+--- FAIL: TestReviewShutdownReobservesRetainedFailure (0.00s)
+=== RUN   TestReviewResizeAtSequenceLimitPreservesDeliveredGeometry
+    reviewer_sessions_test.go:154: native resize succeeded but final/restart geometry stayed {Rows:24 Columns:80} instead of {Rows:57 Columns:119} at sequence 18446744073709551615
+--- FAIL: TestReviewResizeAtSequenceLimitPreservesDeliveredGeometry (0.00s)
+FAIL
+FAIL	github.com/Hans-Einar/gh-tree/internal/runtime	0.510s
+FAIL

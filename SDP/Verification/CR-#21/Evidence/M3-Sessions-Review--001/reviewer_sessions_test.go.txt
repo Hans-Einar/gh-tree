@@ -1,0 +1,240 @@
+package runtime
+
+import (
+	"context"
+	"errors"
+	"math"
+	"reflect"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"github.com/Hans-Einar/gh-tree/internal/application/api"
+)
+
+// A context's Err barrier exposes an ordinary scheduling gap after Restart has
+// looked up an old cleaned record but before its worker calls public Stop.
+type reviewRestartContext struct {
+	context.Context
+	entered, resume chan struct{}
+	once            sync.Once
+}
+
+func (c *reviewRestartContext) Err() error {
+	c.once.Do(func() { close(c.entered); <-c.resume })
+	return nil
+}
+
+func TestReviewRestartHistoryEvictionRace(t *testing.T) {
+	reviewRestartHistory(t, true)
+}
+func TestReviewRestartHistoryWithoutEviction(t *testing.T) {
+	reviewRestartHistory(t, false)
+}
+func reviewRestartHistory(t *testing.T, evict bool) {
+	o := testOwner()
+	r := newSessions(func(ctx context.Context, c nativeStart) (nativeOwner, nativeStartFact, error) {
+		if c.ID.Value() == historyCapacity+1 {
+			return o, established(c), nil
+		}
+		return nil, nativeStartFact{}, errUnsupported
+	}, nil, sessionBudgets{})
+	after := cursor(0)
+	for i := uint64(1); i <= historyCapacity; i++ {
+		result, _ := r.Start(context.Background(), engineRequest(2000+i, false))
+		id := mustValue(result.Data().Session).Data().SessionID
+		awaitPhase(t, r, id, api.Cleaned)
+		e := must(r.NextEvent(context.Background(), after))
+		after = e.Data().Sequence
+		if e.Data().Kind != api.RuntimeCleaned {
+			t.Fatal("fixture final missing")
+		}
+		if err := r.AckEvents(after); err != nil {
+			t.Fatal(err)
+		}
+	}
+	live := startID(t, r, engineRequest(3000, false))
+	ctx := &reviewRestartContext{Context: context.Background(), entered: make(chan struct{}), resume: make(chan struct{})}
+	done := make(chan api.SessionRestartResult, 1)
+	go func() {
+		result, _ := r.Restart(ctx, must(api.NewSessionRestartRequest(api.SessionRestartRequestData{OperationID: must(api.NewOperationID(4000)), SessionID: sessionID(1)})))
+		done <- result
+	}()
+	<-ctx.entered
+	if evict {
+		o.facts <- cleanedFact()
+		awaitPhase(t, r, live, api.Cleaned)
+		if _, err := r.Snapshot(context.Background(), sessionID(1)); !errors.Is(err, errNotFound) {
+			t.Fatal("old record did not history-evict")
+		}
+	}
+	close(ctx.resume)
+	result := <-done
+	if !result.Valid() || !result.Data().Old.Data().CleanupComplete || !result.Data().Replacement.Present() {
+		t.Fatal("retained restart result lost")
+	}
+	if !evict {
+		o.facts <- cleanedFact()
+		awaitPhase(t, r, live, api.Cleaned)
+	}
+}
+
+func reviewUntil(t *testing.T, f func() bool) {
+	t.Helper()
+	limit := time.Now().Add(time.Second)
+	for !f() {
+		if time.Now().After(limit) {
+			t.Fatal("controlled owner barrier timed out")
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+// No native process exists: the two facts model a transient native observation
+// error followed by known cleanup. Shutdown must retain and revisit that owner.
+func TestReviewShutdownReobservesRetainedFailure(t *testing.T) {
+	o := testOwner()
+	var observations atomic.Int32
+	o.next = func(context.Context) (nativeFact, error) {
+		if observations.Add(1) == 1 {
+			return nativeFact{}, errUnsupported
+		}
+		return cleanedFact(), nil
+	}
+	r, _ := testEngine(o)
+	id := startID(t, r, engineRequest(1001, false))
+	s := must(r.registry.lookup(id))
+	reviewUntil(t, func() bool {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		return !s.observing && s.snapshot.Data().Phase == api.CleanupFailed
+	})
+	first := r.Shutdown(context.Background())
+	second := r.Shutdown(context.Background())
+	if observations.Load() > 1 {
+		awaitPhase(t, r, id, api.Cleaned)
+		return
+	}
+	// Positive control: the identical retained owner is repairable via Stop.
+	_, _ = r.Stop(context.Background(), stopRequest(id))
+	awaitPhase(t, r, id, api.Cleaned)
+	if observations.Load() != 2 {
+		t.Fatal("repair positive control did not run")
+	}
+	t.Fatalf("Shutdown never reobserved a repairable owner: calls=1; first complete=%v second complete=%v; explicit Stop consumed repair and cleaned", first.Data().Complete, second.Data().Complete)
+}
+
+func TestReviewResizeAtSequenceLimitPreservesDeliveredGeometry(t *testing.T) {
+	o := testOwner()
+	var deliveries atomic.Int32
+	o.resize = func(context.Context, api.Geometry) (nativeDelivery, error) {
+		deliveries.Add(1)
+		return nativeDelivery{Completed: true, Dispatched: true, Delivered: 1}, nil
+	}
+	r, _ := testEngine(o)
+	id := startID(t, r, engineRequest(1002, true))
+	s := must(r.registry.lookup(id))
+	s.mu.Lock()
+	d := s.snapshot.Data()
+	d.Sequence = sequence(math.MaxUint64 - 1)
+	s.snapshot = must(api.NewSessionSnapshot(d))
+	s.mu.Unlock()
+	g := must(api.NewGeometry(api.GeometryData{Rows: 57, Columns: 119}))
+	result, err := r.Resize(context.Background(), must(api.NewSessionResizeRequest(api.SessionResizeRequestData{SessionID: id, Geometry: g})))
+	o.facts <- cleanedFact()
+	final := awaitPhase(t, r, id, api.Cleaned)
+	if deliveries.Load() == 0 && err != nil {
+		return
+	} // valid refusal before native effect
+	if err != nil || !result.Data().Delivered {
+		t.Fatal("known native delivery was not retained", err)
+	}
+	if final.Data().Display.Data().Geometry != g {
+		t.Fatalf("native resize succeeded but final/restart geometry stayed %+v instead of %+v at sequence %d", final.Data().Display.Data().Geometry.Data(), g.Data(), final.Data().Sequence.Value())
+	}
+}
+
+func TestReviewTerminalUnknownReceiptReleasesOnlyAfterObservation(t *testing.T) {
+	o := testOwner()
+	receipt := &controlledReceipt{done: make(chan struct{}), observed: make(chan struct{}), delivery: nativeDelivery{Dispatched: true}, err: errUnsupported}
+	o.resize = func(context.Context, api.Geometry) (nativeDelivery, error) {
+		return nativeDelivery{Dispatched: true, Receipt: receipt}, context.Canceled
+	}
+	r, _ := testEngine(o)
+	id := startID(t, r, engineRequest(1003, true))
+	before := must(r.Snapshot(context.Background(), id)).Data().Display.Data().Geometry
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan api.SessionControlResult, 1)
+	go func() {
+		result, _ := r.Resize(ctx, must(api.NewSessionResizeRequest(api.SessionResizeRequestData{SessionID: id, Geometry: must(api.NewGeometry(api.GeometryData{Rows: 53, Columns: 103}))})))
+		done <- result
+	}()
+	<-receipt.observed
+	cancel()
+	if result := <-done; !result.Data().CancellationAsked || result.Data().Delivered {
+		t.Fatal("pending receipt falsely delivered")
+	}
+	o.facts <- cleanedFact()
+	awaitPhase(t, r, id, api.Stopping)
+	result := r.Shutdown(context.Background())
+	if result.Data().Complete {
+		t.Fatal("pending receipt final barrier lost")
+	}
+	close(receipt.done)
+	final := awaitPhase(t, r, id, api.Cleaned)
+	if final.Data().Display.Data().Geometry != before {
+		t.Fatal("terminal unknown invented delivered geometry")
+	}
+	stop := must(r.Stop(context.Background(), stopRequest(id)))
+	found := false
+	for _, d := range stop.Data().Diagnostics {
+		found = found || d.Data().Code == api.Unsupported
+	}
+	if !found {
+		t.Fatal("terminal unknown cause was lost")
+	}
+}
+
+func TestReviewConcurrentKnownDeliveryWithErrorPreservesEffect(t *testing.T) {
+	o := testOwner()
+	o.resize = func(context.Context, api.Geometry) (nativeDelivery, error) {
+		return nativeDelivery{Completed: true, Dispatched: true, Delivered: 1}, errUnsupported
+	}
+	r, _ := testEngine(o)
+	id := startID(t, r, engineRequest(1004, true))
+	g := must(api.NewGeometry(api.GeometryData{Rows: 51, Columns: 101}))
+	result, err := r.Resize(context.Background(), must(api.NewSessionResizeRequest(api.SessionResizeRequestData{SessionID: id, Geometry: g})))
+	if !errors.Is(err, errUnsupported) || !result.Data().Delivered {
+		t.Fatal("known effect erased by supplemental error")
+	}
+	o.facts <- cleanedFact()
+	final := awaitPhase(t, r, id, api.Cleaned)
+	if final.Data().Display.Data().Geometry != g {
+		t.Fatal("known geometry lost")
+	}
+}
+
+func TestReviewNativeCallsDoNotHoldRegistrySessionEventLocks(t *testing.T) {
+	o := testOwner()
+	r, configs := testEngine(o)
+	id := startID(t, r, engineRequest(1005, true))
+	config := <-configs
+	o.resize = func(context.Context, api.Geometry) (nativeDelivery, error) {
+		if _, err := r.List(context.Background(), must(api.NewSessionFilter(api.SessionFilterData{}))); err != nil {
+			t.Error(err)
+		}
+		config.Output(api.TerminalOutput, []byte{0, 255, 27})
+		return nativeDelivery{Completed: true, Delivered: 1}, nil
+	}
+	_, err := r.Resize(context.Background(), must(api.NewSessionResizeRequest(api.SessionResizeRequestData{SessionID: id, Geometry: must(api.NewGeometry(api.GeometryData{Rows: 33, Columns: 99}))})))
+	if err != nil {
+		t.Fatal(err)
+	}
+	o.facts <- cleanedFact()
+	awaitPhase(t, r, id, api.Cleaned)
+	output := must(r.ReadOutput(context.Background(), must(api.NewSessionOutputRequest(api.SessionOutputRequestData{SessionID: id, MaxBytes: 3})))).Data()
+	if len(output.Chunks) != 1 || !reflect.DeepEqual(output.Chunks[0].Data().Bytes, []byte{0, 255, 27}) {
+		t.Fatal("native reentrant output lost")
+	}
+}
