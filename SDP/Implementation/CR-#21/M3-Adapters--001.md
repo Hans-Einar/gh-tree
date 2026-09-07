@@ -430,3 +430,11 @@ actual clauses with existing tests, correct only concrete gaps, reuse accepted
 identity/protocol proof. FreeBSD user decision/no-birth/source-name interval
 remain open; no privilege/profile/metadata or contract waiver. Separate review
 will assess the bounded source. All canonical serial gates remain unchanged.
+
+Binding #72 independently ACCEPTED at f926195f, source cf16072 and20PASS CI.
+Master integrates all reviewed native Unix/Windows/helper/binding components on
+Runtime branch at510139d after actual Windows race, all12 architecture, vet and
+unchanged955-input helper rebuild pass. Exact committed-head native CI next;
+no manual product changes and no canonical program integration. Parent corrected
+4495635/reportf4e48b3 now returns to its independent reviewer; real bridges and
+full Runtime are still separate required work.

@@ -592,6 +592,24 @@
       "productSource": "4df4385fbb2481a0c0007dbfd489c93e15f3170c",
       "reviewHead": "f85294d5511a3255e36d5874f268ced832f69fca",
       "ci": 34076324950
+    },
+    {
+      "from": "IMPL72",
+      "relation": "source_image_binding_accepted",
+      "to": "cf160729581911c1cb02a24a458ec703337fb063",
+      "reviewHead": "f926195ffebc5b99921f6b0127bbe23ad7555a5a",
+      "ci": 34078800342
+    },
+    {
+      "from": "IMPL65",
+      "relation": "integrates_reviewed_native_components",
+      "to": "510139d18da16a0d42c62ee88fba8053813f2b13",
+      "requires": [
+        "IMPL69",
+        "IMPL70",
+        "IMPL72"
+      ],
+      "scope": "native components only; parent and full Runtime remain"
     }
   ],
   "errata": [

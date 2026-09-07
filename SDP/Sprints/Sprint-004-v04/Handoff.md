@@ -151,3 +151,10 @@ and truthful geometry/sequence-boundary handling; root-only correction follows.
 Persistence #63 also resumes concrete remaining fault/resource coverage from
 53de3e1 while all explicit platform/trust blockers stay open. CurrentIndex holds
 exact refs; prior recovery inventory remains a historical clean snapshot.
+
+Native integration510139d18da16a0d42c62ee88fba8053813f2b13 is pushed on
+codereview-21/layer-runtime: reviewed Unix plus accepted binding f926195f (Windows
+and helper sources/images). Local Windows race, all12 architecture, vet and
+unchanged955-input helper rebuild pass; exact integrated native CI is pending.
+Canonical program still has no M3 product integration. Parent corrected
+f4e48b3/technical4495635 is frozen for independent confirmation of M71 findings.
