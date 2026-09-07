@@ -1,10 +1,16 @@
 # M3 Sessions common-parent independent review — #71
 
-Current disposition: **CHANGES_REQUIRED** at corrected frozen source
-`f4e48b3a72ee0b049aeadb66954ae4f07bb2f8b8` (technical
-`4495635dbb52ba2a281e52a08fe1f84d7bb9fd07`). M71-H01 and M71-M01 are independently
-confirmed resolved. M71-M02 remains open for the startup publication interaction
-documented below; its original resize reproduction now passes.
+Current disposition: **ACCEPT — bounded common parent Sessions engine** at
+corrected frozen source `8b891c453e1399f2f0e83ae30946c45eebc6a2dc` (technical
+`5a14f7daed121c5d8f357d81d45c8ee8db1a599d`). M71-H01, M71-M01 and M71-M02 are
+independently confirmed resolved, with no remaining findings in this reviewed
+common scope. Actual native bridges, production construction, full #71/#65/
+Runtime and integration/release acceptance are explicitly excluded.
+
+The prior confirmation rejected `f4e48b3a72ee0b049aeadb66954ae4f07bb2f8b8`
+(technical `4495635dbb52ba2a281e52a08fe1f84d7bb9fd07`) for the remaining M02
+startup publication interaction. Its failure and subsequent correction are
+preserved below.
 
 Initial rejected source `78a67e1198466e05bc5f2544b3c4a495dc45a52c` (technical
 `fff5ee4a30f3b2d67997fcf74fb864a1174fead0`) had one HIGH and two MEDIUM findings.
@@ -168,7 +174,7 @@ positive Delivered unit. Closed native cause/stage normalization, actual native
 resource joins and retained receipt behavior require real binding verification.
 No missing bridge is scored as a defect in this bounded candidate.
 
-## Independent correction confirmation — 2026-09-07
+## Prior correction confirmation — 2026-09-07
 
 Master dispatch: `56a6840ab26b88c9f9c10b913e90e957a0a69869` / ledger96. Fresh
 correction author stopped at the clean, pushed source above. This same independent
@@ -226,17 +232,62 @@ corrected source/runtime tree, exact commands/statuses and hashes. The initial
 report evidence and manifest are unchanged. No source archive, native process,
 product correction or integration was created by this confirmation.
 
+## Final startup confirmation — 2026-09-07
+
+Authority: Master `73a8005f4a0fc366d359ff9f33705321978eb8cd` / ledger97. Fresh
+author stopped at clean, pushed `8b891c4`, technical `5a14f7d`. The reviewer
+inspected the complete actual diff since `15eed03`, the new startup tests and
+updated author report. Product changes are confined to root Runtime's startup
+reservation and associated tests; no native source, public port, constructor,
+helper or platform bridge changed.
+
+M71-M02 is now **RESOLVED**. `startReserved` is established with registry
+admission, counted by the shared hint-space predicate and consumed within the
+same memory transaction that records/publishes the complete native acquisition
+fact. Output and Stop can retain unavoidable intent without spending that
+version. Acquisition then publishes actual Established/cwd facts at a fresh
+sequence before completing the Start waiter. The one final reservation remains
+independent, and startup releases its slot before optional control admission.
+No recovery handler, relaxed API validator or fabricated unestablished outcome
+was introduced. Previously returned snapshots remain immutable.
+
+Independent execution at this exact source:
+
+| Check | Result |
+|---|---|
+| Unchanged `TestReviewConfirmationStartupSequencePreservesEstablishment` with race instrumentation | PASS; genuine Established plus acquired cwd returned after output refusal/Stop at Max-2, final remains valid. |
+| Unchanged independent combined input/control receipt case | PASS; both observations remain owned through native cleanup and final/ACK. |
+| Affected optional-effect refusal, control reservation versus output/cleanup, and exhausted residual repair tests | PASS with race instrumentation. |
+| Startup reservation tests | PASS for known success, known start plus error, partial/no-resource failure, canceled known/partial startup, concurrent Stop/output, and startup-to-input/control receipt handoff. |
+| `go vet ./internal/runtime` | PASS. |
+| Source/report scope, unchanged product tree during review and diff checks | PASS. |
+
+The targeted run reports no race and uses only controlled owners. Unaffected
+root foundations and H01/M01 evidence from the prior independent confirmation
+are reused; there is no redundant native/helper review or full platform rerun.
+The author-provided source CI run `34081419821` was still in progress at its
+freeze; this reviewer does not turn that statement into a green CI claim.
+Master retains the terminal source/integration CI gate, including this branch's
+known missing helper prerequisite. Common-engine acceptance is neither native
+proof nor permission to bypass that gate.
+
+Final compact evidence: `startup-final-race.log`, `startup-final-vet.log`, and
+`startup-final-manifest.json` in the existing evidence folder. The manifest pins
+the exact source/technical/runtime tree, commands, statuses and committed probe/
+log hashes. Original rejected captures, correction captures and test assertions
+remain unchanged. The final review commit changes only this report/evidence;
+no product code, native process, installation or global setting was touched.
+
 ## Exact next permitted action
 
-Master assigns a fresh author to finish only the remaining M71-M02 startup
-publication interaction in the authorized root Runtime scope, commit/test/push
-the changed source, then return its exact SHA to this independent reviewer for
-affected re-review. Reuse resolved H01/M01 evidence unless those paths change.
-Preserve both rejected sources and the compact evidence. No author correction
-is included in this review commit.
+Master records bounded common-parent acceptance at the exact source above and
+supplies the separately reviewed native clients/assets before authorizing actual
+platform binding and production construction. Preserve rejected sources and
+compact evidence; re-review materially affected common paths when real binding
+changes them. No author correction is included in this review commit.
 
-Even after these corrections pass, any acceptance is limited to the common
-parent engine. Reviewed real native clients/assets, production construction,
-twelve-method native integration, all accepted platform/ABI/PTY/ConPTY/helper
-and full Runtime gates remain mandatory. No complete #71/#65/Runtime/Slice,
-canonical/main integration or release acceptance is granted.
+This acceptance is limited to the common parent engine. Reviewed real native
+clients/assets, production construction, twelve-method native integration, all
+accepted platform/ABI/PTY/ConPTY/helper and full Runtime gates remain mandatory.
+No complete #71/#65/Runtime/Slice, canonical/main integration or release
+acceptance is granted.
