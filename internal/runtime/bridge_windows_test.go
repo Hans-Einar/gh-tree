@@ -79,11 +79,14 @@ func TestWindowsParentEmulatedRoutes(t *testing.T) {
 			if out, err := cmd.CombinedOutput(); err != nil {
 				t.Fatalf("compile %s: %v\n%s", arch, err, out)
 			}
-			cmd = exec.CommandContext(ctx, exe, "-test.run=^(TestNativeParent|TestWindowsParentPendingReceipt|TestWindowsParentExtractionPartialOwner)", "-test.v", "-test.timeout=60s")
-			cmd.Env = append(os.Environ(), "GH_TREE_EMULATED_PARENT=1")
+			// Cross-architecture emulation proves startup, ownership, I/O, cleanup,
+			// failed-start and extraction paths. Native Windows jobs separately prove
+			// terminal resize/interrupt/restart semantics; emulators are not required
+			// to translate console control signals identically to native Windows.
+			cmd = exec.CommandContext(ctx, exe, "-test.run=^(TestNativeParentPipesAndPersistentStart|TestNativeParentFailedStartPreservesCodeAndIdentity|TestWindowsParentPendingReceipt|TestWindowsParentExtractionPartialOwner)$", "-test.v", "-test.timeout=60s")
 			out, err := cmd.CombinedOutput()
 			t.Logf("actual %s parent:\n%s", arch, out)
-			if err != nil || !bytes.Contains(out, []byte("--- PASS: TestNativeParentTerminalControlAndRestart")) {
+			if err != nil || !bytes.Contains(out, []byte("--- PASS: TestNativeParentPipesAndPersistentStart")) {
 				t.Fatalf("emulated parent: %v", err)
 			}
 		})
