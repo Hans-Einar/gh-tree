@@ -947,7 +947,7 @@
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "implementation_in_progress",
+      "state": "independent_review_ready",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -959,9 +959,11 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "4b31ac4c34df370b852a1626107c102ff300c6dd",
-      "checkpointScope": "Only narrow three-file architecture prerequisite committed; generator/assets authoring remains local and incomplete",
-      "localChecks": "Existing compiled fixtures pass pure parsing and reject ambient PE/native I/O/alias, goroutine and recursive dependency; separate candidate review pending"
+      "lastCheckpoint": "d110a068db8ea68cb2d848774d79b7b9d71b0557",
+      "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
+      "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
+      "technicalSource": "b72ad94c60eb38d7c4ebe70fafd10b21a3289037",
+      "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets-Review--001.md"
     }
   ],
   "productFindings": [

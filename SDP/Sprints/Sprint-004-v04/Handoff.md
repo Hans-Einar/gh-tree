@@ -58,7 +58,7 @@ Current status-only commits do not change that verified product tree.
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
 | Windows Runtime#69 | codex/cr21-runtime-windows | fb1a9ec5a46f8b886ff226e32072abdef593648b | actual client/extraction/native386/amd64 race and owned-thread controls pass locally; ARM/emulation/adverse/full review pending |
-| Helper assets#70 | codex/cr21-runtime-helper-assets | 4b31ac4c34df370b852a1626107c102ff300c6dd | assets-parser policy prerequisite pushed/tested; generator/assets not yet checkpointed |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | d110a068db8ea68cb2d848774d79b7b9d71b0557 | technical b72ad94 generator/assets and policy4b31ac4 tested/frozen for fresh review; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
@@ -141,3 +141,11 @@ only File/Pipe/Job/Process. Remaining Windows ARM/emulation/adverse gates stay o
 Unix supervisor/tree and helper generator/assets may have local unfinished WIP;
 inspect active worktrees. All completed checkpoints above are pushed; no full
 Runtime acceptance, Slice closure or canonical product integration has occurred.
+
+Helper candidate #70 is now clean/frozen at d110a068 (technical b72ad94). Exact
+no-rewrite and clean-source ordinary build checks passed; a fresh reviewer reads
+actual generator/asset/policy source and executes independent controls. Newer
+Windows broker source is deliberately not adopted until its coherent freeze.
+A report-only push inadvertently triggered CI and canceled technical run34068851101;
+Master requested cancellation of redundant report run34068966078 and will restore
+the exact technical source run. Neither canceled run is passing evidence.
