@@ -3,7 +3,7 @@
   "protocol": 1,
   "toolchain": "go1.25.0",
   "builder": "windows/amd64",
-  "toolchainDigest": "6e498999e9750af7609e02686e91a2cc2b98dbabba7948b38f5629251590b3a8",
+  "toolchainDigest": "9bdb583c9d8adb59dacd252d40c73814c6c03b824e7eab2b67d1207be7e1f060",
   "moduleDigest": "0c55028cce5c5877a18178a962c835baefd70af58fb597740b06f6a57a1c4517",
   "options": [
     "CGO_ENABLED=0",
@@ -29,7 +29,7 @@
     "-ldflags=-buildid= -linkmode=internal"
   ],
   "optionsDigest": "c194785949e99caf833b820c140ff864cb7e9bdf61f45e8de817ddbfd1e2f34f",
-  "sourceDigest": "3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968",
+  "sourceDigest": "23bf82b051123cd1aa31c5a2368d1cc732f4b09cbc33ea2c9abf4f08f0cfdde5",
   "sources": [
     {
       "path": "module/golang.org/x/sys@v0.44.0/go.mod",
@@ -433,8 +433,8 @@
     },
     {
       "path": "repo/internal/runtime/broker/client_windows.go",
-      "sha256": "164512fe57ca2f7b870572856e1da37371ca39537dd2fe7755baa6758ea4c4fc",
-      "length": 16967
+      "sha256": "aef399d51aecdf26879b93563f512239eede97da245bfd235aae156552976616",
+      "length": 22956
     },
     {
       "path": "repo/internal/runtime/broker/cmd/main_windows.go",
@@ -443,18 +443,33 @@
     },
     {
       "path": "repo/internal/runtime/broker/cwd_windows.go",
-      "sha256": "faf553a50012eab660f7196b5b81732678d09f86ca9851b7e574c57798bd5f78",
-      "length": 6074
+      "sha256": "ced73b4e667498d5e8fa35fc6d9612bdb6e0de7cdf8d8c5456c36ac7f5f420b5",
+      "length": 8701
     },
     {
       "path": "repo/internal/runtime/broker/debug_windows.go",
-      "sha256": "8dc3ce9385a324db1b7fec413525c6c3e2a076e56a8e5f129021b58492ebf16b",
-      "length": 9756
+      "sha256": "3ff200c0cb742c9f9979051f52ebabc10732e8a34cb8dae38b5469a26c76dba2",
+      "length": 12948
+    },
+    {
+      "path": "repo/internal/runtime/broker/delivery_windows.go",
+      "sha256": "1389c66509b378fb20e2d90366acaf11c5847966df582da469a5f038fcc43055",
+      "length": 4302
     },
     {
       "path": "repo/internal/runtime/broker/engine_windows.go",
-      "sha256": "dd8221630ecf4914758ac472420edb977a6067a65ce3e62180c0d032d8809c11",
-      "length": 10064
+      "sha256": "b0e502eaa5e5376c071cd476c4818c446da92d2c777bb6e46a961567012b5937",
+      "length": 12221
+    },
+    {
+      "path": "repo/internal/runtime/broker/extract_windows.go",
+      "sha256": "198f2a322aa9375fdd3f1222a33e7354f5fd212e3b5932daa602a6a420523db5",
+      "length": 10559
+    },
+    {
+      "path": "repo/internal/runtime/broker/failure_windows.go",
+      "sha256": "43bca84abbcf3ab059c2541b14ea2fa2ea9b1d119b82bb1bf448d1dded16083d",
+      "length": 7729
     },
     {
       "path": "repo/internal/runtime/broker/native_windows.go",
@@ -463,8 +478,8 @@
     },
     {
       "path": "repo/internal/runtime/broker/process_windows.go",
-      "sha256": "74119f11988adadc46f7ae9f1f19d9348d7af5b14c81fcfeaf366ee2f019e40f",
-      "length": 10348
+      "sha256": "9c06464d977b6b7328eba6a76ace78a5e7e5e912d3871390117987a18f838458",
+      "length": 12137
     },
     {
       "path": "repo/internal/runtime/broker/protocol.go",
@@ -527,6 +542,16 @@
       "length": 6748160
     },
     {
+      "path": "toolchain/src/bufio/bufio.go",
+      "sha256": "cb3358135140091564c2fdcd7b648e271f6277261e899534dcac21daa23d14fa",
+      "length": 22559
+    },
+    {
+      "path": "toolchain/src/bufio/scan.go",
+      "sha256": "67ad04ac41a859798cb26e112d52ac15ec2fb11b4948293e20c0f7983d029c0b",
+      "length": 14585
+    },
+    {
       "path": "toolchain/src/bytes/buffer.go",
       "sha256": "9a0ecda418d4330726fa09d25b7a231b7e31436c8329655ca0aa838881a60037",
       "length": 16420
@@ -550,6 +575,51 @@
       "path": "toolchain/src/cmp/cmp.go",
       "sha256": "9d8e18366a1a20d2a1981b7f6a0fe53362e801d9ca20eeee56d65536124dd91b",
       "length": 2063
+    },
+    {
+      "path": "toolchain/src/compress/flate/deflate.go",
+      "sha256": "85af5f7a6ff02d9226a68917e2bc59c223440d221252dbf813d214b2e1c38e82",
+      "length": 20756
+    },
+    {
+      "path": "toolchain/src/compress/flate/deflatefast.go",
+      "sha256": "778d7457e4c48d2f6133d22e9f08c72e3299c0cb594c02d44cfc4d229cf05b08",
+      "length": 9537
+    },
+    {
+      "path": "toolchain/src/compress/flate/dict_decoder.go",
+      "sha256": "26ce1ac6f0a735d8e7fffab3f1052d2e2c6929e9fe740ce7c514a7f46552b28a",
+      "length": 6150
+    },
+    {
+      "path": "toolchain/src/compress/flate/huffman_bit_writer.go",
+      "sha256": "ea6ea80d176d172a45b072190a66237a86c10969411514b07feff614fd05cdce",
+      "length": 18684
+    },
+    {
+      "path": "toolchain/src/compress/flate/huffman_code.go",
+      "sha256": "84b830cd8cc3da67f7572d7d8f244f6be0ea21ebd2f579753e91ab29870f5534",
+      "length": 9912
+    },
+    {
+      "path": "toolchain/src/compress/flate/inflate.go",
+      "sha256": "28b241ba6b66cc14ac93cc17a49756cd78daaade60afb47d7cd6aed2489dc5cb",
+      "length": 20902
+    },
+    {
+      "path": "toolchain/src/compress/flate/token.go",
+      "sha256": "bc96536b4ca6e946a5094c3c60a085485cf6e25be1fc74914bdefcf4352f1516",
+      "length": 3680
+    },
+    {
+      "path": "toolchain/src/compress/zlib/reader.go",
+      "sha256": "4c669325ef280fa8dba1878b667577bb0229c0f1b91b98c2dea9165b9430254c",
+      "length": 4764
+    },
+    {
+      "path": "toolchain/src/compress/zlib/writer.go",
+      "sha256": "24b0f31cc40b4937452c64e80a03da246ef078967070d7d84f1660d2daa5a488",
+      "length": 5340
     },
     {
       "path": "toolchain/src/context/context.go",
@@ -1002,6 +1072,11 @@
       "length": 2607
     },
     {
+      "path": "toolchain/src/crypto/sha256/sha256.go",
+      "sha256": "34c5c7e8408022e7b8fd570453aebe6a95607761c14fbae61f465f9ba6328da9",
+      "length": 1796
+    },
+    {
       "path": "toolchain/src/crypto/subtle/constant_time.go",
       "sha256": "95692cee3948a3325bdb80d5805e112414cd8bea18ce781f2e8ccc05c1db0342",
       "length": 1660
@@ -1015,6 +1090,86 @@
       "path": "toolchain/src/crypto/subtle/xor.go",
       "sha256": "f438a661cf333ea488b3c4b227bdba8d2fd5914d916c7b327eb39e343db27296",
       "length": 606
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/attr_string.go",
+      "sha256": "096869810ede7bc173fe5edd48be5bf0f76c986d79f350bd99a0003e3f1aeb86",
+      "length": 8097
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/buf.go",
+      "sha256": "452fba7dd649f09718615d504f64f8da26d57205560b79d19f411e9cad1eae47",
+      "length": 3815
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/class_string.go",
+      "sha256": "1968a14617f5b6a80604f4b0e2ed4f536dbe837322cb527f1390118055398021",
+      "length": 1385
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/const.go",
+      "sha256": "403dcf3af49a3b1e1b71892f626ad3cc2fe318a142dac6d98799bce16154aa06",
+      "length": 14119
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/entry.go",
+      "sha256": "d88869f207a23cbb2565449814f554a61ec6f33aea055265d9c1b5353c83fafd",
+      "length": 29855
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/line.go",
+      "sha256": "38986412b6493c530c5da25cc648642bbef99c60a0966fe2f1be22f21a897697",
+      "length": 24074
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/open.go",
+      "sha256": "be1c3933750e41ebe71d83c7146d053ab3285845107155ae4b3ef2a47813b5e4",
+      "length": 4225
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/tag_string.go",
+      "sha256": "f0463241c9058ddaff67de75a32957244393f5039851f3c88e79f0d3bdb43d6a",
+      "length": 4040
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/type.go",
+      "sha256": "d9f8a50bcd840ab8bb996a8a0f020f34ad56394ce698180094d268a6019b0ca2",
+      "length": 22414
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/typeunit.go",
+      "sha256": "fd17a8eb01ca6f3ca9a3c33f2a2a43dbfaa0f9abae73dd9a505a2501e2e3dcd3",
+      "length": 3692
+    },
+    {
+      "path": "toolchain/src/debug/dwarf/unit.go",
+      "sha256": "f6a37be26bfa260910c31211fd4548a363373b6ca3559231e6ff62fa82b4e305",
+      "length": 4215
+    },
+    {
+      "path": "toolchain/src/debug/pe/file.go",
+      "sha256": "932b22ab21fccd09964d2706a606eebf0308c2ed8c10ac9cbfab6e39b78c3f5c",
+      "length": 17605
+    },
+    {
+      "path": "toolchain/src/debug/pe/pe.go",
+      "sha256": "cfe1a79d0d36c9620c5bb27a2d7479e7e81d159bd9603cb4715544b9a49857a4",
+      "length": 6795
+    },
+    {
+      "path": "toolchain/src/debug/pe/section.go",
+      "sha256": "05e2729db4dbd315401cad4743bc84335d5b38f2705fd046b7bb13bc930b7f13",
+      "length": 3547
+    },
+    {
+      "path": "toolchain/src/debug/pe/string.go",
+      "sha256": "5baa42f702af7fde06018a209d13f96db4aa222fd5c324b2f8b551d1e0e71113",
+      "length": 1833
+    },
+    {
+      "path": "toolchain/src/debug/pe/symbol.go",
+      "sha256": "d76131d9defefb0e85526d720930ec3ab079078b7d9c60de85e1d80650fc0ad8",
+      "length": 6788
     },
     {
       "path": "toolchain/src/encoding/base64/base64.go",
@@ -1130,6 +1285,11 @@
       "path": "toolchain/src/go.mod",
       "sha256": "73fe1e29614160c0ff8b58fb8a9370b6b1d03f4da38fbe3ad75373983ab09091",
       "length": 178
+    },
+    {
+      "path": "toolchain/src/hash/adler32/adler32.go",
+      "sha256": "9301031a6cadbfde857a96d39f3b9c7d8455aec45f486592627c04a514c75443",
+      "length": 3179
     },
     {
       "path": "toolchain/src/hash/hash.go",
@@ -1880,6 +2040,11 @@
       "path": "toolchain/src/internal/runtime/sys/zversion.go",
       "sha256": "f69c03727973664529c2e6fa2d2c53b2d3440c887938d0d9b22254f7984052f2",
       "length": 61
+    },
+    {
+      "path": "toolchain/src/internal/saferio/io.go",
+      "sha256": "efadc03e4126b93f9924cd2d3f70019387bd2945a86657bc6663207d0c8cebc1",
+      "length": 3449
     },
     {
       "path": "toolchain/src/internal/singleflight/singleflight.go",
@@ -4217,6 +4382,31 @@
       "length": 12682
     },
     {
+      "path": "toolchain/src/sort/search.go",
+      "sha256": "78418580ae0329bd5e5b33e91223f62c42010a3d16c17f37ff953ac094611686",
+      "length": 5809
+    },
+    {
+      "path": "toolchain/src/sort/slice.go",
+      "sha256": "842b1095d5a97a239e0d88726de1e7a7bbcf5bb7417e2d6a4dd7706dd6645ae9",
+      "length": 1850
+    },
+    {
+      "path": "toolchain/src/sort/sort.go",
+      "sha256": "f6679c3f16f9f0d1c51b68246853d035c84becb42ed3be3f253170945114e422",
+      "length": 10503
+    },
+    {
+      "path": "toolchain/src/sort/zsortfunc.go",
+      "sha256": "35cdbcbc3a63372e12eebc815c249adfd420e9d783a99b0405998a7ccb00ac1a",
+      "length": 11768
+    },
+    {
+      "path": "toolchain/src/sort/zsortinterface.go",
+      "sha256": "8978a49cc4174b0c35a84a2ddf73175d41254eb340ebeda29f21d3e546088a3b",
+      "length": 11485
+    },
+    {
       "path": "toolchain/src/strconv/atob.go",
       "sha256": "a811df1f66377d76716b133aaa0e0029f8b8432f39b9128e60aeb792c5e70fdb",
       "length": 974
@@ -4637,20 +4827,20 @@
     {
       "arch": "amd64",
       "machine": 34404,
-      "length": 3493376,
-      "sha256": "9188bd5063040a2a39b7d5d550b06cd22bebcad73c9406a14f53314b54b44c5b",
-      "compressedLength": 2038259,
-      "compressedSHA256": "437f614f3ae04390c47f547fd0a7f60608870fb1f63cb136379f0a1b725f0183",
-      "sourceDigest": "a960f47516ebdd0ac01138fe2a04e708e1f22b5c2f5447998ab96c27b7cc1a90"
+      "length": 3612160,
+      "sha256": "bfdb8eb2ec496222b8033bbeca2331c319fd1a0cfcacb6bb7adf3e79c138781c",
+      "compressedLength": 2109197,
+      "compressedSHA256": "b62f559568d69b369ea5cf2ecef93d56f65ae0c5f3d03ab4241f7b64a447f44b",
+      "sourceDigest": "f49a6d8ed24f0d02ff40d559761612a1a7e5f1e3ba75f5ddca6cddec2c027f35"
     },
     {
       "arch": "arm64",
       "machine": 43620,
-      "length": 3308544,
-      "sha256": "2676e8efdcd53f1a87de64790d22ec2fa2f190419005eba25213978e29696e5d",
-      "compressedLength": 1902326,
-      "compressedSHA256": "c9952ce13f6f4846c7445226d2bfc91a2826f135623ce0fac965452b2d90c8f4",
-      "sourceDigest": "473f8149d3d52a3be578a44156a52d8a7cd03a28b877c674163e8a787f99ba44"
+      "length": 3422208,
+      "sha256": "617b7b8a06b5333e146af86a63d5c93f89548f98ab9ab240e9a6600aa34dc5bf",
+      "compressedLength": 1968006,
+      "compressedSHA256": "54ecab0a18d9ca2bc762cb75baf8e9d6e07190c1370efdd86df41d6206b032c7",
+      "sourceDigest": "f2d23b90b2595ea8b0bee24c8bc4f4b3e0751e9429500749c3f67fe537d27a57"
     }
   ]
 }
