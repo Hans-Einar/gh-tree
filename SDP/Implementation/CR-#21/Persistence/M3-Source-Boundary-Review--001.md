@@ -156,3 +156,15 @@ defect with native tests, push and independent confirmation. The Unix trust choi
 still requires explicit user approval and normal affected review/refreeze before
 implementation relies on it. This report/evidence are pushed with `[skip ci]`;
 product tree, frozen records and all prior work remain unchanged.
+
+## Bounded wording confirmation
+
+Independent reviewer m3_persistence_source_boundary_review inspected corrected
+canonical21b512d0ca0befcc0a8be0ec7fbb8b032b45d535 read-only and returned:
+**M363-BCS-M01 RESOLVED; corrected text is ready for user decision.**
+Unix namespace/content assumptions, publication lifetime, permitted later edits,
+attribution semantics and the separate Windows defect are distinguished; no
+remaining material wording defect was found. No files/tests were changed/rerun in
+that confirmation. Master preserves this direct reviewer disposition here.
+M363-SRC-H01 remains open. This is wording confirmation only, not user approval,
+contract freeze, Windows product acceptance or complete #63 acceptance.

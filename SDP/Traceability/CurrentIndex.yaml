@@ -768,10 +768,12 @@
       "sourceBoundaryProposal": {
         "id": "BC-CHANGE-PER-SOURCE-01",
         "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
-        "state": "wording_corrected_confirmation_then_user_decision",
+        "state": "independently_reviewed_waiting_explicit_user_decision",
         "scope": "Unix preparation-source cooperative ownership only; no frozen or product change",
         "reviewHead": "f6d07fbfd972e06ce04122b78f2338013c5b7ba3",
-        "review": "SDP/Implementation/CR-#21/Persistence/M3-Source-Boundary-Review--001.md"
+        "review": "SDP/Implementation/CR-#21/Persistence/M3-Source-Boundary-Review--001.md",
+        "confirmedSource": "21b512d0ca0befcc0a8be0ec7fbb8b032b45d535",
+        "wordingFinding": "M363-BCS-M01 resolved; Windows M363-SRC-H01 open"
       },
       "preparedByteFinding": {
         "id": "M363-SRC-H01",

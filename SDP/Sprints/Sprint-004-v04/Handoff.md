@@ -96,7 +96,8 @@ source after the last check. Frozen authority permits a target-editor race but n
 source-namespace exception. Master must identify a demonstrated binding mechanism
 or obtain an explicit reviewed boundary decision; neither is adopted. Draft
 BC-CHANGE-PER-SOURCE-01 in M3-Adapters defines preparation-source cooperative
-ownership, has corrected M363-BCS-M01 wording awaiting confirmation, then user decision. It changes no
+ownership, has independently confirmed M363-BCS-M01 wording at21b512d and now awaits explicit
+user decision. It changes no
 frozen authority. No-birth
 write refusal may be scoped to proven profiles only if no accepted capability is
 removed. See M3-Remaining-Gates-Assessment--001 for exact clauses and options.
