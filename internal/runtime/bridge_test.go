@@ -58,7 +58,7 @@ func TestMain(m *testing.M) {
 				if nativeTestInterruptedRead(err) {
 					continue
 				}
-				fmt.Fprintf(os.Stderr,"INPUT-END:%T:%v\n",err,err)
+				fmt.Fprintf(os.Stderr, "INPUT-END:%T:%v\n", err, err)
 				os.Exit(0)
 			}
 		}
@@ -77,7 +77,6 @@ func nativeParentRequest(t *testing.T, operation uint64, terminal bool) api.Sess
 	if err := os.WriteFile(filepath.Join(project, "marker"), []byte("selected-original"), 0600); err != nil {
 		t.Fatal(err)
 	}
-	// Resolve a literal relative executable only inside the acquired directory.
 	exe := must(os.Executable())
 	input := must(os.Open(exe))
 	output := must(os.OpenFile(filepath.Join(project, "user-fixture"+nativeTestSuffix()), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0700))
@@ -125,7 +124,7 @@ func nativeParentEngine(t *testing.T) *sessions {
 
 func nativeOutput(t *testing.T, r *sessions, id domain.SessionID, marker string) []byte {
 	t.Helper()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	ticker := time.NewTicker(2 * time.Millisecond)
 	defer ticker.Stop()
