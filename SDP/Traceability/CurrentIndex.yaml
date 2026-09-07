@@ -962,13 +962,14 @@
       "findings": [
         "W69-M01",
         "W69-M02"
-      ]
+      ],
+      "privateSeamDecision": "bounded awaitable delivery receipt; ctx-safe serialized admission,64 receipts/64KiB copied payload; typed closed failure Stage/Class; no shared/public contract change"
     },
     {
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "corrected_candidate_independent_rereview_ready",
+      "state": "h01_file_set_correction_authorized",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -980,23 +981,25 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "c5f36edfcfd2e418f28e32fc0613143ed31649c5",
+      "lastCheckpoint": "f6128251a0510021191880be658b705528fcc606",
       "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
       "technicalSource": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-HelperAssets-Review--001.md",
-      "reviewHead": "7fdfc9bedb66dd7a4cdb67eb798a936d24a06ace",
+      "reviewHead": "f6128251a0510021191880be658b705528fcc606",
       "disposition": "CHANGES_REQUIRED",
       "findings": [
-        "H70-H01",
-        "H70-M02",
-        "H70-M03"
+        "H70-H01"
       ],
       "latestVerification": {
         "head": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
         "run": 34071597307,
         "result": "SUCCESS; exact guarded checker/fresh-cache/root-junction/no-rewrite local proof, independent confirmation pending"
-      }
+      },
+      "resolvedFindings": [
+        "H70-M02",
+        "H70-M03"
+      ]
     },
     {
       "id": "IMPL71",

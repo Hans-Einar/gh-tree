@@ -344,3 +344,16 @@ typed native failure/stage correction. Fresh Windows-only author correction is
 authorized, preserving all native resource and shared/public contracts, followed
 by exact source/native tests and bounded independent confirmation. #71 must use
 the resulting truthful seam, not reconstruct discarded facts or parse generic text.
+
+#70 re-reviewf612825 independently resolves M02/M03 but keeps H01 HIGH: a new
+source can be inserted after verifySelection and consumed by the separate build
+while all existing-file guards remain held. Author must bind the consumed file
+set as well as bytes through compilation; another scan is not sufficient.
+The same H01 finding/owned regression continues; no new governance or scope cut.
+
+#69/#71 private seam decision: bounded WindowsDelivery receipt retains possible
+dispatch/eventual accounting after cancellation. Terminal observation retires
+admission once, even with a terminal error; repeated observers get stable facts.
+Native cleanup never awaits consumption; parent retains/observes receipts and
+joins its producers. Limits64 receipts/64KiB copied payload, closed failure
+Stage/Class and shared/public framing/contracts unchanged. See #71 comment.

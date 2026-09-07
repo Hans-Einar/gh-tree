@@ -58,7 +58,7 @@ Current status-only commits do not change that verified product tree.
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
 | Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
 | Windows Runtime#69 | codex/cr21-runtime-windows | 35a7632c97920b68e5c428bbbbf37494a056d8ea | source5e964336 CHANGES_REQUIRED: W69-M01 canceled/lost control effects and M02 erased error classification; native CI6PASS/helper prerequisite FAIL |
-| Helper assets#70 | codex/cr21-runtime-helper-assets | c5f36edfcfd2e418f28e32fc0613143ed31649c5 | corrected technical732fd9bb, CI34071597307 SUCCESS; all3 findings await bounded independent confirmation; actual broker closure ab608327 |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | f6128251a0510021191880be658b705528fcc606 | technical732fd9bb CI20PASS; M02/M03 independently resolved, H01 HIGH remains for post-selection source insertion; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
@@ -190,3 +190,11 @@ foreground readiness/non-echoable markers and test-only GORACE atexit adjustment
 keeping product2s/3s bounds; adds truthful residual/late-output ownership controls.
 Local native/9-target compile/vet PASS; exact corrected CI remains required.
 #71 parent scope remains queued; native client signatures are in broker source.
+
+#70 second independent reportf612825 resolves fresh-cache/root-junction defects
+and confirms existing bytes are pinned, but newly inserted source after selection
+still enters both builds. H01 remains HIGH; bind consumed names and bytes through
+compilation before acceptance. Existing author may correct this bounded issue,
+then regenerate/push and obtain changed-scope confirmation. #69 receipt/failure
+seam proposal is approved privately and recorded for queued #71; actual code and
+independent control review are still required.
