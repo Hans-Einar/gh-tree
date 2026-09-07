@@ -118,14 +118,14 @@ func normalizeNativeError(err error, stage api.RuntimeCleanupStage, classify fun
 		if e == nil {
 			return
 		}
+		if joined, ok := e.(interface{ Unwrap() []error }); ok {
+			for _, child := range joined.Unwrap() {
+				visit(child)
+			}
+			return
+		}
 		code, at, known := classify(e)
 		if !known {
-			if joined, ok := e.(interface{ Unwrap() []error }); ok {
-				for _, child := range joined.Unwrap() {
-					visit(child)
-				}
-				return
-			}
 			if wrapped, ok := e.(interface{ Unwrap() error }); ok {
 				visit(wrapped.Unwrap())
 				return

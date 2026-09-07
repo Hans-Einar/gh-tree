@@ -233,3 +233,15 @@ and satisfy full V-RUN/native ABI/FreeBSD/ARM64/emulation/helper/source-binding
 gates. Fresh independent parent review and Master integration are still required.
 The separate Git review hold remains unchanged. No native acceptance, complete
 adapter, whole Slice, canonical merge or release is claimed here.
+
+## User-requested immediate WIP stop — 2026-09-07
+
+User explicitly stopped work because of excessive usage/cost and requested a pushed
+WIP checkpoint. This supersedes the earlier pause-after-M3 instruction. No further
+implementation/review/test campaign is authorized without explicit resumption.
+The in-progress Windows bridge and test refactor are preserved exactly in this
+checkpoint: bridge.go, bridge_unix_test.go, bridge_test.go, bridge_windows.go and
+bridge_windows_test.go. They are unfinished and have not been accepted or verified
+as a combined Windows milestone. No new tests were started for this preservation.
+Prior pushed Unix milestone4de11da and combined base4412fe8 retain their evidence;
+current CI status must be read from Actions. Do not infer completion from this WIP.
