@@ -481,3 +481,73 @@ Persistence remaining assessment82610b8 is durable: no-birth is explicit profile
 selection if no accepted capability is removed; source-name publication interval
 needs a demonstrated mechanism or explicit reviewed boundary decision. Neither
 source interval nor FreeBSD scope is waived; no new product mechanism authorized.
+
+## BC-CHANGE-PER-SOURCE-01 — proposed Unix preparation-namespace boundary
+
+**DRAFT FOR INDEPENDENT REVIEW AND USER DECISION. Not accepted or frozen.**
+Existing Application--Persistence1.0.0 and Storage--001 remain authoritative.
+Assessment82610b891a82e7b12eb0d13d6be82bc15342f1c4 identified a source-name interval
+in the selected Unix Renameat/Linkat protocol: the syscall can publish a foreign
+entry after the last verified check. This differs from the already accepted
+external target-editor gap. No ordinary selected source-binding mechanism is
+established; another precheck/postcheck cannot close the interval.
+
+The concrete proposed choice retains the selected cooperative protocol and makes
+its preparation-namespace assumption explicit. This is a guarantee/trust change,
+so user approval is required after independent review; it cannot close #63 now.
+The alternative is to retain the stronger source-substitution guarantee and keep
+this part blocked until a supported mechanism is demonstrated and reviewed.
+
+Proposed normative addition to Storage--001, Explicit concurrency and durability
+limits, and BC--Application--Persistence, Concurrency limits:
+
+> On Unix, the selected name-based publication protocol requires exclusive
+> cooperative ownership of the generated preparation source while it can be used
+> by an active request. From exclusive creation through the selected publication
+> call, other actors must not modify the prepared payload's bytes/metadata or
+> rename, unlink or substitute its generated source entries. Cooperating gh-tree
+> instances satisfy this through the permanent store lock and request ownership.
+> This is an environmental trust condition, not kernel-enforced exclusion of
+> arbitrary peers that can write the directory or the owned files.
+>
+> Ordinary editors may continue to edit or replace the fixed configuration target;
+> the existing target-editor gap remains. Late writes through an editor's retained
+> original handle and changes to the published target after publication remain
+> permitted and do not retroactively invalidate a known committed operation. The
+> new condition concerns preparation sources before/during publication, not those
+> already authorized original/target edits. Windows retained-handle publication
+> and its stronger native source binding are unchanged.
+>
+> Exclusive creation, no-follow acquisition, exact source/target/metadata checks,
+> manifest association and observed-drift refusal remain mandatory. Before native
+> invocation, detected source drift refuses without publishing. If evidence after
+> an issued call makes attribution uncertain, report Indeterminate with actual
+> effects/current/recovery facts; never invent NotCommitted, rollback or replay.
+> A different current target alone is not proof of source drift and cannot erase
+> an independently known committed effect. An undetected breach of the stated
+> preparation-ownership condition is outside this cooperative guarantee; successful
+> Renameat/Linkat is not evidence of kernel-enforced source identity exclusion.
+
+Impact/acceptance before any refreeze:
+- Independent reviewer must challenge the exact wording against physical scope,
+  retained-original semantics, all outcome/error rules and the existing API; identify
+  any remaining contradiction or necessary product correction. No review can grant
+  user authority. Existing PR01 controls/refusals must remain; no test is deleted.
+- User must explicitly select this documented trust boundary or keep the stronger
+  guarantee blocked. No response is no approval. If approved, Master coordinates
+  accepted design/BC version/refreeze and affected review/verification under the
+  existing change-control process, then a worker implements any identified delta.
+- No schema, public API, native primitive, privilege helper, other filesystem/OS,
+  serial integration order or FreeBSD scope changes are included. Full adapter/
+  Slice/native verification remains required; this does not close M3 or #63.
+
+Separate no-birth inventory: current positive write/restart/identity evidence is
+Linux/ext4 with returned native birth identity, macOS/APFS with birth identity,
+and Windows/NTFS with the separately accepted full artifact identity profiles.
+Change-only native anchor/parent currently refuses writes; coherent reads can still
+be reported. A public supplied change-stamp test with an independent native birth
+anchor is not no-birth write evidence. The acquisition whitelist is not a claim
+of complete write/recovery proof for XFS/Btrfs/tmpfs/HFS/UFS/ZFS. Before closing this
+identity gate, verify the explicit refusal and that no separately accepted ordinary
+profile is excluded. FreeBSD's user decision remains independent and cannot be
+closed by declaring its ordinary profile read-only.

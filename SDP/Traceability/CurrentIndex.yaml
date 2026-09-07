@@ -764,7 +764,13 @@
       "remainingPassReviewHead": "5380629ec23552cdb750f15aeb50bc5260438c5a",
       "remainingPassDisposition": "ACCEPT admission/fault/resource delta, no findings; full profile/association/source-name gates open",
       "remainingAssessment": "SDP/Implementation/CR-#21/Persistence/M3-Remaining-Gates-Assessment--001.md",
-      "remainingAssessmentHead": "82610b891a82e7b12eb0d13d6be82bc15342f1c4"
+      "remainingAssessmentHead": "82610b891a82e7b12eb0d13d6be82bc15342f1c4",
+      "sourceBoundaryProposal": {
+        "id": "BC-CHANGE-PER-SOURCE-01",
+        "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
+        "state": "draft_independent_review_then_user_decision",
+        "scope": "Unix preparation-source cooperative ownership only; no frozen or product change"
+      }
     },
     {
       "id": "IMPL64",

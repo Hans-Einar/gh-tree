@@ -88,7 +88,10 @@ approved. The existing M3-FreeBSD-Assessment--001 is authoritative evidence.
 Persistence's remaining source-publication interval can consume a substituted
 source after the last check. Frozen authority permits a target-editor race but no
 source-namespace exception. Master must identify a demonstrated binding mechanism
-or prepare an explicit reviewed boundary decision; neither is adopted. No-birth
+or obtain an explicit reviewed boundary decision; neither is adopted. Draft
+BC-CHANGE-PER-SOURCE-01 in M3-Adapters defines preparation-source cooperative
+ownership, awaits fresh independent review, then user decision. It changes no
+frozen authority. No-birth
 write refusal may be scoped to proven profiles only if no accepted capability is
 removed. See M3-Remaining-Gates-Assessment--001 for exact clauses and options.
 
