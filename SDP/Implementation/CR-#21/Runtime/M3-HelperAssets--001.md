@@ -1,5 +1,17 @@
 # M3 Runtime helper assets — Issue #70
 
+Correction checkpoint (2026-09-07): independent review `7fdfc9b` requires
+H70-H01/M02/M03; the original candidate below is rejected, not accepted.
+M03 now resolves Windows selected roots through kernel final paths, accepting
+an owned junction to the canonical GOROOT while rejecting a child junction
+outside the selected root. Both that positive/negative native control and
+`TestActualSelectedDependencyClosure` pass on native Go1.25.0 amd64. Regeneration
+retains the exact ab608 broker images and updates recipe provenance to 902 inputs,
+digest `b22395a0763d7a41f1f4681d1f171aa0090af2e63a1ae13afd8c6214d6db5fce`.
+H01 immutable build consumption and M02 fresh-cache admission remain open; this
+is a tested partial correction checkpoint only. Independent re-review and final
+exact-source checker/CI remain required after all corrections.
+
 Disposition: bounded candidate frozen for independent review; final Windows
 source adoption/regeneration and integrated/native Runtime acceptance remain open.
 Product candidate: `b72ad94c60eb38d7c4ebe70fafd10b21a3289037`.

@@ -366,13 +366,13 @@ func contained(root, path string) (string, error) {
 	if e != nil || r == ".." || strings.HasPrefix(r, ".."+string(filepath.Separator)) || filepath.IsAbs(r) {
 		return "", fmt.Errorf("input outside declared root: %s", path)
 	}
-	physical, e := filepath.EvalSymlinks(path)
+	physical, e := physicalPath(path)
 	if e != nil {
-		return "", e
+		return "", fmt.Errorf("resolve selected input %q: %w", path, e)
 	}
-	base, e := filepath.EvalSymlinks(root)
+	base, e := physicalPath(root)
 	if e != nil {
-		return "", e
+		return "", fmt.Errorf("resolve declared root %q for %q: %w", root, path, e)
 	}
 	rel, e := filepath.Rel(base, physical)
 	if e != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) || filepath.IsAbs(rel) {
