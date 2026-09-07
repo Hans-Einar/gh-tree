@@ -1,0 +1,43 @@
+Independent bounded re-review at c5f36edfcfd2e418f28e32fc0613143ed31649c5
+Technical source 732fd9bbfe1dad7430f71ceca8270283b82a29d7
+Native Go1.25.0 Windows amd64; CGO_ENABLED=0; GOTOOLCHAIN=local; GOFLAGS=-mod=readonly.
+This is a transcript of observed tool-session output, not a separate raw log capture.
+
+Tool session 34981: go test -overlay C:/Users/hanse/.codex/tmp/cr21-helper-review-002/overlay.json ./internal/runtime/cmd/helpergen -run TestReviewerSourceInsertionAfterSelection -count=1 -v
+Overlay adds only the archived reviewer_insertion_test.go.txt as an external test file; product source unchanged.
+Exit 1, expected regression failure:
+=== RUN   TestReviewerSourceInsertionAfterSelection
+    reviewer_insertion_test.go:41: pass=1 arch=amd64 verified snapshot built unrecorded source; imageSHA=d71b5c58a13d8a0c7c2be0381889c2da420759ab8ef441875776fb6fd33b748c
+    reviewer_insertion_test.go:41: pass=1 arch=arm64 verified snapshot built unrecorded source; imageSHA=666fdba3cba3231460afa84d1975dd326352ca38e452294e46ad133340904c5d
+    reviewer_insertion_test.go:41: pass=2 arch=amd64 verified snapshot built unrecorded source; imageSHA=d71b5c58a13d8a0c7c2be0381889c2da420759ab8ef441875776fb6fd33b748c
+    reviewer_insertion_test.go:41: pass=2 arch=arm64 verified snapshot built unrecorded source; imageSHA=666fdba3cba3231460afa84d1975dd326352ca38e452294e46ad133340904c5d
+    reviewer_insertion_test.go:46: FINDING H70-H01: both isolated amd64 builds accepted identical unrecorded post-selection source
+    reviewer_insertion_test.go:46: FINDING H70-H01: both isolated arm64 builds accepted identical unrecorded post-selection source
+    reviewer_insertion_test.go:51: outer source provenance remained byte-identical
+--- FAIL: TestReviewerSourceInsertionAfterSelection (35.91s)
+FAIL
+FAIL github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen 36.372s
+
+Tool session 11514: go test ./internal/runtime/cmd/helpergen -run 'Test(PinnedPreparationFreshSelectedOnlyOfflineAndInconsistent|SelectedRootJunctionAndRedirectedChild|WindowsSnapshotRetainsReadOnlyOwnership|BuildConsumesCapturedModuleAndToolchain|AssemblyClosureRejectsExternalInputs|SnapshotRejectsUnrecordedOrChangedBytes)$' -count=1 -v
+Exit 0:
+=== RUN   TestSelectedRootJunctionAndRedirectedChild
+--- PASS: TestSelectedRootJunctionAndRedirectedChild (0.30s)
+=== RUN   TestPinnedPreparationFreshSelectedOnlyOfflineAndInconsistent
+--- PASS: TestPinnedPreparationFreshSelectedOnlyOfflineAndInconsistent (0.32s)
+=== RUN   TestWindowsSnapshotRetainsReadOnlyOwnership
+--- PASS: TestWindowsSnapshotRetainsReadOnlyOwnership (0.01s)
+=== RUN   TestBuildConsumesCapturedModuleAndToolchain
+    snapshot_test.go:94: amd64 repeated image=2d0996242cfe17fe7a16500ffab06816442eeeadd60f2c2ee4d74684de768ca3; captured module bytes retained despite live module/compiler/source replacement
+    snapshot_test.go:94: arm64 repeated image=9e349bf572340b2c16ec97a5eb25db3901671080d9095f9ba266a4bd503e4fc4; captured module bytes retained despite live module/compiler/source replacement
+--- PASS: TestBuildConsumesCapturedModuleAndToolchain (43.84s)
+=== RUN   TestAssemblyClosureRejectsExternalInputs
+--- PASS: TestAssemblyClosureRejectsExternalInputs (0.00s)
+=== RUN   TestSnapshotRejectsUnrecordedOrChangedBytes
+--- PASS: TestSnapshotRejectsUnrecordedOrChangedBytes (0.00s)
+PASS
+ok github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen 44.936s
+
+The exact fresh-cache plus canonical-junction checker was independently executed
+and observed in tool session 52750. Its direct machine-readable output, 915-input
+digest, exit 0, 54-file no-rewrite assertion and owned fixture paths are preserved
+in recheck-fresh-junction-no-rewrite.json alongside its observer source.

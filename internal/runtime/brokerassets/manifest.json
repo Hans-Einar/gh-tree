@@ -1,0 +1,4656 @@
+{
+  "schema": 1,
+  "protocol": 1,
+  "toolchain": "go1.25.0",
+  "builder": "windows/amd64",
+  "toolchainDigest": "6e498999e9750af7609e02686e91a2cc2b98dbabba7948b38f5629251590b3a8",
+  "moduleDigest": "0c55028cce5c5877a18178a962c835baefd70af58fb597740b06f6a57a1c4517",
+  "options": [
+    "CGO_ENABLED=0",
+    "GOOS=windows",
+    "GOAMD64=v1",
+    "GOARM64=v8.0",
+    "GO386=sse2",
+    "GOARM=7",
+    "GOEXPERIMENT=",
+    "GOFIPS140=off",
+    "GOWORK=off",
+    "GOTOOLCHAIN=local",
+    "GO111MODULE=on",
+    "inputs=isolated-recorded-tree",
+    "input-set=continuous-native-name-invalidation",
+    "GOPROXY=off",
+    "GOSUMDB=off",
+    "gzip=best-compression,mtime=0,os=255,name=,comment=",
+    "-mod=readonly",
+    "-trimpath",
+    "-buildvcs=false",
+    "-pgo=off",
+    "-ldflags=-buildid= -linkmode=internal"
+  ],
+  "optionsDigest": "c194785949e99caf833b820c140ff864cb7e9bdf61f45e8de817ddbfd1e2f34f",
+  "sourceDigest": "3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968",
+  "sources": [
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/go.mod",
+      "sha256": "57f4393ea18d5446a12363b35c23a616d843fa1669c7121a70a2bc3a9677d665",
+      "length": 35
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/aliases.go",
+      "sha256": "8209f09b0195574766435d50f0b769dd76a460777ff194c53952db22c4d54d77",
+      "length": 310
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/dll_windows.go",
+      "sha256": "1c62d9345dd0c1d8e660792c1955a407b2049210c3bd2d8000004375f07afed9",
+      "length": 10522
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/env_windows.go",
+      "sha256": "fcfa69bb220a15cc151240ecc57bb144cf25c6628e899bc72d8217171376ab5b",
+      "length": 1367
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/eventlog.go",
+      "sha256": "0162de9581d94b7f73c2125e310a8c08d1f5f6ec9d99d68b450ea330cdab33e0",
+      "length": 825
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/exec_windows.go",
+      "sha256": "9c4824d3c8a1d54189f9d81e54a5786971b338c6d8b116ad188c1746212534a8",
+      "length": 7513
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/memory_windows.go",
+      "sha256": "070342979027b739e224a8d35c5dabd9ac6ea662b9a58954446f27103c2443c4",
+      "length": 1405
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/race0.go",
+      "sha256": "fd656479b0761b07939c12b95733002fe0437f33e6a9b317cdaf8b3fe3e116e4",
+      "length": 454
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/security_windows.go",
+      "sha256": "094bc64d586f16c90c6befc3a2383434e9a4acd37afcac301c6c365afa54305c",
+      "length": 55986
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/service.go",
+      "sha256": "88b18aaac8358e790f5f723acac90799e84b813bc02c9c7ddad2e0f15a0503d7",
+      "length": 10503
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/setupapi_windows.go",
+      "sha256": "72097fc028210a5700ede92673d155af6de97210292770bfb31363691dad07c4",
+      "length": 68854
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/str.go",
+      "sha256": "6c8cc24a3e0c11c6b4950dbb49a5f7eb72e65fcb861a8cd71cdad376125a43cb",
+      "length": 504
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/syscall.go",
+      "sha256": "60b6c688bece9fb3550cb369311b55dc33d1e2350a93f9c8a5f8fa0cd8ddb2cc",
+      "length": 3238
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/syscall_windows.go",
+      "sha256": "75e8614973a27eaff76c57d213827db5f6c5246c768886e96cb2348eb8fa1e85",
+      "length": 88267
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/types_windows.go",
+      "sha256": "6ec2fb87d2931c109e75e493698cf9e355f4ee6515d34100792509ddfed6d6ef",
+      "length": 129320
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/types_windows_amd64.go",
+      "sha256": "c375406875cabc6447a9a8ca917eccab2227ea33a17ac3ed02a3a8fca0af8ce1",
+      "length": 817
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/types_windows_arm64.go",
+      "sha256": "c375406875cabc6447a9a8ca917eccab2227ea33a17ac3ed02a3a8fca0af8ce1",
+      "length": 817
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/zerrors_windows.go",
+      "sha256": "fdf634bbd093494501a9aec0660aa53b434fdc2c2bb989e8d0925323e511358d",
+      "length": 945502
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/zknownfolderids_windows.go",
+      "sha256": "3815bbaa8adf5400041954decc56e8889eb56eb20bfc30053e7799703af0fc95",
+      "length": 19145
+    },
+    {
+      "path": "module/golang.org/x/sys@v0.44.0/windows/zsyscall_windows.go",
+      "sha256": "6c742602b40e291c946a1ea6d9496c2b9a92b821eaf3625c8f26896289ea6cc1",
+      "length": 207550
+    },
+    {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.info",
+      "sha256": "bb310f9a0ff5c8a45525eb9feae97583aaea040c79e31d99ab27c8ff2dd80aaa",
+      "length": 51
+    },
+    {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.mod",
+      "sha256": "57f4393ea18d5446a12363b35c23a616d843fa1669c7121a70a2bc3a9677d665",
+      "length": 35
+    },
+    {
+      "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.ziphash",
+      "sha256": "317aa710afaba375d4d683d35c6a4ef4e487127da1c77798159a2145b0909f2d",
+      "length": 47
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/host_other.go",
+      "sha256": "20d1796b96cecd53fb7cf4928ab7fb09b6bad67481e3d40bb48b0db110901cc1",
+      "length": 153
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/host_windows.go",
+      "sha256": "63aba467046520dc976f5827fb53b5d95e22062cd4ffdd82f242cd21e0c1742e",
+      "length": 534
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/includes.go",
+      "sha256": "7bf8167c43c10af45b1db28c05f44566e405a8ddd541d273c3c4c6baf1a8dea2",
+      "length": 3479
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/main.go",
+      "sha256": "4c7d0ff0f2a83433ac7257ce110c23dae768d7016bad1314463af3b78595d45f",
+      "length": 17209
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/modules.go",
+      "sha256": "348722b87ec90998584ca4626486ea436026e7b5b4cdca0e29ffc8ddf4ca5844",
+      "length": 4173
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/path_other.go",
+      "sha256": "151bfed1c22427f86e060f1515899ad01d96aef6660a79a2421e04ffc0c27fdb",
+      "length": 145
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/path_windows.go",
+      "sha256": "702d0d223da3ba549289393168e91d3857e4920d0ff30d51cb6edb1f604b04ce",
+      "length": 975
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/prepare.go",
+      "sha256": "d8cd0690b924d602647ff1dee7e8a2b6686ed5a2969a7f642133c2e658b3f370",
+      "length": 1703
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/seal_other.go",
+      "sha256": "5f6c60b66b70dd139bb978071246407eb35d4e9461f974409e69bb5863661361",
+      "length": 221
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/seal_windows.go",
+      "sha256": "f80e8a3d8c641fcb507219feaf5c0472e955aab60056082d9176f64594976332",
+      "length": 869
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/snapshot.go",
+      "sha256": "98b3f58a03683c7cdebcb972623bc3f20341042b509ba21f599d39fd8d5976c0",
+      "length": 9293
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/watch_other.go",
+      "sha256": "4ced4f6d3d5532ec31fce3f765e91a38a2918ff27f3a33fc48fa80fb7aa27a6f",
+      "length": 459
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/watch_windows.go",
+      "sha256": "1aac7dd976d8de52640933d795a27261b286353e4afb7d9ed14f3f31221541da",
+      "length": 4175
+    },
+    {
+      "path": "repo/go.mod",
+      "sha256": "993846ae4aed03f839bcfd724797a00bf491e301d644f6a0725404f747b9e18c",
+      "length": 1414
+    },
+    {
+      "path": "repo/go.sum",
+      "sha256": "61dfabae2800394c92e4252ee93060ea8e801d8c1eb6221d418ced63c17eb383",
+      "length": 5078
+    },
+    {
+      "path": "repo/internal/application/api/application_consistency.go",
+      "sha256": "ae119fbeb00895516ccc08ed630373634a0139c95e173f346a97db0dc51b5ea8",
+      "length": 13103
+    },
+    {
+      "path": "repo/internal/application/api/application_records.go",
+      "sha256": "040deb95855ca51c2c817efa578eed72848e28db26735effe16056de19c7955d",
+      "length": 165478
+    },
+    {
+      "path": "repo/internal/application/api/client.go",
+      "sha256": "ad7361be44f053a86f4d6b1aa9924e7366c812aa9246f9e11d67f43f2b6b1fbd",
+      "length": 1760
+    },
+    {
+      "path": "repo/internal/application/api/discovery_records.go",
+      "sha256": "d3235daf2dfc4b5eb22218707438b925bd9336fb34b0d53e09ab98083a22d5da",
+      "length": 25164
+    },
+    {
+      "path": "repo/internal/application/api/effect_consistency.go",
+      "sha256": "514ea8443dd4014806e0f71a1a3e6f6f616bb813e2544aa7097adca05ca9e2e2",
+      "length": 2313
+    },
+    {
+      "path": "repo/internal/application/api/enums.go",
+      "sha256": "0ebd256d203dacf8d5913997ed0eef2a0f157d05e8907a025446f10461a43a9e",
+      "length": 13993
+    },
+    {
+      "path": "repo/internal/application/api/evidence.go",
+      "sha256": "d28c4e0a21afcbce4db33c61bbecc20ac0e7367b741a4f25496366cd9b970abe",
+      "length": 2785
+    },
+    {
+      "path": "repo/internal/application/api/evidence_records.go",
+      "sha256": "a03eea951d0d83167fc4b4d2150ba603c54725764bc709f2ab08445e8c4f65d5",
+      "length": 42261
+    },
+    {
+      "path": "repo/internal/application/api/git_consistency.go",
+      "sha256": "10f63e479418baca3945f6cb6d83fc33bf90afe5481b3e0bb559729bf4182648",
+      "length": 12086
+    },
+    {
+      "path": "repo/internal/application/api/git_envelope_consistency.go",
+      "sha256": "0ebb23dc099a4c00be72c0298d49512cf93c8e5de4f33bbf0256a6eb601701ab",
+      "length": 4823
+    },
+    {
+      "path": "repo/internal/application/api/git_records.go",
+      "sha256": "4d5cc0c41b647d42e1a2e8ae37b1e242e1906dd5ca2e778c162747309117e361",
+      "length": 176712
+    },
+    {
+      "path": "repo/internal/application/api/git_recovery_consistency.go",
+      "sha256": "cf262aa81de57f6373eeb5ef1be3bff8f74ff996e9d705ff3a0053147c83e80e",
+      "length": 4731
+    },
+    {
+      "path": "repo/internal/application/api/ids.go",
+      "sha256": "ca68b391c315617c94f48971cf05c375a9d6d097758db406fbfdcb3583931898",
+      "length": 3551
+    },
+    {
+      "path": "repo/internal/application/api/json_values.go",
+      "sha256": "f86eb22771970fc0e5ae222af4b35a12d244172cb9e65b3030a64fe48f4aad3d",
+      "length": 5349
+    },
+    {
+      "path": "repo/internal/application/api/operation_consistency.go",
+      "sha256": "edf21c042925ba2d5d67c969a4ce93156edee90f50d2999d8521749c07a9db5b",
+      "length": 2016
+    },
+    {
+      "path": "repo/internal/application/api/plan_consistency.go",
+      "sha256": "4ea561621e2ae2af60f76b96972df097b8dae1f9963f64842726109e21ffab7b",
+      "length": 4442
+    },
+    {
+      "path": "repo/internal/application/api/primitives.go",
+      "sha256": "a0da44116f693b029a76b2b40bcc54ef42aa9d52e07cb08bab83fcba1c197684",
+      "length": 7732
+    },
+    {
+      "path": "repo/internal/application/api/projection_consistency.go",
+      "sha256": "c98cdf1a207b024d344ddd63082c8c6861d77373b72fdff2f59cb34f825b0e27",
+      "length": 5413
+    },
+    {
+      "path": "repo/internal/application/api/push_evidence_consistency.go",
+      "sha256": "4e6a2c14c0de4cf3bb3f364cc9e21a87c04b0423e8c5d00263b575d1ec005eaa",
+      "length": 2281
+    },
+    {
+      "path": "repo/internal/application/api/recovery_subject_consistency.go",
+      "sha256": "f272be40444ceafef38e59591ef903c534d3ebc947d4d38a950ce19610ccbb18",
+      "length": 1471
+    },
+    {
+      "path": "repo/internal/application/api/remote_consistency.go",
+      "sha256": "4e02df752de8a2a88db1b89dc25e8961d84420802b9ca50eee593ba5ce881053",
+      "length": 2641
+    },
+    {
+      "path": "repo/internal/application/api/remote_records.go",
+      "sha256": "eb63f01745b89b8a288cbdb0c8a75dbdb0264d1f0203b9f7bf1a278893cca7c1",
+      "length": 44616
+    },
+    {
+      "path": "repo/internal/application/api/request_consistency.go",
+      "sha256": "f324fb76f6478a0bf1b9a7338b7276b0818acd2c6b17f704a837fb50c7d5de69",
+      "length": 5969
+    },
+    {
+      "path": "repo/internal/application/api/request_result_consistency.go",
+      "sha256": "10b23c1387f3b999054e3ed067a90b49400a8ad70bb4d6470e74351077b5cce9",
+      "length": 8269
+    },
+    {
+      "path": "repo/internal/application/api/result_binding.go",
+      "sha256": "530b64f4dcc4349b0ed35732c76989d6591c3df0f47b09192b55f8b1ddd9c706",
+      "length": 3968
+    },
+    {
+      "path": "repo/internal/application/api/runtime_consistency.go",
+      "sha256": "d53c649ae8e9fdc7d93908f085e3d1b628a5e8b43e23fc6e3aced5e0bf977cf1",
+      "length": 1939
+    },
+    {
+      "path": "repo/internal/application/api/runtime_records.go",
+      "sha256": "068f48b6873762382aee8e0ed001e40748e0e21b3340615c87b89c7c4ef0b4ed",
+      "length": 33507
+    },
+    {
+      "path": "repo/internal/application/api/selection_equality.go",
+      "sha256": "2f68e569e9c346aefdafab6039735e34293964e39debba1de5207217a5acf908",
+      "length": 1626
+    },
+    {
+      "path": "repo/internal/application/api/status_consistency.go",
+      "sha256": "0cf8470f8a23961cc258e8897450663d4d27e0a770d5966a583a61abda9f1577",
+      "length": 3036
+    },
+    {
+      "path": "repo/internal/application/api/storage_consistency.go",
+      "sha256": "73607438e0219a94c5f3576d460a4d1245734cf22f45e75630d0acd3df2cc14d",
+      "length": 3977
+    },
+    {
+      "path": "repo/internal/application/api/storage_records.go",
+      "sha256": "1fa89c3bdfeaa7ed8d5ec15e7d51c7afe719263226572bbe9106419c4f2684d1",
+      "length": 25857
+    },
+    {
+      "path": "repo/internal/application/api/storage_validation.go",
+      "sha256": "2d0c948d34528f1d8b58ae9cc57abe2c7ba7b517934690182c67c23b21896b2e",
+      "length": 11560
+    },
+    {
+      "path": "repo/internal/application/api/unions.go",
+      "sha256": "cfa19c386ca40abe89e8b4f4a551169bcefe1b0c2d111285d5ad407ae607175f",
+      "length": 24988
+    },
+    {
+      "path": "repo/internal/application/api/validation.go",
+      "sha256": "1a35f5e88a9a87697cbc98e59d90d456c4d4210d944787a30523e6877b47c154",
+      "length": 14706
+    },
+    {
+      "path": "repo/internal/application/api/values_records.go",
+      "sha256": "779fbff704bd5bb3803c703d3731b5bae30db8d0ab9fc83f930376da8ebaf488",
+      "length": 42089
+    },
+    {
+      "path": "repo/internal/domain/branch.go",
+      "sha256": "3133d1593599baeda10b597fb526db591c429e8ecd8689d9207fb835251b280f",
+      "length": 2415
+    },
+    {
+      "path": "repo/internal/domain/head.go",
+      "sha256": "5cf0ffdcf7df76e30e1b5cccf34bc51173a4c100cec7d18e8dbc36d925848e86",
+      "length": 2726
+    },
+    {
+      "path": "repo/internal/domain/launch.go",
+      "sha256": "9f12ae2e2401de115eece25506a3ad0430da61c76cbb6a475cf7509547b4a219",
+      "length": 1525
+    },
+    {
+      "path": "repo/internal/domain/oid.go",
+      "sha256": "ca9a1b5e0189352b2b4db8fe0d44d4c5c6afcd51605387fd4ee2b1f99f2b8d0e",
+      "length": 3722
+    },
+    {
+      "path": "repo/internal/domain/repository.go",
+      "sha256": "cdd152ce953ef5251c7f8da9466f1d0bad920ca2bb8a8be231ffdc92e220ddb0",
+      "length": 3103
+    },
+    {
+      "path": "repo/internal/domain/session.go",
+      "sha256": "446fe4bfb02708d96e9d61c37f846a05f4da91a18bcf418c964503dbe400c38e",
+      "length": 700
+    },
+    {
+      "path": "repo/internal/domain/target.go",
+      "sha256": "1e286bfc1ed394b1e0e56c071d974eaca84e79d3c77eede00012a3e9d3c7b406",
+      "length": 2700
+    },
+    {
+      "path": "repo/internal/runtime/broker/client_windows.go",
+      "sha256": "164512fe57ca2f7b870572856e1da37371ca39537dd2fe7755baa6758ea4c4fc",
+      "length": 16967
+    },
+    {
+      "path": "repo/internal/runtime/broker/cmd/main_windows.go",
+      "sha256": "f6a5b506de45994d37fbc8ee3f2ff0b5173b692a395c59e985e280f4b8283edd",
+      "length": 141
+    },
+    {
+      "path": "repo/internal/runtime/broker/cwd_windows.go",
+      "sha256": "faf553a50012eab660f7196b5b81732678d09f86ca9851b7e574c57798bd5f78",
+      "length": 6074
+    },
+    {
+      "path": "repo/internal/runtime/broker/debug_windows.go",
+      "sha256": "8dc3ce9385a324db1b7fec413525c6c3e2a076e56a8e5f129021b58492ebf16b",
+      "length": 9756
+    },
+    {
+      "path": "repo/internal/runtime/broker/engine_windows.go",
+      "sha256": "dd8221630ecf4914758ac472420edb977a6067a65ce3e62180c0d032d8809c11",
+      "length": 10064
+    },
+    {
+      "path": "repo/internal/runtime/broker/native_windows.go",
+      "sha256": "7b6bdba9609ccdbd57dd8684cbeca979e93adbadcecaba2f5683f2ecd0115d12",
+      "length": 3401
+    },
+    {
+      "path": "repo/internal/runtime/broker/process_windows.go",
+      "sha256": "74119f11988adadc46f7ae9f1f19d9348d7af5b14c81fcfeaf366ee2f019e40f",
+      "length": 10348
+    },
+    {
+      "path": "repo/internal/runtime/broker/protocol.go",
+      "sha256": "62318c120474bf9a051a10e0eef371aeef2109f331d4c0a47ab56fe26e1e2574",
+      "length": 5638
+    },
+    {
+      "path": "repo/internal/runtime/broker/start.go",
+      "sha256": "8e30131b6df7a1c44edab5b68edf4b9dcd381ca9031e70f75d440b0bcb0bc624",
+      "length": 4889
+    },
+    {
+      "path": "toolchain/VERSION",
+      "sha256": "5b444481508c9a41ae34393cf2e0e06ddfa930b02c783a7ccad450b6a8eab773",
+      "length": 35
+    },
+    {
+      "path": "toolchain/bin/go.exe",
+      "sha256": "5c08733f77c624dd4b34bc157626656ef2485de987a8495a4b804cbb91f01726",
+      "length": 15312896
+    },
+    {
+      "path": "toolchain/go.env",
+      "sha256": "98fcab78e155e9fa0c36b18874add30724d04c2452078117c78618107ebfbc9e",
+      "length": 505
+    },
+    {
+      "path": "toolchain/pkg/include/asm_amd64.h",
+      "sha256": "85fc2d5bb80e6db36cef4da5e5c02278d0dcaa6103e5660629b4b713cff15d54",
+      "length": 631
+    },
+    {
+      "path": "toolchain/pkg/include/asm_ppc64x.h",
+      "sha256": "443dd7c93c404f7039a48acdeb7a860ace231b3d2b45daec9ed926e577b7cf61",
+      "length": 1979
+    },
+    {
+      "path": "toolchain/pkg/include/funcdata.h",
+      "sha256": "597879e43bc3cb9a87a1b3d16e3408dd23ca9b6b6047312b6edccc8e34774845",
+      "length": 2587
+    },
+    {
+      "path": "toolchain/pkg/include/textflag.h",
+      "sha256": "a9d761d03aecdcc117691b6a55eacd43eb7d47d9ad9ca7510b8669ac403b380e",
+      "length": 1501
+    },
+    {
+      "path": "toolchain/pkg/tool/windows_amd64/asm.exe",
+      "sha256": "b11c051f579c6f6a2833abe4581d9d914dfb4dccbf4820a10635e705e604ecac",
+      "length": 5128704
+    },
+    {
+      "path": "toolchain/pkg/tool/windows_amd64/compile.exe",
+      "sha256": "020ff9c454afc2dac678b86b62f032d0d2babab4ffeeafd0ba6f5e53b3fe5f14",
+      "length": 22044160
+    },
+    {
+      "path": "toolchain/pkg/tool/windows_amd64/link.exe",
+      "sha256": "dc48cdac48f251ff2f6528d1bf03ad6a0bff0c088e91643cdab6bb719486ab5b",
+      "length": 6748160
+    },
+    {
+      "path": "toolchain/src/bytes/buffer.go",
+      "sha256": "9a0ecda418d4330726fa09d25b7a231b7e31436c8329655ca0aa838881a60037",
+      "length": 16420
+    },
+    {
+      "path": "toolchain/src/bytes/bytes.go",
+      "sha256": "3bbe3599dfc7b4f4d090cf2644f34eaaac91e9f4da8fea4b4f2b46531c0478d5",
+      "length": 36839
+    },
+    {
+      "path": "toolchain/src/bytes/iter.go",
+      "sha256": "299dfd25b58cb6601c0df2f6cf1340f10f33c1ddb100b06a76589f0c76cc3251",
+      "length": 3706
+    },
+    {
+      "path": "toolchain/src/bytes/reader.go",
+      "sha256": "5b42a3100971836c10b1e0d3699b46cffd41c8be23d09e1642ee42ff795dc6ab",
+      "length": 3977
+    },
+    {
+      "path": "toolchain/src/cmp/cmp.go",
+      "sha256": "9d8e18366a1a20d2a1981b7f6a0fe53362e801d9ca20eeee56d65536124dd91b",
+      "length": 2063
+    },
+    {
+      "path": "toolchain/src/context/context.go",
+      "sha256": "ad9f8e2a4ecf9232682060f2063f17d63508c636eed71599e7e777ef1a539637",
+      "length": 25166
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/cbc.go",
+      "sha256": "c4cbaf214aab9907a357ee1b7c5422aec9b300d93307e4a6711a0a1d3db9a70e",
+      "length": 6142
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/cfb.go",
+      "sha256": "973eb4c5d3b33232ae9ab01dee87405120d0dca921567505d98aaa0bce20df13",
+      "length": 3054
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/cipher.go",
+      "sha256": "af744a7e24a704177bbd0bbd7cab39896583c5304aacb17bc7ee889adddc00a5",
+      "length": 4070
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/ctr.go",
+      "sha256": "6bb960d497aec6a361590d173666b1f1d9740dfd4929062d23c4122d60a382a6",
+      "length": 2770
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/gcm.go",
+      "sha256": "ad3f42895b777e30b571655214cfc3ab5847765d2526d5702e97c495885b1aa4",
+      "length": 13333
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/io.go",
+      "sha256": "cd32813d82194c2c24144d0622cf3cfa95b2ce0dbbe39822a2b4ff7f3e38f5d7",
+      "length": 1531
+    },
+    {
+      "path": "toolchain/src/crypto/cipher/ofb.go",
+      "sha256": "48b9f561a07e492b196be137759f5e2d654e800e6e3c4665c7ecb40a53275553",
+      "length": 2198
+    },
+    {
+      "path": "toolchain/src/crypto/crypto.go",
+      "sha256": "0c11e6af08ca7ade0952f4250f8e55487c4673b00e08079a05f8e92e9f31ad80",
+      "length": 8274
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/doc.go",
+      "sha256": "085f6c0eeefbae4baa9d90a6cd081d4b5f769551dec00cb8d4ddbbbd5b9353b0",
+      "length": 826
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/goboringcrypto.h",
+      "sha256": "d02b93dd188657550805418a74306addb0a96f1fc7a3346e91dc9cb9533610c0",
+      "length": 14560
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/notboring.go",
+      "sha256": "ca7890ca233a46d31b7d7d67d7391a97956f2b2aa66a882244ba5be98a75f88d",
+      "length": 5064
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/sig/sig.go",
+      "sha256": "faed644e3071cddf01e07f209561daaa7fb6f54157ba417db60d942dbd80d523",
+      "length": 614
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/sig/sig_amd64.s",
+      "sha256": "0fab1084bb898eec15920788d6650434f5b49bdb354c21de57a2f586979e2435",
+      "length": 1998
+    },
+    {
+      "path": "toolchain/src/crypto/internal/boring/sig/sig_other.s",
+      "sha256": "d221eed848d1de42ea6cce16ff460cc84be9f56f8d88b42d1ac084e51c0a7f47",
+      "length": 499
+    },
+    {
+      "path": "toolchain/src/crypto/internal/entropy/entropy.go",
+      "sha256": "a9ae5e6b56c331e7a44616d7310ba4c86c4c0907d9428d8a369ae9e42e97ff4a",
+      "length": 1295
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/aes.go",
+      "sha256": "3f7a470932a6f1e2bc9fa5f03be3a60f7c2edd557ec4a58ecb25fcab71b83ddc",
+      "length": 3497
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/aes_amd64.s",
+      "sha256": "35565efa0d6d38d8873deadfa03e51c00cc99e0b2ff186609232d572da122d3a",
+      "length": 6491
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/aes_arm64.s",
+      "sha256": "11c393df5db5fdd0d93f880ff66ab796200e7bb3228902ed0269a76250d83277",
+      "length": 6962
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/aes_asm.go",
+      "sha256": "21dbf90094928deace73d5a7b1e472b95a91bd5c316f53eb48ad5b45d7672439",
+      "length": 2615
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/aes_generic.go",
+      "sha256": "a33d0a61c315c185f168987c7a2f4035d78b1059e9981cf750b7bdf15f91af08",
+      "length": 6527
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/cast.go",
+      "sha256": "7ac51de2b860827f13d33a3085449691dd23c31e620fd8a0a193ca8b20f00c8b",
+      "length": 1200
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/cbc.go",
+      "sha256": "2539041bc7e23663d4f6953f40ce9751130db2d28d6f8548beca56636f35b5d5",
+      "length": 3339
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/cbc_noasm.go",
+      "sha256": "d4bdaa6cd785d444157fd552748f5f5e53e4d13e456b0e7a29537781b96c1eec",
+      "length": 455
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/const.go",
+      "sha256": "1e425707426f310a093c92512a88c134f508801dae0326b1deea4c7e135fdf38",
+      "length": 29409
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/ctr.go",
+      "sha256": "3db57d363c1e78e2d796ae31d4d8b51b892c467bf34fc5364764cc9d4a16072c",
+      "length": 4350
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/ctr_amd64.s",
+      "sha256": "88a24e2eb555a74661478bf0f026210dbcd0ab34ad7e21883a08b69d98cfa388",
+      "length": 9538
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/ctr_arm64.s",
+      "sha256": "2451673e8ae4f2f9fd908d41feb29266b07fa83cbc90cc7ace41b64b2921bfda",
+      "length": 15372
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/ctr_asm.go",
+      "sha256": "6e24fcf4398969616396fa9aeb4f5dbb6526fcc878f59516180f3f82ce4fec26",
+      "length": 1576
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/cast.go",
+      "sha256": "78c62c041c1ce670b4e7d94ad47d2e0815f3270d563a4ee797f19f49b9e1d143",
+      "length": 1183
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/cmac.go",
+      "sha256": "e0b6f3315d99d67b39b2f8e8b9f5c1040094503c2410c03f3cf5a43dba616990",
+      "length": 1898
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/ctrkdf.go",
+      "sha256": "1e4258249d95d6e3d13f9df6549382b72b603565646f787a4c59c95efa4fa6f9",
+      "length": 1442
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm.go",
+      "sha256": "bcb49a1b0727d616f716d1a2d6c67f8eb63d9095ab24b1424797ba08cd43427f",
+      "length": 4284
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm_amd64.s",
+      "sha256": "dc271e2ea18f3855df360dc322e78f67b09eb35b60aae78caeb3b2ba7e8bcbe1",
+      "length": 39166
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm_arm64.s",
+      "sha256": "b5f403162a8d298d425b0885f96458d56c44d08999b0afc82b4aa59109589d83",
+      "length": 22053
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm_asm.go",
+      "sha256": "2d9f49bfa9cb47b6a17ff03c6c0d8708611270e6f35b3981868d026253819031",
+      "length": 3757
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm_generic.go",
+      "sha256": "def1fd72eb31bd265956d1c1cc7212a0debdb0349f6edef349a5901ab3576b00",
+      "length": 3822
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/gcm_nonces.go",
+      "sha256": "de2e1479e89ac8f082f9643d4e2e399a58e918b5084adaa11fda5b6b08b42cfb",
+      "length": 7487
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/aes/gcm/ghash.go",
+      "sha256": "905a27c113c3837adbeb21f87e8acbe12abf2bfb5c018d0042930f691fdcba08",
+      "length": 5356
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/alias/alias.go",
+      "sha256": "e73a5572bfd89d59cf941c0a98a4442170146c543e630b9a1063808f96ccae2a",
+      "length": 1174
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/cast.go",
+      "sha256": "b1ed783d0fe534ae54aee295f3c1842ca2eac56bc1336b936169f3ccc03b4070",
+      "length": 2617
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/check/check.go",
+      "sha256": "31baa283c932141c381a22bbee2f589468926bd706fb04e59bc5254722390a0d",
+      "length": 3120
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/drbg/cast.go",
+      "sha256": "ad39245b1fb02b68daec596472085fb5c3a2e28f567a528a71278bc5cb084f92",
+      "length": 2017
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/drbg/ctrdrbg.go",
+      "sha256": "b9c7a312c89a1d91490ccc871dce6a3971044a87119978dfd0fd737a71b46990",
+      "length": 3824
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/drbg/rand.go",
+      "sha256": "98ad8c81a207c67fd6b7e988a529ded79fee1494574888ca7fabf55515f1def8",
+      "length": 3083
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/fips140.go",
+      "sha256": "c403f74a9a58d2cc4ea19221abe5e6f880ccb3099ac03a85d716285347cdf26e",
+      "length": 2232
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/hmac/cast.go",
+      "sha256": "7fc2170a9524b86a66f66ef4be5f77d58f5e5f237de4c703599096d1e23a9bb9",
+      "length": 856
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/hmac/hmac.go",
+      "sha256": "50de5ed25e3b168be1853876a6c8170ea42079e43ce1a4fc1a35a60e51c14234",
+      "length": 5555
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/indicator.go",
+      "sha256": "ac100029d7762a3281f76275f88b284c670fa097b3e86ff1860a3cbf73764c6c",
+      "length": 2366
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/notasan.go",
+      "sha256": "5d27c44171825d9c4597da23565e8e02a4eb5921609c010e5b24faf895dbab06",
+      "length": 221
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/notboring.go",
+      "sha256": "36e73c6469f6f2f6aa5c9a5d6a789330cd53fd91365d011b305c1753da449588",
+      "length": 290
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/cast.go",
+      "sha256": "69d07cca38c33f57bd7f6baa36a4d0c69b21aa4d6a1c1ed9d32dedd196b97b2f",
+      "length": 785
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256.go",
+      "sha256": "94f8a5508cda46bc036b891d32eae19eb31253946d3442e44d4bb3e0341643b8",
+      "length": 5520
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256block.go",
+      "sha256": "06593b9923133e79710f4ea86f4c2f127acfee7009f0fe6a0e742a58e2966401",
+      "length": 2511
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256block_amd64.go",
+      "sha256": "8d760c095cfed0ad72ac5db3273403c0b5cea612747778affd2171545279a510",
+      "length": 780
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256block_amd64.s",
+      "sha256": "0c972dea5ff318728ecc5966ec82ae726e26b4f48de7925b7613f54dbad95514",
+      "length": 31951
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256block_arm64.go",
+      "sha256": "35524999d8d08ee83bff065f10947cb5ef079f26bc5d45514199e8f7d9f18130",
+      "length": 523
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha256/sha256block_arm64.s",
+      "sha256": "0a6ec8521fbe276ae32db5aa6a67b10f2ee465df43ba2109e2d10faff8e34ef8",
+      "length": 5843
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/cast.go",
+      "sha256": "4fd14d4f9c5265e93ca01389533ff21029a7fa9f6cd4d354db099afa1c591c48",
+      "length": 805
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/hashes.go",
+      "sha256": "54ead343dbdbd9bf2caf56c4e6920efd6be56f9425ed643d17a885256f7942b8",
+      "length": 1892
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/keccakf.go",
+      "sha256": "4bb1be9fa0904272790ad452bafb18d4fb8adfb14075555692a3415ca7391c4e",
+      "length": 10850
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/sha3.go",
+      "sha256": "2a31912e14f26727f954dea795e41eec88046db51ae32434650cce77627f2771",
+      "length": 6750
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/sha3_amd64.go",
+      "sha256": "1c0f5d80c34c5f077475f7e0f0f46a207d4d93a18e4e52915b405a2ac5c3c80a",
+      "length": 472
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/sha3_amd64.s",
+      "sha256": "1819fe8ad5360a3df9c8504aeb9d1320c1394eecb259a192b3798a9983100870",
+      "length": 81661
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/sha3_arm64.go",
+      "sha256": "0edfd39f3c3a23a0127bac6da3067047d9cc54e1074476288ab4147b024871c3",
+      "length": 1014
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/sha3_arm64.s",
+      "sha256": "a4f85c44459be7570b3d1bfc361cf75d6cf04a6dd5b8ef905ba32a29c5b39525",
+      "length": 5095
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha3/shake.go",
+      "sha256": "3b25fdbeb3308516c1a42d6a5b0e059c45f38d9b7ff7471a2762b00dd95b49d9",
+      "length": 4693
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/cast.go",
+      "sha256": "636a680a20fab95604ac603e337230c7f5ebc06563dda40aa2fdc13d8235c55f",
+      "length": 989
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512.go",
+      "sha256": "2d5b0c8c656c71c5a9eff37daf1919141e7742f519c7ad135336ee8805f76cdc",
+      "length": 7390
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512block.go",
+      "sha256": "18407d3a3e353342409d6199eca224dac2d6f660f54c1496aa07f33591e52dc9",
+      "length": 3340
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512block_amd64.go",
+      "sha256": "097bf048d2345d63735526793797d5c17f56bf6e583cbf1b8c24ada241705a8c",
+      "length": 553
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512block_amd64.s",
+      "sha256": "0355e9c8847c40c1482636c63391c9fc2edd9dd8d08a808f32fe5f9b004cf7c2",
+      "length": 19838
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512block_arm64.go",
+      "sha256": "cac486830641b98c295fd20d07606b8eadb7d6a2f258d891dbd80f0ebabdfe48",
+      "length": 535
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/sha512/sha512block_arm64.s",
+      "sha256": "e8fe022552851cd595b76c7ae76ea9e0d386a7490f7a815813d46837b0d4bb7c",
+      "length": 5130
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/subtle/constant_time.go",
+      "sha256": "e3d1bffe92a41fc1b20f0d16be5ef17af060ac7c785d903f145cd4dc6264d9f6",
+      "length": 2715
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/subtle/xor.go",
+      "sha256": "7ee3aa840d46884e788f1fa42fc9d276dd8272fc44f9df3f57bf6467291f13c0",
+      "length": 880
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/subtle/xor_amd64.s",
+      "sha256": "6a7b554b18e085c2f1dedc8691974322b557eb30ccf3ec4d60f838485d75b854",
+      "length": 1384
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/subtle/xor_arm64.s",
+      "sha256": "487b46b18108844057ab4627a67a4502936afb0091899bccc617871f5acbc540",
+      "length": 1520
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140/subtle/xor_asm.go",
+      "sha256": "bec76c1199973f9db96139c917bb239381fad1f28d3e8358d21f78cc162d66b9",
+      "length": 339
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140deps/byteorder/byteorder.go",
+      "sha256": "0d162e306577f27a6f0bb14258205abc1a60ab424b6a42620625e897d412a1c3",
+      "length": 1033
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140deps/cpu/cpu.go",
+      "sha256": "0a17476e7b34fba9e513e3bc9a34f300185ff39f44c45e4b309031d4e2d1d453",
+      "length": 1316
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140deps/godebug/godebug.go",
+      "sha256": "dfbc907e235aea8da676e585cc409d455866b2b70161668a6817ccf296672d46",
+      "length": 458
+    },
+    {
+      "path": "toolchain/src/crypto/internal/fips140only/fips140only.go",
+      "sha256": "b51dbeaa85d68096d649a3d39634e5e3f82701982a2e4fc8219f8af7fc6defb2",
+      "length": 785
+    },
+    {
+      "path": "toolchain/src/crypto/internal/impl/impl.go",
+      "sha256": "0ee5bea6ebb52253d11efba0741b4bcd43c2172ddc328fd17f63d0e2da999567",
+      "length": 3004
+    },
+    {
+      "path": "toolchain/src/crypto/internal/randutil/randutil.go",
+      "sha256": "1e57f1405462b10699b9f02c08995de89b9744cc5b1c5e3754834f6733740c31",
+      "length": 756
+    },
+    {
+      "path": "toolchain/src/crypto/internal/sysrand/rand.go",
+      "sha256": "086a516abf3977c155ab6d25538975043119c99775590983b15b9b258068de71",
+      "length": 2077
+    },
+    {
+      "path": "toolchain/src/crypto/internal/sysrand/rand_windows.go",
+      "sha256": "8122c2f83776b2e76f45631835d8038853886e5db728e24fe97c60179197ed8b",
+      "length": 273
+    },
+    {
+      "path": "toolchain/src/crypto/rand/rand.go",
+      "sha256": "c2074b598435ca2bb8dce2bb62e7f4b11744a3e36b4746f352a4f2dd3a7bd13a",
+      "length": 2480
+    },
+    {
+      "path": "toolchain/src/crypto/rand/text.go",
+      "sha256": "c2c7d3bc9f093676f362b9e22772b6ab2d48acd6c06ca85fea0fef4741c17ce4",
+      "length": 833
+    },
+    {
+      "path": "toolchain/src/crypto/rand/util.go",
+      "sha256": "1404ae196db293493f755275fce7baa3d4cafebee57e46c0a30199c31a16ae67",
+      "length": 2607
+    },
+    {
+      "path": "toolchain/src/crypto/subtle/constant_time.go",
+      "sha256": "95692cee3948a3325bdb80d5805e112414cd8bea18ce781f2e8ccc05c1db0342",
+      "length": 1660
+    },
+    {
+      "path": "toolchain/src/crypto/subtle/dit.go",
+      "sha256": "04ddc12728b13b38663d160ad7cb307edbc53dfda11a1b8695c893b93774f2b6",
+      "length": 1497
+    },
+    {
+      "path": "toolchain/src/crypto/subtle/xor.go",
+      "sha256": "f438a661cf333ea488b3c4b227bdba8d2fd5914d916c7b327eb39e343db27296",
+      "length": 606
+    },
+    {
+      "path": "toolchain/src/encoding/base64/base64.go",
+      "sha256": "e6437c7716ecd1ae91c9d10037362cab186e5873a6365b713e2d8c57d8fc32fc",
+      "length": 18294
+    },
+    {
+      "path": "toolchain/src/encoding/binary/binary.go",
+      "sha256": "fc4fab16ee184c5eaafb75c2e2b8728c9dd04228f96ec8d394c9d3110f9c91df",
+      "length": 24909
+    },
+    {
+      "path": "toolchain/src/encoding/binary/native_endian_little.go",
+      "sha256": "b031ac2a0198ad9091aba55eaea935b258fac69e2025502aa3d50f194c12918f",
+      "length": 504
+    },
+    {
+      "path": "toolchain/src/encoding/binary/varint.go",
+      "sha256": "8dfcb2f0eb8b854d275a0f8facff7ce68b206a56e7d3a3bde0a379c2433f5726",
+      "length": 4966
+    },
+    {
+      "path": "toolchain/src/encoding/encoding.go",
+      "sha256": "aacbbaa46c79ac0a47469a880b51b8e967e5dba80e2ea39ec0d6ec72441db08c",
+      "length": 3425
+    },
+    {
+      "path": "toolchain/src/encoding/hex/hex.go",
+      "sha256": "b3344957ddc5d4090972f94b552a5a7a5bdfb8174a189df033adb0ede97002ba",
+      "length": 9731
+    },
+    {
+      "path": "toolchain/src/encoding/json/decode.go",
+      "sha256": "4ac98dc49e11c21095aaaace0e828452e86225ec7c4d14f5954f2194a207beb4",
+      "length": 36334
+    },
+    {
+      "path": "toolchain/src/encoding/json/encode.go",
+      "sha256": "533ae250cf46961fc4aded16b130981c25aef37063d00f5c5bf65d28e98f6e1e",
+      "length": 40871
+    },
+    {
+      "path": "toolchain/src/encoding/json/fold.go",
+      "sha256": "5b3c91bfbf6943e04d9aeb934031331a3f08a83b10079a0a7f0def3466b2f39e",
+      "length": 1122
+    },
+    {
+      "path": "toolchain/src/encoding/json/indent.go",
+      "sha256": "9ef9eac29fc4cc9d94bf305976891eb5e78a2644acd4f07ed7a0c186991ac908",
+      "length": 5523
+    },
+    {
+      "path": "toolchain/src/encoding/json/scanner.go",
+      "sha256": "2b16dd215274dfa8e0806b53cca144684d5b9c8a02319cf5ce10120c50e6eef2",
+      "length": 16569
+    },
+    {
+      "path": "toolchain/src/encoding/json/stream.go",
+      "sha256": "bb26b2442db6a686fc7f823ea9cc89babe26ac988ec7d8caf4a157aeb60d92f2",
+      "length": 13258
+    },
+    {
+      "path": "toolchain/src/encoding/json/tables.go",
+      "sha256": "74f7f392e1cc22890b72959647b9e5facda591a890c81f8167b532d31adc561e",
+      "length": 4293
+    },
+    {
+      "path": "toolchain/src/encoding/json/tags.go",
+      "sha256": "e7300718fc8862f4dbc8bbdde33e4a0335124bb028e68062b52d3c042c374d6e",
+      "length": 1005
+    },
+    {
+      "path": "toolchain/src/errors/errors.go",
+      "sha256": "70d3e7dd0723ce52164e5dac7100288ff7b85ece6817c886df387ada87291a0e",
+      "length": 3075
+    },
+    {
+      "path": "toolchain/src/errors/join.go",
+      "sha256": "b8a4ebdb1a259d55f147971b0ec41fd9425e19edc3e5b91058fd4d0f458913d7",
+      "length": 1510
+    },
+    {
+      "path": "toolchain/src/errors/wrap.go",
+      "sha256": "f7c8345e5888de64e8722fcdeefa058ec3b2e86670c7119c2d97431259084f7d",
+      "length": 4423
+    },
+    {
+      "path": "toolchain/src/fmt/doc.go",
+      "sha256": "c407ff6182c8e42a4920c3c677f8d47b929b3af8874ce3a55d00d4985e7cdf52",
+      "length": 15102
+    },
+    {
+      "path": "toolchain/src/fmt/errors.go",
+      "sha256": "31acf4dc998508f801e6f741089897430cc86fe5c32b729a12f9e2595f358fab",
+      "length": 1729
+    },
+    {
+      "path": "toolchain/src/fmt/format.go",
+      "sha256": "f254775bc34e4d6b0dbc2ebc279e98f8662256e43e167b31b573368e58d3aacd",
+      "length": 14116
+    },
+    {
+      "path": "toolchain/src/fmt/print.go",
+      "sha256": "50f53c45b639c12f8c01fb7ecb8937d4dd3d02c02d3cc25b85afa778da2a1198",
+      "length": 32551
+    },
+    {
+      "path": "toolchain/src/fmt/scan.go",
+      "sha256": "ac416ad4fba7f9901c737a203950d5d57220d1401e4bc7f0a2420389b88a86cd",
+      "length": 32669
+    },
+    {
+      "path": "toolchain/src/go.mod",
+      "sha256": "73fe1e29614160c0ff8b58fb8a9370b6b1d03f4da38fbe3ad75373983ab09091",
+      "length": 178
+    },
+    {
+      "path": "toolchain/src/hash/hash.go",
+      "sha256": "2784a10b0be2f58c2a0157a5457df5a8e3ad4dfebce5dfb118b7df22ab812776",
+      "length": 3320
+    },
+    {
+      "path": "toolchain/src/internal/abi/abi.go",
+      "sha256": "6667096db3053932c090ee4c05213eac4651834b21612fe9dea4044cf03818b9",
+      "length": 3222
+    },
+    {
+      "path": "toolchain/src/internal/abi/abi_amd64.go",
+      "sha256": "b8d763278ba88322c8a7eb1b0aec4ec04063e0a86c2940eeee865a04b12b78c7",
+      "length": 399
+    },
+    {
+      "path": "toolchain/src/internal/abi/abi_arm64.go",
+      "sha256": "f9a322657c339f34ac6be9e12f967922aaa1fbc19b1c159f330ab2af769c5b77",
+      "length": 301
+    },
+    {
+      "path": "toolchain/src/internal/abi/abi_test.s",
+      "sha256": "28a2adea62ff2469766d52f89bfe67674e388a9ecd7c41f04bf4be063517b8d8",
+      "length": 603
+    },
+    {
+      "path": "toolchain/src/internal/abi/compiletype.go",
+      "sha256": "0988077c09f3c8177032b11d734b0ef4f22b22e9efd27901bbce910e39223f10",
+      "length": 1375
+    },
+    {
+      "path": "toolchain/src/internal/abi/escape.go",
+      "sha256": "494d85e5231a20cd88b56fbcf02028e927a56e62c8d4f7212c08156bbed58457",
+      "length": 2097
+    },
+    {
+      "path": "toolchain/src/internal/abi/funcpc.go",
+      "sha256": "6d479903287a17b116acd29d58d15cdb93083370d5d2056dfa14ceb3362d8d83",
+      "length": 1216
+    },
+    {
+      "path": "toolchain/src/internal/abi/iface.go",
+      "sha256": "b948a672a7b74da346432645cb245bd4b00d1c3b218d3567ae7d34c46dfa3f33",
+      "length": 1048
+    },
+    {
+      "path": "toolchain/src/internal/abi/map_noswiss.go",
+      "sha256": "03db5a82addb4c8cb471aa93b0b75c3eee8ecf39326ee646f398a9b2e25a7291",
+      "length": 1797
+    },
+    {
+      "path": "toolchain/src/internal/abi/map_select_swiss.go",
+      "sha256": "c16b55b87bb7b5873fea4b9468ee60cb24d9b33240c5e58f7ede6584af799718",
+      "length": 969
+    },
+    {
+      "path": "toolchain/src/internal/abi/map_swiss.go",
+      "sha256": "0e2fedbedf244b5fe360a3c6e5ca71502ea6ee7a4043bd83b96a13d1af76c383",
+      "length": 1837
+    },
+    {
+      "path": "toolchain/src/internal/abi/rangefuncconsts.go",
+      "sha256": "b0350d4021e6e279675e082416cc9280c296cfff6a123863ed7f2d693c82a14f",
+      "length": 940
+    },
+    {
+      "path": "toolchain/src/internal/abi/runtime.go",
+      "sha256": "4e5e32bebcb05a34756123a330e4c4a79c0e4eb2fba3e81253fd3e616aca50ec",
+      "length": 254
+    },
+    {
+      "path": "toolchain/src/internal/abi/stack.go",
+      "sha256": "f21cd3ca6d133b7ab87010b42aa03ff0970742e1b3f1593dd33a5fdb63ec4edf",
+      "length": 1282
+    },
+    {
+      "path": "toolchain/src/internal/abi/stub.s",
+      "sha256": "c24d5e3798ef3ae5d80f2b6049d30b2d5a7f5d6f531b093cfb1b6bfa8fbefc01",
+      "length": 340
+    },
+    {
+      "path": "toolchain/src/internal/abi/switch.go",
+      "sha256": "d2b5f220dd726af671f4f04bd5851188d280084a2d55f46df6ab623d136094f6",
+      "length": 1560
+    },
+    {
+      "path": "toolchain/src/internal/abi/symtab.go",
+      "sha256": "7f5e20e91bb695d627fe06ea93e4bd30d90db9a61438709bae21de0089604879",
+      "length": 3752
+    },
+    {
+      "path": "toolchain/src/internal/abi/type.go",
+      "sha256": "6f3e3d720b4ba23750593d77dcc8e844fdfa18581a17e045e21b68c7f6cc603c",
+      "length": 22115
+    },
+    {
+      "path": "toolchain/src/internal/asan/doc.go",
+      "sha256": "dfd59da21a8923944fe984eb6d64ae87ccc9eb3b9bc895240c20ec7db6115e81",
+      "length": 460
+    },
+    {
+      "path": "toolchain/src/internal/asan/noasan.go",
+      "sha256": "7de9002b9b667f10f43cab22616ad65348a8e35d0a1c29ef871f817c27211143",
+      "length": 333
+    },
+    {
+      "path": "toolchain/src/internal/bisect/bisect.go",
+      "sha256": "978d518986ba6867f5f96356531f35bfa59b865fbb363b98eb9052e862a2160c",
+      "length": 23489
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/bytealg.go",
+      "sha256": "14d1f8ad5e3615e861c3e690eee709c99d22c426327356824ef83db52c5f91ee",
+      "length": 3262
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/compare_amd64.s",
+      "sha256": "9e9482d340d3ff9a4b2aae6350fe02e80938d2cffea2ddf7f209d9c77ea93c15",
+      "length": 4398
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/compare_arm64.s",
+      "sha256": "9fa3a81ed874f9a55984f0cd1fb95b5826da2fe24989a6721e743aeb0623ae8e",
+      "length": 2180
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/compare_native.go",
+      "sha256": "a5de9fede104ba03d3c627fbb837ff870896d8a730359056c5e870147ea47023",
+      "length": 726
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/count_amd64.s",
+      "sha256": "c8a0ddfc1cc2c278d3076003a2b4fc7c7786669cdcee9f782bd9ecfaa0bb07cc",
+      "length": 4785
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/count_arm64.s",
+      "sha256": "8143fb33923aa726dd2ce21c5052b839a75fd632bf9f76066344199e5ec5c0e0",
+      "length": 2138
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/count_native.go",
+      "sha256": "d3eff88a61aafe415c85c0e9856bf1a22a3a0806ac116569cbc3451e8e01826f",
+      "length": 676
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/equal_amd64.s",
+      "sha256": "d5c88b17e90ab21582c77774684d90ca244f3224f09d05625de4d9c2d56b2b21",
+      "length": 2842
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/equal_arm64.s",
+      "sha256": "f42527a9b2ee68d0dfe87f52bb0cb69a4bfd67194820e39eb1b8ac4edf2c66d4",
+      "length": 2471
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/equal_generic.go",
+      "sha256": "d6c5c106505c972fab2400024c14e04aa7eee1f972826e3b56787ee09f169247",
+      "length": 628
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/equal_native.go",
+      "sha256": "1db4aa0b4f804a208dbe4e8894fe05949d72e9b4492ef9fcac517e00571fe02f",
+      "length": 789
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/index_amd64.go",
+      "sha256": "77d0b48b8915657b09447ba36b163134a0e3fd08a776668dbf2dadfda6915bb4",
+      "length": 617
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/index_amd64.s",
+      "sha256": "f475516c44e8a0bcffbef3a08daec4842d42f0f5eb211857e8af0a81d2bdad8e",
+      "length": 5174
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/index_arm64.go",
+      "sha256": "6822f757f21c5e06fb0deb772ecc22e6b9ac27799eb250b729267ff4624a11db",
+      "length": 706
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/index_arm64.s",
+      "sha256": "26d775899469f4dc8eed998be6acfb386944e076ef0a50b208533601360f1a9a",
+      "length": 4055
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/index_native.go",
+      "sha256": "5afbf5fb82d327f8fc2f67e5f886a9e3f1eca2d04495ed82585b4aee0b52a83f",
+      "length": 590
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/indexbyte_amd64.s",
+      "sha256": "362335dc6a582b92f6def9f118dbdbb492194862b322b94dcedde6d90717549f",
+      "length": 3213
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/indexbyte_arm64.s",
+      "sha256": "ff65073dfdaf022aee0444d59e5a4980a1dc483d45544cf9227ddf4fac737a5e",
+      "length": 3392
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/indexbyte_native.go",
+      "sha256": "3f9ee9987e6f71d2e7729feece762016488547d3762db2aa20030fe449898331",
+      "length": 438
+    },
+    {
+      "path": "toolchain/src/internal/bytealg/lastindexbyte_generic.go",
+      "sha256": "632273eb2537352d9c14c6f37bf531bf95ff98431e212a24ce3777f436331c2d",
+      "length": 440
+    },
+    {
+      "path": "toolchain/src/internal/byteorder/byteorder.go",
+      "sha256": "c31dade373ba9a6970fdec0943cdf95b2a8ae1f0e057fdd581e50165aca26fbb",
+      "length": 3550
+    },
+    {
+      "path": "toolchain/src/internal/chacha8rand/chacha8.go",
+      "sha256": "6b7897fc1b0f2ea8cf3fd5e1bb77ae07970d132048b7df0e07687169300da685",
+      "length": 4676
+    },
+    {
+      "path": "toolchain/src/internal/chacha8rand/chacha8_amd64.s",
+      "sha256": "ff54f61cfe85d12f67df5dd374635784a9899458242cfd867be325c9a0bdcbba",
+      "length": 4692
+    },
+    {
+      "path": "toolchain/src/internal/chacha8rand/chacha8_arm64.s",
+      "sha256": "21fbfcbae881a8117d968f7a5b3e52fb937570f1ebb3138ea8b0a6fbcbb7fcd5",
+      "length": 3233
+    },
+    {
+      "path": "toolchain/src/internal/chacha8rand/chacha8_generic.go",
+      "sha256": "3202dcb9bb0750e7ec3ecff529a09331a9145a090a8c3b5fed57ff5c34e602b2",
+      "length": 6413
+    },
+    {
+      "path": "toolchain/src/internal/coverage/rtcov/rtcov.go",
+      "sha256": "896d5a0053f85c64b2dac75934580e39576ba558b94eefe6fba1f66599c4e1a8",
+      "length": 3180
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu.go",
+      "sha256": "6c80e21a6b998db85f3cee0b0b1466be8c40a55ac5eb6f2b1ea4d7ac1f70bb48",
+      "length": 8327
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu.s",
+      "sha256": "39594514f3cb069cecfc6782f81385cbb3570a2ca1b0f3028db1dfa75fd5837e",
+      "length": 276
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_arm64.go",
+      "sha256": "ed4c7d9894f10ab6dc471a133400b145909b6da88055afb7b990b9a3ffd0d4fa",
+      "length": 2039
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_arm64.s",
+      "sha256": "03dbaac3d31973cdb520257e3b5b8ed33d9afdc0e7ab0c616862557b24300a4a",
+      "length": 592
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_arm64_other.go",
+      "sha256": "676c4b37840f9f4b842d0a1e4f433de27ae80545a9537c139ff1d74183554d10",
+      "length": 466
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_no_name.go",
+      "sha256": "8215f72c7d9df7b7b3b53f1d6a5df311816e57cf6e5a06f21f7be50097ca79cc",
+      "length": 620
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_x86.go",
+      "sha256": "521d8f72978530e47b69706a4e2f18723df1a3652aca950a834f6b70977ec1b8",
+      "length": 6033
+    },
+    {
+      "path": "toolchain/src/internal/cpu/cpu_x86.s",
+      "sha256": "ee4dca9916b29475e600d85f71f0dfd134496d153c77d20a643b139cc6e18fed",
+      "length": 831
+    },
+    {
+      "path": "toolchain/src/internal/filepathlite/path.go",
+      "sha256": "dd1a0138328d6353d089d6ba8e04905d9e951bedfef1b85913c64de2ca2fd223",
+      "length": 5920
+    },
+    {
+      "path": "toolchain/src/internal/filepathlite/path_windows.go",
+      "sha256": "ad313fae9fd1e150df082ad7f43c34b0830ce79433d0eef89c7724fdb07d06bb",
+      "length": 8624
+    },
+    {
+      "path": "toolchain/src/internal/fmtsort/sort.go",
+      "sha256": "46d972102d8d6900ce8d1eb24be5c8ee92f6a0a8c78aed946292ecb50ff6a81b",
+      "length": 5019
+    },
+    {
+      "path": "toolchain/src/internal/goarch/goarch.go",
+      "sha256": "e4287d75d933d4f8b8cbaca334981a7847a48970c404aadf6293ab0b2ac86808",
+      "length": 2305
+    },
+    {
+      "path": "toolchain/src/internal/goarch/goarch_amd64.go",
+      "sha256": "a6cbffd95eb55c437ecec11276cc4d3b8dd30e99a45f0e225d660b117a9e88ae",
+      "length": 329
+    },
+    {
+      "path": "toolchain/src/internal/goarch/goarch_arm64.go",
+      "sha256": "b5fcb79b0b2b907abd508a1736d210452945629a7046d59c1bd5f01ba46d423e",
+      "length": 325
+    },
+    {
+      "path": "toolchain/src/internal/goarch/zgoarch_amd64.go",
+      "sha256": "e066117a2c61ae2aa5f4bcc817d75e91506094ba7cb721deb644bca314eeb1b6",
+      "length": 578
+    },
+    {
+      "path": "toolchain/src/internal/goarch/zgoarch_arm64.go",
+      "sha256": "2db0752a7c4d265c1a3e48827d7534397a5c061b9be844a9c0aabf5622e88b6e",
+      "length": 578
+    },
+    {
+      "path": "toolchain/src/internal/godebug/godebug.go",
+      "sha256": "cd492e76ae63872ac4310fc09b2e097229588dbf114d14d713be3f027b0233c8",
+      "length": 9815
+    },
+    {
+      "path": "toolchain/src/internal/godebugs/table.go",
+      "sha256": "f6d9286b18929bc5278e057da37bf703cc532a731339de9f9dd6c69738022bfa",
+      "length": 4738
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_aliastypeparams_on.go",
+      "sha256": "af5362441c2c4dd52a168c39cbed126298e6db520e450d1db1ccbffd5afc7233",
+      "length": 169
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_arenas_off.go",
+      "sha256": "e6c5b2e6db9255b60f72e33b8a77b6e4548cc113026bcda0152d2f6f1ec2ab3f",
+      "length": 144
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_boringcrypto_off.go",
+      "sha256": "16b49265c64076d8393931f515b223b77a0c9fe21174a4d59d335190a4a35bcb",
+      "length": 162
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_cacheprog_off.go",
+      "sha256": "b8b5f8646356c88690e8cc3683c633f85518f66a95b95eba72d479f72bbadcfb",
+      "length": 153
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_cgocheck2_off.go",
+      "sha256": "5960935acda11260add09ba60ccc51c14ac3e51ab2efdc7374d545f6777d4764",
+      "length": 153
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_dwarf5_on.go",
+      "sha256": "a9225add21fc2dfcea24544669f3d02b8c0af14d96eaf35f7d060fc171a6bc01",
+      "length": 142
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_fieldtrack_off.go",
+      "sha256": "b0e65c4112795de54d49c1dd3aa756fc8e95ae5538ab8b47cf82c4599ac6b17b",
+      "length": 156
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_greenteagc_off.go",
+      "sha256": "af14996ef42f61adbdf7d78571641803a5c1d2ba0117df88c9ebffee83656be7",
+      "length": 156
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_heapminimum512kib_off.go",
+      "sha256": "c738b4c562cdca3e83d4c0e80c47e818cf06c9c50f0ffead2c1a426dc2203d7c",
+      "length": 177
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_jsonv2_off.go",
+      "sha256": "b1fa40321cc03369dbf3f7942e079bcade981131f7623c5d6eeb632588fa46c8",
+      "length": 144
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_loopvar_off.go",
+      "sha256": "198e0a786a576b4c8e7a1bce95c0b2cc3c419697378da1fdfbeecb1ebebe049a",
+      "length": 147
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_newinliner_off.go",
+      "sha256": "8ee934bcd8ba25e215a5d56caae1fa86dd04a641af089307f3b5766165f0f0db",
+      "length": 156
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_preemptibleloops_off.go",
+      "sha256": "12902c71ca8b3dd65602fcbec723e0a7694c4c16c381e3873fda32d04d2023aa",
+      "length": 174
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_rangefunc_off.go",
+      "sha256": "8bff5f07926b0842d09f17c9883bf5aa69659a9bbb9d20c25d189aebd1646a82",
+      "length": 153
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_regabiargs_on.go",
+      "sha256": "6027d3f2cae3525793989865ac043c8b32fca872535a9fd4c6271141b26a8a43",
+      "length": 154
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_regabiwrappers_on.go",
+      "sha256": "51216cec77c680feb6b2b5798efe8f4a17b7ce982121da92d8e6a9bf4c81b6b0",
+      "length": 166
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_staticlockranking_off.go",
+      "sha256": "41dbd27e7b4fc0244d08226032a88219dd56ed8d9df93c024105aeab503d9ca8",
+      "length": 177
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_swissmap_on.go",
+      "sha256": "c5603fdb5ee742a1062873a7206bb6f377c2bd7b6b2394751c75448902b4c0ba",
+      "length": 148
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_synchashtriemap_on.go",
+      "sha256": "d1c3eb292bb91f356a34a2a98defc1b0b9eebfc183972d1fb9d5d21da64d16cd",
+      "length": 169
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/exp_synctest_off.go",
+      "sha256": "3887d4499ce45400e119a2dc95e531beb493f596620ec2df74b5038138825d55",
+      "length": 150
+    },
+    {
+      "path": "toolchain/src/internal/goexperiment/flags.go",
+      "sha256": "818253f229fe504d6f066e2820efa5bc5d9ef325b231d99b25012eba51bb8877",
+      "length": 4645
+    },
+    {
+      "path": "toolchain/src/internal/goos/goos.go",
+      "sha256": "2594d66acfc7136883b255809773c23c44f67d22c9fd7ca849a653991081f27e",
+      "length": 534
+    },
+    {
+      "path": "toolchain/src/internal/goos/nonunix.go",
+      "sha256": "df24b5ff13513e2d4cf4125b84792c413767951cf05ed55995f5d3e174b4ed68",
+      "length": 213
+    },
+    {
+      "path": "toolchain/src/internal/goos/zgoos_windows.go",
+      "sha256": "fe65fca4d0a89949d5c3fa2e174d39eff17d3f52afd267c4d5583ae0ec0ca989",
+      "length": 457
+    },
+    {
+      "path": "toolchain/src/internal/itoa/itoa.go",
+      "sha256": "0990af04bf0bc3ece293e8954cadb2fc1b2db58da5c9834587818a1c5f4a59e8",
+      "length": 1166
+    },
+    {
+      "path": "toolchain/src/internal/msan/doc.go",
+      "sha256": "eed9a5e6933f2adc99ebc4486a0e22bc044dc4ca71c4f3df3d2cba3131f70fad",
+      "length": 406
+    },
+    {
+      "path": "toolchain/src/internal/msan/nomsan.go",
+      "sha256": "a93262f02003de244b1490022bd6e8765c0efad5a25372450bf87f9fbedb8470",
+      "length": 483
+    },
+    {
+      "path": "toolchain/src/internal/nettrace/nettrace.go",
+      "sha256": "0da7a09e33953e6e690b78b2eb30749bc433696dddc24d8b0e158c17274b6b96",
+      "length": 1832
+    },
+    {
+      "path": "toolchain/src/internal/oserror/errors.go",
+      "sha256": "4c6ff8e18d1fe326e8b27350b60cdb55e79757452ef79355cc5b9f5ddfde5920",
+      "length": 601
+    },
+    {
+      "path": "toolchain/src/internal/poll/errno_windows.go",
+      "sha256": "b84cde89a8559a123850534a75595850dfb8d762a566b9892aabc407c20fa78e",
+      "length": 725
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd.go",
+      "sha256": "39051b29c8a2097c40efe00072247b0bbe4fb2b0e330f504c524de7751e909a0",
+      "length": 3373
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd_fsync_windows.go",
+      "sha256": "cd0d51c46f328868f3ccfec0009a10add5089bfb54b6f8917ca4c287aa7ffa78",
+      "length": 358
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd_mutex.go",
+      "sha256": "502e550cdb75eb912ef432f7559cb552ce6bd704e3f2bebaedeed859402c82d8",
+      "length": 6707
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd_poll_runtime.go",
+      "sha256": "88fda43019c5dcf42545effdebd1747aaea377560dd041a35df8499538ee07c5",
+      "length": 4313
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd_posix.go",
+      "sha256": "ff002941e536f405d2876006c2973a1b61d26fd032094ade5ed2fc289fc35084",
+      "length": 2134
+    },
+    {
+      "path": "toolchain/src/internal/poll/fd_windows.go",
+      "sha256": "1f13f3d22c32822a86dfa6f70a238dcaa8071d0839254022151141b559ca7c5f",
+      "length": 38164
+    },
+    {
+      "path": "toolchain/src/internal/poll/hook_windows.go",
+      "sha256": "b63c32b4a5f03051f4bd78bb4440232fd929ba90be8e66cb404aa2f31dc12c5b",
+      "length": 668
+    },
+    {
+      "path": "toolchain/src/internal/poll/sendfile.go",
+      "sha256": "86cbbbbe929c151795ac01e6b939e72838f072fefaa1959887badc5d531bf955",
+      "length": 272
+    },
+    {
+      "path": "toolchain/src/internal/poll/sendfile_windows.go",
+      "sha256": "47be28c1e309ee000187b2ff573cf511938f355bd8d98a69d504c580c9a932cf",
+      "length": 2341
+    },
+    {
+      "path": "toolchain/src/internal/poll/sockopt.go",
+      "sha256": "ee7f52272fdecfd2e40ad6eb0616b49c781c39c1393dd0c47a11e6bc2caec1b0",
+      "length": 1325
+    },
+    {
+      "path": "toolchain/src/internal/poll/sockopt_windows.go",
+      "sha256": "9935127f68398d47b73f7eadddfae21caba27dbaff99581e4a5e4283e3d7e2a9",
+      "length": 586
+    },
+    {
+      "path": "toolchain/src/internal/poll/sockoptip.go",
+      "sha256": "5c998151901c935bfc82619592cd5e2d559869c1dddf8e15822b64bc67e94c72",
+      "length": 817
+    },
+    {
+      "path": "toolchain/src/internal/profilerecord/profilerecord.go",
+      "sha256": "3d866406f890f806fbd2a3473fa1557067a5963d3e072910e1be7d48cb69b6ac",
+      "length": 815
+    },
+    {
+      "path": "toolchain/src/internal/race/doc.go",
+      "sha256": "4e6670414ce0c94fffd41e26536671f0122f8ac54bdfe65277de014a8d1fd4dd",
+      "length": 448
+    },
+    {
+      "path": "toolchain/src/internal/race/norace.go",
+      "sha256": "d195ef03f406d7a3e636709cccf6fc55e0fc99aa4a6a5291800364b4c308d828",
+      "length": 899
+    },
+    {
+      "path": "toolchain/src/internal/reflectlite/asm.s",
+      "sha256": "f92c821a60f978ed528d1bfe5846212b5047eba1628f7735abcd95e9f444e9e5",
+      "length": 199
+    },
+    {
+      "path": "toolchain/src/internal/reflectlite/swapper.go",
+      "sha256": "9e94a5d672db8bf6e0b3a4dba575e0345e069a0d2fefafc7c98ac9a93e126f64",
+      "length": 2026
+    },
+    {
+      "path": "toolchain/src/internal/reflectlite/type.go",
+      "sha256": "5ce048cf76070f0c0734694bc5c15e96886bd44f726c32f5f72ca33a1c5f94dd",
+      "length": 16566
+    },
+    {
+      "path": "toolchain/src/internal/reflectlite/value.go",
+      "sha256": "55a691de2096b78aaf428ee3b2b1fc36eed89382f3392fb399afd1cd9de4ab08",
+      "length": 13947
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/atomic_amd64.go",
+      "sha256": "2b651194b7a1c268dbbc092185afd377d49cbc9c66208d25b30b9e936e7b0bbd",
+      "length": 2578
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/atomic_amd64.s",
+      "sha256": "5b8ab1a7f5ef5aef1dc268d1a29b9cac53feaa271b995b99613506f3dc20371c",
+      "length": 5562
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/atomic_arm64.go",
+      "sha256": "bfd104f7456854fd1028e02ac880380b284a639014be934357f1e55a4ed069db",
+      "length": 2252
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/atomic_arm64.s",
+      "sha256": "ada1ea4fe09a57a1cfdc2ded40c6b586c3f8a8d281fbab6dc0f950cd65a7ff19",
+      "length": 9645
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/doc.go",
+      "sha256": "9e0cfe8821fb34bd0511f55b7e269c6b74dc9956e5d2b2db367349d1aa7695b6",
+      "length": 771
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/stubs.go",
+      "sha256": "5dd8e4ce65dc4f6359ab8f18873dd1903f06d95a3fdcc5e184ffc2624a300e75",
+      "length": 1255
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/types.go",
+      "sha256": "5296242a02223a60f714e9358ea58aae52dbef7a4fdf1f90cd479b86360d0c70",
+      "length": 14575
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/types_64bit.go",
+      "sha256": "1ea374803ac8f483de8a3efa9e065157a7d2352652a4ac7bcb0dc17756daffb6",
+      "length": 1123
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/unaligned.go",
+      "sha256": "4c788293b984be07a34492f389d27b707b97016e8e5c6eef2b055f0e800d05e0",
+      "length": 246
+    },
+    {
+      "path": "toolchain/src/internal/runtime/atomic/xchg8.go",
+      "sha256": "9ebd5173979bd1c231f8a1c807820a83c27064ce03c0b57d732611d5e4fb8c7e",
+      "length": 791
+    },
+    {
+      "path": "toolchain/src/internal/runtime/exithook/hooks.go",
+      "sha256": "e73a1e9ccac046c5129ec171f14ed05bf9d8c8fd4ab7466db81c7b4ec8826f00",
+      "length": 2221
+    },
+    {
+      "path": "toolchain/src/internal/runtime/gc/malloc.go",
+      "sha256": "1b689d4efcff40fd3d22a8f54cdde786ebd484dc16a4ff34bdc0c399b4a52300",
+      "length": 2326
+    },
+    {
+      "path": "toolchain/src/internal/runtime/gc/scan.go",
+      "sha256": "bba5a15edc0bc0f806a7468d860aff97a212b8d2cb1bd640b2cd881342c0b75d",
+      "length": 544
+    },
+    {
+      "path": "toolchain/src/internal/runtime/gc/sizeclasses.go",
+      "sha256": "a7f182d9e3028188b6ab997aebe8d6e662bb0694598b2b3a0c8b2bf2f45900f5",
+      "length": 9396
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/group.go",
+      "sha256": "8bf5db76b3d0d23fe2fd05383e5da9db55264dc48621011924ce315b81f83e54",
+      "length": 11033
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/map.go",
+      "sha256": "806adc0145833e8a13f592734b3de97c1fa0ccb2e2585b16d44f3e2a1df66f9b",
+      "length": 26422
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/runtime.go",
+      "sha256": "5f800e84e2b477f3e2ac1b9b64c642763736ffe43f5fc8f4daec2a2e700439a3",
+      "length": 643
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/runtime_fast32_swiss.go",
+      "sha256": "574cd2b1e5f49a5078503dfe791699dc5076f99c6ed717564e34983df3fe28b6",
+      "length": 11435
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/runtime_fast64_swiss.go",
+      "sha256": "d028f94f8f58e591f80c7b52e8e85dde06954b7548e51c834c2ca0187fc2bff4",
+      "length": 12164
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/runtime_faststr_swiss.go",
+      "sha256": "3323b1aa84137f6990dd80554bdc47fd6bd6cf8f737fa05cd97012da0964940c",
+      "length": 10289
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/runtime_swiss.go",
+      "sha256": "92a911b7156d5c30d46077b455ac0416f880fc4d2170ce5df69acb94d368a8ec",
+      "length": 8626
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/table.go",
+      "sha256": "cd21902756ef05875091c9223df1819189c339ca2c4d6cbc4b0e0a24db4f22f5",
+      "length": 38137
+    },
+    {
+      "path": "toolchain/src/internal/runtime/maps/table_debug.go",
+      "sha256": "6ce90ef5becee0b6f0e2d278e3585fa273d05f9ca1327fecdad46e172bbb5895",
+      "length": 3355
+    },
+    {
+      "path": "toolchain/src/internal/runtime/math/math.go",
+      "sha256": "b04736db2c6a603ecdaf21dd4e9a9d684af4c5adf8f006a5ff93897f30f3945a",
+      "length": 1855
+    },
+    {
+      "path": "toolchain/src/internal/runtime/strconv/atoi.go",
+      "sha256": "cec19b4f82991f828370c307d90245764e25306aaf29b3341d4f2efd2749c9a3",
+      "length": 1338
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/consts.go",
+      "sha256": "c3ae3566bde7c7eb00d06996ce28080c6e2ef2d1d6517538e9d27bbd07a3474d",
+      "length": 1488
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/consts_norace.go",
+      "sha256": "f813bc3694d70c2f77b868cb52789fec13efe5c1308f71674ef16edd54e9c058",
+      "length": 208
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/dit_arm64.go",
+      "sha256": "ae8421bf5674c0bf2dd028da42c93212032350626d5074d75760fbac883cd177",
+      "length": 319
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/dit_arm64.s",
+      "sha256": "db51fdb2748fa00b00f8b73144d9839607df313b9770f4a4e643453f229d2f4b",
+      "length": 447
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/empty.s",
+      "sha256": "32739e4bc1976eef25587d54c56618f2912f6477e068419a0659b738081d89a2",
+      "length": 70
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/intrinsics.go",
+      "sha256": "970f3585533556b2dfdc15eb29d700e41286893280cebdd19137804cab939521",
+      "length": 9335
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/nih.go",
+      "sha256": "62b649628d68a23ecd28ac18c01de4a7117b0edbec150cb33bc99abdd7d01ab9",
+      "length": 1789
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/no_dit.go",
+      "sha256": "144597c72d957b854ca514bd0f1e47893f5fb76c62fabc2e95162c32067e90d4",
+      "length": 324
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/sys.go",
+      "sha256": "15c88e2f32c3e0cd3a04a273c89372b2382430a6093741dbd03122f7f38eadf2",
+      "length": 283
+    },
+    {
+      "path": "toolchain/src/internal/runtime/sys/zversion.go",
+      "sha256": "f69c03727973664529c2e6fa2d2c53b2d3440c887938d0d9b22254f7984052f2",
+      "length": 61
+    },
+    {
+      "path": "toolchain/src/internal/singleflight/singleflight.go",
+      "sha256": "582ef7cfe2bdac797afea4706dc605a80234db69870a80ef492df7c9e1ea1df4",
+      "length": 3129
+    },
+    {
+      "path": "toolchain/src/internal/stringslite/strings.go",
+      "sha256": "764f3227e30300d0227b8c971aa718032232aa16370535476dd8e7e830fa4985",
+      "length": 3001
+    },
+    {
+      "path": "toolchain/src/internal/sync/hashtriemap.go",
+      "sha256": "f0f5a4f8c3b3b22e5b141247be76829065345a32eeb663ab2129656c10314161",
+      "length": 21649
+    },
+    {
+      "path": "toolchain/src/internal/sync/mutex.go",
+      "sha256": "0535ca03e44cb62cf3e4a511b989ffd0f08ec899d864e2a817b77c4025bec48c",
+      "length": 7403
+    },
+    {
+      "path": "toolchain/src/internal/sync/runtime.go",
+      "sha256": "e3445cf3a17f6b322cb3136e30a28eab7a70c0f37fac44ba5dc7912a19930a17",
+      "length": 1714
+    },
+    {
+      "path": "toolchain/src/internal/synctest/synctest.go",
+      "sha256": "3291fd3debb2430be3017c9a3cd783ad4d1a2791d8b4133b473a11a29e250449",
+      "length": 2473
+    },
+    {
+      "path": "toolchain/src/internal/syscall/execenv/execenv_windows.go",
+      "sha256": "e636f06a1d6877c65a84ec60ae76416e5095ea9b2ee244fc48cf7b75f87156f2",
+      "length": 1300
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/at_windows.go",
+      "sha256": "02efa4ce1e5cf5f359d474812f87d323ee76c2f8879d59c61f05dccc948cd7ee",
+      "length": 15005
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/memory_windows.go",
+      "sha256": "24b45ade936274aaf941707d53200c0ce399fe9dce0f576288e8fafd6ca580f8",
+      "length": 940
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/net_windows.go",
+      "sha256": "2dd1e1e69816acd2cfcc5a679082504e5e96a3363024c824a3c32d71de3ec998",
+      "length": 1076
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/nonblocking_windows.go",
+      "sha256": "3d8a8f54f5fc5b6e1c9eca4e23b412ddd07bbb540b847f8d539521950c7cce84",
+      "length": 754
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/psapi_windows.go",
+      "sha256": "4c2c2ca7233d50c85c88b9035eab3fd50382a88724520fe18b4c9fe4f16be7aa",
+      "length": 716
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/registry/key.go",
+      "sha256": "933230b83f60e8143ccf132caa874e2cf8ceffcfaa8a04cc47f6028988ddd917",
+      "length": 5541
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/registry/syscall.go",
+      "sha256": "904e467202debea51004211df79429652e1747affc16130084f4b842a52e0670",
+      "length": 1459
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/registry/value.go",
+      "sha256": "f605d2d63fa63f77a2026241aea9ca711ef263992372a6f7896997b5a02b0475",
+      "length": 11254
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/registry/zsyscall_windows.go",
+      "sha256": "67f8413e8cf8fdeb4eb0599cccad2b9c27a0fd69547bc4e6ba61c75967edb43f",
+      "length": 4114
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/reparse_windows.go",
+      "sha256": "a27f00803580d0d994bbc908ac6707e4e713e0499e5fdfcf914197e79c26471f",
+      "length": 3511
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/security_windows.go",
+      "sha256": "420addd3f61110cf0d4320d326b5f2442f0148bc18f416514fc4db779773ae46",
+      "length": 8343
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/string_windows.go",
+      "sha256": "946542ece8b41098ee14238b73402975fb8271878f1a5694527e95636d27dbaf",
+      "length": 1098
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/symlink_windows.go",
+      "sha256": "49d9fc62ff5b5057ec38a3d7e063db7f70efef320e1fe72f96c47755f3fe3b2a",
+      "length": 1702
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/syscall_windows.go",
+      "sha256": "13a2652f48b50303d2ac4b55182bf09f7be0f3907e9110992e57bf4b9b07f064",
+      "length": 19415
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/sysdll/sysdll.go",
+      "sha256": "41b9bc832549766c2d1669a548612f181760effd45355c4a831f30118598d687",
+      "length": 1131
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/types_windows.go",
+      "sha256": "1174f9619c06d3585902edb718871069b7cf76d3877d1cbd5657599e78d4940f",
+      "length": 9125
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/version_windows.go",
+      "sha256": "fde689736af5573dc20621ba662ebd2fcbd22780b75bbfb081ec6a169fddadd4",
+      "length": 4554
+    },
+    {
+      "path": "toolchain/src/internal/syscall/windows/zsyscall_windows.go",
+      "sha256": "4f1ed32f512a0c3c777736aa8e5ce97a5ad3e2ca3140d295a4c2c53a326a23b3",
+      "length": 26524
+    },
+    {
+      "path": "toolchain/src/internal/testlog/exit.go",
+      "sha256": "8f82410c509c4e38d801c9a022368050e878368400bc6a678b62e62ca5f1215c",
+      "length": 1284
+    },
+    {
+      "path": "toolchain/src/internal/testlog/log.go",
+      "sha256": "116a76747970a636a8888c7419486a3466385145a229cc5db7ca0b9ac7272348",
+      "length": 1936
+    },
+    {
+      "path": "toolchain/src/internal/trace/tracev2/doc.go",
+      "sha256": "021b396705a18015e433d99bf1883bc64ccfc838bb487b4133a423306cb4e075",
+      "length": 413
+    },
+    {
+      "path": "toolchain/src/internal/trace/tracev2/events.go",
+      "sha256": "7bbf0aaaf31b35b0b781a8cb3aa211809cd5cb41b0c9ccc5fa3aa3ac7d9dc880",
+      "length": 17304
+    },
+    {
+      "path": "toolchain/src/internal/trace/tracev2/spec.go",
+      "sha256": "cf99c4a8b18901f580b3e221fde6c912519a7fd84025a7d3f42991c42c9dfb01",
+      "length": 3766
+    },
+    {
+      "path": "toolchain/src/internal/unsafeheader/unsafeheader.go",
+      "sha256": "aeb2bf9d6c18b361ef4d2830dd63675960268432a4c5dd6131a374d654094da4",
+      "length": 1160
+    },
+    {
+      "path": "toolchain/src/io/fs/format.go",
+      "sha256": "8f0f84ae375932ef447ff0c3249548f7e0a3a7937bb0052341a521b78bd7d15c",
+      "length": 1791
+    },
+    {
+      "path": "toolchain/src/io/fs/fs.go",
+      "sha256": "854859c0f4e8beafaae5c4fa353d024ed5bb4c21f6944c9a39d7bf079112419d",
+      "length": 9705
+    },
+    {
+      "path": "toolchain/src/io/fs/glob.go",
+      "sha256": "c3d08c0f3207f4bcc1703127c324083c9ac65a0e2fa685379f3df82c858ab399",
+      "length": 3217
+    },
+    {
+      "path": "toolchain/src/io/fs/readdir.go",
+      "sha256": "9709461e50d64cfd0a670382912aaca59af04f0506df809b2b56ab50c438242e",
+      "length": 1953
+    },
+    {
+      "path": "toolchain/src/io/fs/readfile.go",
+      "sha256": "69814861773bc26f58d1fd49167b30f39d148475d62e279c78a290c0b499c5ba",
+      "length": 1832
+    },
+    {
+      "path": "toolchain/src/io/fs/readlink.go",
+      "sha256": "ffa574355de9871c697990db771088d92ad3f0ded7c6b9b701f9a6a60b81232b",
+      "length": 1528
+    },
+    {
+      "path": "toolchain/src/io/fs/stat.go",
+      "sha256": "f2e004297868594204e85f903103f64c05b1e729066eb6b97740b0fd642fdc12",
+      "length": 803
+    },
+    {
+      "path": "toolchain/src/io/fs/sub.go",
+      "sha256": "b067c9b86e64e3a0b282072baa95d0e600085584c207a116fdec7803b15237cf",
+      "length": 4333
+    },
+    {
+      "path": "toolchain/src/io/fs/walk.go",
+      "sha256": "09de459e421e28f05c2eae1b5848cc616aa0879760d24e955faa056de47c26f0",
+      "length": 4800
+    },
+    {
+      "path": "toolchain/src/io/io.go",
+      "sha256": "f1039eba161e42d9d76a3c8954cc2e2ab841ea26c6a5d762c8d6a0815e2e548b",
+      "length": 22138
+    },
+    {
+      "path": "toolchain/src/io/multi.go",
+      "sha256": "acb61a128d4e49dcc8b5dcd268ee1bd61008fd97af0e459f839166e3ae51384e",
+      "length": 3419
+    },
+    {
+      "path": "toolchain/src/io/pipe.go",
+      "sha256": "75ef56f505592fcffb188bf7660c6ea6abede3f2701b500d6946fa519c37e233",
+      "length": 5239
+    },
+    {
+      "path": "toolchain/src/iter/iter.go",
+      "sha256": "ccc0a58dd5652ea17f8ec08cb73ad1a52bea313e1c0100c0765b98b228e48f0e",
+      "length": 14358
+    },
+    {
+      "path": "toolchain/src/math/abs.go",
+      "sha256": "9608d0f0e20d941025c2bf268e8541dbecaf7e9b1524e030c390166384a7da96",
+      "length": 366
+    },
+    {
+      "path": "toolchain/src/math/acosh.go",
+      "sha256": "e1b20885bef3ccb7763ae868d23120194cf38faef70f1af45d2870ccb1a00140",
+      "length": 1749
+    },
+    {
+      "path": "toolchain/src/math/asin.go",
+      "sha256": "846e55289485807288cf67f40a20c7f16c246dd831a784fec3e88e7af9c96a4c",
+      "length": 1115
+    },
+    {
+      "path": "toolchain/src/math/asinh.go",
+      "sha256": "7bd3753d8bb94eb86682c9215c6266efccd75a66701aad16fc94d9fbfb89ccb1",
+      "length": 1967
+    },
+    {
+      "path": "toolchain/src/math/atan.go",
+      "sha256": "777b61ebf72d42b754004fe6a5e9a4ac7fb85fb95cd5e6fef396540ce6c42ee1",
+      "length": 3099
+    },
+    {
+      "path": "toolchain/src/math/atan2.go",
+      "sha256": "5a928623ed08c894f79463e5941671cf889b925c1d44eb69842f4cb5fa65406e",
+      "length": 1560
+    },
+    {
+      "path": "toolchain/src/math/atanh.go",
+      "sha256": "2afbcd791957596e7af481c3d23640f15e2d1149d8ed70fc108ddd1d5ab79430",
+      "length": 2042
+    },
+    {
+      "path": "toolchain/src/math/big/accuracy_string.go",
+      "sha256": "be4ae452dc4fc7c87164be698fec8e955c243484cb8f7bca041255380d7404d4",
+      "length": 647
+    },
+    {
+      "path": "toolchain/src/math/big/arith.go",
+      "sha256": "de8c0f132a42d2cabe62ff14e42eca845fb2fd6b27f6db9b42afc2ad7aefff87",
+      "length": 8811
+    },
+    {
+      "path": "toolchain/src/math/big/arith_amd64.go",
+      "sha256": "587e7caa42b7115215add76096b8304a6b86c9718c531b5e6d1c62003d25bbe1",
+      "length": 273
+    },
+    {
+      "path": "toolchain/src/math/big/arith_amd64.s",
+      "sha256": "388854f0d34f24afcc23c09b83a8dce7a6303c774dc9c0f2295a052ca12f2802",
+      "length": 8884
+    },
+    {
+      "path": "toolchain/src/math/big/arith_arm64.s",
+      "sha256": "1688707cea27c4be6e0ce0555b6bad430dcd20309ae007616c76505d851d5fda",
+      "length": 6630
+    },
+    {
+      "path": "toolchain/src/math/big/arith_decl.go",
+      "sha256": "7a556b5c1af9384f2fd1fdc4d548401e73e07a422df9fdcbf15ed4140b74a8bd",
+      "length": 2516
+    },
+    {
+      "path": "toolchain/src/math/big/decimal.go",
+      "sha256": "bd404e9f54251bac011f1220452e708a8a801837cbdfc759766bd7b9d374f3aa",
+      "length": 6794
+    },
+    {
+      "path": "toolchain/src/math/big/doc.go",
+      "sha256": "cc7e6416479405ff79a09636d812e78be84e1ee5b225df217a34c69b709a7ce5",
+      "length": 3895
+    },
+    {
+      "path": "toolchain/src/math/big/float.go",
+      "sha256": "65fdfd0817868a1ef6d1123eca037f7a20ebac00135c688197d02d51f76820c0",
+      "length": 45597
+    },
+    {
+      "path": "toolchain/src/math/big/floatconv.go",
+      "sha256": "a4bf1a47136a412b957a57eac59bce9509e600ac76a39f0de37a7703a2b47af7",
+      "length": 8549
+    },
+    {
+      "path": "toolchain/src/math/big/floatmarsh.go",
+      "sha256": "c60b612f19163a05116bd24bb4f30c7b869a60bcdf628a6b8a24a91a09339d87",
+      "length": 3975
+    },
+    {
+      "path": "toolchain/src/math/big/ftoa.go",
+      "sha256": "f47b86fadc24de328ecd7fb92677311b1deb37637bdaadd78efeffd3f54d9240",
+      "length": 13820
+    },
+    {
+      "path": "toolchain/src/math/big/int.go",
+      "sha256": "7689a5447c12d8c4cb350697cd7cdb4c827b3bdd3f0fb875441588cde3b18676",
+      "length": 34345
+    },
+    {
+      "path": "toolchain/src/math/big/intconv.go",
+      "sha256": "facceb8aaa8f8741637847f7d5d418980dfaa1f485bc6e74d5d11dc2182468d9",
+      "length": 6856
+    },
+    {
+      "path": "toolchain/src/math/big/intmarsh.go",
+      "sha256": "159c40dbd413af19e3f5ea6fc80668384bbe256334cc4cb937f22d2a902cde87",
+      "length": 2345
+    },
+    {
+      "path": "toolchain/src/math/big/nat.go",
+      "sha256": "9d2cffd653f28a983014397ad220867c49a0a31f14aca30ff0a653638c15b955",
+      "length": 25318
+    },
+    {
+      "path": "toolchain/src/math/big/natconv.go",
+      "sha256": "a5ba99ff1e8e0fee8ff50958a0360ad0516eee7b7208d965e10f9b99e0289820",
+      "length": 15970
+    },
+    {
+      "path": "toolchain/src/math/big/natdiv.go",
+      "sha256": "c2400503fd20c78a98b41a6c7aca1307a67b5031e8c5459a6e2395b2f7da2a2b",
+      "length": 35137
+    },
+    {
+      "path": "toolchain/src/math/big/natmul.go",
+      "sha256": "f1767186e544a77fea89923a0051db1f3a36658d34f12ef4b35b78bb42234d40",
+      "length": 8611
+    },
+    {
+      "path": "toolchain/src/math/big/prime.go",
+      "sha256": "783e8e94c38db53b28b67ffacecbdb6efb7b04f5ee50e77666a530ac10956609",
+      "length": 10789
+    },
+    {
+      "path": "toolchain/src/math/big/rat.go",
+      "sha256": "c29ccef6bcf4b5f4cea3f4fa51aaf7fec169685b1bf831236f952532a6a901d0",
+      "length": 14281
+    },
+    {
+      "path": "toolchain/src/math/big/ratconv.go",
+      "sha256": "0eb73fc2f2824c7c3a3ad878fa132f4abccf836d301ec85acde27ced0a0e2500",
+      "length": 12937
+    },
+    {
+      "path": "toolchain/src/math/big/ratmarsh.go",
+      "sha256": "a7d6e4709e9a9d99b4b4061e05a0e5b78a3b317b1b663322c6eafd45ec406482",
+      "length": 2428
+    },
+    {
+      "path": "toolchain/src/math/big/roundingmode_string.go",
+      "sha256": "c667cf9d5bc8cc0a07147f8d402c2818073085f54afb1e0ac40bc812db925bdd",
+      "length": 819
+    },
+    {
+      "path": "toolchain/src/math/big/sqrt.go",
+      "sha256": "d843f7b83e671bf7783fc04a71e4713e5fc086ed609cb289fc0130585bacd243",
+      "length": 2860
+    },
+    {
+      "path": "toolchain/src/math/bits.go",
+      "sha256": "83cd55c5b778fff63f43686f894551279c9a9f25cd8d8a7deb7030e83f7689dc",
+      "length": 1915
+    },
+    {
+      "path": "toolchain/src/math/bits/bits.go",
+      "sha256": "0956e3586b4cf3f4605382523e55c018d58924bc688982431d6b7cda99d10ecd",
+      "length": 18296
+    },
+    {
+      "path": "toolchain/src/math/bits/bits_errors.go",
+      "sha256": "1341283973609b16798176456337e3a0cbff9bfb32f79673a45197223471d7c6",
+      "length": 368
+    },
+    {
+      "path": "toolchain/src/math/bits/bits_tables.go",
+      "sha256": "c4cb4a05dab6d395d9d51720893a42f0a9d1cdf8a0c2383d87268e49acb73f7f",
+      "length": 4791
+    },
+    {
+      "path": "toolchain/src/math/cbrt.go",
+      "sha256": "de08f8225477bd143bd5318c5f46b7e26bdb008db8e4d174c6130e751e66e335",
+      "length": 2366
+    },
+    {
+      "path": "toolchain/src/math/const.go",
+      "sha256": "859fedd369b0359b356ee4c54345a8d528e8a19f69c2eb93e7256a073689fe5c",
+      "length": 2828
+    },
+    {
+      "path": "toolchain/src/math/copysign.go",
+      "sha256": "9d7e6179f8bf2df156b1bd054de7ef12afe26205c1b786e3ec059b1a80284bda",
+      "length": 396
+    },
+    {
+      "path": "toolchain/src/math/dim.go",
+      "sha256": "d9861a32bf027b42a280c161ef764794c8437ec028706e8db316bcf56cd023e0",
+      "length": 1913
+    },
+    {
+      "path": "toolchain/src/math/dim_amd64.s",
+      "sha256": "5569939ae83d71a6edd1503908f46b4480d7cca4069a59a9eb620ded1d724e90",
+      "length": 1963
+    },
+    {
+      "path": "toolchain/src/math/dim_arm64.s",
+      "sha256": "92afabfd2cfbabe27eb43b89048f7a48dbfda034f519ac1d078a73e23917dee1",
+      "length": 963
+    },
+    {
+      "path": "toolchain/src/math/dim_asm.go",
+      "sha256": "15b346a46f5926bb90b54de6c6c3de73c55b4ad462ab69ed168f23ae1c1470f0",
+      "length": 355
+    },
+    {
+      "path": "toolchain/src/math/erf.go",
+      "sha256": "31cba8a8f66d6081eb393b85e6a0d2a3737ebb3fc3fb192867e393a2907c0c8c",
+      "length": 11785
+    },
+    {
+      "path": "toolchain/src/math/erfinv.go",
+      "sha256": "becf9ccd6869b7035b79d8f4902286134b8a55e73747cca78bf787a66512e6da",
+      "length": 3450
+    },
+    {
+      "path": "toolchain/src/math/exp.go",
+      "sha256": "f746de225d111ad5b7e3596f62f37a5cc77f1e20c86d50fa43b64a2432d60e76",
+      "length": 5505
+    },
+    {
+      "path": "toolchain/src/math/exp2_asm.go",
+      "sha256": "fdc3d87224285e8b57e8bf7c61cc0881fbf735ffc4df54841103a5b314cc7cf4",
+      "length": 263
+    },
+    {
+      "path": "toolchain/src/math/exp2_noasm.go",
+      "sha256": "199345cbae2f94fed9a9a2160d8e1a15389daa958ae92621c6adab22208e114a",
+      "length": 296
+    },
+    {
+      "path": "toolchain/src/math/exp_amd64.go",
+      "sha256": "4c01fe9e09324bf28d617f81ace0ad03f3bf1cbd72930a772d18762fbffb32a5",
+      "length": 261
+    },
+    {
+      "path": "toolchain/src/math/exp_amd64.s",
+      "sha256": "6b0b9ca5b73d27e457fa3ce283dec9fdbc8411ac3b28afe262059330c32e9980",
+      "length": 4344
+    },
+    {
+      "path": "toolchain/src/math/exp_arm64.s",
+      "sha256": "9fc7ff6a566378e0b5074c55a813468cc9c88cc37d6060c414288e8198edfbc1",
+      "length": 5485
+    },
+    {
+      "path": "toolchain/src/math/exp_asm.go",
+      "sha256": "152874757ad993e65449015bcc5e7a494c8b5139e6774f89b9c6c43a15414cda",
+      "length": 279
+    },
+    {
+      "path": "toolchain/src/math/expm1.go",
+      "sha256": "b05c184f92e2e4bdfb09eb34e6d2474fe4570a4eaf5eb1e128d2b6904908d63c",
+      "length": 8099
+    },
+    {
+      "path": "toolchain/src/math/floor.go",
+      "sha256": "b8a3775c6263f345c000a2e0ebf0820262b763e7fca3e977cfadc0ff315cd9f9",
+      "length": 3370
+    },
+    {
+      "path": "toolchain/src/math/floor_amd64.s",
+      "sha256": "73cbaf1ac9f05bb7989a50fc82cce01f6ab20162ba03c8862819416cb2a270fe",
+      "length": 2047
+    },
+    {
+      "path": "toolchain/src/math/floor_arm64.s",
+      "sha256": "447cc2e99f86c00020a14fdd23264dd5fca38ffe31754f76fdfc687e937ec6a8",
+      "length": 573
+    },
+    {
+      "path": "toolchain/src/math/floor_asm.go",
+      "sha256": "8f537d2f130c98357554f7b7aca14c5dfa89614e76c8a10cfdf0bdfba8056afd",
+      "length": 453
+    },
+    {
+      "path": "toolchain/src/math/fma.go",
+      "sha256": "e73845c65d1cfc98669fe58d2af47269727d41b554475056f66c41a4f21d0669",
+      "length": 4977
+    },
+    {
+      "path": "toolchain/src/math/frexp.go",
+      "sha256": "5f11ebcb154799d67e2d15c13673c8812557994be6141500edf0358550cffab7",
+      "length": 929
+    },
+    {
+      "path": "toolchain/src/math/gamma.go",
+      "sha256": "627e52bb7a984ab2da61da481729f317eae7a320a2980c72aa6077ca9e6bd03b",
+      "length": 5658
+    },
+    {
+      "path": "toolchain/src/math/hypot.go",
+      "sha256": "0118c2cfefb7f3085b6267439fff271843a06eed5445289c260b504c4954d6ed",
+      "length": 850
+    },
+    {
+      "path": "toolchain/src/math/hypot_amd64.s",
+      "sha256": "47046a6828e174a9b0d6fa4607d64602215123f2304b1592fd28635722ae5bf6",
+      "length": 1080
+    },
+    {
+      "path": "toolchain/src/math/hypot_asm.go",
+      "sha256": "bb10755f29d0625ee52cbe056320a5fbc9a819f5b6e6f9462259cc9cd28bb96e",
+      "length": 264
+    },
+    {
+      "path": "toolchain/src/math/hypot_noasm.go",
+      "sha256": "ea186403dd7a55eb45513049920cc7663ebffe80588d43aa6081b2602005531a",
+      "length": 297
+    },
+    {
+      "path": "toolchain/src/math/j0.go",
+      "sha256": "8d226442c38eeb79e5273980fc5d94f0ba9d4c4407d0e9a7e8db45838fc128f8",
+      "length": 13931
+    },
+    {
+      "path": "toolchain/src/math/j1.go",
+      "sha256": "599ddf54522dd0cf19e3cdcee1298a5ca98eaa529e6e647fb8311373f5bef1fa",
+      "length": 13623
+    },
+    {
+      "path": "toolchain/src/math/jn.go",
+      "sha256": "b588c5389aa3ac04eeb72b29a610bef4af02b8ee7faf3d50717d2da2219bc144",
+      "length": 7351
+    },
+    {
+      "path": "toolchain/src/math/ldexp.go",
+      "sha256": "d928bbad23be48527ee0c7255fd9ce5f35b60dc958d60289b5fcdfa8066524b4",
+      "length": 1077
+    },
+    {
+      "path": "toolchain/src/math/lgamma.go",
+      "sha256": "c07c6b7b6d57e97f47531abca86accbd23e0a0d49d8d5cb60c226e87df9c6804",
+      "length": 11290
+    },
+    {
+      "path": "toolchain/src/math/log.go",
+      "sha256": "d8675d3d9c665ec0db5cc15478c03efb244301bfa1268d02ae1861bf6f2812ab",
+      "length": 3953
+    },
+    {
+      "path": "toolchain/src/math/log10.go",
+      "sha256": "936bbdfbe82a5b8028bd55b92666792954f3b8908a8e4e27008ec23935c96e37",
+      "length": 873
+    },
+    {
+      "path": "toolchain/src/math/log1p.go",
+      "sha256": "10cb153951ada1c8c5ed3897caded00d90a7314c0640812847c3064a0c5f4b06",
+      "length": 6497
+    },
+    {
+      "path": "toolchain/src/math/log_amd64.s",
+      "sha256": "5764160fdc45d72cc258a67034fefda930857a34d68d667dbb0bf73fd0e0e88b",
+      "length": 3751
+    },
+    {
+      "path": "toolchain/src/math/log_asm.go",
+      "sha256": "92751cae986507de5d497b53d6d5459e84b4afc22e83cdd504e13d99997dfb74",
+      "length": 259
+    },
+    {
+      "path": "toolchain/src/math/log_stub.go",
+      "sha256": "c945334a77924e23b19533d80e156e0286bbf55fe4e189f33a0866f9440f689b",
+      "length": 292
+    },
+    {
+      "path": "toolchain/src/math/logb.go",
+      "sha256": "9cd63343d6d38130520af9e1a107b5bce1e670357a6292e157fcab90c7b82365",
+      "length": 1021
+    },
+    {
+      "path": "toolchain/src/math/mod.go",
+      "sha256": "2ee912a367bbaeab29dbcf76f1112804b7eb543e8838e76bf869aab7eb5157d2",
+      "length": 903
+    },
+    {
+      "path": "toolchain/src/math/modf.go",
+      "sha256": "0b47d839e4655203ed1354568f4f1f9a5a7d6e763342488d50509b99ed5dcdb9",
+      "length": 913
+    },
+    {
+      "path": "toolchain/src/math/modf_arm64.s",
+      "sha256": "ff1fb6d44be5236b35be338b1a746fec9859deff016f2e23715b520beb8029a7",
+      "length": 447
+    },
+    {
+      "path": "toolchain/src/math/modf_asm.go",
+      "sha256": "c44f782c5da300032e6651c57766be0209a0125d9ffc7386f392be96211936fc",
+      "length": 292
+    },
+    {
+      "path": "toolchain/src/math/modf_noasm.go",
+      "sha256": "8f378c67590a1ddb59ede073c6328faf0852ba750f73358ce5c6180b2c6aaaab",
+      "length": 326
+    },
+    {
+      "path": "toolchain/src/math/nextafter.go",
+      "sha256": "f52cd1442fadfca48ff5f3ea8620293655180486e3ad1f88288568c797f29e15",
+      "length": 1239
+    },
+    {
+      "path": "toolchain/src/math/pow.go",
+      "sha256": "848a205994a0a507046a91a02ad4a95172af2fa5f6f11847acb8cb634471b670",
+      "length": 3734
+    },
+    {
+      "path": "toolchain/src/math/pow10.go",
+      "sha256": "75c48d71fbe5930b75f736688145efa2f6373938ce988b7bd659d5ee273378d3",
+      "length": 1269
+    },
+    {
+      "path": "toolchain/src/math/rand/exp.go",
+      "sha256": "e3837671076ec0432cf4347c4154f87c88c15b2e2b6a739690a68e2749807889",
+      "length": 11189
+    },
+    {
+      "path": "toolchain/src/math/rand/normal.go",
+      "sha256": "d8f4450a14b03bd0ec939eb4b127e199d9d78ba3d07c4ad0a65ac493dfa1c62a",
+      "length": 6459
+    },
+    {
+      "path": "toolchain/src/math/rand/rand.go",
+      "sha256": "a57f58bcc4baa4ac71fb09a6f2a8ce525f6f097d7b9c7ea61f206bcfd910aa39",
+      "length": 17624
+    },
+    {
+      "path": "toolchain/src/math/rand/rng.go",
+      "sha256": "e301d938fe5dbe4ef5ff52f31de68d2547c3ab50da5c95bb21c49ea983a817ab",
+      "length": 15112
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/chacha8.go",
+      "sha256": "5ef2db8fe067f08142bd5867b0f7a27e5b2fd0f20178971d766d1fe4324460c6",
+      "length": 3053
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/exp.go",
+      "sha256": "1962b9394fb390cdbbba401ca7bb6c0e10b8597d095890ec6421811d18ff2f23",
+      "length": 11210
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/normal.go",
+      "sha256": "355b9570ff06ec4825b4fb8a447e71208ac38ecacde0c289f88bf524fd85fa89",
+      "length": 6470
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/pcg.go",
+      "sha256": "6ebd291420193e3d127c3c5bc46e7b3ee99eb5db6c3729e3ac9786c912a0ffa5",
+      "length": 3111
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/rand.go",
+      "sha256": "a0b0f516652e66ee56de089ec01457f5f786e0463cd08b2453eb025cd6ad6f58",
+      "length": 13124
+    },
+    {
+      "path": "toolchain/src/math/rand/v2/zipf.go",
+      "sha256": "ee4616e17c8b1d7ff33229b075f2e73c369307be02258f173393508cb2db0357",
+      "length": 1845
+    },
+    {
+      "path": "toolchain/src/math/rand/zipf.go",
+      "sha256": "87f102ccb820854fb6b7e2b86f78fe793de8fd79adc2bd316c082daf70267326",
+      "length": 1851
+    },
+    {
+      "path": "toolchain/src/math/remainder.go",
+      "sha256": "b86740c9a71e4144feec5e728c13f18b157744151d55eeaada90c9c9f26cefef",
+      "length": 2092
+    },
+    {
+      "path": "toolchain/src/math/signbit.go",
+      "sha256": "f2a9103555eadab80b9d0ca293de87577fab5f3c4cdf0d817648afff480fa24d",
+      "length": 302
+    },
+    {
+      "path": "toolchain/src/math/sin.go",
+      "sha256": "913640c10f5093e8cdaafa1ebebbf5175b5a156bdc0fa89d77350dd4dad3be9b",
+      "length": 6505
+    },
+    {
+      "path": "toolchain/src/math/sincos.go",
+      "sha256": "d1a9614979455110d808aa194fa6e2451cbfe837b11584311fbb356a664a52e5",
+      "length": 1800
+    },
+    {
+      "path": "toolchain/src/math/sinh.go",
+      "sha256": "325a233cb3a9f01b214a82a47ad438795122cf88f2f9e04e9fdf6819f394acda",
+      "length": 1733
+    },
+    {
+      "path": "toolchain/src/math/sqrt.go",
+      "sha256": "c7e036d1511bea94992014f9b8c9259e5737c385cdd5135db9092369250d4a94",
+      "length": 4865
+    },
+    {
+      "path": "toolchain/src/math/stubs.go",
+      "sha256": "191ed067c7368ec75c25d1f7298720e14bbe7280230aa4d6ae5f791a77452015",
+      "length": 2634
+    },
+    {
+      "path": "toolchain/src/math/tan.go",
+      "sha256": "b1a549f6d267acf37399b29827ecc4cc152cfb655d8a2ed6dfe56a67e58f8e60",
+      "length": 3768
+    },
+    {
+      "path": "toolchain/src/math/tanh.go",
+      "sha256": "a80f128fa85ddc9e94983b53f4a928f6811b96174e7920032e3e1a4367b96591",
+      "length": 2721
+    },
+    {
+      "path": "toolchain/src/math/trig_reduce.go",
+      "sha256": "fa54b4e9e792707630cd402f19e742ba23c574dc6255867a395e737494a61595",
+      "length": 3419
+    },
+    {
+      "path": "toolchain/src/math/unsafe.go",
+      "sha256": "dfe6fe17844c02c370d06d7d7ca824ce167f8dc010ef79b692f4a14fa1ffa896",
+      "length": 1634
+    },
+    {
+      "path": "toolchain/src/net/addrselect.go",
+      "sha256": "3cf4ce47881e417d3e4c7e459125e3445b22714fc19c4b40cf776ab1bd835189",
+      "length": 9679
+    },
+    {
+      "path": "toolchain/src/net/conf.go",
+      "sha256": "c2ce5b531decce68f10df916bc353a74c564a388156cb4f2d2ed2b6800571f5a",
+      "length": 16273
+    },
+    {
+      "path": "toolchain/src/net/dial.go",
+      "sha256": "1f6ac457a64fb5d0ebd62dbf4cb883e82505d9b8d74235496e43acefb471f6ce",
+      "length": 29289
+    },
+    {
+      "path": "toolchain/src/net/dnsclient.go",
+      "sha256": "951143579910f3aa24cdb8128187e362edc30b053943b4bb60b73992fdeee10c",
+      "length": 5808
+    },
+    {
+      "path": "toolchain/src/net/dnsclient_unix.go",
+      "sha256": "c02b55b6dd6f437ad145a1f08950194de6039cb7e048aa127db1ce7710ff1992",
+      "length": 25258
+    },
+    {
+      "path": "toolchain/src/net/dnsconfig.go",
+      "sha256": "150d6305cc904f174288afdf7aaa958029f1f59598c82528cc36a940beac05d9",
+      "length": 2238
+    },
+    {
+      "path": "toolchain/src/net/dnsconfig_windows.go",
+      "sha256": "0894f9dfbe6d4669340039ee81436b5b24ee6911a7197abdc8b0edcf71d50ff2",
+      "length": 1645
+    },
+    {
+      "path": "toolchain/src/net/error_posix.go",
+      "sha256": "029fb7191046642c43ec9e6c430ea753189a9dec1e162cb4ea3048fcfa3928d6",
+      "length": 543
+    },
+    {
+      "path": "toolchain/src/net/error_windows.go",
+      "sha256": "55c05a49e3bc8a0b7ca9c806848e3fb3847ec07c3864ffafc1a92fead6bac0a3",
+      "length": 355
+    },
+    {
+      "path": "toolchain/src/net/fd_posix.go",
+      "sha256": "31e1ad8e0ed8b6a86d9f547c9695a1d67b35a553e0e251ea66362fb22c5354f2",
+      "length": 4666
+    },
+    {
+      "path": "toolchain/src/net/fd_windows.go",
+      "sha256": "0a9cb2bfb985eb28dd9cd926bb2198456464fc37adf4bb7112295fb719087029",
+      "length": 7676
+    },
+    {
+      "path": "toolchain/src/net/file.go",
+      "sha256": "50c0d5f95b2e27ea31dad71d2b6f68f6265d8e0d64d75d192e08b5ae322f21e0",
+      "length": 1714
+    },
+    {
+      "path": "toolchain/src/net/file_posix.go",
+      "sha256": "efeccf89bbb25b7426e8a4235009bb2d5264a748f72acdb207ab56caf88cb7a7",
+      "length": 2280
+    },
+    {
+      "path": "toolchain/src/net/file_windows.go",
+      "sha256": "12258d9abb48f1ebc4f721d3f9de87e8ed327b1ff2a9a65cdc50d4f0b810916b",
+      "length": 1167
+    },
+    {
+      "path": "toolchain/src/net/hook.go",
+      "sha256": "d4768323362e325c9500b53f6df5502dc89278b960862d43f451a61a6a1cf2c3",
+      "length": 934
+    },
+    {
+      "path": "toolchain/src/net/hook_windows.go",
+      "sha256": "54825a0db3907f4286d0ea141b244c1168240ca6e9431a376b55d0f4e521be1e",
+      "length": 720
+    },
+    {
+      "path": "toolchain/src/net/hosts.go",
+      "sha256": "265d5f3d71175407a3cc49c731d43ded8e90fdb2a67106d3d4ecb0e86955c3eb",
+      "length": 3559
+    },
+    {
+      "path": "toolchain/src/net/interface.go",
+      "sha256": "90b07bb224597bb984f3b02bad69e40faf37919f62937cd24910946d197a37c5",
+      "length": 7807
+    },
+    {
+      "path": "toolchain/src/net/interface_windows.go",
+      "sha256": "e02ba97662a41f6d3a163f8c565537194e72b447b12c345f76bc82bcde5e42e4",
+      "length": 5625
+    },
+    {
+      "path": "toolchain/src/net/ip.go",
+      "sha256": "8c7adb41aa5bdc0f2c1a9a0e2e03e9d6bd88d5d933545462627aa28f20065936",
+      "length": 15144
+    },
+    {
+      "path": "toolchain/src/net/iprawsock.go",
+      "sha256": "7df613e04a7bfb7e6ec6f1829d52c2e111578c2d1d3061f29e8dbf725c0233e9",
+      "length": 7202
+    },
+    {
+      "path": "toolchain/src/net/iprawsock_posix.go",
+      "sha256": "f2ef8c16772021695b2380ba5a3dde6e4a16c953ec0236b7a92d3619483c811c",
+      "length": 3988
+    },
+    {
+      "path": "toolchain/src/net/ipsock.go",
+      "sha256": "1d5cc127665695ab1351a96b015ceeddcc5adcbed91f35af0a6c6cd1552d846b",
+      "length": 9654
+    },
+    {
+      "path": "toolchain/src/net/ipsock_posix.go",
+      "sha256": "b04b57c9c1f0adaaa535aa0099fe173b352abb67e9b840f1cd824d57cd00c916",
+      "length": 8823
+    },
+    {
+      "path": "toolchain/src/net/lookup.go",
+      "sha256": "a4991e7764d27c73ffb219cfecf35df03b029911811f57caaef3f7a5c190a4e7",
+      "length": 29759
+    },
+    {
+      "path": "toolchain/src/net/lookup_windows.go",
+      "sha256": "aff303737545df09e77af6b78d830f090d30f146b005890a0e52f012f49471e8",
+      "length": 13838
+    },
+    {
+      "path": "toolchain/src/net/mac.go",
+      "sha256": "1b2308ff1af8a1c4c476a2b1a6ea6cd6765d3f057c4d14887fc45c91a527ecde",
+      "length": 1924
+    },
+    {
+      "path": "toolchain/src/net/mptcpsock_stub.go",
+      "sha256": "14927298389b19e73fb27cde42d10d9ecd56631e98bc5eb094c8417e29f7b982",
+      "length": 542
+    },
+    {
+      "path": "toolchain/src/net/net.go",
+      "sha256": "35a3d5047c156a1395c4c197fad5a99e123567a12ae7bc08ba7d5c723281ae03",
+      "length": 28354
+    },
+    {
+      "path": "toolchain/src/net/netcgo_off.go",
+      "sha256": "55966058ba76531fdc7f7e9216785b978387d7be093fc9c9176dc43494936eeb",
+      "length": 222
+    },
+    {
+      "path": "toolchain/src/net/netgo_off.go",
+      "sha256": "2168ca7864525e92f205def9168355951f193aa2bdb415e6ad43c84d91f93c7a",
+      "length": 220
+    },
+    {
+      "path": "toolchain/src/net/netip/netip.go",
+      "sha256": "8aa2a0d6896ac0150d0b677846b65c44d5980e3a5410c185edc5d1e74c4c4d65",
+      "length": 45789
+    },
+    {
+      "path": "toolchain/src/net/netip/uint128.go",
+      "sha256": "34cb2ed4ee74833234158b4f1e3a052713cec5657af1fa18e2284e70c6ee5604",
+      "length": 2256
+    },
+    {
+      "path": "toolchain/src/net/nss.go",
+      "sha256": "b93ae402e153706ab688ac75cffc19aa8a097b964d937725d24ef9f7fac791a5",
+      "length": 5614
+    },
+    {
+      "path": "toolchain/src/net/parse.go",
+      "sha256": "5ae9c14a1300f39fb0de55a098af5f0b679b4ae8f1677b86be35e78264378cda",
+      "length": 5791
+    },
+    {
+      "path": "toolchain/src/net/pipe.go",
+      "sha256": "55d3e00ea0c68e17e90da06eaa26a97908776f9e55778f12768c8e0d9c6aced1",
+      "length": 5565
+    },
+    {
+      "path": "toolchain/src/net/port.go",
+      "sha256": "1394d22f0da60f2f1432340642800b6314f1f505ceac89892c1a63879d36c23c",
+      "length": 1493
+    },
+    {
+      "path": "toolchain/src/net/rawconn.go",
+      "sha256": "4d3c68411c4ede8c2f3b1061d316079e050a1e8facde2019c250a0c522d062a3",
+      "length": 2765
+    },
+    {
+      "path": "toolchain/src/net/sendfile.go",
+      "sha256": "7a9f7c48dc7cadb1b53fdfa27e9ba2e3f8441818bfc1440dd856c1641b4ecba1",
+      "length": 1424
+    },
+    {
+      "path": "toolchain/src/net/sendfile_windows.go",
+      "sha256": "8d55da8577d52e1327ea4841117778055099336f063646d23bbbf4f67735c611",
+      "length": 571
+    },
+    {
+      "path": "toolchain/src/net/sock_posix.go",
+      "sha256": "f83091e2fe19ea25d190115531b68f76f128c88d817f6c9d294ffbc7fb154083",
+      "length": 6439
+    },
+    {
+      "path": "toolchain/src/net/sock_windows.go",
+      "sha256": "c24d90f9a90da5aefbe40d45c84c26e1ea5869a20e142f1f1101e7fd0f2f981d",
+      "length": 802
+    },
+    {
+      "path": "toolchain/src/net/sockaddr_posix.go",
+      "sha256": "59cc9d08c7a6f916e438525a3f9ee2ade69ded11e4ebf37d0d05e48eb7f0c985",
+      "length": 1485
+    },
+    {
+      "path": "toolchain/src/net/sockopt_posix.go",
+      "sha256": "eedba1ea662b37dde58015af6253b84702840a5c9ef5e25a20485525e94a52cb",
+      "length": 1617
+    },
+    {
+      "path": "toolchain/src/net/sockopt_windows.go",
+      "sha256": "fa834673d71b544925baad82ef36d686486e892b857ba6c4d7bd915fbcdafd15",
+      "length": 1545
+    },
+    {
+      "path": "toolchain/src/net/sockoptip4_posix_nonlinux.go",
+      "sha256": "96571c040eae4a44663d097405eed6dda384e266ca8d778597f4fea2946493fc",
+      "length": 1173
+    },
+    {
+      "path": "toolchain/src/net/sockoptip4_windows.go",
+      "sha256": "ce517ee35f335e3025019a47ced7b4fc51f55ee9ea7bfb88a35e34113cc610f5",
+      "length": 786
+    },
+    {
+      "path": "toolchain/src/net/sockoptip6_posix.go",
+      "sha256": "c43c1559e5ffafebb1800cd8f88db067fd2d9af1c9759176d3573a8010b31628",
+      "length": 1050
+    },
+    {
+      "path": "toolchain/src/net/splice_stub.go",
+      "sha256": "06154ddb6b6ea1f4dc0e07bc10f43a86162619e796208deadff9d26884e8e0ea",
+      "length": 376
+    },
+    {
+      "path": "toolchain/src/net/tcpsock.go",
+      "sha256": "6f2739a8edadb8eac557cda43fbb00c1050c805864860b57a5d6f36f0a4b64f1",
+      "length": 14352
+    },
+    {
+      "path": "toolchain/src/net/tcpsock_posix.go",
+      "sha256": "01136ba949dd7d7f70511d514ec12a89a22c216457b2ab6220c16387bb62dbed",
+      "length": 6423
+    },
+    {
+      "path": "toolchain/src/net/tcpsock_windows.go",
+      "sha256": "91054c727154f7e7b3ad3dd44a19ebf0e8846b11df7b9bb79b30b6b887fb3762",
+      "length": 1343
+    },
+    {
+      "path": "toolchain/src/net/tcpsockopt_posix.go",
+      "sha256": "16d8565b480a743e5d75ccc457fbb2dc46f4fcf3a681ea01bf45be0f057e348d",
+      "length": 442
+    },
+    {
+      "path": "toolchain/src/net/tcpsockopt_windows.go",
+      "sha256": "4492fd3fe6d4e7e131a04547f0f2e6c7ea36bae8d442569112e1168fed401c5e",
+      "length": 3848
+    },
+    {
+      "path": "toolchain/src/net/udpsock.go",
+      "sha256": "3e5ebcc492a8f05bf69bba747e066502536dac1d424f0d728a7c41ea911009f1",
+      "length": 12147
+    },
+    {
+      "path": "toolchain/src/net/udpsock_posix.go",
+      "sha256": "24c328e968ce1b23623ea8741527f526a91b2e4684fc21afbeee09b315daf427",
+      "length": 7707
+    },
+    {
+      "path": "toolchain/src/net/unixsock.go",
+      "sha256": "130876ac764db4688618625e3f397f06acb4cf4286d70d1e4437909a619bd96e",
+      "length": 10498
+    },
+    {
+      "path": "toolchain/src/net/unixsock_posix.go",
+      "sha256": "472016972215bcb170c588bab5d36fb920e071e64c0b595d68da91a45147d561",
+      "length": 6801
+    },
+    {
+      "path": "toolchain/src/net/unixsock_readmsg_other.go",
+      "sha256": "863347fc0f8b78feca2ef31b87894e4c121738121a78a411ac132be9eff20455",
+      "length": 275
+    },
+    {
+      "path": "toolchain/src/os/dir.go",
+      "sha256": "bc8540932fe12e7e5325ec8f0075eaa5014241343ea45f0f9b755f00fc672efc",
+      "length": 6077
+    },
+    {
+      "path": "toolchain/src/os/dir_windows.go",
+      "sha256": "bed7533115f62133558144ff8e3e5944a8c6f02338b4fbd29f453d85f6145a8c",
+      "length": 7868
+    },
+    {
+      "path": "toolchain/src/os/env.go",
+      "sha256": "e7eb15de93fccf8c0706285c350f32eab6c4a1f752bb8594ce7da3a0215ee92b",
+      "length": 3946
+    },
+    {
+      "path": "toolchain/src/os/error.go",
+      "sha256": "f073f7fb0bad2cd69df450956b4a267b5ecfb519a9089d44fe6b6e2d6f766e18",
+      "length": 4911
+    },
+    {
+      "path": "toolchain/src/os/error_errno.go",
+      "sha256": "3894fbb36a02dbdb543c074a2d7d316be881861dd787bb7eec06a3c074ef650b",
+      "length": 342
+    },
+    {
+      "path": "toolchain/src/os/exec.go",
+      "sha256": "a125128aa3c9d5db1e3aee257cb19a95106820cf8e8534721373f51cdaae1b06",
+      "length": 11748
+    },
+    {
+      "path": "toolchain/src/os/exec_posix.go",
+      "sha256": "89a8587e134c07caec0606fe9f472c32ef7cff21f411f8b98d5ffcfbc8838b6a",
+      "length": 3799
+    },
+    {
+      "path": "toolchain/src/os/exec_windows.go",
+      "sha256": "7a3c8f10605e5ea468538b1833b04ddf609bff84999b037839ef23d99afc50c4",
+      "length": 4789
+    },
+    {
+      "path": "toolchain/src/os/executable.go",
+      "sha256": "28709f736a30c43977d06a799ce86baa3dee133d11ab7583d53b07de38d41bcd",
+      "length": 776
+    },
+    {
+      "path": "toolchain/src/os/executable_windows.go",
+      "sha256": "336118c7f02ef311ea7901d86956290079a6683a6d807a52638a8ffe2a80e2f1",
+      "length": 641
+    },
+    {
+      "path": "toolchain/src/os/file.go",
+      "sha256": "fc7641662341ea9c9871d62fa4eb54613471e224d112955fcc244932a55e6a39",
+      "length": 30219
+    },
+    {
+      "path": "toolchain/src/os/file_posix.go",
+      "sha256": "c593da88d12e3991ba6cf488da81f29e0907b34e2bc8a0501202578fb7405a26",
+      "length": 7649
+    },
+    {
+      "path": "toolchain/src/os/file_windows.go",
+      "sha256": "060fbf0cbbb4d4185373a5d043196934d82ae8e47a4c3c2997c2e34efed8bf81",
+      "length": 13834
+    },
+    {
+      "path": "toolchain/src/os/getwd.go",
+      "sha256": "20bf5c0875341ff1d685ff8aa58f3a0de19250ec19708d32a921779ed515e26e",
+      "length": 3799
+    },
+    {
+      "path": "toolchain/src/os/path.go",
+      "sha256": "a901784cb6abfb4817a379bdc909f42090b9cc5e49a6b2dac5c06ee6e844966a",
+      "length": 2362
+    },
+    {
+      "path": "toolchain/src/os/path_windows.go",
+      "sha256": "7256e7698c7aed7eba0c3e5e3dd441c7886dfbe21864734f3f8bd3a549cbff58",
+      "length": 6086
+    },
+    {
+      "path": "toolchain/src/os/pidfd_other.go",
+      "sha256": "fad483ca74092ba62abc53c236e2b19f553e6dd3bbe5be11dd50c52d3f1fe751",
+      "length": 678
+    },
+    {
+      "path": "toolchain/src/os/proc.go",
+      "sha256": "54ed65b25fe5251adb4b7799117f38ba0b2176610f2d21b333a7a5745e988200",
+      "length": 2327
+    },
+    {
+      "path": "toolchain/src/os/rawconn.go",
+      "sha256": "cddcedb3b517a8b1fd1a8e190d24bf11978986723a69c8f1e4a231d03e35a07f",
+      "length": 993
+    },
+    {
+      "path": "toolchain/src/os/removeall_at.go",
+      "sha256": "d771a4fae6d5e50a87ee06820833b29abd65543d243be37321e9eb983a8d7ed6",
+      "length": 4898
+    },
+    {
+      "path": "toolchain/src/os/removeall_windows.go",
+      "sha256": "1806224d9f8459c4b01c0b51335191f21a90758e8eb52899cca183f86945e176",
+      "length": 392
+    },
+    {
+      "path": "toolchain/src/os/root.go",
+      "sha256": "82ef36f959dcc5355af34f28c8e9e383bbc78f227f3357ef34552d5c39d0468e",
+      "length": 13804
+    },
+    {
+      "path": "toolchain/src/os/root_openat.go",
+      "sha256": "531b3b273da32caa59170ecc8bb5ad2a091ceb8a389990fbb7bbdea176d3bfd3",
+      "length": 11519
+    },
+    {
+      "path": "toolchain/src/os/root_windows.go",
+      "sha256": "c4846eb66ce392589aa3e8b78d3eb5a771a9d235a9bd1f794bdf9bc4760a5dc6",
+      "length": 12502
+    },
+    {
+      "path": "toolchain/src/os/stat.go",
+      "sha256": "07d71d008c00bb2f2fbe3f1747582ffca94de29f48cee5c585b869cdb522a9df",
+      "length": 973
+    },
+    {
+      "path": "toolchain/src/os/stat_windows.go",
+      "sha256": "90f01ab7b8a973df1c4588c3b40fae737c6d23d6548a1805e5f213e38def6df4",
+      "length": 5485
+    },
+    {
+      "path": "toolchain/src/os/sticky_notbsd.go",
+      "sha256": "559270cac07833f1f3c38495f2aad352ed83d68b196c32d18351545c7152ed84",
+      "length": 320
+    },
+    {
+      "path": "toolchain/src/os/sys.go",
+      "sha256": "98ecc8ed73af7c43a643a62a2a16d445cec49dacefa266dd1ef7197188b84679",
+      "length": 294
+    },
+    {
+      "path": "toolchain/src/os/sys_windows.go",
+      "sha256": "989bccb9cc276b2d3017d6725c28ae552767a78b8150e0e53139a84b1c4e2e46",
+      "length": 874
+    },
+    {
+      "path": "toolchain/src/os/tempfile.go",
+      "sha256": "1df8cde8a616f7d1317ec561c7a2a01c4a179b82d5eae0776bad75cb021aaefa",
+      "length": 4015
+    },
+    {
+      "path": "toolchain/src/os/types.go",
+      "sha256": "ef72e4082700de60ba3e49cbe7669a11096eb387a5460497f1f8e5d33f7b0a8f",
+      "length": 2927
+    },
+    {
+      "path": "toolchain/src/os/types_windows.go",
+      "sha256": "32bdbb028336c434525559642424295c71c0dd6e4fef7cec1fd0739ec80feffb",
+      "length": 11995
+    },
+    {
+      "path": "toolchain/src/os/zero_copy_posix.go",
+      "sha256": "3e2916cf88d98c98a4b4810754fbced3897ba9f6d58179edc88f000a10987ab6",
+      "length": 1091
+    },
+    {
+      "path": "toolchain/src/os/zero_copy_stub.go",
+      "sha256": "5ff33597850b18e76f6fb6b004b55e5430c4316ee627261330368afb22049f42",
+      "length": 430
+    },
+    {
+      "path": "toolchain/src/path/filepath/match.go",
+      "sha256": "2e934cd2ac6bf57f0ebf010f5ef6d9a79fd989eebcad83358d03f58021d5b3ac",
+      "length": 8891
+    },
+    {
+      "path": "toolchain/src/path/filepath/path.go",
+      "sha256": "4ab76f2082841d2524f2bef6bab0d2502e70814e6e557deebde04f6fee67ec19",
+      "length": 15868
+    },
+    {
+      "path": "toolchain/src/path/filepath/path_windows.go",
+      "sha256": "96c1af1caace59a146241f5a48a700a142f2e5520f932fb2fc6376ce5a94ed81",
+      "length": 3233
+    },
+    {
+      "path": "toolchain/src/path/filepath/symlink.go",
+      "sha256": "d4e5ae166c208c8d0fbbed9aa907208f7cc541100b8e04029a38f16f1b5da1b5",
+      "length": 3356
+    },
+    {
+      "path": "toolchain/src/path/filepath/symlink_windows.go",
+      "sha256": "801a4135e7dbc63dbf392fb1b4dcfcd0c8b5d81c66dfaa8aff7ea98a8f708ccf",
+      "length": 2968
+    },
+    {
+      "path": "toolchain/src/path/match.go",
+      "sha256": "bb88f659463a04e290492cff8d19c4d7d5c7d551db9b90b3049d3e51188d5ec8",
+      "length": 5465
+    },
+    {
+      "path": "toolchain/src/path/path.go",
+      "sha256": "0a5024c364387eeea9ab5fe0b285f0d62355e8cd181cdbddfdfa227f6916d94c",
+      "length": 6003
+    },
+    {
+      "path": "toolchain/src/reflect/abi.go",
+      "sha256": "84b707ff6428d37c2ff8dacb1a1cb24f696f4b2dc934b08dd96aceb1541d6b71",
+      "length": 15381
+    },
+    {
+      "path": "toolchain/src/reflect/asm_amd64.s",
+      "sha256": "1a32c662e94b681985a500708c79cc33854e186f4095108b95540b0aaec538a6",
+      "length": 2830
+    },
+    {
+      "path": "toolchain/src/reflect/asm_arm64.s",
+      "sha256": "695304e15fbcd8f3681ae9a0a7f32955e52784677b33d6b64c6c09ee65a9a427",
+      "length": 2833
+    },
+    {
+      "path": "toolchain/src/reflect/badlinkname.go",
+      "sha256": "4321ef4110c4856691fc274e192da9a9b93736224810547334562b5a927dd389",
+      "length": 4618
+    },
+    {
+      "path": "toolchain/src/reflect/deepequal.go",
+      "sha256": "e4615c50434192fa65a53c6ccaaa060da744f67baad2778153015d9f4cb26cbe",
+      "length": 7598
+    },
+    {
+      "path": "toolchain/src/reflect/float32reg_generic.go",
+      "sha256": "0a691ecf7df8fd1e45033eed9b9ac6fde7c7233bb2948a30e211083d173e37db",
+      "length": 681
+    },
+    {
+      "path": "toolchain/src/reflect/iter.go",
+      "sha256": "78128c2b362102626bcdd579a553543f3e5a7be6ab6a02d04e0662a3fcbd71f0",
+      "length": 4342
+    },
+    {
+      "path": "toolchain/src/reflect/makefunc.go",
+      "sha256": "82f100e7ecfada602ee241ac569152ded34121099c02143486ed4326b62cb708",
+      "length": 6054
+    },
+    {
+      "path": "toolchain/src/reflect/map_swiss.go",
+      "sha256": "e25cccc85c23b30e6ea4bd88034582e13e9cadb76ad40fcf4e51b740199c07f0",
+      "length": 12815
+    },
+    {
+      "path": "toolchain/src/reflect/swapper.go",
+      "sha256": "5d8467c8475770fac34d48536e36e40d4251612af2d5a7d96f19fff1c7d4ba99",
+      "length": 2042
+    },
+    {
+      "path": "toolchain/src/reflect/type.go",
+      "sha256": "56d4ab619a5ef53e359d89a73d02bc6cd4051c40b8fbf1d5a3ab081a369eb59d",
+      "length": 81677
+    },
+    {
+      "path": "toolchain/src/reflect/value.go",
+      "sha256": "0e3b931177452ccbbdeb85f39d8c0efd6873bdbd66352bf18a1b1fc6aec0558f",
+      "length": 116210
+    },
+    {
+      "path": "toolchain/src/reflect/visiblefields.go",
+      "sha256": "287edc70dd44cb440aa267eb9ca3164c89c80b25af69abc1589728fbf82ad810",
+      "length": 3037
+    },
+    {
+      "path": "toolchain/src/runtime/alg.go",
+      "sha256": "3d7388d3d58a82a6c9d4b719df6d7a44d6c55d74cfbeaa3de73d22721571fa0c",
+      "length": 11396
+    },
+    {
+      "path": "toolchain/src/runtime/arena.go",
+      "sha256": "5099e08419c03cc1e0f36ee38dede6c264f7bc785891e7e096655a1efa36e577",
+      "length": 38959
+    },
+    {
+      "path": "toolchain/src/runtime/asan0.go",
+      "sha256": "34ffa01d044c5abbf40f0fcfa7634e94a7d7320070822fdd874c8c288e114f7e",
+      "length": 1013
+    },
+    {
+      "path": "toolchain/src/runtime/asm.s",
+      "sha256": "cd39f9e3a6d7ed158abadedaffcb7eebbcb1bccf5dcca5f05972f8f4de7f79f7",
+      "length": 386
+    },
+    {
+      "path": "toolchain/src/runtime/asm_amd64.h",
+      "sha256": "85fc2d5bb80e6db36cef4da5e5c02278d0dcaa6103e5660629b4b713cff15d54",
+      "length": 631
+    },
+    {
+      "path": "toolchain/src/runtime/asm_amd64.s",
+      "sha256": "63cef478703f42c19b5165c809ae270f8469cc1eceb12983f199a75b154723bb",
+      "length": 61779
+    },
+    {
+      "path": "toolchain/src/runtime/asm_arm64.s",
+      "sha256": "e7d12fbe19110e3504c7ee08b2a61595ab4a738342821c15fd151762f6c1d274",
+      "length": 45695
+    },
+    {
+      "path": "toolchain/src/runtime/asm_ppc64x.h",
+      "sha256": "443dd7c93c404f7039a48acdeb7a860ace231b3d2b45daec9ed926e577b7cf61",
+      "length": 1979
+    },
+    {
+      "path": "toolchain/src/runtime/atomic_arm64.s",
+      "sha256": "ce8189b02b74e99eea0220cdf1208b65e3c402e4be4c8d8ad9d6078fe6d622cf",
+      "length": 259
+    },
+    {
+      "path": "toolchain/src/runtime/atomic_pointer.go",
+      "sha256": "364e60036abead10a020d763add8fe57fc493624c0b8f4a1c2e70de4edf21a3a",
+      "length": 4075
+    },
+    {
+      "path": "toolchain/src/runtime/auxv_none.go",
+      "sha256": "d04fe172c21ece9ebed64be339f745e386c3ed3d21727323f0c2ff1a80b7f56c",
+      "length": 298
+    },
+    {
+      "path": "toolchain/src/runtime/badlinkname.go",
+      "sha256": "172c02155463385704c6f873e8d05e4bb3a04054cca508b158c203b54ee205ea",
+      "length": 661
+    },
+    {
+      "path": "toolchain/src/runtime/cgo.go",
+      "sha256": "bf805598fc42e6304502c555302821104cb36aa085ba47fc4eb0839533fce1b3",
+      "length": 3700
+    },
+    {
+      "path": "toolchain/src/runtime/cgo/abi_amd64.h",
+      "sha256": "7832f3b0a3d91852a53705f3df6d16d69e1e785cfd1d733ee33229411cd26717",
+      "length": 2795
+    },
+    {
+      "path": "toolchain/src/runtime/cgo/abi_arm64.h",
+      "sha256": "ea02dbdbe31f446716c290bbeb5b98f940ab71c1756c5a7da68711ef73e2b3ec",
+      "length": 1531
+    },
+    {
+      "path": "toolchain/src/runtime/cgocall.go",
+      "sha256": "bba697a2bdb037a50ef5865780282d9aaa33cf1ac70fb5d6199859e73bc3abee",
+      "length": 25777
+    },
+    {
+      "path": "toolchain/src/runtime/cgocallback.go",
+      "sha256": "82d38f6a32c4f8763af62ee77eb3aa6e8f52ba9c2077e7491b109e6530c2b067",
+      "length": 317
+    },
+    {
+      "path": "toolchain/src/runtime/cgocheck.go",
+      "sha256": "bd55aef5d900e4d39dae9676d5aefeb24a814c44ec2d6b8e072ec51b3ffab849",
+      "length": 5591
+    },
+    {
+      "path": "toolchain/src/runtime/cgroup_stubs.go",
+      "sha256": "7393e87ba1b216ea9d027286bc3c1dee709d91581b2e0a6540940d22236d19b5",
+      "length": 605
+    },
+    {
+      "path": "toolchain/src/runtime/chan.go",
+      "sha256": "47568261430380afaea01a9972d87bd1c6cdb260594211b996fe528f434340a3",
+      "length": 27546
+    },
+    {
+      "path": "toolchain/src/runtime/checkptr.go",
+      "sha256": "f38f5a588ddfcc3d528e7b807e5176adb2abc8a82469110fce783e432879cf7a",
+      "length": 3660
+    },
+    {
+      "path": "toolchain/src/runtime/compiler.go",
+      "sha256": "bfe09a6aed85f21db093649c9b431f76353794d3b630b2f788859ea96a2ff6a2",
+      "length": 410
+    },
+    {
+      "path": "toolchain/src/runtime/complex.go",
+      "sha256": "acb03107a1de5df055c14f0fefe0a5c8e33ff6658445d10e1eb23e8e99e1d8ad",
+      "length": 1629
+    },
+    {
+      "path": "toolchain/src/runtime/coro.go",
+      "sha256": "e510468afaaf06a14b515f6a51e2191fe1871c0655cbeef2c12268496a627c4a",
+      "length": 8515
+    },
+    {
+      "path": "toolchain/src/runtime/covercounter.go",
+      "sha256": "4e2ede89b4fe9e9ea8429a773db441a8dab3cd4962159f842080e97d2ef8d64d",
+      "length": 740
+    },
+    {
+      "path": "toolchain/src/runtime/covermeta.go",
+      "sha256": "765117a0c617fe622ac461bf1ee7dd3ed075d95ae80cdfc6bf91d280a5609300",
+      "length": 603
+    },
+    {
+      "path": "toolchain/src/runtime/cpuflags.go",
+      "sha256": "2451460a8f1f2141ac619f47d7b5e8b83abb279c893b5b4cc5a68d9324c0e8c5",
+      "length": 1023
+    },
+    {
+      "path": "toolchain/src/runtime/cpuflags_amd64.go",
+      "sha256": "b9aa3542d35b84d5279030a603acfade2563c67b970e99d5d89ebf64742383f6",
+      "length": 1118
+    },
+    {
+      "path": "toolchain/src/runtime/cpuflags_arm64.go",
+      "sha256": "d13970d6538f225ee81146f7bf019a4e492f5bde1e977d7ff95be8c449c0ad51",
+      "length": 312
+    },
+    {
+      "path": "toolchain/src/runtime/cpuprof.go",
+      "sha256": "d90aebaa1a719f339fde318cc8ec98e7312824ec2e2ad469a84fcbc6b5511c5e",
+      "length": 8728
+    },
+    {
+      "path": "toolchain/src/runtime/cputicks.go",
+      "sha256": "661b4602a411e850016ea45ebdab6453ce8de5d479ebc5f67758062aa8da1517",
+      "length": 437
+    },
+    {
+      "path": "toolchain/src/runtime/create_file_nounix.go",
+      "sha256": "e96ebe35523a5982a219aa9fba5f3490605abf5b95a398e427bf78cb82efc370",
+      "length": 305
+    },
+    {
+      "path": "toolchain/src/runtime/debug.go",
+      "sha256": "d5e40b496358454b448479e1aa68841fc66498038ac1b81845e34331c70d5a8c",
+      "length": 8433
+    },
+    {
+      "path": "toolchain/src/runtime/debugcall.go",
+      "sha256": "aca204d0986b11cc4bf04fa0b402ebfb788701195d581fdc3597367fcea40589",
+      "length": 7303
+    },
+    {
+      "path": "toolchain/src/runtime/debuglog.go",
+      "sha256": "8f17ed71b8af0d82a4fd918cb9034a84fe5ea79e71469ba73530ce750c561311",
+      "length": 20526
+    },
+    {
+      "path": "toolchain/src/runtime/debuglog_off.go",
+      "sha256": "2403e8ab6ce05543e5ac6e54120c6f21733aca66e99d5f3be803f20933e9f649",
+      "length": 442
+    },
+    {
+      "path": "toolchain/src/runtime/defs_windows.go",
+      "sha256": "a81897e92139d8ba4b8de140e90801bee1ad7f601942baa1bdee50d8217888e2",
+      "length": 2595
+    },
+    {
+      "path": "toolchain/src/runtime/defs_windows_amd64.go",
+      "sha256": "10304741f019c20dbdb57a870a49dda3c67733c73b1ec3f22e1f2562c93445c7",
+      "length": 3475
+    },
+    {
+      "path": "toolchain/src/runtime/defs_windows_arm64.go",
+      "sha256": "79dfec556580a1e525ffa7897c37a0d74939ec9b9601e36215036a3e257f0315",
+      "length": 3538
+    },
+    {
+      "path": "toolchain/src/runtime/duff_amd64.s",
+      "sha256": "ae3dd717d76aa699198d61664bc2681fec3c8f884e0d78c2a549efacd8085f5e",
+      "length": 5772
+    },
+    {
+      "path": "toolchain/src/runtime/duff_arm64.s",
+      "sha256": "1cf97708bc5b3d6bd69413e360ed634ba4014bcaa38951a8423189fe168e68ce",
+      "length": 5400
+    },
+    {
+      "path": "toolchain/src/runtime/env_posix.go",
+      "sha256": "351f359fab6974c595ab72454ee246b0ebd82c3ca8bec599e33f49d6d9cefeb1",
+      "length": 2182
+    },
+    {
+      "path": "toolchain/src/runtime/error.go",
+      "sha256": "b7d01a5bd00af22ecb3f72a4d260487573667ec84ffd5f85b0505264a147d976",
+      "length": 10636
+    },
+    {
+      "path": "toolchain/src/runtime/extern.go",
+      "sha256": "d1b5ec5acf3c17a584365d6df945caee3ba1b55b10a3f69641d61e3f27192ab9",
+      "length": 20445
+    },
+    {
+      "path": "toolchain/src/runtime/fastlog2.go",
+      "sha256": "4e03110f81e7323d3924fda1b76e3522e0631cf3d107f5c29de8be0b124a14a2",
+      "length": 1249
+    },
+    {
+      "path": "toolchain/src/runtime/fastlog2table.go",
+      "sha256": "4729d9b0a9023b5c3b8e27d81943d692154499c6c3eec80a1663d47865eaa65c",
+      "length": 904
+    },
+    {
+      "path": "toolchain/src/runtime/fds_nonunix.go",
+      "sha256": "f662698bfb09b33d344c46db013d1cf1b5ebef9a48e4b54a6a2735c199a3c6ee",
+      "length": 256
+    },
+    {
+      "path": "toolchain/src/runtime/float.go",
+      "sha256": "3bbaefbb410e01afc0e82477b8d26470ce3bd1b2237776604a3fd85abc478b05",
+      "length": 2992
+    },
+    {
+      "path": "toolchain/src/runtime/funcdata.h",
+      "sha256": "597879e43bc3cb9a87a1b3d16e3408dd23ca9b6b6047312b6edccc8e34774845",
+      "length": 2587
+    },
+    {
+      "path": "toolchain/src/runtime/go_tls.h",
+      "sha256": "253985b0412d66fd6657b0fcfa54eef45d036c66a7cd00b0ac37a3da2166a4e1",
+      "length": 366
+    },
+    {
+      "path": "toolchain/src/runtime/hash64.go",
+      "sha256": "b04680f71967a64d2f366115d4158938a1833faadd2121408129bb378cb7b9bf",
+      "length": 1939
+    },
+    {
+      "path": "toolchain/src/runtime/heapdump.go",
+      "sha256": "4685b23fa1dcb77af4ea315fc3bc63692f491ee17a6b0f9738367799310d11e7",
+      "length": 18046
+    },
+    {
+      "path": "toolchain/src/runtime/histogram.go",
+      "sha256": "7e9c532f80d134298db85fee79a1e251de00507d996976f2ff62060c45486818",
+      "length": 7472
+    },
+    {
+      "path": "toolchain/src/runtime/iface.go",
+      "sha256": "3b4fe9c60e47cedac3dc34ed87adf8e8af5b7275510e876c2e77801b05d25cd7",
+      "length": 21849
+    },
+    {
+      "path": "toolchain/src/runtime/ints.s",
+      "sha256": "b7a34cb11c9d0fe5ff9ed575b74b2716f3e86fc44c4044589770baf93b52c867",
+      "length": 10100
+    },
+    {
+      "path": "toolchain/src/runtime/lfstack.go",
+      "sha256": "ffb60ce25df0e2b82aac06ecebbb089f5d086ca98ea17521853a89d8b0fc8f59",
+      "length": 1726
+    },
+    {
+      "path": "toolchain/src/runtime/linkname.go",
+      "sha256": "4165304e269d11107daef57cb81cb1e7fdb2e5a061d882330d42cb5a9c84138f",
+      "length": 805
+    },
+    {
+      "path": "toolchain/src/runtime/linkname_swiss.go",
+      "sha256": "a07c8f4bc963b758111798c5f7fb7d1b2543041ef62a01b60925c4ca6e4aa8c7",
+      "length": 6834
+    },
+    {
+      "path": "toolchain/src/runtime/lock_sema.go",
+      "sha256": "75d2a07f05071f1537a1fad231e3397ae33ebac5026c66d09959b7c898f1ea5c",
+      "length": 4245
+    },
+    {
+      "path": "toolchain/src/runtime/lock_spinbit.go",
+      "sha256": "fd134af1468b712b419c6be01b37d7c5b065cca043ca1d30350c73ce3e6c1821",
+      "length": 14969
+    },
+    {
+      "path": "toolchain/src/runtime/lockrank.go",
+      "sha256": "8d405a83d8d8eec21e42cfac84a5af1442b5d0a6697e22ebd0fa53c5f3551d86",
+      "length": 24987
+    },
+    {
+      "path": "toolchain/src/runtime/lockrank_off.go",
+      "sha256": "7939436cf311332dfaf11dad3d4ad42176e549409bd735f1c6eb2e0e264cea5a",
+      "length": 1330
+    },
+    {
+      "path": "toolchain/src/runtime/malloc.go",
+      "sha256": "ee6b206c996280ed7e455f85ddbe32d7d71437797b3dafbf368a6675afd2d3b5",
+      "length": 73492
+    },
+    {
+      "path": "toolchain/src/runtime/map_fast32_swiss.go",
+      "sha256": "ae04e78c7eaf0b253252e61eb0e43cd6d98e95999b9addbd900612c80d681f86",
+      "length": 1753
+    },
+    {
+      "path": "toolchain/src/runtime/map_fast64_swiss.go",
+      "sha256": "8c4b280fcea1c3bf87982b42612ddb45ed38518f5166aeebb3d916036c8432cc",
+      "length": 1787
+    },
+    {
+      "path": "toolchain/src/runtime/map_faststr_swiss.go",
+      "sha256": "3349f6cf5b9d956d1cb74ae4028285099a2f24e33b949ef0129c601dfc2724fc",
+      "length": 1359
+    },
+    {
+      "path": "toolchain/src/runtime/map_swiss.go",
+      "sha256": "f97713fa86ada07e992c69b021732a7c09f2ac6bdbfa6980a0f6538875c4d29b",
+      "length": 10418
+    },
+    {
+      "path": "toolchain/src/runtime/mbarrier.go",
+      "sha256": "a7a24f880adbf607fa8997ac7f14b6999ba466b395a99ce01baaf39e361a0122",
+      "length": 15626
+    },
+    {
+      "path": "toolchain/src/runtime/mbitmap.go",
+      "sha256": "6524aef74492d36196231f3e9ccbbbcc37a9a05551e7c5dd1fe7ffadddde7e0a",
+      "length": 62708
+    },
+    {
+      "path": "toolchain/src/runtime/mcache.go",
+      "sha256": "2c9365e5975a4dca31c1ff58225ea3f2f15fae92f921de32cb573aec6a1828eb",
+      "length": 10700
+    },
+    {
+      "path": "toolchain/src/runtime/mcentral.go",
+      "sha256": "07fdadf8d90bc514805131fed9de5c8e00cd87580a6bf40f55f83353aae7247c",
+      "length": 8025
+    },
+    {
+      "path": "toolchain/src/runtime/mcheckmark.go",
+      "sha256": "91449d1fbf595fb85f39bba70ce940bccebbd12ee86eb79fc35d4d95483a37f5",
+      "length": 9490
+    },
+    {
+      "path": "toolchain/src/runtime/mcleanup.go",
+      "sha256": "826bf51e6948f06907af0c189829b3d467b33b631f98095d1a1dfdf7d50bc23f",
+      "length": 23744
+    },
+    {
+      "path": "toolchain/src/runtime/mem.go",
+      "sha256": "8826d2339671401995651f3488369b1d4c074dcdb8ff271a3119923578d49f55",
+      "length": 7513
+    },
+    {
+      "path": "toolchain/src/runtime/mem_nonsbrk.go",
+      "sha256": "975fb2b84c6f9cba872fd6e3f77726ea297959a7373d75794a58194860ac07e7",
+      "length": 352
+    },
+    {
+      "path": "toolchain/src/runtime/mem_windows.go",
+      "sha256": "5505259aefafcba0c219fbb9bf6ec131e1925ab3c35fa196772771ad820656ae",
+      "length": 3999
+    },
+    {
+      "path": "toolchain/src/runtime/memclr_amd64.s",
+      "sha256": "826fb9aef6f97dda8e5a994e21ec692479712f69fefcf1469b756bdff29739ef",
+      "length": 5024
+    },
+    {
+      "path": "toolchain/src/runtime/memclr_arm64.s",
+      "sha256": "3db088bb3eba21958e6a188645ba3d43ad8b2bcab2d3fb0d74720fa61b3ce1a7",
+      "length": 3772
+    },
+    {
+      "path": "toolchain/src/runtime/memmove_amd64.s",
+      "sha256": "1d239c1a965baf43cbdfb82a5144d33aadd95d20ff95becf8347a93ddf08985d",
+      "length": 13183
+    },
+    {
+      "path": "toolchain/src/runtime/memmove_arm64.s",
+      "sha256": "b6af6c6b8046c943bdfa82bca55bb418c9a6d2fd2c3ee438d95b6f493e7432f6",
+      "length": 6098
+    },
+    {
+      "path": "toolchain/src/runtime/metrics.go",
+      "sha256": "f09bec9a68a4ecb565c138f0a83502cebc6d0ba2aa93acf27f311e348d6bc02d",
+      "length": 26612
+    },
+    {
+      "path": "toolchain/src/runtime/mfinal.go",
+      "sha256": "17804b324b2dae726e9d442d25a2405ddffddb497994bf70be9f555e5bc05b50",
+      "length": 20254
+    },
+    {
+      "path": "toolchain/src/runtime/mfixalloc.go",
+      "sha256": "4469bf858ac16f58c41adab050c5243d0dd8c5aad9d2e1c62b135635f7bc6f04",
+      "length": 3202
+    },
+    {
+      "path": "toolchain/src/runtime/mgc.go",
+      "sha256": "c5f48c9c7d7f47e2d2a70a7a3fbf964d723d6a98042271668b1f6e5c0d5b5892",
+      "length": 66502
+    },
+    {
+      "path": "toolchain/src/runtime/mgclimit.go",
+      "sha256": "fd175a6304a6d4e1f26822cdaa0f94d4959b2d1f5c315f6a0b1c342bda8ae6a7",
+      "length": 17655
+    },
+    {
+      "path": "toolchain/src/runtime/mgcmark.go",
+      "sha256": "8137ba5a975473a69e5227f3793e9c5da2f169211ba1cb7672b6115962147717",
+      "length": 56430
+    },
+    {
+      "path": "toolchain/src/runtime/mgcmark_nogreenteagc.go",
+      "sha256": "a0f430e250829da013741b725a063ca6788b2a0bc9dc9460d92998d8cc23305b",
+      "length": 2257
+    },
+    {
+      "path": "toolchain/src/runtime/mgcpacer.go",
+      "sha256": "c8763d56c60934faf7ad1c29cd10261f5f598db3506345db2d9f88245e4bcae7",
+      "length": 57877
+    },
+    {
+      "path": "toolchain/src/runtime/mgcscavenge.go",
+      "sha256": "809c6b1738c31d8e6acaee363fbb73653c895d56b2284b89b2dd085f2fa12f27",
+      "length": 53512
+    },
+    {
+      "path": "toolchain/src/runtime/mgcstack.go",
+      "sha256": "c25628e388174f391c889daa770731336f6240900fe4c668af7ee0608cd8c090",
+      "length": 10839
+    },
+    {
+      "path": "toolchain/src/runtime/mgcsweep.go",
+      "sha256": "3360306eb9886003c9fedf8a25d2d9d28fcd0b28869dfbfdfd84d9243e77360e",
+      "length": 33729
+    },
+    {
+      "path": "toolchain/src/runtime/mgcwork.go",
+      "sha256": "653de08300e238f2e968772c234c78a33297bf31f242a44bc212ce02580cf693",
+      "length": 15294
+    },
+    {
+      "path": "toolchain/src/runtime/mheap.go",
+      "sha256": "d037473170533043ffbf9bf8e1fd0d551c0d0cf278080454dad44a6e685899fc",
+      "length": 100191
+    },
+    {
+      "path": "toolchain/src/runtime/minmax.go",
+      "sha256": "3740bf87388f301a2a05c6d31e8d7160c9cf54dd970dcb365d4f8816e92ba084",
+      "length": 1493
+    },
+    {
+      "path": "toolchain/src/runtime/mpagealloc.go",
+      "sha256": "33fdd523b75f7904de21b2c395789fdfef31e9a365bd019915ca58f98ff53ac4",
+      "length": 40201
+    },
+    {
+      "path": "toolchain/src/runtime/mpagealloc_64bit.go",
+      "sha256": "3ace6abdf6faf096f17774e85cc10c3a95bfec9a97ff302c8b72a0b9d52b07bd",
+      "length": 9632
+    },
+    {
+      "path": "toolchain/src/runtime/mpagecache.go",
+      "sha256": "ad1427cbe7bb0a07746323b403093f484f750dfdf6f89df876cbe5720cec9c4e",
+      "length": 5727
+    },
+    {
+      "path": "toolchain/src/runtime/mpallocbits.go",
+      "sha256": "8996a481943b5054af0962241b3f16f8ac13d79b5de7b62af904213a7f8b6ccb",
+      "length": 12827
+    },
+    {
+      "path": "toolchain/src/runtime/mprof.go",
+      "sha256": "ca257ed199dc74a285a791905008fcd7a54cb12f436a617c28ad3598d7fe5196",
+      "length": 55313
+    },
+    {
+      "path": "toolchain/src/runtime/mranges.go",
+      "sha256": "a9a4f58b3d28a047b9b097b507833f78c96b085e48ae6c8b35bd28db97cb1aca",
+      "length": 14802
+    },
+    {
+      "path": "toolchain/src/runtime/msan0.go",
+      "sha256": "a53ed6335e7b05d189b422b3503d2421203362754eaa7b0b73c7bab4780fc2e4",
+      "length": 725
+    },
+    {
+      "path": "toolchain/src/runtime/msize.go",
+      "sha256": "0164d15295726608812842b429e241f553a314985a7c6aa48cb1ad24346a52dd",
+      "length": 1383
+    },
+    {
+      "path": "toolchain/src/runtime/mspanset.go",
+      "sha256": "5cfd5ff71b601ba95f35d83ee25869bcbdaa9652eae456bf820e1e8918e1ae67",
+      "length": 13626
+    },
+    {
+      "path": "toolchain/src/runtime/mstats.go",
+      "sha256": "42a2414ec19fa8da881ef7861e9c69b33506c3d2201138f3b506535079084bee",
+      "length": 34738
+    },
+    {
+      "path": "toolchain/src/runtime/mwbbuf.go",
+      "sha256": "91f36548b292b0d1914d868caee7bb2db26f10e8ce192e41cc27b81f7512c7e3",
+      "length": 8380
+    },
+    {
+      "path": "toolchain/src/runtime/netpoll.go",
+      "sha256": "f7c606d3fa0a3b9499fd5f42b81918a98f0b99a6029fca2010cabc710fc9ea65",
+      "length": 21309
+    },
+    {
+      "path": "toolchain/src/runtime/netpoll_windows.go",
+      "sha256": "60e32aedbbda2e9b4ee11ec344975c19a354c9953a0622811ca8b25619b46caa",
+      "length": 9719
+    },
+    {
+      "path": "toolchain/src/runtime/note_other.go",
+      "sha256": "8f910c2a6c624eba7f47275cb2917de934ead4300b5de64bea5637b5de1ee7a2",
+      "length": 1220
+    },
+    {
+      "path": "toolchain/src/runtime/os_nonopenbsd.go",
+      "sha256": "ee262ac265c43fa6826127530808e2b316bfb86bf3d226dbbebea428266f2b8c",
+      "length": 437
+    },
+    {
+      "path": "toolchain/src/runtime/os_windows.go",
+      "sha256": "8e01fcefd7cd3fd46be9082d257d2f4effb4c5bcafce6d64a6e4748a39d8696a",
+      "length": 41634
+    },
+    {
+      "path": "toolchain/src/runtime/os_windows_arm64.go",
+      "sha256": "b58581ff91ac99aa00fbf36c9ccd2e1c74e1b4295f24cbba7a9c094e07dd5995",
+      "length": 339
+    },
+    {
+      "path": "toolchain/src/runtime/panic.go",
+      "sha256": "b1e03d5f3389a1520edf3238ccbd723c41bb2dbe50e30c16b50d5caded78cc06",
+      "length": 46217
+    },
+    {
+      "path": "toolchain/src/runtime/pinner.go",
+      "sha256": "c50971c756421df39db0b169fcc256fd96e40d204b130a5690552f25bffaefbe",
+      "length": 11258
+    },
+    {
+      "path": "toolchain/src/runtime/plugin.go",
+      "sha256": "bbf6e2fad8f3214bda8b420b57be1a801691c0614f26b7e79334e19e26fcf32a",
+      "length": 4499
+    },
+    {
+      "path": "toolchain/src/runtime/preempt.go",
+      "sha256": "b0345954760f78820769f918479c09b3630a81151b03e07259fee40d36728e9f",
+      "length": 15829
+    },
+    {
+      "path": "toolchain/src/runtime/preempt_amd64.s",
+      "sha256": "462197daf6239df084428ea116e4c092f16842092ae7806a6601d23c3cab13d5",
+      "length": 1578
+    },
+    {
+      "path": "toolchain/src/runtime/preempt_arm64.s",
+      "sha256": "c08a553e9758c722ce690341542ed0aa7c3cc86b26806ad7341bff854af01275",
+      "length": 2014
+    },
+    {
+      "path": "toolchain/src/runtime/print.go",
+      "sha256": "178413644131bedce4c39781f4830f9237cbf133de39e01085a7c41bf326145b",
+      "length": 6063
+    },
+    {
+      "path": "toolchain/src/runtime/proc.go",
+      "sha256": "6080c3885b996c1bf10c215e8e84633e13be1c00466d42a12dc182c024318de4",
+      "length": 225246
+    },
+    {
+      "path": "toolchain/src/runtime/profbuf.go",
+      "sha256": "3ec92c9ab507492043dba33802a97dd3df841883b4933301fe42db1ba7f968b3",
+      "length": 18640
+    },
+    {
+      "path": "toolchain/src/runtime/proflabel.go",
+      "sha256": "dd18006615fac877fb74bf06e2003833c2222e447a752ad25983a35ba3d09426",
+      "length": 2108
+    },
+    {
+      "path": "toolchain/src/runtime/race0.go",
+      "sha256": "40cacda94f0feb4ffb47516bd5d88ac4c7bf988bad78ba375c749900c743ed96",
+      "length": 2963
+    },
+    {
+      "path": "toolchain/src/runtime/rand.go",
+      "sha256": "f0c4935ece88ac3861ebd5060a3507831158bcf5ac47abae5860220c0da970c5",
+      "length": 8999
+    },
+    {
+      "path": "toolchain/src/runtime/rdebug.go",
+      "sha256": "39a5f8ec7012b69997d9e25c6a7f303b128f821c155ac2f3bd5e04b7a45ef796",
+      "length": 550
+    },
+    {
+      "path": "toolchain/src/runtime/rt0_windows_amd64.s",
+      "sha256": "01f53219df91027eb4af1cf1faa6969798d6a1c53468acf6139a89b437579a5a",
+      "length": 1166
+    },
+    {
+      "path": "toolchain/src/runtime/rt0_windows_arm64.s",
+      "sha256": "a11fcfd85fd4479e0d353af10fe0b4f46f406092c0cb2bb4508e3ed0fa74172d",
+      "length": 733
+    },
+    {
+      "path": "toolchain/src/runtime/runtime.go",
+      "sha256": "fe478d164989b5cd5783c9820d99879623780ba353f836f499238e76efb24fd8",
+      "length": 10002
+    },
+    {
+      "path": "toolchain/src/runtime/runtime1.go",
+      "sha256": "554ae1f25ec9167c191055b99319cdd5351a017b64c62910edc85b49c5c8fe54",
+      "length": 21259
+    },
+    {
+      "path": "toolchain/src/runtime/runtime2.go",
+      "sha256": "8195673da4b7a6845cc8db69ecf040caadb1b8111423ec3dfa87ce49e73a9c19",
+      "length": 51326
+    },
+    {
+      "path": "toolchain/src/runtime/runtime_boring.go",
+      "sha256": "b66676b383e1baaf34b9482c50e2af4e6b9fe3178af6fff638368dbd6547e0c5",
+      "length": 458
+    },
+    {
+      "path": "toolchain/src/runtime/rwmutex.go",
+      "sha256": "7ab5f917f2d92166e7a2a1db37fd1ad59724ebe9cb2763fa55aa16bc1e78c8fe",
+      "length": 5104
+    },
+    {
+      "path": "toolchain/src/runtime/security_nonunix.go",
+      "sha256": "5026ff12daf3f61f487e47d7adf980d305ede84f3dbf66913b4603307cee64fb",
+      "length": 256
+    },
+    {
+      "path": "toolchain/src/runtime/select.go",
+      "sha256": "a934bd4633fb94e3eb99ba3e0f0ff10e9257e60ce83dbc37394448072a1ad6f5",
+      "length": 15780
+    },
+    {
+      "path": "toolchain/src/runtime/sema.go",
+      "sha256": "ef511b8801bef37c45076a64556bd7993883b0a74da89574028a5dd08886f7d4",
+      "length": 20658
+    },
+    {
+      "path": "toolchain/src/runtime/set_vma_name_stub.go",
+      "sha256": "c6965a24a31eb747fa17638060f32196e2dbd2f5564f680843a5df8aca195a91",
+      "length": 314
+    },
+    {
+      "path": "toolchain/src/runtime/signal_windows.go",
+      "sha256": "cd73f1746b6e370cf99af7a63e8d8494389d13d2f608e52cba905f6d55ec4da8",
+      "length": 14697
+    },
+    {
+      "path": "toolchain/src/runtime/sigqueue.go",
+      "sha256": "4b645a4e6f3cdf78932195e8ff28f3b79b47bc4d6df7167acb19ade6c17366db",
+      "length": 7801
+    },
+    {
+      "path": "toolchain/src/runtime/sigqueue_note.go",
+      "sha256": "84a465db62b4f99d10ecf64310a081840d22727bc1c0a5203e5c4dba627d6a77",
+      "length": 648
+    },
+    {
+      "path": "toolchain/src/runtime/slice.go",
+      "sha256": "586118064456dae44c081584933d7e99a287f851088ae926ffe10565f11a22b6",
+      "length": 12497
+    },
+    {
+      "path": "toolchain/src/runtime/softfloat64.go",
+      "sha256": "94f52048c124deff27c7b4c0215eab39700b16cd9a3781e6453f7900a4eb2005",
+      "length": 11813
+    },
+    {
+      "path": "toolchain/src/runtime/stack.go",
+      "sha256": "4898f3d0add5db8726ec6b57b9cacd0d76b1e8a176d4793778f400ae114c374c",
+      "length": 43766
+    },
+    {
+      "path": "toolchain/src/runtime/stkframe.go",
+      "sha256": "dedaf23d58634034d197d7b8d076a42cbd96f9bcec83228daf1cdc0da4b6f190",
+      "length": 10005
+    },
+    {
+      "path": "toolchain/src/runtime/string.go",
+      "sha256": "09ad4e83f0d9546f0895878a0e68d4f2b3db86b6457aea577f3e8e7f83712ac7",
+      "length": 13482
+    },
+    {
+      "path": "toolchain/src/runtime/stubs.go",
+      "sha256": "88adb2b7d0d0fc4fe20eb6e269e4aff3eea634a83c4e0a9547064a432622e586",
+      "length": 18521
+    },
+    {
+      "path": "toolchain/src/runtime/stubs3.go",
+      "sha256": "8cbbe3b1cff1e5265bfe4f54184a665bc12ded904f5d923a4aa8beeaafc681ca",
+      "length": 324
+    },
+    {
+      "path": "toolchain/src/runtime/stubs_amd64.go",
+      "sha256": "1c7a7c95d3ba4575b61e47e72bce63b34aafcd7482d974ed1b7313428cf3649e",
+      "length": 1417
+    },
+    {
+      "path": "toolchain/src/runtime/stubs_arm64.go",
+      "sha256": "25566bbb705b1057a940b382bfb8a3a2f728ac05feaa09e544d7826533b50c42",
+      "length": 700
+    },
+    {
+      "path": "toolchain/src/runtime/stubs_nonlinux.go",
+      "sha256": "84eae536719177fa8bc75e08cac48f2856cfc1a7330bfaa1323c59273d88f54f",
+      "length": 298
+    },
+    {
+      "path": "toolchain/src/runtime/stubs_nonwasm.go",
+      "sha256": "b5e6633be53365857e330e367fede63060e8ec23139850f2a643a63972873034",
+      "length": 277
+    },
+    {
+      "path": "toolchain/src/runtime/symtab.go",
+      "sha256": "ada37492cd3dd18f8c0e433f6ed81c76bf26fb44c9baf574afcffd40bbe34637",
+      "length": 41943
+    },
+    {
+      "path": "toolchain/src/runtime/symtabinl.go",
+      "sha256": "64bbd9ed4f94111659b89fc55c0764fb1f9a4202453ebb8646f7c6aef98c4edf",
+      "length": 4635
+    },
+    {
+      "path": "toolchain/src/runtime/synctest.go",
+      "sha256": "217a061eba24dc5c8947614521cda2fad18ad200eb1178dce4c29d3aa5aa3c66",
+      "length": 13028
+    },
+    {
+      "path": "toolchain/src/runtime/sys_arm64.go",
+      "sha256": "74b15ee351dcc6dbe624607ee8e0b26e76b352b3132f40f16358336af0461c67",
+      "length": 469
+    },
+    {
+      "path": "toolchain/src/runtime/sys_nonppc64x.go",
+      "sha256": "fa63b093b68b24b280878384269e4ef7c9791216991e616ab3537a1484c07947",
+      "length": 245
+    },
+    {
+      "path": "toolchain/src/runtime/sys_windows_amd64.s",
+      "sha256": "21a305d4f89f1646da3486c030d0ee68fdf87d117453e628a55834a2083d4106",
+      "length": 8620
+    },
+    {
+      "path": "toolchain/src/runtime/sys_windows_arm64.s",
+      "sha256": "d3f90b7e7f50ebc6679174c48108c6b00d212bcf56511e960b82eb1fd6bc0c8a",
+      "length": 6960
+    },
+    {
+      "path": "toolchain/src/runtime/sys_x86.go",
+      "sha256": "f9c1c32030a7fb02db5abced4c69f250bf8bd341ac6a24b71a781908bf20c42c",
+      "length": 552
+    },
+    {
+      "path": "toolchain/src/runtime/syscall_windows.go",
+      "sha256": "e7ba6225fa7033b890b22963570f3dc1000d7030d788678c7e69c6313dd85e87",
+      "length": 17070
+    },
+    {
+      "path": "toolchain/src/runtime/tagptr.go",
+      "sha256": "4b46ea3f7fc1ea740de027c57ff42273b8b57ff76c692041ba43b8f78ee6caf2",
+      "length": 912
+    },
+    {
+      "path": "toolchain/src/runtime/tagptr_64bit.go",
+      "sha256": "71a988ac51db7a33478aab156a094e0be016f54dc96c6a90ca6dae8a880ca6cd",
+      "length": 3202
+    },
+    {
+      "path": "toolchain/src/runtime/test_amd64.go",
+      "sha256": "432c8025a7a10b45e23f8e825244ca027e8dfc7cc123f1c8b58ea3a630923ead",
+      "length": 196
+    },
+    {
+      "path": "toolchain/src/runtime/test_amd64.s",
+      "sha256": "58ce05d3481714aec7b75abcf188137fb580c5ab671d62eedf4c9667b7d4ad25",
+      "length": 316
+    },
+    {
+      "path": "toolchain/src/runtime/test_stubs.go",
+      "sha256": "be98082bf3f62a9ae7262ba89161c12b8a29328a83aa4976cd91c0d8e7187df9",
+      "length": 218
+    },
+    {
+      "path": "toolchain/src/runtime/textflag.h",
+      "sha256": "a9d761d03aecdcc117691b6a55eacd43eb7d47d9ad9ca7510b8669ac403b380e",
+      "length": 1501
+    },
+    {
+      "path": "toolchain/src/runtime/time.go",
+      "sha256": "522839015b5ee3adc543f4b92aed9046c8d8d9a67259b51ab96fbbd883e752fe",
+      "length": 44907
+    },
+    {
+      "path": "toolchain/src/runtime/time_nofake.go",
+      "sha256": "d42faad51f376b9d43b4944620b4208a24bcb48ce7c0d9ef1d7786e3467b1f42",
+      "length": 1606
+    },
+    {
+      "path": "toolchain/src/runtime/time_windows.h",
+      "sha256": "f50c5452a69fda66f7fbf895aa73c5d50de0cd24f7b285637fbaa6837c8f300c",
+      "length": 753
+    },
+    {
+      "path": "toolchain/src/runtime/time_windows_amd64.s",
+      "sha256": "637661f93b27e0b416ba78f7358c36fd3b5b54de3684edc10ad175615e1d446d",
+      "length": 786
+    },
+    {
+      "path": "toolchain/src/runtime/time_windows_arm64.s",
+      "sha256": "fb5b46a255f00959fec7cbc55b65bd726ffe29325105c4b0f206a6d448474588",
+      "length": 906
+    },
+    {
+      "path": "toolchain/src/runtime/timeasm.go",
+      "sha256": "5c060a9c53fedf7c36023bbac52589626972ecad66b43a9672f8985eb43a7344",
+      "length": 418
+    },
+    {
+      "path": "toolchain/src/runtime/tls_arm64.h",
+      "sha256": "4a05646e67b5154afa82605427c1176c1b113023297ff5d9cbd9755a6c79fe57",
+      "length": 1124
+    },
+    {
+      "path": "toolchain/src/runtime/tls_arm64.s",
+      "sha256": "b710ccbed6a02b80cd44a6289fedc6adced85b91ca67fb7893bcfa57a99b4b0e",
+      "length": 1228
+    },
+    {
+      "path": "toolchain/src/runtime/tls_stub.go",
+      "sha256": "1596177a6668e35fea9dadebfa93dbe057a601886081665107e32fcec5fab2cb",
+      "length": 260
+    },
+    {
+      "path": "toolchain/src/runtime/tls_windows_amd64.go",
+      "sha256": "2e1d6937c5be4c3932fc7d7af4778e2438b7d6350d7cc5da40589ff25bae06e0",
+      "length": 294
+    },
+    {
+      "path": "toolchain/src/runtime/trace.go",
+      "sha256": "45e8d40e8ac7f5fb23b1f25d7ad45138e0b52efbd2f98de0a7bad61e40bbc47a",
+      "length": 39263
+    },
+    {
+      "path": "toolchain/src/runtime/traceallocfree.go",
+      "sha256": "57b1e9d544f59930f6f07ea4a269cd664a18447adf1460d2064f8f44255bec61",
+      "length": 6142
+    },
+    {
+      "path": "toolchain/src/runtime/traceback.go",
+      "sha256": "56d8a12aaf8ac27de42e84dbc9208893eb3c19ecd3611800f60fbb87b62e42ea",
+      "length": 57977
+    },
+    {
+      "path": "toolchain/src/runtime/tracebuf.go",
+      "sha256": "8c7600386965c10f782d926de7774cdf7629677d674eb55079b3e2b071e1b12a",
+      "length": 10655
+    },
+    {
+      "path": "toolchain/src/runtime/tracecpu.go",
+      "sha256": "8b49c7739f197441000c48d4c5d1eceb36d16495abdfc595a36e7e5506c011ab",
+      "length": 9001
+    },
+    {
+      "path": "toolchain/src/runtime/traceevent.go",
+      "sha256": "7b765f29346292effb0ea2fb9c3470091891a1c7d780306ee851faf825c352be",
+      "length": 3773
+    },
+    {
+      "path": "toolchain/src/runtime/tracemap.go",
+      "sha256": "bf12d8379379c6c46638b2b8d387396647c63830f13c6aa91525d437088e120a",
+      "length": 4638
+    },
+    {
+      "path": "toolchain/src/runtime/traceregion.go",
+      "sha256": "2f6ae4e4c9668173d502ea57fa79b0d1ad5da8b154bc700bfbebcbfba8e17bf2",
+      "length": 3484
+    },
+    {
+      "path": "toolchain/src/runtime/traceruntime.go",
+      "sha256": "1d6ac9fe9593e92af6a10efcbe627b3d513e941bac4fe4e9dfd3bf44574df4de",
+      "length": 26089
+    },
+    {
+      "path": "toolchain/src/runtime/tracestack.go",
+      "sha256": "f98a5ee83069cfa3359145630d14d3bb1b7e473fa32c423fab2925cc72eb42f7",
+      "length": 11634
+    },
+    {
+      "path": "toolchain/src/runtime/tracestatus.go",
+      "sha256": "1562f0d50808dde10a1611a53814f791fe5795b2eb0a00df4a1fca197b8bea16",
+      "length": 7093
+    },
+    {
+      "path": "toolchain/src/runtime/tracestring.go",
+      "sha256": "9cb7834897af06f24c5c21f209a7550ce6990a63ceb4b4f5b7c8cd519e80784e",
+      "length": 2497
+    },
+    {
+      "path": "toolchain/src/runtime/tracetime.go",
+      "sha256": "cfbb13de9ff44421db13f43ab22780f9da3a878982ea5671834b8ff0ee4c196f",
+      "length": 3921
+    },
+    {
+      "path": "toolchain/src/runtime/tracetype.go",
+      "sha256": "2adc17f077c7740e1d35540292abd179e2c82c66be4e6c9144659bdd78f76888",
+      "length": 2334
+    },
+    {
+      "path": "toolchain/src/runtime/type.go",
+      "sha256": "37ffaaa08e7d61cb61ce755635fab1f9f673105f3ff3acadcc2aff19ae7b1b61",
+      "length": 17838
+    },
+    {
+      "path": "toolchain/src/runtime/typekind.go",
+      "sha256": "bfb30235a5f2f7109beca2215f41aa2a85a9e328c59b6b8d1da49c1667bbb68b",
+      "length": 356
+    },
+    {
+      "path": "toolchain/src/runtime/unsafe.go",
+      "sha256": "129ae3ace83e83b36edabaa2e3e5ac168475cd8d9a3cc02c81a08b1438b9f98b",
+      "length": 3246
+    },
+    {
+      "path": "toolchain/src/runtime/utf8.go",
+      "sha256": "08e09814d245742077592fe53a434a630c3067273fa88321f893627dfad81a6f",
+      "length": 3467
+    },
+    {
+      "path": "toolchain/src/runtime/valgrind0.go",
+      "sha256": "a5ba5f53f63ee9b41dffe9003a5c9fffba1530d4397ebe2a4164dbf0e49c1aa4",
+      "length": 1143
+    },
+    {
+      "path": "toolchain/src/runtime/vdso_in_none.go",
+      "sha256": "21639cf149c73c080136387c1b26ee886b04997618223fb58ded7ee87ba84938",
+      "length": 443
+    },
+    {
+      "path": "toolchain/src/runtime/vgetrandom_unsupported.go",
+      "sha256": "3c6f633f35724bf61203fe3abb4047a0c0544fb1dd86f7f698641f9b57cf8f55",
+      "length": 461
+    },
+    {
+      "path": "toolchain/src/runtime/write_err.go",
+      "sha256": "fb40f33137552d750419154b3a19a346328eeac38dc9186f6450040ceaf89686",
+      "length": 296
+    },
+    {
+      "path": "toolchain/src/runtime/zcallback_windows.go",
+      "sha256": "71714a2736e45d4366f52c7e71b6a0c0899988db6401d298cf46469f4ce1c2a4",
+      "length": 155
+    },
+    {
+      "path": "toolchain/src/runtime/zcallback_windows.s",
+      "sha256": "774d95f0df1fd48d2bbff31d8addeb16cdc7f99b9fcf8bad363ea4b2e9d131b4",
+      "length": 64570
+    },
+    {
+      "path": "toolchain/src/runtime/zcallback_windows_arm64.s",
+      "sha256": "0ebb13b131a7d52571d57de3504c05fd2e533512e29cd2d72db859f27490eba3",
+      "length": 91467
+    },
+    {
+      "path": "toolchain/src/slices/iter.go",
+      "sha256": "986cce7d58c65e6f87987544908ec138ae664c4bf5c8868d2177a425f6fa2bbc",
+      "length": 3109
+    },
+    {
+      "path": "toolchain/src/slices/slices.go",
+      "sha256": "7dc20d436ae48ed87246621877bf160924d800d0d91ef03fb9d5019cdc970e3f",
+      "length": 14867
+    },
+    {
+      "path": "toolchain/src/slices/sort.go",
+      "sha256": "e6cd273b637e7dd2f547596c22e6236b92ae9b376f31ceb7b3c3269dd60a38df",
+      "length": 6103
+    },
+    {
+      "path": "toolchain/src/slices/zsortanyfunc.go",
+      "sha256": "50398783e085ac9cc1d7c6249ebe75a5cc4425dcdc6a4cc448ea6e7179126492",
+      "length": 13069
+    },
+    {
+      "path": "toolchain/src/slices/zsortordered.go",
+      "sha256": "f6d8d5df558075ca8299a89f9b5beda3ca7d1ddc7858dc2e52eee44e4dfdd7a9",
+      "length": 12682
+    },
+    {
+      "path": "toolchain/src/strconv/atob.go",
+      "sha256": "a811df1f66377d76716b133aaa0e0029f8b8432f39b9128e60aeb792c5e70fdb",
+      "length": 974
+    },
+    {
+      "path": "toolchain/src/strconv/atoc.go",
+      "sha256": "f26230e4759ab0eff2fd0cf65b827c8cad93fff8cd1bc1606539be9eaf3ac25b",
+      "length": 3149
+    },
+    {
+      "path": "toolchain/src/strconv/atof.go",
+      "sha256": "2681a77796dd968b4294c87ccacbf537ca6938a85d208bf2f54f98b086160772",
+      "length": 16229
+    },
+    {
+      "path": "toolchain/src/strconv/atoi.go",
+      "sha256": "956e9c3af07ef5bb2b5ac1ae6656e255f110e29d397e6fb4b97f3cc5347b3270",
+      "length": 8490
+    },
+    {
+      "path": "toolchain/src/strconv/bytealg.go",
+      "sha256": "210ed5dd413d26575dabbb917c047ba52a144d133414f5e06b9595a4b30d3c60",
+      "length": 389
+    },
+    {
+      "path": "toolchain/src/strconv/ctoa.go",
+      "sha256": "3b3c4b7928150ed751d97f0e48908195c244d263512c06df6f97c4843749edce",
+      "length": 1031
+    },
+    {
+      "path": "toolchain/src/strconv/decimal.go",
+      "sha256": "23bd45989d0b5a7b441c45873bf43f210fdf8381132fc74424d381216ac3a8b4",
+      "length": 11299
+    },
+    {
+      "path": "toolchain/src/strconv/doc.go",
+      "sha256": "aea030aeaf555c48ae648dad6421aca2cb9df369265ab31bb1cdf956dac8ce97",
+      "length": 1957
+    },
+    {
+      "path": "toolchain/src/strconv/eisel_lemire.go",
+      "sha256": "702cdbff7add80c64c79178226355c6c4fd228c19e31c0dac4479fe4b476e662",
+      "length": 42385
+    },
+    {
+      "path": "toolchain/src/strconv/ftoa.go",
+      "sha256": "0b6347b52b3016250953f21b957535c1a43591e278deb85b3f358ba89f1a6066",
+      "length": 14363
+    },
+    {
+      "path": "toolchain/src/strconv/ftoaryu.go",
+      "sha256": "369cf8c283e9ca407d26b7faa7b2a91ee29bb75a535b7591f132dd8d1908932f",
+      "length": 16036
+    },
+    {
+      "path": "toolchain/src/strconv/isprint.go",
+      "sha256": "24114557c2b3cad7b80c8e71683831bfbe1c72eb99e8fd28a3a48eaf77705fb4",
+      "length": 11824
+    },
+    {
+      "path": "toolchain/src/strconv/itoa.go",
+      "sha256": "3ab40aaee22f21db6aac5da7a2cbcf7725a487a38762e33b52cc55f445b1fe9c",
+      "length": 4992
+    },
+    {
+      "path": "toolchain/src/strconv/quote.go",
+      "sha256": "6f85a5b0e9cc573c94d58a01fe9cd4c6ea7978a9402aa9fe39beed74f8888542",
+      "length": 16994
+    },
+    {
+      "path": "toolchain/src/strings/builder.go",
+      "sha256": "02370c56ffbd50bbe8e8ab02f8cc0a0ecf934f02981aeb9a85b025daffdb428b",
+      "length": 3577
+    },
+    {
+      "path": "toolchain/src/strings/clone.go",
+      "sha256": "5c18eb3b45b7d9ae63d0cc43f9e337c077de05dd47fd5a1ea49dafeb7e1b862b",
+      "length": 809
+    },
+    {
+      "path": "toolchain/src/strings/compare.go",
+      "sha256": "af4e0fa7dfe63018d9808f89a4c511eeb8d773bd6f3b030f1c9592a1e0de7a85",
+      "length": 630
+    },
+    {
+      "path": "toolchain/src/strings/iter.go",
+      "sha256": "605a71dac7aadc76f2fe31559a3ebb3b96da21904d21d779425d0dbfde917558",
+      "length": 3520
+    },
+    {
+      "path": "toolchain/src/strings/reader.go",
+      "sha256": "bbc3680c82f304b89219b856f9fc37df02f7231576c3135f492a3ac818038736",
+      "length": 4015
+    },
+    {
+      "path": "toolchain/src/strings/replace.go",
+      "sha256": "fbe8467c532ea7e5cdb848577423c4f218cbe2776907fb5c8c091006c786cdba",
+      "length": 14875
+    },
+    {
+      "path": "toolchain/src/strings/search.go",
+      "sha256": "4fdef1f79f6e854789d9140b17ce2c2bbdbf0d4067a801e42607cf7877698cd1",
+      "length": 4227
+    },
+    {
+      "path": "toolchain/src/strings/strings.go",
+      "sha256": "ac1d74f15027b6c703ee13fd08f10b3ad337e61a79b874d403a10f3bee5bb4fb",
+      "length": 33626
+    },
+    {
+      "path": "toolchain/src/structs/doc.go",
+      "sha256": "f9586c696223039cacc8c12753088e5c95188252abda95015566246e1138f81e",
+      "length": 431
+    },
+    {
+      "path": "toolchain/src/structs/hostlayout.go",
+      "sha256": "322d314ded4ace4a48b0fcc7f3e1979bde678a69195f835d111e9ba38a5cb0e7",
+      "length": 1239
+    },
+    {
+      "path": "toolchain/src/sync/atomic/asm.s",
+      "sha256": "0d82e9b2a1e68008568b03a6eda89769a33d141beac22d20124e89e951d452d4",
+      "length": 3072
+    },
+    {
+      "path": "toolchain/src/sync/atomic/doc.go",
+      "sha256": "fb448dacfc6b4d5c74ae203224dc31088c2cf45fc42391a4fdb04a47ccc62413",
+      "length": 8410
+    },
+    {
+      "path": "toolchain/src/sync/atomic/doc_64.go",
+      "sha256": "0434f660a650bc6a1eaf9b8c48205ed0ce8c18b53001e949dde7662d04bde9ea",
+      "length": 4368
+    },
+    {
+      "path": "toolchain/src/sync/atomic/type.go",
+      "sha256": "056ac026eef953d788f4cb4462524e79101983ad9467a17e09ca66a30bf965b8",
+      "length": 9031
+    },
+    {
+      "path": "toolchain/src/sync/atomic/value.go",
+      "sha256": "710a2a246c5be7546d145b093b65ee851fd24c06e8b315d6f4059d3427115fba",
+      "length": 6030
+    },
+    {
+      "path": "toolchain/src/sync/cond.go",
+      "sha256": "324314fd3a484897ce540a242f9de85d00407040c8cd2ee7db5d5761f5d14d4f",
+      "length": 4148
+    },
+    {
+      "path": "toolchain/src/sync/hashtriemap.go",
+      "sha256": "5c307c1671b8db9d19c31969337746a204c31fe2e2355858941e37dbb3c7ee18",
+      "length": 4684
+    },
+    {
+      "path": "toolchain/src/sync/mutex.go",
+      "sha256": "3dec4264678744c4ce15a05ba0cc88e5e8b155f071b71d74eb7ed229ca72c114",
+      "length": 1995
+    },
+    {
+      "path": "toolchain/src/sync/once.go",
+      "sha256": "bb9ad6ea4899068720643b276f93e711b3cfff851661febaa8d7b64859b0e6a7",
+      "length": 2518
+    },
+    {
+      "path": "toolchain/src/sync/oncefunc.go",
+      "sha256": "0853c1ad885c593d2810e601c495f00abe197b10d12b679f94badf3efe5fa365",
+      "length": 2343
+    },
+    {
+      "path": "toolchain/src/sync/pool.go",
+      "sha256": "d613639cb20b77b0db9104bc0de2590f781f4ea3a01494619e521aa727114f99",
+      "length": 9617
+    },
+    {
+      "path": "toolchain/src/sync/poolqueue.go",
+      "sha256": "25b900ffeb803a9ecd4c1926a5faaa3ba8d7b4adcd71bbfbd373cb8606910dae",
+      "length": 8533
+    },
+    {
+      "path": "toolchain/src/sync/runtime.go",
+      "sha256": "a2be85512b59e11270b099f264581343cc1589bb782e03a476102406defd5f33",
+      "length": 2253
+    },
+    {
+      "path": "toolchain/src/sync/runtime2.go",
+      "sha256": "5bc4014718a892af6591e26e6c87105a001b7d1d1f93c3ec4c289128c80f6ba4",
+      "length": 465
+    },
+    {
+      "path": "toolchain/src/sync/rwmutex.go",
+      "sha256": "4ecc9b2fa7771cbe37e1670e4caefd7a28939683bfe1614fcf5e9d545261d17f",
+      "length": 7598
+    },
+    {
+      "path": "toolchain/src/sync/waitgroup.go",
+      "sha256": "8d158bdcf962cb5022046df3b09eedc92879d7a592f9ffb51ab6d23dc7e44348",
+      "length": 7585
+    },
+    {
+      "path": "toolchain/src/syscall/dll_windows.go",
+      "sha256": "21948c349e4e76b2912f6d548cafb4750f4f63a66a86c716dd138e2ab8676547",
+      "length": 7919
+    },
+    {
+      "path": "toolchain/src/syscall/env_windows.go",
+      "sha256": "5fc24ad0663552b191c8f1014a5cecb976855778b1d7e57244040fbb74c0df32",
+      "length": 2011
+    },
+    {
+      "path": "toolchain/src/syscall/exec_windows.go",
+      "sha256": "e6eee36ff93eb9decdf0f663c7d29508e3f0ffa195a479b0f4a3004679bf5328",
+      "length": 10456
+    },
+    {
+      "path": "toolchain/src/syscall/net.go",
+      "sha256": "96c7ea22567bb7a64b294ee89f91801f116b336beeabc341d016b37cf840058d",
+      "length": 1222
+    },
+    {
+      "path": "toolchain/src/syscall/security_windows.go",
+      "sha256": "bcc99553aa61028883a744ae7e62383be648c28e199bb469e60c1770d31ea9d9",
+      "length": 10251
+    },
+    {
+      "path": "toolchain/src/syscall/syscall.go",
+      "sha256": "9fef7ad972eae0c33251f87c8f04e12a975bb1a24d26718b3f7ff96c4e20b594",
+      "length": 3872
+    },
+    {
+      "path": "toolchain/src/syscall/syscall_windows.go",
+      "sha256": "3bad30f908163a7b79e0e350763422298d6f710eeabc5e2d5234d52d20a11b0b",
+      "length": 57121
+    },
+    {
+      "path": "toolchain/src/syscall/time_nofake.go",
+      "sha256": "8c9c3e97fa48debbdb2808cc290918e2abc49fd9198811fd8e69477d50467ec0",
+      "length": 351
+    },
+    {
+      "path": "toolchain/src/syscall/types_windows.go",
+      "sha256": "cc0bbf23e8c2db3a0c0b5a9953703cbfbb9ce26b16c018cd44c488eb72015a7f",
+      "length": 29187
+    },
+    {
+      "path": "toolchain/src/syscall/types_windows_amd64.go",
+      "sha256": "0ba5eacd9b4f43c6fa7c5789fe132da98668fd07c9fcf217e1435b8561376c59",
+      "length": 477
+    },
+    {
+      "path": "toolchain/src/syscall/types_windows_arm64.go",
+      "sha256": "0ba5eacd9b4f43c6fa7c5789fe132da98668fd07c9fcf217e1435b8561376c59",
+      "length": 477
+    },
+    {
+      "path": "toolchain/src/syscall/wtf8_windows.go",
+      "sha256": "df35fc932a3bf98375eb780c08091f6a0b4a927ba2918a977495fe0b15c77f99",
+      "length": 2736
+    },
+    {
+      "path": "toolchain/src/syscall/zerrors_windows.go",
+      "sha256": "627276cf400689ea253d13a2ee2c08cb066d0e019ef7ff3cca691d8ab7144992",
+      "length": 10206
+    },
+    {
+      "path": "toolchain/src/syscall/zsyscall_windows.go",
+      "sha256": "ef2bbd4722d12ccf0686a52af605e2e9caefae8cf920d1acb00aff855a2d0ec9",
+      "length": 58434
+    },
+    {
+      "path": "toolchain/src/time/format.go",
+      "sha256": "4c61521c0afb7d0eaa809efd090404ff3ece4285a2089a6f189c897908afe148",
+      "length": 50561
+    },
+    {
+      "path": "toolchain/src/time/format_rfc3339.go",
+      "sha256": "14b2a58fa295cca1a4f99467f5a5059418ed266a2298316124af97ffa014f271",
+      "length": 5809
+    },
+    {
+      "path": "toolchain/src/time/sleep.go",
+      "sha256": "7af4885f167a12ff201ad4d0b5a7c63ba57cee9204b3fa0cacfe4f832875b765",
+      "length": 8712
+    },
+    {
+      "path": "toolchain/src/time/sys_windows.go",
+      "sha256": "2136406a64f507a80d90aaf03207f38b473629e16c6bff77811b0bb339e74310",
+      "length": 1127
+    },
+    {
+      "path": "toolchain/src/time/tick.go",
+      "sha256": "c25a5f521f3925d21dedab88e8829cfed90b0fe6283e9c189d30a3f12942ed81",
+      "length": 3641
+    },
+    {
+      "path": "toolchain/src/time/time.go",
+      "sha256": "ab61194d541aee6a83f9f45400bec8a78426377a7c4f59d7d807fa4f6e6a18f0",
+      "length": 62882
+    },
+    {
+      "path": "toolchain/src/time/zoneinfo.go",
+      "sha256": "03bc9ba0ed7f4657121992620a83621f2ac7c5a6eb8b559d46600829e618211c",
+      "length": 18572
+    },
+    {
+      "path": "toolchain/src/time/zoneinfo_abbrs_windows.go",
+      "sha256": "fdabcbf35b6e9613c7e12bc44a10701cabf08c1760aef7be07f58609dfb89ead",
+      "length": 10737
+    },
+    {
+      "path": "toolchain/src/time/zoneinfo_goroot.go",
+      "sha256": "984267b22b58101becfd3612f836c3e32a6f4190e149e257315a4179ec279992",
+      "length": 348
+    },
+    {
+      "path": "toolchain/src/time/zoneinfo_read.go",
+      "sha256": "47e6cc315fbf5ba3eea95043fe7ec5e982d14b98574e60da22ac9b4f774f254b",
+      "length": 14735
+    },
+    {
+      "path": "toolchain/src/time/zoneinfo_windows.go",
+      "sha256": "831f1d99fc109507783841c65f0e196f063a1ce6490354869bf6df68aa626434",
+      "length": 6731
+    },
+    {
+      "path": "toolchain/src/unicode/casetables.go",
+      "sha256": "b70c5009086ffaef3d8191924481b9b2a39108afb42d9f2b979ecf670c77670c",
+      "length": 755
+    },
+    {
+      "path": "toolchain/src/unicode/digit.go",
+      "sha256": "dfb14dbbcb918a6c7ee9be15293327d022f9d64a4c1a90f9c8049b682e799761",
+      "length": 352
+    },
+    {
+      "path": "toolchain/src/unicode/graphic.go",
+      "sha256": "46a43107a87c88cf17a05a557e00dbf6b0f4bb53ebcd7d3035e02f1e67c428be",
+      "length": 4503
+    },
+    {
+      "path": "toolchain/src/unicode/letter.go",
+      "sha256": "b35a6d259313cef88d07e9e4027b8bd72c60ae140418f5be2c41a2ecea6074fe",
+      "length": 10702
+    },
+    {
+      "path": "toolchain/src/unicode/tables.go",
+      "sha256": "6a88d48746c4b2c471cc04ae40559694b734770212e6f5ea5f1962adb0c0bdb1",
+      "length": 243953
+    },
+    {
+      "path": "toolchain/src/unicode/utf16/utf16.go",
+      "sha256": "6b8b3037015f41351d4a323513b57b8ac90caa69f69be31eaf02ca2a4632d0cd",
+      "length": 4027
+    },
+    {
+      "path": "toolchain/src/unicode/utf8/utf8.go",
+      "sha256": "be8536e7d857edbbe0dab914e3fe74d7e3045246a2a07d35711bacf165dbe796",
+      "length": 16293
+    },
+    {
+      "path": "toolchain/src/unique/canonmap.go",
+      "sha256": "44a850748accafed33d827771dac80379223a96cfba3f34aaee544e0a7db801a",
+      "length": 10523
+    },
+    {
+      "path": "toolchain/src/unique/clone.go",
+      "sha256": "ca3a74b2f8a1fb1dde53b6a539d4ca0868acf668e4c75bec8759074b1af728e8",
+      "length": 2658
+    },
+    {
+      "path": "toolchain/src/unique/doc.go",
+      "sha256": "62e40bcdc338d51d33429f67f2393d3282a75285c0ae2ae6b380c8e888e05dca",
+      "length": 272
+    },
+    {
+      "path": "toolchain/src/unique/handle.go",
+      "sha256": "08c7ca3c26f66f22128d0f061e47242fc3a96e6dd765ac73d1fb8800e022c859",
+      "length": 2323
+    },
+    {
+      "path": "toolchain/src/unsafe/unsafe.go",
+      "sha256": "139f79859cb2c690b63b56afe5c385b694ca418ce2dead0ab9d6b1568fad933c",
+      "length": 12391
+    },
+    {
+      "path": "toolchain/src/vendor/golang.org/x/net/dns/dnsmessage/message.go",
+      "sha256": "c302f9831401be3eff0c00c1576436c92182e9ba9f1af94ca782d506eb4ecd74",
+      "length": 70625
+    },
+    {
+      "path": "toolchain/src/weak/doc.go",
+      "sha256": "2446a5aca7a3859e805750097c52a99ec97f58c4dc117700d8cc835af8100352",
+      "length": 286
+    },
+    {
+      "path": "toolchain/src/weak/pointer.go",
+      "sha256": "3c4efb4f12ad6a38adc33c63a8835f062051cb789b7973619baaa18451b65520",
+      "length": 4071
+    }
+  ],
+  "modules": [
+    {
+      "Path": "github.com/Hans-Einar/gh-tree",
+      "Version": "",
+      "Sum": "",
+      "GoModSum": "",
+      "Main": true
+    },
+    {
+      "Path": "golang.org/x/sys",
+      "Version": "v0.44.0",
+      "Sum": "h1:ildZl3J4uzeKP07r2F++Op7E9B29JRUy+a27EibtBTQ=",
+      "GoModSum": "h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw=",
+      "Main": false
+    }
+  ],
+  "targets": [
+    {
+      "arch": "amd64",
+      "machine": 34404,
+      "length": 3493376,
+      "sha256": "9188bd5063040a2a39b7d5d550b06cd22bebcad73c9406a14f53314b54b44c5b",
+      "compressedLength": 2038259,
+      "compressedSHA256": "437f614f3ae04390c47f547fd0a7f60608870fb1f63cb136379f0a1b725f0183",
+      "sourceDigest": "a960f47516ebdd0ac01138fe2a04e708e1f22b5c2f5447998ab96c27b7cc1a90"
+    },
+    {
+      "arch": "arm64",
+      "machine": 43620,
+      "length": 3308544,
+      "sha256": "2676e8efdcd53f1a87de64790d22ec2fa2f190419005eba25213978e29696e5d",
+      "compressedLength": 1902326,
+      "compressedSHA256": "c9952ce13f6f4846c7445226d2bfc91a2826f135623ce0fac965452b2d90c8f4",
+      "sourceDigest": "473f8149d3d52a3be578a44156a52d8a7cd03a28b877c674163e8a787f99ba44"
+    }
+  ]
+}

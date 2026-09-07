@@ -1,0 +1,91 @@
+package main
+
+import (
+	"encoding/binary"
+	"os"
+	"path/filepath"
+	"syscall"
+	"testing"
+	"unsafe"
+
+	"golang.org/x/sys/windows"
+)
+
+// Bounded native mechanism probe: create a fresh directory with a restrictive
+// DACL atomically, retaining its creator's requested capability for restoration.
+func TestAtomicDirectoryCapabilityProbe(t *testing.T) {
+	owned := t.TempDir()
+	path := filepath.Join(owned, "atomic-sealed")
+	sd, err := windows.SecurityDescriptorFromString("D:P(D;;0x000C0046;;;WD)(A;;RC;;;S-1-3-4)(A;;FRFX;;;WD)")
+	if err != nil {
+		t.Fatal(err)
+	}
+	name, err := windows.NewNTUnicodeString(`\??\` + path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	oa := windows.OBJECT_ATTRIBUTES{ObjectName: name, Attributes: windows.OBJ_CASE_INSENSITIVE, SecurityDescriptor: sd}
+	oa.Length = uint32(unsafe.Sizeof(oa))
+	var h windows.Handle
+	var status windows.IO_STATUS_BLOCK
+	err = windows.NtCreateFile(&h, windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.WRITE_DAC|windows.WRITE_OWNER|windows.DELETE, &oa, &status, nil, 0, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, windows.FILE_CREATE, windows.FILE_DIRECTORY_FILE|windows.FILE_SYNCHRONOUS_IO_NONALERT, 0, 0)
+	if err != nil {
+		t.Fatalf("atomic sealed creator capability: %v", err)
+	}
+	defer windows.CloseHandle(h)
+	var info [56]byte
+	ntdll := syscall.NewLazyDLL("ntdll.dll")
+	r, _, _ := ntdll.NewProc("NtQueryObject").Call(uintptr(h), 0, uintptr(unsafe.Pointer(&info[0])), uintptr(len(info)), 0)
+	t.Logf("creator query status=%#x granted access=%#x", r, binary.LittleEndian.Uint32(info[4:8]))
+	// The retained creator handle restores only this new directory's ordinary
+	// writable DACL. It never changes any caller/source/cache parent permissions.
+	recovery, err := windows.SecurityDescriptorFromString("D:P(A;;FA;;;OW)(A;;FA;;;SY)(A;;FA;;;BA)")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dacl, _, err := recovery.DACL()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := windows.SetSecurityInfo(h, windows.SE_FILE_OBJECT, windows.DACL_SECURITY_INFORMATION|windows.PROTECTED_DACL_SECURITY_INFORMATION, nil, nil, dacl, nil); err != nil {
+			t.Logf("SetSecurityInfo restore owned probe %s: %v", path, err)
+			r, _, _ := ntdll.NewProc("NtSetSecurityObject").Call(uintptr(h), 4, uintptr(unsafe.Pointer(recovery)))
+			t.Logf("native retained restoration status=%#x", r)
+			if r != 0 {
+				t.Errorf("retained restoration refused")
+			}
+		}
+	}()
+	t.Log("atomic creation returned explicitly requested mutator/restoration handle")
+	if err := os.WriteFile(filepath.Join(path, "ambient.txt"), []byte("unrecorded"), 0600); err == nil {
+		t.Error("ambient source creation succeeded")
+	}
+	p, err := windows.UTF16PtrFromString(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, rights := range []uint32{windows.WRITE_DAC, windows.WRITE_OWNER, windows.FILE_WRITE_DATA, windows.FILE_APPEND_DATA} {
+		fresh, err := windows.CreateFile(p, rights, windows.FILE_SHARE_READ|windows.FILE_SHARE_WRITE, nil, windows.OPEN_EXISTING, windows.FILE_FLAG_BACKUP_SEMANTICS, 0)
+		if err == nil {
+			windows.CloseHandle(fresh)
+			t.Errorf("fresh mutator rights %#x granted", rights)
+		} else {
+			t.Logf("fresh rights %#x refused: %v", rights, err)
+		}
+	}
+	child, err := windows.NewNTUnicodeString("retained.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	childOA := windows.OBJECT_ATTRIBUTES{RootDirectory: h, ObjectName: child, Attributes: windows.OBJ_CASE_INSENSITIVE}
+	childOA.Length = uint32(unsafe.Sizeof(childOA))
+	var file windows.Handle
+	err = windows.NtCreateFile(&file, windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE, &childOA, &status, nil, 0, windows.FILE_SHARE_READ, windows.FILE_CREATE, windows.FILE_NON_DIRECTORY_FILE|windows.FILE_SYNCHRONOUS_IO_NONALERT, 0, 0)
+	if err != nil {
+		t.Logf("RESULT: relative retained-capability creation refuses: %v", err)
+		return
+	}
+	windows.CloseHandle(file)
+	t.Log("RESULT: retained directory capability can materialize a child while ambient creation refuses")
+}
