@@ -1,6 +1,6 @@
 # M3 Runtime contribution — #65
 
-State: UNIX NATIVE CORRECTION IN PROGRESS / #65 OVERALL INCOMPLETE / NOT ACCEPTED
+State: FROZEN UNIX CORRECTION CANDIDATE / #65 OVERALL INCOMPLETE / NOT ACCEPTED
 
 Parent: #21; worker authority: #65. Branch: `codereview-21/layer-runtime`.
 Worktree: `C:/Users/hanse/GIT/gh-tree-wt/runtime-implementation`.
@@ -561,3 +561,32 @@ closes control and still joins. All malformed cases keep the exact131/no-user
 assertion. This is a test-only correction; ordinary-user Linux targeted malformed
 and full-envelope controls PASS. New-head FreeBSD/full native CI remains required.
 The all-twelve local staged architecture check also passed on4df4385.
+
+## Corrected Unix handoff
+
+Frozen technical/test source: `71b95a32265270c43da58ff41f67ab370a39a245`, clean
+and pushed on `codereview-21/layer-runtime`; product unchanged from4df4385.
+Exact [CI34076324950 attempt1](https://github.com/Hans-Einar/gh-tree/actions/runs/34076324950)
+is complete: all six native/race jobs SUCCESS. macOS101603045618 executes
+Go1.25.0 darwin/arm64 broker tests (10.119s); Linux race101603045595 executes
+`go test -race ./...` with broker12.403s. Linux101603045601 and both Windows
+jobs101603045604/101603045680 also pass. This branch's Windows jobs are not #69
+native broker proof. Inventory101603045569 still fails missing broker/cmd Go
+source; dependent cross-build/helper jobs skip. The workflow is not fully green.
+
+FreeBSD101603045610 SUCCESS: native15.0-RELEASE-p12 amd64, UID/GID1001,
+Go1.25.0; all twelve malformed startup cases now pass131/no-user execution.
+Actual natural root-before-descendant cleanup is119ms injected and2.123s defaults;
+early EOF/control EOF/invalid command owners join in102–228ms with residual facts
+retained. Full artifact10002195473, name
+`freebsd-native-71b95a32265270c43da58ff41f67ab370a39a245-1`,62502 bytes, ZIP SHA256
+`0662e65b97b12219dfaf9303eaa792a512d6e09c7e60ea863624caf66991237e`.
+Final71b95a3 all-nine Unix broker test-binary cross-compiles PASS; gofmt is clean.
+Earlier failed4df4385 FreeBSD and original independent negatives remain preserved.
+
+Exact next action: existing separate reviewer independently confirms U01/U02
+against71b95a3 and the actual native evidence, then Master decides integration.
+This author makes no source acceptance, full #65/M3/Slice/PR/main/release claim.
+No shared interface, Windows/helper/root Runtime/frozen document changes; no
+pending product edit, merge, unpushed commit or owned native process is left.
+Local owned test binaries/logs/directories remain at the explicit paths above.
