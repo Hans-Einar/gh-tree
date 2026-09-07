@@ -448,3 +448,8 @@ independently accepted by report53de3e1, full Persistence remains open. Runtime
 Unix da29569 and Windows 9c9a2f7 are pushed partial checkpoints. #70 explicitly
 owns only helpergen/assets, starting the actual Windows broker entry. See current
 Handoff/CurrentIndex and original reports; no full Slice or baseline closure.
+
+Runtime partials are durable: Unix a6e79eaa has native FreeBSD correction proof;
+Windows fb1a9ec has actual client/extraction/386/race/thread-lifetime controls;
+helper4b31ac4 contains only its tested parser policy prerequisite. CurrentIndex
+and Handoff distinguish failing full gates and uncommitted ongoing author work.

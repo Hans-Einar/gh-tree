@@ -56,9 +56,9 @@ Current status-only commits do not change that verified product tree.
 | GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
 | Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
-| Runtime#65 | codereview-21/layer-runtime | da2956960cbae22d7e4735b6a20896cd018b1bf5 | private registry/protocol and Unix retained native owners; partial, helper prerequisite failing |
-| Windows Runtime#69 | codex/cr21-runtime-windows | 9c9a2f75490b75092b620f3d8dad31413034efb7 | actual amd64 startup/ConPTY tests pass; client/protocol/extraction/native matrix incomplete |
-| Helper assets#70 | codex/cr21-runtime-helper-assets | 9c9a2f75490b75092b620f3d8dad31413034efb7 | initial pushed base; disjoint generator/assets work authorized |
+| Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
+| Windows Runtime#69 | codex/cr21-runtime-windows | fb1a9ec5a46f8b886ff226e32072abdef593648b | actual client/extraction/native386/amd64 race and owned-thread controls pass locally; ARM/emulation/adverse/full review pending |
+| Helper assets#70 | codex/cr21-runtime-helper-assets | 4b31ac4c34df370b852a1626107c102ff300c6dd | assets-parser policy prerequisite pushed/tested; generator/assets not yet checkpointed |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
 table records last verified pushed checkpoints; Runtime authors may have newer
@@ -129,3 +129,15 @@ ZFS system-EA privilege barrier and separate fixable flag/ACL implementation gap
 Master has not approved extra privilege, metadata loss, read-only substitution or
 platform reduction. User scope decision is pending; any change needs affected
 reviewed design/BC/native gates. Independent Windows/Runtime work continues.
+
+Runtime current native evidence: a6e79eaa corrects FreeBSD anonymous duplex pipes;
+exact source CI34068364364 passes all6 independent jobs including native FreeBSD,
+but inventory/helper inputs still fail and dependent cross/helper jobs skip.
+Windows extraction source2f388 CI34068171002 failed both native Windows ACL
+textual-alias fixtures; fb1a9ec checks actual trustees/masks/protection and passes
+local amd64 race/386, with new exact CI pending. Original primary-thread handles
+are independently checked using retained proof duplicates; aggregate counts cover
+only File/Pipe/Job/Process. Remaining Windows ARM/emulation/adverse gates stay open.
+Unix supervisor/tree and helper generator/assets may have local unfinished WIP;
+inspect active worktrees. All completed checkpoints above are pushed; no full
+Runtime acceptance, Slice closure or canonical product integration has occurred.

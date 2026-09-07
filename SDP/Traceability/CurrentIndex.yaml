@@ -825,10 +825,15 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "da2956960cbae22d7e4735b6a20896cd018b1bf5",
+      "lastCheckpoint": "a6e79eaa44ad485589b4d8322b7e9efcd9f911bf",
       "subContributions": [
         "IMPL69"
-      ]
+      ],
+      "latestVerification": {
+        "head": "a6e79eaa44ad485589b4d8322b7e9efcd9f911bf",
+        "run": 34068364364,
+        "result": "6 SUCCESS including corrected native FreeBSD; inventory/helper prerequisites FAIL; dependent cross/helper jobs skipped"
+      }
     },
     {
       "id": "IMPL66",
@@ -927,10 +932,16 @@
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
       "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
-      "lastCheckpoint": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
+      "lastCheckpoint": "fb1a9ec5a46f8b886ff226e32072abdef593648b",
       "subContributions": [
         "IMPL70"
-      ]
+      ],
+      "localChecks": "Native amd64 race/vet and 386 broker suite PASS; actual client/extraction/owned-thread and type-count controls. ARM64/emulation and remaining adverse gates pending",
+      "priorSourceFailure": {
+        "head": "2f388202895ce17c359126dde4abfc5a9e643f46",
+        "run": 34068171002,
+        "result": "native amd64/ARM64 ACL textual-alias fixture failure, corrected locally at fb1a9ec; new exact source CI pending"
+      }
     },
     {
       "id": "IMPL70",
@@ -947,7 +958,10 @@
         "internal/composition/architecture/check.go",
         "internal/composition/architecture/testdata/cases.json"
       ],
-      "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate"
+      "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
+      "lastCheckpoint": "4b31ac4c34df370b852a1626107c102ff300c6dd",
+      "checkpointScope": "Only narrow three-file architecture prerequisite committed; generator/assets authoring remains local and incomplete",
+      "localChecks": "Existing compiled fixtures pass pure parsing and reject ambient PE/native I/O/alias, goroutine and recursive dependency; separate candidate review pending"
     }
   ],
   "productFindings": [
