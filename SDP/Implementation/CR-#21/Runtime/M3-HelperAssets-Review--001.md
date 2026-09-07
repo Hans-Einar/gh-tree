@@ -1,10 +1,119 @@
 # M3 helper/assets independent review — Issue #70
 
-Current disposition: **CHANGES_REQUIRED** at corrected frozen
-`c5f36edfcfd2e418f28e32fc0613143ed31649c5`. H70-H01 remains OPEN (HIGH);
-H70-M02 and H70-M03 are independently RESOLVED. No product changes were made by
-this reviewer, and no Runtime contribution, Slice, integration or release is
-accepted. The original review and its evidence remain below.
+Current disposition: **ACCEPT — bounded generator/assets/policy candidate** at
+clean frozen `4d59b27fb15d5f7885c92ac98dce365063c60a5e`, technical source
+`b6f161f5189d70b66b95129237b51f9984d58e35`. H70-H01, H70-M02 and H70-M03 are
+independently RESOLVED; no open finding remains in this bounded review scope.
+The accepted images remain bound to the actual ab608 broker source. No complete
+Runtime contribution, Slice, integration or release is accepted. This reviewer
+changed only this report and its small evidence; all prior failed evidence and
+review dispositions are preserved below.
+
+## Final bounded re-review — 4d59b27 / technical b6f161f
+
+Master dispatch: `6c128efd1912d56878e739de5d12d8b91e179b2e`, ledger CR21-0091.
+The correction author stopped at the clean published source. The reviewer
+reopened the complete 12-path diff since report checkpoint f6128251, the current
+author report and the production acceptance/cancel/join paths. This round
+resolves only the remaining H70-H01 consumed-file-set finding; previously
+resolved M02/M03 and unaffected loader/policy evidence are reused.
+
+### H70-H01 — RESOLVED
+
+`materialize` retains the existing byte/path guards and arms one asynchronous
+name-change request per input directory before validating the complete initial
+set. The requests remain active through selection and actual copied-Go exit.
+No request is rearmed: every completion, overflow, unexpected cancellation or
+error permanently invalidates output. `command` checks that state at actual
+completion; `build` also propagates snapshot release and cleanup errors before
+its caller can accept output. The first successful compiler return alone is no
+longer sufficient. Input buffers, OVERLAPPED records, events and directory
+handles remain owned until cancellation has completed and been joined.
+
+The reviewer checked this against Microsoft's documented
+[ReadDirectoryChangesW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw),
+[CancelIoEx](https://learn.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-cancelioex)
+and [GetOverlappedResult](https://learn.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getoverlappedresult)
+semantics. The name filters include creation, deletion and rename without
+invalidating ordinary reads/last-access updates. Zero-byte overflow and errors
+refuse; they never trigger a scan that clears invalidation. Cancellation is a
+request, so the actual completion result is joined and classified. Only the
+owner's successful after-build cancellation with aborted completion permits an
+unchanged watch to release cleanly. These notifications exclude the watched
+directory itself; retained input/ancestor path guards remain necessary and were
+preserved, with root-rename refusal and released-root positives independently
+executed. Unsupported acquisition refuses rather than weakening the mechanism.
+
+The independent original insertion control was adapted to the actual new
+acceptance path. For both targets, insertion/removal after successful selection
+now rejects before compilation. A stronger independent control inserts an init
+function after the real copied-Go child starts and retains it until compilation
+finishes. Actual successful amd64/ARM64 compiler output is valid PE32+ and
+contains the unique unrecorded marker, but `commandAfterStart` refuses image
+acceptance and the first `close` retains that invalidation. No compiler error is
+accepted as rejection evidence. The observed rejected image hashes are:
+
+| Target | Actual compiled image, correctly rejected |
+|---|---|
+| amd64 | `4b964acb5df62236c887f1356ef86069296bd45d2b742f0aa80443a82825fa3e` |
+| ARM64 | `ad5dcdebd3b38c83fc8e254f8cdf246c1a6cbdd4042a93e55bfa50a0cc7a9706` |
+
+The outer source recapture stays identical. This directly closes the prior gap
+without claiming that adding files is prevented. An additional independent
+64-cycle control completes each insertion/removal pair before watch release;
+every pair remains invalid through cancellation/join. Idempotent subsequent
+release succeeds, and mutation after actual release succeeds.
+
+### Exact verification and retained boundaries
+
+Seven focused native tests, including the two independent overlay tests, PASS
+at this source (80.613-second package execution). The actual native controls
+cover ordinary reads, zero-byte overflow, unexpected early cancellation, 16
+close/write races, unsupported input, partial watch-acquisition unwind, source
+and wildcard embed additions after child start, hardlink/rename insertion and
+restoration, and an already granted directory mutator handle. The original
+external-module/standard-source/compiler/go-executable replacement during both
+builds still yields only the captured module bytes and matching before/after
+provenance. The reviewer inspected the actual source and executed these tests;
+the author's report was navigation, not evidence.
+
+The exact native `go run ./internal/runtime/cmd/helpergen -check` independently
+PASSes in 37.34 seconds with four actual helper builds, 917 recorded inputs and
+digest `3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968`.
+The external UTF-8 Python observer confirms all 60 Runtime-plus-go.mod/go.sum
+file hashes, lengths, nanosecond mtimes and complete file set unchanged.
+
+[CI34075549875 attempt 1](https://github.com/Hans-Einar/gh-tree/actions/runs/34075549875)
+was independently queried at exact technical b6f161f: all **20 jobs SUCCESS**,
+including canonical helper job101600875004, native Windowsamd64 job101600809214,
+Windows ARM64, Linux/macOS, race, FreeBSD, inventory and twelve architecture/
+cross-build jobs. These are source gates, not complete broker/native-Slice proof.
+No canceled or earlier rejected run is relabeled as accepted evidence.
+
+Diff checks confirm both gzip payloads, loader code/tests, architecture policy/
+fixtures, embed selection, root pins and workflows unchanged since the earlier
+independent review. The only derived output change is the provenance manifest.
+The compact copied module .info encoding was checked alongside the guarded
+offline build to exclude legitimate cache name rewrites. The rejected DACL and
+R-oplock experiments remain test/probe evidence; neither is the production
+mechanism. No ACL or global last-access policy adjustment was introduced.
+
+Final small controls/observer/direct logs/CI metadata use `final-` filenames in
+the same evidence directory/manifest. The independent .go.txt source stays
+outside Go discovery; all earlier controls remain intact. This round's owned
+fixtures are separate under `C:/Users/hanse/.codex/tmp/cr21-helper-review-003/`.
+No policy-rejected cache, denied-ACL fixture, blocked Git review, access/model
+setting or unrelated broker work was touched.
+
+**Exact next permitted action:** Master may use this bounded acceptance for
+coordinated helper contribution integration. The committed images still name
+the actual `ab608327e63727f66ffb1aa7b3200c2865307cf5` broker dependency closure;
+newer accepted Windows bd78dea/review9b06f8bd is not adopted here. Its later
+adoption requires reviewed regeneration, exact source/image/protocol binding
+and affected checker/CI proof before Runtime integration. Master retains the
+serial integration gate; Sessions/parent/native ABI/ConPTY/ARM64/emulation,
+complete V-RUN/Slices and release remain separate mandatory work. No merge or
+product-code change was performed by this reviewer.
 
 ## Bounded re-review — corrected c5f36ed / technical 732fd9bb
 

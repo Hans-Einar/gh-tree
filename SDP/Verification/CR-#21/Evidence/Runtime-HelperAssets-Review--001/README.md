@@ -43,3 +43,26 @@ CI diagnostic files are selected raw timestamped context, labeled as excerpts.
 Canceled attempt 1 and report-only CI are not successful evidence. The manifest
 hashes evidence files, excluding itself. No generated executable, toolchain,
 module-cache tree, original source archive or unrelated review is duplicated.
+
+## Final bounded confirmation
+
+The `final-` evidence belongs to frozen4d59b27 / technicalb6f161f; the manifest's
+`currentReview` is its bounded ACCEPT. Earlier failed evidence remains unchanged.
+For replay, place `final-acceptance_test.go.txt` at the new owned fixture path
+`C:/Users/hanse/.codex/tmp/cr21-helper-review-003/reviewer_acceptance_test.go.txt`
+and `final-observer.py` at `.../record_review.py`. Use the frozen worktree or
+adjust that script's explicit REPO constant to another checkout of the same SHA.
+Run `record_review.py controls` for the independent overlay plus focused native
+controls, and `record_review.py check` for the observed exact checker. Both
+commands use explicit UTF-8 and assert the source SHA before execution.
+
+`final-controls.log` is direct captured process output. Its corresponding JSON
+records command/exit/time. The independently adapted controls distinguish a
+compiler producing an image from the generator accepting it: successful real
+amd64/ARM64 PE images containing inserted source are rejected by permanent
+invalidation. The 64-cycle control completes insertion/removal before release,
+then requires rejection through cancellation/join. `final-check.json` captures
+the 60-file hashes/lengths/mtime/file-set no-rewrite assertion. `final-ci.json`
+records the exact technical20-job successful run. No new module cache or junction
+is required for this final confirmation; the earlier fresh-cache/junction proof
+remains in `recheck-` evidence.

@@ -1,0 +1,17 @@
+{
+  "head": "4d59b27fb15d5f7885c92ac98dce365063c60a5e",
+  "command": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "test",
+    "-overlay",
+    "C:\\Users\\hanse\\.codex\\tmp\\cr21-helper-review-003\\overlay.json",
+    "./internal/runtime/cmd/helpergen",
+    "-run",
+    "Test(ReviewerInputSetAcceptanceBoundary|ReviewerCompletedNameChangesCannotCancelCleanly|DirectoryChangeGuardReleaseOverflowAndRefusal|PartialDirectoryWatchAcquisitionUnwinds|DirectoryWatchReadProbe|PostSelectionInputSetChangesRefuseActualBuild|BuildConsumesCapturedModuleAndToolchain)$",
+    "-count=1",
+    "-v"
+  ],
+  "exit": 0,
+  "seconds": 81.56,
+  "log": "final-controls.log"
+}

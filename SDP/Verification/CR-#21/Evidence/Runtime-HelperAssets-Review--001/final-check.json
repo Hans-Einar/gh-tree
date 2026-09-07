@@ -1,0 +1,14 @@
+{
+  "head": "4d59b27fb15d5f7885c92ac98dce365063c60a5e",
+  "command": [
+    "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+    "run",
+    "./internal/runtime/cmd/helpergen",
+    "-check"
+  ],
+  "exit": 0,
+  "seconds": 37.34,
+  "fileSetHashesLengthsMtimesUnchanged": true,
+  "files": 60,
+  "output": "helpers verified: canonical windows/amd64 go1.25.0; two clean builds per target; source closure 3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968 (917 inputs)\n"
+}

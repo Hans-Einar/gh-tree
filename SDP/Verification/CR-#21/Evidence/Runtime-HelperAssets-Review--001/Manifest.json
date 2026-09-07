@@ -30,6 +30,36 @@
       "sha256": "7e4b3c1f324e5fc296944c56114b666afa632fbaf830637865d5453fad5fa37a"
     },
     {
+      "path": "final-acceptance_test.go.txt",
+      "length": 4622,
+      "sha256": "46c60b48e90a3a30376c2514820e9e20dbfdf12fd376c762d63eb88a49d3b2a2"
+    },
+    {
+      "path": "final-check.json",
+      "length": 522,
+      "sha256": "62be6c14e1a1a70ba9e1ea919544671567fd39941a94c89721df8820688ecef6"
+    },
+    {
+      "path": "final-ci.json",
+      "length": 4807,
+      "sha256": "7b25f6fe855de6d4ee16d9ea55dc62c9a0090ffbb464bcf0cfae9450e8be6b7b"
+    },
+    {
+      "path": "final-controls.json",
+      "length": 709,
+      "sha256": "9eb5e4cf5697ceeedf6c5e64f13675cc06d5651b69798048675c91c75907f6bf"
+    },
+    {
+      "path": "final-controls.log",
+      "length": 4748,
+      "sha256": "16a1297e9841cac746ae5b37a5a1eb4c1591ca7709ae29f88775c4039e2cfab6"
+    },
+    {
+      "path": "final-observer.py",
+      "length": 2522,
+      "sha256": "14adf2649feb8d9232b157005e8beb4a6292419d3a4a4e066196bf900716472f"
+    },
+    {
       "path": "positive-check.json",
       "length": 519,
       "sha256": "d1970b3826625cc659c6048ea66f8fccf6beaca1d4194d865372622d60eb17cb"
@@ -41,8 +71,8 @@
     },
     {
       "path": "README.md",
-      "length": 2766,
-      "sha256": "ca32525f0b4f139d63044aeb00801f9a6c8a07242b51ea0ec9da772fac2a97a6"
+      "length": 4251,
+      "sha256": "1571d0348371e2ac91f10fcef45b17cb9c59f594f480ec6eaafe1c255604a4e2"
     },
     {
       "path": "recheck-ci.json",
@@ -98,6 +128,32 @@
         "H70-M03"
       ],
       "filesPrefix": "recheck-"
+    },
+    {
+      "source": "4d59b27fb15d5f7885c92ac98dce365063c60a5e",
+      "technicalSource": "b6f161f5189d70b66b95129237b51f9984d58e35",
+      "disposition": "ACCEPT_BOUNDED_HELPER_ASSETS_POLICY",
+      "open": [],
+      "resolved": [
+        "H70-H01",
+        "H70-M02",
+        "H70-M03"
+      ],
+      "filesPrefix": "final-",
+      "brokerSource": "ab608327e63727f66ffb1aa7b3200c2865307cf5"
     }
-  ]
+  ],
+  "currentReview": {
+    "source": "4d59b27fb15d5f7885c92ac98dce365063c60a5e",
+    "technicalSource": "b6f161f5189d70b66b95129237b51f9984d58e35",
+    "disposition": "ACCEPT_BOUNDED_HELPER_ASSETS_POLICY",
+    "open": [],
+    "resolved": [
+      "H70-H01",
+      "H70-M02",
+      "H70-M03"
+    ],
+    "filesPrefix": "final-",
+    "brokerSource": "ab608327e63727f66ffb1aa7b3200c2865307cf5"
+  }
 }
