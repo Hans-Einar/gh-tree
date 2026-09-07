@@ -56,8 +56,8 @@ Current status-only commits do not change that verified product tree.
 | GitHub#62 | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | technical7382617, independent ACCEPT, CI34055294036 passes18/helper skip; held for Git-first |
 | Persistence#63 | codereview-21/layer-persistence | 53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f | bounded identity source bfdc79c ACCEPT; CI34066675310 18PASS/FreeBSD failure/helper skip; full adapter open |
 | Discovery#64 | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | technical20bd8ac, independent ACCEPT, CI34065291612 19PASS/helper skip; held for prior serial gates |
-| Runtime#65 | codereview-21/layer-runtime | a6e79eaa44ad485589b4d8322b7e9efcd9f911bf | FreeBSD pipe-profile correction passes native CI34068364364; 6 successful jobs, helper prerequisites fail; supervisor/Sessions incomplete |
-| Windows Runtime#69 | codex/cr21-runtime-windows | 35a7632c97920b68e5c428bbbbf37494a056d8ea | source5e964336 CHANGES_REQUIRED: W69-M01 canceled/lost control effects and M02 erased error classification; native CI6PASS/helper prerequisite FAIL |
+| Runtime#65 | codereview-21/layer-runtime | fe4fd4266d3798132d4cca15ce54dc991ad147b1 | complete Unix native candidate for fresh review; root Sessions remains #71; earlier a57d CI6PASS, exact final native CI pending |
+| Windows Runtime#69 | codex/cr21-runtime-windows | 6decc16a952dad45a07e7e35ea01a11e5df32c00 | corrected bd78dea native CI34073256923 6PASS/helper prerequisite FAIL; W69-M01/M02 confirmation pending |
 | Helper assets#70 | codex/cr21-runtime-helper-assets | f6128251a0510021191880be658b705528fcc606 | technical732fd9bb CI20PASS; M02/M03 independently resolved, H01 HIGH remains for post-selection source insertion; actual broker closure ab608327 |
 
 Exact worktrees and ownership are in CurrentIndex and Issues #65/#69/#70. The
@@ -198,3 +198,10 @@ compilation before acceptance. Existing author may correct this bounded issue,
 then regenerate/push and obtain changed-scope confirmation. #69 receipt/failure
 seam proposal is approved privately and recorded for queued #71; actual code and
 independent control review are still required.
+
+Current next review gates: Windows corrected bd78dea/report6decc16 goes back to
+its existing reviewer; Unix nativefe4fd426 goes to a fresh independent reviewer
+(shared broker framing/start included, root #71 parent implementation excluded).
+#70 continuous directory R-oplock proof2b510264 is approved only for bounded
+build-path implementation and independent verification, not acceptance. No
+security-permission exception or privileged mechanism was adopted.

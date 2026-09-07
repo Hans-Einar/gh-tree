@@ -357,3 +357,21 @@ admission once, even with a terminal error; repeated observers get stable facts.
 Native cleanup never awaits consumption; parent retains/observes receipts and
 joins its producers. Limits64 receipts/64KiB copied payload, closed failure
 Stage/Class and shared/public framing/contracts unchanged. See #71 comment.
+
+#70 bounded mechanism decision: atomic OWNER RIGHTS creation could not provide
+the materialization/restoration capability and is not adopted. Native proof
+2b510264 shows a directory R oplock remains pending without changes and latches
+invalidation for insertion/removal through a preexisting mutator handle. Master
+authorizes one-shot directory invalidation through actual copied-Go exit, retaining
+per-file guards and stable paths, rejecting every break/unexpected completion,
+and explicitly canceling/joining all overlapped requests/events. Advisory means
+changes may occur; changed builds must be refused, never described as unchanged.
+Source: Microsoft FSCTL_REQUEST_OPLOCK (directory enumeration semantics):
+https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_request_oplock .
+Actual build-path integration/adverse and no-change controls plus independent
+review remain required. No ACL/trust-scope exception or new compiler framework.
+
+#69 corrected bd78dea/report6decc16 has native/race CI and local386/all12 proof;
+existing reviewer confirms W69-M01/M02 next. #65 Unix candidatefe4fd426 is frozen
+for a separate fresh review of Unix/shared broker protocol, with exact native CI
+still pending. Parent #71 stays separate; no native/Runtime/integration completion.

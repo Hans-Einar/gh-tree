@@ -801,7 +801,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "implementation_in_progress",
+      "state": "unix_native_candidate_independent_review_ready",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -825,17 +825,19 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "0dfd8879bdeb57563a73f9edf9c6b4b92317c6a8",
+      "lastCheckpoint": "fe4fd4266d3798132d4cca15ce54dc991ad147b1",
       "subContributions": [
         "IMPL69",
         "IMPL71"
       ],
       "latestVerification": {
-        "head": "9a73ffc1691b62a63a816411dbbcd56907433d08",
-        "run": 34071112204,
-        "result": "2 SUCCESS, 5 FAILURE incl PTY fixture and race cleanup cases plus expected inventory. Corrected0dfd887 local native/compile/vet PASS; exact CI pending"
+        "head": "a57d496d3abbcfb875d41a62250caddcb89a7941",
+        "run": 34072812802,
+        "result": "6 native/race SUCCESS; expected helper prerequisite FAIL. Finalfe4fd426 local Linux/9-target compile/vet/architecture PASS, exact native CI pending"
       },
-      "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08"
+      "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
+      "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
+      "nativeReviewScope": "broker Unix-selected files and shared protocol/start; root Sessions foundations remain #71 scope"
     },
     {
       "id": "IMPL66",
@@ -928,13 +930,13 @@
       "id": "IMPL69",
       "kind": "runtime_platform_contribution",
       "issue": 69,
-      "state": "correction_authorized_changes_required",
+      "state": "corrected_candidate_independent_rereview_ready",
       "branch": "codex/cr21-runtime-windows",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-windows",
       "workerBase": "46fe59c5eae3f08df6ebbcc7bcd41536f3fd6864",
       "scope": "Windows broker/cmd/native extraction; helpergen/assets delegated to IMPL70",
       "report": "SDP/Implementation/CR-#21/Runtime/M3-Windows--001.md",
-      "lastCheckpoint": "35a7632c97920b68e5c428bbbbf37494a056d8ea",
+      "lastCheckpoint": "6decc16a952dad45a07e7e35ea01a11e5df32c00",
       "subContributions": [
         "IMPL70"
       ],
@@ -944,12 +946,12 @@
         "run": 34068171002,
         "result": "native amd64/ARM64 ACL textual-alias fixture failure, corrected locally at fb1a9ec; new exact source CI pending"
       },
-      "technicalSource": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
+      "technicalSource": "bd78deafd4dd36e22d5b106eb7ef9c4edcd2e832",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Windows-Review--001.md",
       "latestVerification": {
-        "head": "5e9643364f62dcc51a967fbf94775e5350cd2bc9",
-        "run": 34071023665,
-        "result": "6 native/race SUCCESS; expected inventory prerequisite FAIL, dependent matrix/helper skipped; independent review finds two MEDIUM defects"
+        "head": "bd78deafd4dd36e22d5b106eb7ef9c4edcd2e832",
+        "run": 34073256923,
+        "result": "6 native/race SUCCESS incl Winamd64/ARM64; expected missing helper prerequisite FAIL; local race/386/vet/all12 PASS; findings await independent confirmation"
       },
       "dependentGates": [
         "independent native review",
@@ -969,7 +971,7 @@
       "id": "IMPL70",
       "kind": "runtime_build_contribution",
       "issue": 70,
-      "state": "h01_file_set_correction_authorized",
+      "state": "h01_continuous_directory_invalidation_implementation",
       "branch": "codex/cr21-runtime-helper-assets",
       "worktree": "C:/Users/hanse/GIT/gh-tree-wt/runtime-helper-assets",
       "workerBase": "ab608327e63727f66ffb1aa7b3200c2865307cf5",
@@ -981,7 +983,7 @@
         "internal/composition/architecture/testdata/cases.json"
       ],
       "sharedPrerequisiteScope": "assets-only in-memory JSON/PE imports and typed ambient-I/O rejection with existing fixtures; reviewed with helper candidate",
-      "lastCheckpoint": "f6128251a0510021191880be658b705528fcc606",
+      "lastCheckpoint": "2b510264b448ed5cfd3c5e660f24b035cc22a948",
       "checkpointScope": "coherent generator/pure assets and three-file policy prerequisite; embedded source bound to ab608327, newer Windows closure not adopted",
       "localChecks": "Independent twice-per-target clean reproduction; exact no-rewrite -check; clean archive ordinary builds; amd64/386 assets, vet and all12 architecture/public builds PASS",
       "technicalSource": "732fd9bbfe1dad7430f71ceca8270283b82a29d7",
@@ -999,7 +1001,8 @@
       "resolvedFindings": [
         "H70-M02",
         "H70-M03"
-      ]
+      ],
+      "mechanismDecision": "Retain one-shot native directory R oplocks from before selection through copied-Go exit; reject every break/unexpected completion, including insert/remove restoration; safe cancel/join and stable paths/per-file guards. Native build integration and independent review still required."
     },
     {
       "id": "IMPL71",
