@@ -1,0 +1,86 @@
+=== RUN   TestReliableEventsReplayACKAndMisuse
+--- PASS: TestReliableEventsReplayACKAndMisuse (0.02s)
+=== RUN   TestFinalCapacityDoesNotDependOnConsumer
+--- PASS: TestFinalCapacityDoesNotDependOnConsumer (0.02s)
+=== RUN   TestHintReceiptBoundCannotStarveReliableFinal
+--- PASS: TestHintReceiptBoundCannotStarveReliableFinal (0.02s)
+=== RUN   TestSequenceSpaceReservesReliableFinals
+--- PASS: TestSequenceSpaceReservesReliableFinals (0.00s)
+=== RUN   TestSessionsShutdownRecoveryAcrossObservationError
+=== RUN   TestSessionsShutdownRecoveryAcrossObservationError/after-error
+=== RUN   TestSessionsShutdownRecoveryAcrossObservationError/before-error
+--- PASS: TestSessionsShutdownRecoveryAcrossObservationError (0.07s)
+    --- PASS: TestSessionsShutdownRecoveryAcrossObservationError/after-error (0.03s)
+    --- PASS: TestSessionsShutdownRecoveryAcrossObservationError/before-error (0.03s)
+=== RUN   TestSessionsShutdownFailureDoesNotPollOwner
+--- PASS: TestSessionsShutdownFailureDoesNotPollOwner (0.00s)
+=== RUN   TestSessionsRestartHistoryEvictionRace
+--- PASS: TestSessionsRestartHistoryEvictionRace (0.11s)
+=== RUN   TestSessionsRestartHistoryWithoutEviction
+--- PASS: TestSessionsRestartHistoryWithoutEviction (0.09s)
+=== RUN   TestSessionsRestartEvictionRetainsCanceledReplacement
+--- PASS: TestSessionsRestartEvictionRetainsCanceledReplacement (0.08s)
+=== RUN   TestSessionsShutdownRetainsEvictedRestartTransition
+--- PASS: TestSessionsShutdownRetainsEvictedRestartTransition (0.09s)
+=== RUN   TestRegistryConcurrentAdmissionIsBoundedAndCopied
+--- PASS: TestRegistryConcurrentAdmissionIsBoundedAndCopied (0.01s)
+=== RUN   TestRegistryNeverReusesOrWrapsIDs
+--- PASS: TestRegistryNeverReusesOrWrapsIDs (0.00s)
+=== RUN   TestHistoryEvictsOnlyCleanedAndFinalsRequireACK
+--- PASS: TestHistoryEvictsOnlyCleanedAndFinalsRequireACK (0.06s)
+=== RUN   TestRegistryConcurrentShutdownNeverMissesAdmittedSession
+--- PASS: TestRegistryConcurrentShutdownNeverMissesAdmittedSession (0.00s)
+=== RUN   TestReviewRestartHistoryEvictionRace
+--- PASS: TestReviewRestartHistoryEvictionRace (0.08s)
+=== RUN   TestReviewRestartHistoryWithoutEviction
+--- PASS: TestReviewRestartHistoryWithoutEviction (0.08s)
+=== RUN   TestReviewShutdownReobservesRetainedFailure
+--- PASS: TestReviewShutdownReobservesRetainedFailure (0.00s)
+=== RUN   TestReviewResizeAtSequenceLimitPreservesDeliveredGeometry
+--- PASS: TestReviewResizeAtSequenceLimitPreservesDeliveredGeometry (0.00s)
+=== RUN   TestReviewTerminalUnknownReceiptReleasesOnlyAfterObservation
+--- PASS: TestReviewTerminalUnknownReceiptReleasesOnlyAfterObservation (0.03s)
+=== RUN   TestReviewConcurrentKnownDeliveryWithErrorPreservesEffect
+--- PASS: TestReviewConcurrentKnownDeliveryWithErrorPreservesEffect (0.00s)
+=== RUN   TestReviewNativeCallsDoNotHoldRegistrySessionEventLocks
+--- PASS: TestReviewNativeCallsDoNotHoldRegistrySessionEventLocks (0.00s)
+=== RUN   TestSessionsSequenceRefusesOptionalEffectsBeforeNativeDelivery
+--- PASS: TestSessionsSequenceRefusesOptionalEffectsBeforeNativeDelivery (0.00s)
+=== RUN   TestSessionsResizeReservationSurvivesOutputAndNativeCleanup
+--- PASS: TestSessionsResizeReservationSurvivesOutputAndNativeCleanup (0.00s)
+=== RUN   TestSessionsExhaustedNativeResidualRemainsOwnedUntilRepair
+--- PASS: TestSessionsExhaustedNativeResidualRemainsOwnedUntilRepair (0.00s)
+=== RUN   TestSessionsRootExitLateOutputFinalAndACK
+--- PASS: TestSessionsRootExitLateOutputFinalAndACK (0.00s)
+=== RUN   TestSessionsCanceledAdmissionAndEstablishment
+--- PASS: TestSessionsCanceledAdmissionAndEstablishment (0.00s)
+=== RUN   TestSessionsInputReceiptRetainsCapacityAndFinalBarrier
+--- PASS: TestSessionsInputReceiptRetainsCapacityAndFinalBarrier (0.03s)
+=== RUN   TestSessionsWriteSplitsOneRequestExactlyOnce
+--- PASS: TestSessionsWriteSplitsOneRequestExactlyOnce (0.00s)
+=== RUN   TestSessionsPendingResizeJoinedBeforeRestart
+--- PASS: TestSessionsPendingResizeJoinedBeforeRestart (0.00s)
+=== RUN   TestSessionsShutdownCapturesBlockedStartAndClosesAdmission
+--- PASS: TestSessionsShutdownCapturesBlockedStartAndClosesAdmission (0.00s)
+=== RUN   TestSessionsFailedCleanupRepairAndCanceledRestart
+--- PASS: TestSessionsFailedCleanupRepairAndCanceledRestart (0.03s)
+=== RUN   TestSessionsSequenceExhaustionKeepsFinalAndNativeOwnership
+--- PASS: TestSessionsSequenceExhaustionKeepsFinalAndNativeOwnership (0.00s)
+=== RUN   TestSessionsCanceledRestartRetainsAlreadyAdmittedReplacement
+--- PASS: TestSessionsCanceledRestartRetainsAlreadyAdmittedReplacement (0.00s)
+=== RUN   TestSessionsFailureBeforeNativeAcquisitionStillOwnsFinal
+--- PASS: TestSessionsFailureBeforeNativeAcquisitionStillOwnsFinal (0.00s)
+=== RUN   TestSessionsKnownCleanupSurvivesObservationError
+--- PASS: TestSessionsKnownCleanupSurvivesObservationError (0.00s)
+=== RUN   TestOutputRandomizedByteReference
+--- PASS: TestOutputRandomizedByteReference (0.59s)
+=== RUN   TestOutputLargeWriteAndOverflow
+--- PASS: TestOutputLargeWriteAndOverflow (0.00s)
+=== RUN   TestOutputSingleByteMetadataBound
+--- PASS: TestOutputSingleByteMetadataBound (0.17s)
+=== RUN   TestInputOwnershipIncludesInflightAndClose
+--- PASS: TestInputOwnershipIncludesInflightAndClose (0.00s)
+=== RUN   TestInputCancelAndConcurrentWholeRequests
+--- PASS: TestInputCancelAndConcurrentWholeRequests (0.02s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime	3.160s

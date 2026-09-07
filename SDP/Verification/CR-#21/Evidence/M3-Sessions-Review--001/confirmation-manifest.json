@@ -1,0 +1,71 @@
+{
+  "source": "f4e48b3a72ee0b049aeadb66954ae4f07bb2f8b8",
+  "technical": "4495635dbb52ba2a281e52a08fe1f84d7bb9fd07",
+  "priorReview": "c436773ea9f6debb70918c18d48c0c6a7d89302e",
+  "runtimeTree": "9fdbb5bc37bbd1350ec5b5b0462e1bed2b75db52",
+  "date": "2026-09-07",
+  "go": "go version go1.25.0 windows/amd64",
+  "checks": [
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/overlay.json",
+        "-v",
+        "-count=1",
+        "-timeout=60s"
+      ],
+      "exitCode": 0,
+      "log": "confirmation-original-and-root-race.log"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "test",
+        "-race",
+        "./internal/runtime",
+        "-overlay",
+        "C:/Users/hanse/.codex/tmp/m3-sessions-review-001/confirmation-overlay.json",
+        "-run",
+        "^TestReviewConfirmation",
+        "-v",
+        "-count=1",
+        "-timeout=30s"
+      ],
+      "exitCode": 1,
+      "log": "confirmation-interactions-race.log"
+    },
+    {
+      "command": [
+        "C:/Users/hanse/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.25.0.windows-amd64/bin/go.exe",
+        "vet",
+        "./internal/runtime"
+      ],
+      "exitCode": 0,
+      "log": "confirmation-vet.log"
+    }
+  ],
+  "files": {
+    "confirmation-interactions-race.log": {
+      "bytes": 545,
+      "sha256": "0f08ea4208ba86435836df58b3bf2c8881f3d1a6e7218f8b53b8025b7e615e9b"
+    },
+    "confirmation-original-and-root-race.log": {
+      "bytes": 5350,
+      "sha256": "aa832775f8ea25812ecc6d4a6fcc50447b150d9074ffcc30d8c8f190e3f74531"
+    },
+    "confirmation-vet.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reviewer_confirmation_test.go.txt": {
+      "bytes": 4773,
+      "sha256": "50e81e1755ba9cbd8dab2bbfe13c0bf1df2b7afebb89a290858efae082f4786b"
+    }
+  },
+  "scope": "Independent affected common-parent confirmation; no native processes/source integration. Original report/evidence retained unchanged.",
+  "result": "H01 and M01 resolved; M02 direct resize and receipt interactions pass, but startup output/Stop can spend establishment version and panic coherent Start result."
+}
