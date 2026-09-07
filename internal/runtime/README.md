@@ -131,3 +131,14 @@ restart identity/geometry/deduplication, shutdown races, repaired cleanup,
 exhausted final sequence space and known cleanup with a historical error. These
 supplement the buffer/registry tests. The bounded report and next native binding
 gate are in `SDP/Implementation/CR-#21/Runtime/M3-Sessions--001.md`.
+
+The independent common-engine corrections retain the admitted Restart subject
+and operation key through history eviction, including canceled replacement facts
+and Shutdown capture. Active transitions have a separate 256-entry bound; public
+history still retains the latest 256 cleaned sessions. Stop and Shutdown share
+one native observer and coalesce a recovery request across an incomplete-error
+handoff without autonomous retries. An admitted control reserves a publication
+version before native delivery. Other optional work refuses exhausted space;
+unavoidable native facts remain private until a fresh version or the reserved
+final publishes them. Nine correction tests cover these interleavings, numerical
+boundaries and producer barriers. Native binding and full acceptance remain pending.

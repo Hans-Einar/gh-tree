@@ -1,5 +1,10 @@
 # M3 Sessions common-parent milestone — #71
 
+Current checkpoint, 2026-09-07: fresh correction author addressed the independent
+M71-H01/M01/M02 findings at technical `4495635dbb52ba2a281e52a08fe1f84d7bb9fd07`.
+The source is clean and pushed; bounded independent confirmation is pending.
+Original rejected source/report/evidence remain unchanged and distinguishable.
+
 Author checkpoint, 2026-09-07. Role: fresh Runtime Sessions worker. Authority:
 #71 and its first-milestone dispatch comment under #65/#21;
 Sprint-004-v04 / I-03 / M3. This is a partial adapter contribution awaiting separate
@@ -82,7 +87,65 @@ reservation at MaxUint64; and complete native facts accompanied by an error.
 Existing registry/event tests retain the broader capacity/ACK/replay/history and
 raw-ring boundary evidence. Controlled owners are common-engine evidence only.
 
+## Independent-review corrections
+
+Authority is Master's bounded correction dispatch under #71/#65/#21, recorded at
+canonical `e9e2d0b3606a58a3b3dee3bcc02e6c0ee5e29ff3` / ledger 95. Correction base
+was clean pushed `c436773ea9f6debb70918c18d48c0c6a7d89302e`. Only owned root Go
+files/tests, README and this author report changed. No broker/native/assets,
+helper binding test, public API/ports, frozen contract or Master/reviewer artifact
+was edited or merged.
+
+Coherent source commits were tested and pushed before proceeding:
+
+- `700668b`: H01 retains the admitted predecessor pointer through Stop,
+  replacement admission and canceled-result attribution after history eviction.
+- `ac89811`: M01 gives Stop and Shutdown the same retained observer ownership.
+  One coalesced external recovery intent survives an incomplete-error handoff;
+  acquiring/active observers cannot overlap. A persistent failure does not poll.
+- `7c74e43`: M02 reserves one session publication slot before each optional
+  native control. Output cannot spend it. Unavoidable observed facts accumulate
+  privately until a fresh publication/final; published snapshots are immutable.
+  New input admission also refuses exhausted unreserved sequence space, while
+  already accepted input/receipt effects remain owned and are never replayed.
+- `4495635`: H01 also retains active restart keys and aggregate subjects outside
+  cleaned-history eviction. Competing Start/Restart cannot steal an admitted key;
+  Shutdown captures/waits that transition. At most 256 active restart subjects
+  are retained, with Busy before additional transition admission. Existing
+  64-live/256-final/256-history and byte limits are unchanged.
+
+Root tests add nine deterministic regressions. They cover actual 256-session
+cleaned/ACKed eviction, the no-eviction control, cancellation after replacement
+admission, colliding lifecycle keys and aggregate capture; before/after observation
+error with repeated/concurrent Stop/Shutdown and outstanding receipts; one retry
+per new request on a permanently failed owner; native-effect refusal at Max-1,
+an in-flight resize racing output and cleanup, supplemental delivery errors,
+Max final geometry/exit/restart truth and retained exhausted residual repair.
+Only numerical counters are positioned directly for overflow fixtures; the
+effects and lifecycle use actual common code and controlled native owners.
+
+Verification at clean technical `4495635` (Windows amd64, explicit pinned Go1.25.0):
+
+| Check | Result |
+|---|---|
+| Root `go test -race ./internal/runtime -count=1 -timeout=60s` | PASS, all foundations and 20 engine/correction tests. |
+| Root `go vet ./internal/runtime` | PASS. |
+| Each affected correction group repeated with race instrumentation, count=10 | PASS at its coherent source checkpoint. |
+| Original unchanged independent `TestReview*` probes via Go overlay, race count=10 | PASS, including all three original adversaries and original receipt/error/reentrant-native positive controls. This author replay is not independent acceptance. |
+| `go run ./internal/composition/architecture` | PASS, all 12 target selections and 61 existing exact allowances. |
+| `CGO_ENABLED=0 GOTOOLCHAIN=local GOWORK=off go build ./...` | PASS for all 12 accepted targets. |
+| Source `git diff --check` / owned-path scope / clean pushed branch | PASS. |
+| Source CI [34080252451](https://github.com/Hans-Einar/gh-tree/actions/runs/34080252451) | Queued when frozen; not claimed passed. The unbound development base still lacks the separately owned helper prerequisite. |
+
+Python subprocess capture explicitly used UTF-8. No installations, global settings,
+native user-process fixtures, forbidden cleanup or duplicate evidence archives.
+The sole temporary reviewer overlay JSON points at the original committed probe.
+
 ## Remaining work and exact next action
+
+Existing independent reviewer confirms the bounded corrections against exact
+technical `4495635` and this report, then Master records the disposition. Common
+engine confirmation cannot close #71/#65/Runtime, a Slice or an integration gate.
 
 Master supplies reviewed Unix fixes, reviewed Windows client and matching
 verified helper assets. Read-only Windows seam source was inspected at accepted
