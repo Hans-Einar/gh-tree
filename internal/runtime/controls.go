@@ -79,6 +79,7 @@ func (r *sessions) writeLoop(s *session) {
 		if err != nil {
 			d := diagnostic(safeDiagnostic(err).Data().Code, "runtime.input_delivery", fmt.Sprintf("Accepted input: %d bytes; observed native delivery: %d bytes. No automatic replay.", len(data), delivered))
 			s.mu.Lock()
+			s.retainNativeDiagnosticsLocked(diagnostics(err))
 			if previous, ok := s.diagnostics[api.InputCleanup]; ok {
 				d = diagnostic(d.Data().Code, "runtime.input_delivery", previous.Data().Message+" "+d.Data().Message)
 			}
@@ -174,6 +175,7 @@ func (r *sessions) control(ctx context.Context, id domain.SessionID, geometry ap
 				d.Display = owned(api.NewInvocationSummary(display))
 			}
 			if err != nil {
+				s.retainNativeDiagnosticsLocked(diagnostics(err))
 				s.diagnostics[api.ControlCleanup] = safeDiagnostic(err)
 			}
 			return nil

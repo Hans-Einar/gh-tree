@@ -1,5 +1,14 @@
 # Runtime
 
+Current #71 binding milestone: Master combined independently accepted common
+and native/helper sources at `4412fe8e`. The private Unix bridge now drives the
+common twelve-method engine with actual native clients, including retained cwd,
+typed failures, input, terminal controls and complete cleanup. Root native tests
+exercise real owned processes; earlier component evidence remains applicable.
+Windows parent binding, Auto shell selection, production construction and
+Composition cutover are still pending. The historical milestone notes below do
+not override this current state; exact evidence is in `M3-Sessions--001.md`.
+
 Issue #65 under #21 owns this directory. The normative authority is the frozen
 Application--Runtime 1.0.0 contract, shared BoundaryTypes, CwdAcquisition,
 WindowsBroker, and Feasibility/Runtime RTF-02. No old launch/terminal/process

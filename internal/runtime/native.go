@@ -13,6 +13,7 @@ import (
 // and their matching embedded assets have been adopted.
 type nativeStart struct {
 	ID           domain.SessionID
+	OperationID  api.OperationID
 	Invocation   api.Invocation
 	Environment  []string
 	Output       func(api.OutputStream, []byte)
@@ -46,6 +47,7 @@ type nativeFact struct {
 	CleanupComplete bool
 	Residuals       []api.RuntimeResidual
 	Diagnostic      api.Optional[api.Diagnostic]
+	Diagnostics     []api.Diagnostic // bounded native code/stage facts; no error text
 }
 
 type nativeDelivery struct {

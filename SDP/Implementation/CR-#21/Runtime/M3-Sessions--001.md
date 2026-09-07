@@ -1,10 +1,48 @@
 # M3 Sessions common-parent milestone — #71
 
-Current checkpoint, 2026-09-07: startup-publication correction is clean and pushed
-at technical `5a14f7daed121c5d8f357d81d45c8ee8db1a599d`; bounded independent
-confirmation is pending. The reviewer resolved M71-H01/M01 and the original resize
-case at prior technical `4495635`, retaining M71-M02 for the startup interaction
-corrected below. Original rejected sources/reports/evidence remain unchanged.
+Current milestone, 2026-09-07: private Unix parent bridge implemented; Windows
+bridge, production construction/Auto shell resolution and full binding review
+remain pending. Common engine was independently ACCEPTED at `01641986`; Master
+integrated accepted native/helper source at clean pushed base
+`4412fe8e889c71c837a3364dd6bb2a3c47dde8c3` (CI34085381063:20/20 SUCCESS).
+Master release is canonical `4be9399` / ledger106. Historical author/review
+checkpoints below are retained; the new work does not claim full #71/#65 acceptance.
+
+## Private Unix bridge milestone
+
+Only assigned Runtime-root files changed. `bridge.go` translates literal argv
+and ConfiguredShell intent, actual Application OperationID, copied environment
+and cwd identities into the accepted private native specification. The broker
+still resolves executable/PATH only after acquiring cwd. Auto resolution remains
+the next constructor milestone; no exported production constructor exists yet.
+`bridge_unix.go` retains actual native clients through startup failure, maps
+initial cwd/exit/cleanup, normalizes successful resize to a delivered control unit
+and preserves exact write counts. Healthy native outstanding resources do not
+become cleanup failures. Late establishment without a returned actual locator
+retains the accepted identity with an explicit unavailable-locator diagnostic.
+
+Native joined errors retain distinct safe code/stage diagnostics through the
+common engine (bounded deduplication); original native path/argument/error text
+does not cross the API. Current residuals remain separate from historical errors.
+Existing parent input/control/final ownership and sequence corrections remain.
+
+Verification on Windows amd64 with explicit Go1.25.0 and Linux WSL openSUSE
+6.18.33.2 as UID/GID65534: three real parent tests pass (literal relative executable
+under acquired project cwd, private environment/raw bytes and persistent Start;
+PTY resize/ETX/Restart; failed-start NotFound/identity/cleanup). Together they use
+all twelve Sessions methods, including reliable final ACK and shutdown EOF, but
+are bounded Unix proof, not the complete native/vertical acceptance matrix.
+These native cases also pass ten repetitions under the Linux race detector.
+An additional code/stage/error-redaction/deduplication control passes. Windows
+root race and vet pass; all twelve Runtime test binaries compile and all twelve
+architecture selections pass. Native macOS/FreeBSD exact-source CI is pending
+the milestone push. Existing comprehensive broker/helper evidence is reused.
+
+The first test compile found a duplicate test helper and was corrected before
+execution. A first WSL shell-copy command failed quoting before running tests;
+subsequent explicit Python subprocess execution used owned `/tmp` fixtures.
+Local compiled test binaries/fixtures are reproducible from this commit; no
+product state depends on them. No native broker/helper source or assets changed.
 
 Author checkpoint, 2026-09-07. Role: fresh Runtime Sessions worker. Authority:
 #71 and its first-milestone dispatch comment under #65/#21;

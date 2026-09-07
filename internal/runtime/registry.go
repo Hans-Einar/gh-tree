@@ -14,32 +14,33 @@ const liveCapacity = 64
 const historyCapacity = 256
 
 type session struct {
-	mu              sync.Mutex
-	start           api.SessionStartRequest
-	environment     []string
-	snapshot        api.SessionSnapshot
-	unpublished     api.Optional[api.SessionSnapshot] // observed facts awaiting a fresh version
-	output          outputRing
-	input           *inputQueue
-	owner           nativeOwner
-	changed         chan struct{}
-	startDone       chan struct{}
-	startPending    bool
-	startReserved   bool // startup result publication, independent of caller waiting
-	established     bool
-	startErr        error
-	stopAsked       bool
-	stopSent        bool
-	nativeClean     bool
-	producers       int
-	controlBusy     bool
-	controlReserved bool // numerical publication slot, held through native receipt observation
-	observing       bool
-	reobserve       bool // one coalesced external recovery request across an error
-	acquired        api.Optional[api.AcquiredCwd]
-	exit            api.Optional[api.SessionExit]
-	diagnostics     map[api.RuntimeCleanupStage]api.Diagnostic
-	restart         *restartTransition
+	mu                sync.Mutex
+	start             api.SessionStartRequest
+	environment       []string
+	snapshot          api.SessionSnapshot
+	unpublished       api.Optional[api.SessionSnapshot] // observed facts awaiting a fresh version
+	output            outputRing
+	input             *inputQueue
+	owner             nativeOwner
+	changed           chan struct{}
+	startDone         chan struct{}
+	startPending      bool
+	startReserved     bool // startup result publication, independent of caller waiting
+	established       bool
+	startErr          error
+	stopAsked         bool
+	stopSent          bool
+	nativeClean       bool
+	producers         int
+	controlBusy       bool
+	controlReserved   bool // numerical publication slot, held through native receipt observation
+	observing         bool
+	reobserve         bool // one coalesced external recovery request across an error
+	acquired          api.Optional[api.AcquiredCwd]
+	exit              api.Optional[api.SessionExit]
+	diagnostics       map[api.RuntimeCleanupStage]api.Diagnostic
+	nativeDiagnostics map[string]api.Diagnostic
+	restart           *restartTransition
 }
 
 // Public snapshots remain immutable at their published sequence. Unavoidable

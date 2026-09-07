@@ -68,14 +68,42 @@ func diagnostics(err error) []api.Diagnostic {
 	if err == nil {
 		return nil
 	}
+	var native *bridgeError
+	if errors.As(err, &native) {
+		return append([]api.Diagnostic(nil), native.values...)
+	}
 	return []api.Diagnostic{safeDiagnostic(err)}
+}
+
+func (s *session) retainNativeDiagnosticsLocked(values []api.Diagnostic) {
+	if s.nativeDiagnostics == nil {
+		s.nativeDiagnostics = make(map[string]api.Diagnostic)
+	}
+	for _, d := range values {
+		// Native reasons are a closed stage/code product, below this bound.
+		if d.Valid() && strings.HasPrefix(d.Data().Reason, "runtime.native.") && len(s.nativeDiagnostics) < 256 {
+			s.nativeDiagnostics[d.Data().Reason] = d
+		}
+	}
 }
 
 func (s *session) diagnosticsLocked() []api.Diagnostic {
 	var ds []api.Diagnostic
+	seen := make(map[string]bool)
 	for stage := api.Acquisition; stage <= api.EventTransfer; stage++ {
 		if d, ok := s.diagnostics[stage]; ok {
 			ds = append(ds, d)
+			seen[d.Data().Reason] = true
+		}
+	}
+	keys := make([]string, 0, len(s.nativeDiagnostics))
+	for key := range s.nativeDiagnostics {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		if !seen[key] {
+			ds = append(ds, s.nativeDiagnostics[key])
 		}
 	}
 	return ds
@@ -244,10 +272,11 @@ func (r *sessions) acquire(ctx context.Context, s *session) {
 	inv := s.start.Data().Invocation
 	env := append([]string(nil), s.environment...)
 	s.mu.Unlock()
-	owner, fact, err := r.starter(ctx, nativeStart{ID: d.SessionID, Invocation: inv, Environment: env, Grace: r.budgets.grace, Force: r.budgets.force, Output: func(stream api.OutputStream, data []byte) { r.capture(s, stream, data) }})
+	owner, fact, err := r.starter(ctx, nativeStart{ID: d.SessionID, OperationID: d.StartOperation, Invocation: inv, Environment: env, Grace: r.budgets.grace, Force: r.budgets.force, Output: func(stream api.OutputStream, data []byte) { r.capture(s, stream, data) }})
 	s.mu.Lock()
 	s.owner = owner
 	s.startErr = err
+	s.retainNativeDiagnosticsLocked(diagnostics(err))
 	if err != nil {
 		s.diagnostics[api.Acquisition] = safeDiagnostic(err)
 	}
@@ -321,11 +350,12 @@ func (r *sessions) observe(s *session, owner nativeOwner) {
 		fact, err := owner.NextFact(context.Background())
 		if err != nil {
 			fact.Diagnostic = api.Some(safeDiagnostic(err))
-			if !fact.CleanupComplete {
+			if !fact.CleanupComplete && len(fact.Residuals) == 0 {
 				fact.Residuals = append(fact.Residuals, r.residual(s, api.SupervisorOrBroker, safeDiagnostic(err)))
 			}
 		}
 		_ = r.registry.change(s, api.StateChanged, func(d *api.SessionSnapshotData) error {
+			s.retainNativeDiagnosticsLocked(fact.Diagnostics)
 			if fact.Established {
 				s.established = true
 			}
