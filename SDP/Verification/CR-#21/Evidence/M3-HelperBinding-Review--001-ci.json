@@ -1,0 +1,201 @@
+{
+  "attempt": 1,
+  "conclusion": "success",
+  "headBranch": "codex/cr21-runtime-helper-binding",
+  "headSha": "cf160729581911c1cb02a24a458ec703337fb063",
+  "jobs": [
+    {
+      "completedAt": "2026-09-07T03:13:59Z",
+      "conclusion": "success",
+      "databaseId": 101610045371,
+      "name": "Native FreeBSD amd64 (new stack)",
+      "startedAt": "2026-09-07T03:11:52Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045371"
+    },
+    {
+      "completedAt": "2026-09-07T03:15:30Z",
+      "conclusion": "success",
+      "databaseId": 101610045459,
+      "name": "Test (windows-11-arm)",
+      "startedAt": "2026-09-07T03:11:53Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045459"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:29Z",
+      "conclusion": "success",
+      "databaseId": 101610045493,
+      "name": "Test (ubuntu-latest)",
+      "startedAt": "2026-09-07T03:11:54Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045493"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:07Z",
+      "conclusion": "success",
+      "databaseId": 101610045519,
+      "name": "Test (macos-latest)",
+      "startedAt": "2026-09-07T03:11:57Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045519"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:16Z",
+      "conclusion": "success",
+      "databaseId": 101610045520,
+      "name": "Accepted target inventory and M3 prerequisites",
+      "startedAt": "2026-09-07T03:11:53Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045520"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:32Z",
+      "conclusion": "success",
+      "databaseId": 101610045529,
+      "name": "Race detector",
+      "startedAt": "2026-09-07T03:11:53Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045529"
+    },
+    {
+      "completedAt": "2026-09-07T03:16:35Z",
+      "conclusion": "success",
+      "databaseId": 101610045608,
+      "name": "Test (windows-latest)",
+      "startedAt": "2026-09-07T03:11:53Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610045608"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:59Z",
+      "conclusion": "success",
+      "databaseId": 101610119625,
+      "name": "Runtime helper source closure and reproducibility (M3)",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119625"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:36Z",
+      "conclusion": "success",
+      "databaseId": 101610119730,
+      "name": "Build and architecture freebsd/arm64",
+      "startedAt": "2026-09-07T03:12:54Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119730"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:55Z",
+      "conclusion": "success",
+      "databaseId": 101610119742,
+      "name": "Build and architecture windows/386",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119742"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:45Z",
+      "conclusion": "success",
+      "databaseId": 101610119743,
+      "name": "Build and architecture linux/amd64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119743"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:54Z",
+      "conclusion": "success",
+      "databaseId": 101610119744,
+      "name": "Build and architecture linux/arm64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119744"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:56Z",
+      "conclusion": "success",
+      "databaseId": 101610119749,
+      "name": "Build and architecture linux/386",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119749"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:04Z",
+      "conclusion": "success",
+      "databaseId": 101610119750,
+      "name": "Build and architecture freebsd/386",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119750"
+    },
+    {
+      "completedAt": "2026-09-07T03:12:52Z",
+      "conclusion": "success",
+      "databaseId": 101610119753,
+      "name": "Build and architecture darwin/arm64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119753"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:05Z",
+      "conclusion": "success",
+      "databaseId": 101610119768,
+      "name": "Build and architecture freebsd/amd64",
+      "startedAt": "2026-09-07T03:12:19Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119768"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:01Z",
+      "conclusion": "success",
+      "databaseId": 101610119771,
+      "name": "Build and architecture darwin/amd64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119771"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:08Z",
+      "conclusion": "success",
+      "databaseId": 101610119776,
+      "name": "Build and architecture windows/amd64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119776"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:08Z",
+      "conclusion": "success",
+      "databaseId": 101610119777,
+      "name": "Build and architecture windows/arm64",
+      "startedAt": "2026-09-07T03:12:18Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119777"
+    },
+    {
+      "completedAt": "2026-09-07T03:13:03Z",
+      "conclusion": "success",
+      "databaseId": 101610119808,
+      "name": "Build and architecture linux/arm",
+      "startedAt": "2026-09-07T03:12:19Z",
+      "status": "completed",
+      "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342/job/101610119808"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/Hans-Einar/gh-tree/actions/runs/34078800342",
+  "logHashes": {
+    "101610045459": "3c372af864eb2ab38a3dfeb46e4732298ea669982f3852e509d0915ad9b964f8",
+    "101610045608": "1d395f4b4adebb95df8ff1e75265ca564d67f997663a09d23cc2f089602861ae",
+    "101610119625": "6010e1927d9188ecc0c639b5018612803ac3e7f6e2c869200f9eb14a45baa58f"
+  },
+  "rawJobLogSHA256": {
+    "101610045459": "1472def138c41d322dc81840785152833936836032539c40ca44c14ed1cf3b0a",
+    "101610045608": "148c2028f094343c76c935f5c423ffd87d6bed3df9b125bea07d6c87d1179493",
+    "101610119625": "ed500f224112be06b7024c2dd10fae02613632714518515c9000dfb38ffc06c0"
+  },
+  "logHashesFormat": "gh run view --job --log output, UTF-8 with LF; distinct from raw job API logs"
+}

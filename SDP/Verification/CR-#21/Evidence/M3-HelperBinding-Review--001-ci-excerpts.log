@@ -1,0 +1,28 @@
+Test (windows-11-arm)	Record actual native environment	2026-09-07T03:13:04.0933373Z source=cf160729581911c1cb02a24a458ec703337fb063 ref=refs/heads/codex/cr21-runtime-helper-binding run=34078800342 attempt=1
+Test (windows-11-arm)	Record actual native environment	2026-09-07T03:13:04.0942839Z runner=Windows/ARM64 image=win11-arm64 version=20260830.155.1
+Test (windows-11-arm)	Record actual native environment	2026-09-07T03:13:04.1020676Z host=Arm64 shell=7.6.4
+Test (windows-11-arm)	Record actual native environment	2026-09-07T03:13:04.1397822Z go version go1.25.0 windows/arm64
+Test (windows-11-arm)	Run go test ./...	2026-09-07T03:15:18.0614428Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime	14.210s
+Test (windows-11-arm)	Run go test ./...	2026-09-07T03:15:18.0614911Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/broker	33.782s
+Test (windows-11-arm)	Run go test ./...	2026-09-07T03:15:18.0615425Z ?   	github.com/Hans-Einar/gh-tree/internal/runtime/broker/cmd	[no test files]
+Test (windows-11-arm)	Run go test ./...	2026-09-07T03:15:18.0615956Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/brokerassets	2.630s
+Test (windows-11-arm)	Run go test ./...	2026-09-07T03:15:18.0616453Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen	4.501s
+Test (windows-latest)	Record actual native environment	2026-09-07T03:12:34.2857154Z source=cf160729581911c1cb02a24a458ec703337fb063 ref=refs/heads/codex/cr21-runtime-helper-binding run=34078800342 attempt=1
+Test (windows-latest)	Record actual native environment	2026-09-07T03:12:34.2865180Z runner=Windows/X64 image=win25-vs2026 version=20260824.214.3
+Test (windows-latest)	Record actual native environment	2026-09-07T03:12:34.2937733Z host=X64 shell=7.6.5
+Test (windows-latest)	Record actual native environment	2026-09-07T03:12:34.3295766Z go version go1.25.0 windows/amd64
+Test (windows-latest)	Run go test ./...	2026-09-07T03:16:15.4441644Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime	42.659s
+Test (windows-latest)	Run go test ./...	2026-09-07T03:16:15.4442911Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/broker	77.129s
+Test (windows-latest)	Run go test ./...	2026-09-07T03:16:15.4443910Z ?   	github.com/Hans-Einar/gh-tree/internal/runtime/broker/cmd	[no test files]
+Test (windows-latest)	Run go test ./...	2026-09-07T03:16:15.4444941Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/brokerassets	6.796s
+Test (windows-latest)	Run go test ./...	2026-09-07T03:16:21.6358005Z ok  	github.com/Hans-Einar/gh-tree/internal/runtime/cmd/helpergen	152.423s
+Runtime helper source closure and reproducibility (M3)	Require canonical builder and real Runtime-owned verifier	2026-09-07T03:12:49.9210191Z go version go1.25.0 windows/amd64
+Runtime helper source closure and reproducibility (M3)	Require canonical builder and real Runtime-owned verifier	2026-09-07T03:13:51.7080316Z helpers verified: canonical windows/amd64 go1.25.0; two clean builds per target; source closure 23bf82b051123cd1aa31c5a2368d1cc732f4b09cbc33ea2c9abf4f08f0cfdde5 (955 inputs)
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	﻿2026-09-07T03:13:51.9634212Z ##[group]Run go build -trimpath -o 'D:\a\_temp/gh-tree.exe' ./cmd/gh-tree
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9634839Z ^[[36;1mgo build -trimpath -o 'D:\a\_temp/gh-tree.exe' ./cmd/gh-tree^[[0m
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9744449Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9744810Z env:
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9744990Z   CGO_ENABLED: 0
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9745183Z   GOTOOLCHAIN: local
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9745405Z   GOFLAGS: -mod=readonly
+Runtime helper source closure and reproducibility (M3)	Ordinary committed-input build without generation	2026-09-07T03:13:51.9745620Z ##[endgroup]

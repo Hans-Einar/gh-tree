@@ -1,0 +1,26 @@
+=== RUN   TestWindowsCommittedHelperBinding
+    helper_binding_windows_test.go:113: native driver=amd64/8664 Go=go1.25.0 manifestSHA256=03c9db1f329aa29a4d5b4c279dcc2fc17ac0cd42967d7b4527c2bef5c482a3e8 helperSHA256=bfdb8eb2ec496222b8033bbeca2331c319fd1a0cfcacb6bb7adf3e79c138781c
+=== RUN   TestWindowsCommittedHelperBinding/386
+    helper_binding_windows_test.go:132: executed 386 parent, native helper amd64:
+        === RUN   TestWindowsCommittedHelperParent
+            helper_binding_windows_test.go:336: executing parent=386 image=014c native=8664 manifest imageSHA256=bfdb8eb2ec496222b8033bbeca2331c319fd1a0cfcacb6bb7adf3e79c138781c
+        === RUN   TestWindowsCommittedHelperParent/terminal
+            helper_binding_windows_test.go:388: retained actual committed helper native=8664 emulation=0000
+        === RUN   TestWindowsCommittedHelperParent/blocked
+            helper_binding_windows_test.go:388: retained actual committed helper native=8664 emulation=0000
+        === RUN   TestWindowsCommittedHelperParent/flood
+        === RUN   TestWindowsCommittedHelperParent/missing
+        === RUN   TestWindowsCommittedHelperParent/stale
+        === NAME  TestWindowsCommittedHelperParent
+            helper_binding_windows_test.go:450: COMMITTED_BINDING_COMPLETE
+        --- PASS: TestWindowsCommittedHelperParent (5.18s)
+            --- PASS: TestWindowsCommittedHelperParent/terminal (1.61s)
+            --- PASS: TestWindowsCommittedHelperParent/blocked (0.72s)
+            --- PASS: TestWindowsCommittedHelperParent/flood (1.67s)
+            --- PASS: TestWindowsCommittedHelperParent/missing (0.54s)
+            --- PASS: TestWindowsCommittedHelperParent/stale (0.62s)
+        PASS
+--- PASS: TestWindowsCommittedHelperBinding (6.49s)
+    --- PASS: TestWindowsCommittedHelperBinding/386 (6.48s)
+PASS
+ok  	github.com/Hans-Einar/gh-tree/internal/runtime	8.179s
