@@ -1,9 +1,10 @@
 # M3 Sessions common-parent milestone — #71
 
-Current checkpoint, 2026-09-07: fresh correction author addressed the independent
-M71-H01/M01/M02 findings at technical `4495635dbb52ba2a281e52a08fe1f84d7bb9fd07`.
-The source is clean and pushed; bounded independent confirmation is pending.
-Original rejected source/report/evidence remain unchanged and distinguishable.
+Current checkpoint, 2026-09-07: startup-publication correction is clean and pushed
+at technical `5a14f7daed121c5d8f357d81d45c8ee8db1a599d`; bounded independent
+confirmation is pending. The reviewer resolved M71-H01/M01 and the original resize
+case at prior technical `4495635`, retaining M71-M02 for the startup interaction
+corrected below. Original rejected sources/reports/evidence remain unchanged.
 
 Author checkpoint, 2026-09-07. Role: fresh Runtime Sessions worker. Authority:
 #71 and its first-milestone dispatch comment under #65/#21;
@@ -141,10 +142,42 @@ Python subprocess capture explicitly used UTF-8. No installations, global settin
 native user-process fixtures, forbidden cleanup or duplicate evidence archives.
 The sole temporary reviewer overlay JSON points at the original committed probe.
 
+## Startup publication follow-up
+
+Master `73a8005f4a0fc366d359ff9f33705321978eb8cd` / ledger97 authorized the remaining
+M71-M02 correction from clean review-only `15eed03fed36f844d6f7d50001a62760c5dddec0`.
+The original startup overlay demonstrates that output refusal followed by Stop
+spent the last nonfinal version, preventing acquired cwd publication before a
+known Established result. That failed candidate remains preserved.
+
+Technical `5a14f7d` makes startup publication an explicit reservation observed by
+every hint producer. Acquisition consumes it atomically with publishing its full
+native result, independently of whether the caller still waits. Early output,
+concurrent Stop and cancellation cannot spend the slot; previously published
+snapshots stay immutable. No panic handling or fabricated unestablished result
+was added. Existing resolved lifecycle/control ownership is unchanged.
+
+Two new tests cover six successful/error/partial/no-resource/canceled startup
+cases at Max-2 with early output and concurrent Stop, plus startup at Max-3 handing
+off to accepted input and terminal-unknown control receipts. They check admitted
+identity, genuine Established/cwd plus errors, repeated Start, fresh versions,
+unchanged old snapshots, receipt ownership and final truth without wrap.
+
+At clean technical `5a14f7d`: targeted startup cases and both unchanged independent
+confirmation probes PASS with race count=10; complete root race suite (22 engine/
+correction tests plus foundations), root vet, architecture/all12 selections and
+all12 ordinary cross-builds PASS. The original independent startup probe now
+returns a valid Established result; the two-receipt positive remains passing.
+This is author execution evidence, not independent acceptance or native proof.
+Pinned Go1.25.0/UTF-8 tooling and ownership constraints remain unchanged.
+Source CI [34081419821](https://github.com/Hans-Einar/gh-tree/actions/runs/34081419821)
+is in progress at freeze; no CI completion is claimed. Separately reviewed native
+source/assets were not adopted into this common-parent branch.
+
 ## Remaining work and exact next action
 
 Existing independent reviewer confirms the bounded corrections against exact
-technical `4495635` and this report, then Master records the disposition. Common
+technical `5a14f7d` and this report, then Master records the disposition. Common
 engine confirmation cannot close #71/#65/Runtime, a Slice or an integration gate.
 
 Master supplies reviewed Unix fixes, reviewed Windows client and matching

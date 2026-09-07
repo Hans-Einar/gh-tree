@@ -142,3 +142,10 @@ version before native delivery. Other optional work refuses exhausted space;
 unavoidable native facts remain private until a fresh version or the reserved
 final publishes them. Nine correction tests cover these interleavings, numerical
 boundaries and producer barriers. Native binding and full acceptance remain pending.
+
+Startup now reserves its own publication version from admission through the
+native startup result. Output and Stop cannot consume that version while startup
+is pending; acquisition publishes known establishment/cwd or failed-start facts
+coherently before releasing the reservation. Two further boundary tests cover
+early output, concurrent Stop, failed/canceled startup, immutable snapshots and
+the subsequent input/control receipt handoff to the final cleanup barrier.
