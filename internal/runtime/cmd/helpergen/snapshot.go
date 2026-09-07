@@ -8,12 +8,21 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
 type buildSnapshot struct {
-	root  string
-	files map[string]captured
+	root   string
+	files  map[string]captured
+	guards []*os.File
+}
+
+func (s *buildSnapshot) close() {
+	for i := len(s.guards) - 1; i >= 0; i-- {
+		s.guards[i].Close()
+	}
+	s.guards = nil
 }
 
 func snapshotName(key string, modules []module) (string, error) {
@@ -33,6 +42,12 @@ func snapshotName(key string, modules []module) (string, error) {
 
 func materialize(p plan, tmp string) (buildSnapshot, error) {
 	s := buildSnapshot{root: tmp, files: map[string]captured{}}
+	complete := false
+	defer func() {
+		if !complete {
+			s.close()
+		}
+	}()
 	if p.manifest.SourceDigest != hash(jsonBytes(p.manifest.Sources)) || p.manifest.OptionsDigest != hash(jsonBytes(p.manifest.Options)) || p.manifest.ModuleDigest != hash(jsonBytes(p.manifest.Modules)) {
 		return s, fmt.Errorf("captured provenance mismatch")
 	}
@@ -75,6 +90,41 @@ func materialize(p plan, tmp string) (buildSnapshot, error) {
 			return s, err
 		}
 	}
+	// Parent-first retained directory guards bind the names used by Go. Each
+	// retained file is hashed through its guarded handle before build selection.
+	dirs := map[string]bool{tmp: true}
+	for path := range s.files {
+		for dir := filepath.Dir(path); dir != tmp; dir = filepath.Dir(dir) {
+			dirs[dir] = true
+		}
+	}
+	names := []string{}
+	for dir := range dirs {
+		names = append(names, dir)
+	}
+	sort.Strings(names)
+	for _, dir := range names {
+		guard, err := openImmutableInput(dir, true)
+		if err != nil {
+			return s, err
+		}
+		s.guards = append(s.guards, guard)
+	}
+	for path, f := range s.files {
+		guard, err := openImmutableInput(path, false)
+		if err != nil {
+			return s, err
+		}
+		s.guards = append(s.guards, guard)
+		b, err := io.ReadAll(guard)
+		if err != nil {
+			return s, err
+		}
+		if hash(b) != f.SHA256 || len(b) != f.Length {
+			return s, fmt.Errorf("sealed input integrity mismatch: %s", path)
+		}
+	}
+	complete = true
 	return s, nil
 }
 

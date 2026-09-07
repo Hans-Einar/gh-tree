@@ -28,7 +28,7 @@
     "-ldflags=-buildid= -linkmode=internal"
   ],
   "optionsDigest": "11280748ce283263d7be4d43e49f08b4aa9e870fc8b595e133ba4dd1c1e06cb3",
-  "sourceDigest": "1573f6fef6e93eb8c9608e358505a771bd671f7aad7eef47330828d2c4cf2a99",
+  "sourceDigest": "8b7e1ecac4c0510dd99b8bb5e09ea1f5ad1488858fbc979efae8d565ef4e53f6",
   "sources": [
     {
       "path": "module/golang.org/x/sys@v0.44.0/go.mod",
@@ -162,8 +162,8 @@
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/main.go",
-      "sha256": "5230ec3105b3caf06f3f3d251a846f1200874bb68b31a887420ddda3cb9e503a",
-      "length": 17016
+      "sha256": "8e4435c4a56a3d77c6db2f19b17bda12d58b8a27e64b216d75ab70aec2b39a73",
+      "length": 17040
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/modules.go",
@@ -186,9 +186,19 @@
       "length": 1703
     },
     {
+      "path": "recipe/internal/runtime/cmd/helpergen/seal_other.go",
+      "sha256": "5f6c60b66b70dd139bb978071246407eb35d4e9461f974409e69bb5863661361",
+      "length": 221
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/seal_windows.go",
+      "sha256": "f80e8a3d8c641fcb507219feaf5c0472e955aab60056082d9176f64594976332",
+      "length": 869
+    },
+    {
       "path": "recipe/internal/runtime/cmd/helpergen/snapshot.go",
-      "sha256": "972edde814c37fa5b1f71dc8661c9aa081ebc2d1e82d1c434fcbf8ee4c6b6da3",
-      "length": 5421
+      "sha256": "31ee6edfc09dd6a513b6cb8a5a5ce5f55c1d199bbcf4e73cd9f476b9a7600eab",
+      "length": 6582
     },
     {
       "path": "repo/go.mod",

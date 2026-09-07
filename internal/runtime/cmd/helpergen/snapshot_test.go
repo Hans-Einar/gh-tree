@@ -32,6 +32,12 @@ func TestBuildConsumesCapturedModuleAndToolchain(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	writeFixture(t, filepath.Join(owned.root, "source"), "internal/runtime/broker/unrecorded_windows.go", []byte("package broker\nconst Unrecorded = 1\n"))
+	if err := owned.verifySelection(initial, "amd64"); err == nil || !strings.Contains(err.Error(), "unrecorded selected build input") {
+		owned.close()
+		t.Fatalf("unrecorded selected snapshot file: %v", err)
+	}
+	owned.close() // This copy is deliberately the mutable external toolchain fixture.
 	t.Setenv("GOROOT", filepath.Join(owned.root, "goroot"))
 	p, err := capture(root)
 	if err != nil {
@@ -113,9 +119,11 @@ func TestSnapshotRejectsUnrecordedOrChangedBytes(t *testing.T) {
 	p.manifest.SourceDigest = hash(jsonBytes(p.manifest.Sources))
 	p.manifest.OptionsDigest = hash(jsonBytes(p.manifest.Options))
 	p.manifest.ModuleDigest = hash(jsonBytes(p.manifest.Modules))
-	if _, err := materialize(p, t.TempDir()); err != nil {
+	baseline, err := materialize(p, t.TempDir())
+	if err != nil {
 		t.Fatal(err)
 	}
+	baseline.close()
 	f.bytes = []byte("unrecorded")
 	p.files[f.Path] = f
 	if _, err := materialize(p, t.TempDir()); err == nil {

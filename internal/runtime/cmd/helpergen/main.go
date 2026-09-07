@@ -402,6 +402,7 @@ func build(p plan) (map[string][]byte, error) {
 	if e != nil {
 		return nil, e
 	}
+	defer snapshot.close()
 	images := map[string][]byte{}
 	for _, arch := range arches {
 		if e := snapshot.verifySelection(p, arch); e != nil {
