@@ -276,3 +276,14 @@ remaining material wording defect was found. No files/tests were changed/rerun i
 that confirmation. Master preserves this direct reviewer disposition here.
 M363-SRC-H01 remains open. This is wording confirmation only, not user approval,
 contract freeze, Windows product acceptance or complete #63 acceptance.
+
+## Bounded Windows metadata proposal review
+
+Independent reviewer m3_persistence_source_boundary_review inspected exact
+canonical99dbc840a557e89f0f361b4180b9219895c9f814 read-only and returned
+**READY FOR USER DECISION** for BC-CHANGE-PER-METADATA-01. The Windows metadata
+condition, publication lifetime, later edits, retained byte/object guards and valid
+uncertainty semantics are clear; separate user authority from Unix is explicit.
+No material wording defect was found. No files/tests were changed/rerun by this
+review. Master records that direct disposition here. M363-META-H01 stays open;
+no trust exception, refreeze or adapter acceptance is granted.

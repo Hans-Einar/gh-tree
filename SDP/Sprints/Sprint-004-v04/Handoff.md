@@ -69,7 +69,8 @@ acceptance does not close a full Runtime adapter or vertical Slice.
   has18PASS/FreeBSDFAIL/helperSKIP, nativeARM64PASS; independent reviewd5174fa6
   accepts byte integrity. HIGH M363-META-H01 independently reproduces prepared-DACL
   mutation through WRITE_DAC; metadata integrity remains open. A separate draft
-  BC-CHANGE-PER-METADATA-01 awaits independent wording review then user decision.
+  BC-CHANGE-PER-METADATA-01 is independently ready at99dbc840 and awaits explicit
+  user decision separately from the Unix choice. No metadata guarantee has changed.
   No no-birth mechanism, Windows trust exception or boundary waiver is claimed.
 
 ## Blockers and authority boundaries

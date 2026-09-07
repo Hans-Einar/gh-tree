@@ -794,7 +794,8 @@
       "metadataBoundaryProposal": {
         "id": "BC-CHANGE-PER-METADATA-01",
         "doc": "SDP/Implementation/CR-#21/M3-Adapters--001.md",
-        "state": "draft_independent_review_then_user_decision"
+        "state": "independently_reviewed_waiting_explicit_user_decision",
+        "reviewedSource": "99dbc840a557e89f0f361b4180b9219895c9f814"
       }
     },
     {
