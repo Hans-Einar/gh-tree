@@ -358,6 +358,49 @@ and new-client exact native macOS/FreeBSD/race evidence. #71 separately owns all
 twelve public Sessions methods, parent input/event/restart/shutdown orchestration
 and final real-client assembly. No shortened adapter or public stub is supplied.
 
+## Checkpoint 6: client residual precision and native CI corrections
+
+Exact9a73ffc CI34071112204 fails native Linux/macOS/FreeBSD and race, independently
+of the expected inventory failure. Inspected raw Linux job101588512087 and race
+job101588512130 logs plus actual FreeBSD artifact10000508196 (57,180 bytes),
+tests.jsonl SHA256 `EC0344F9B89767704FBED41F700E6E1F431A9866E03B25760B197D5AE2152D73`.
+The PTY assertion failed after size27 92 and echoed input; one race output already
+contained the executed marker after bracketed-paste ANSI. The fixture had sent ETX
+before proving the long-lived foreground command had started, and incorrectly
+required a particular surrounding CR/LF/ANSI shape.
+
+PTY test now runs a newly owned same-binary foreground fixture, waits for its
+non-echoable readiness marker and an actual changed terminal foreground group,
+then sends ETX. The followup marker is assembled by printf, so echoed source does
+not contain the expected full bytes; detection does not interpret/strip terminal
+ANSI. Product output remains raw. This proves delivery/observed fixture response
+without claiming every arbitrary child must act on ETX.
+
+Race failures in short native cleanup tests correspond to the instrumented
+helper's default one-second atexit sleep, which exceeds the injected short fixture
+budgets. Native test fixtures preserve existing GORACE options and append
+`atexit_sleep_ms=0` for their own subprocesses. Race instrumentation/reporting
+remains enabled; no tests are skipped and product2s/3s reporting defaults are
+unchanged. The default/meaning is documented by the primary
+[Go race-detector documentation](https://go.dev/doc/articles/race_detector).
+Corrected native race CI is still required before claiming these failures resolved.
+
+Client facts now include all still-unproved parent/native barriers while waiting,
+not just recorded failures. Atomic closed-file/callback/I/O/decoder/cwd facts
+prevent observations racing native close. Output callback panic is retained as a
+safe diagnostic and triggers owned cleanup. An injected blocked output owner
+remains a typed OutputCleanup residual through timeout; after its actual join,
+the repaired pending residual clears while the historical timeout remains. Local
+close errors are kept distinct and cannot be cleared by this repair.
+
+Actual ordinary-user Linux full broker suite PASS, including new blocked-output,
+late-join and callback-panic controls and the corrected foreground/ETX fixture;
+native directory `/tmp/gh-tree-runtime-native.99ZprM`. All nine Unix cross-compiles
+and Linux-selected vet PASS. Actual new-head native/race CI remains pending.
+Private client types/signatures and shared protocol/start source are unchanged.
+Remaining native failure/resource-count coverage and independent review stay
+separate from #71's twelve-method parent implementation.
+
 ## Next permitted work
 
 Commit/push this coherent partial checkpoint before further substantial work.

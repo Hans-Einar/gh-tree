@@ -12,10 +12,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
+	"golang.org/x/sys/unix"
 )
 
 func unixClientFixture(t *testing.T, mode string) (UnixConfig, *fixtureOutput) {
@@ -88,7 +90,7 @@ func TestNativeUnixClientLateStartCancelDoesNotKillPersistentRoot(t *testing.T) 
 	short, stop := context.WithTimeout(context.Background(), 30*time.Millisecond)
 	f, err := c.Wait(short)
 	stop()
-	if !errors.Is(err, context.DeadlineExceeded) || f.RootExited || f.CleanupComplete {
+	if !errors.Is(err, context.DeadlineExceeded) || f.RootExited || f.CleanupComplete || len(f.Residuals) == 0 {
 		t.Fatal("start context canceled persistent session", f, err)
 	}
 	began := time.Now()
@@ -101,6 +103,69 @@ func TestNativeUnixClientLateStartCancelDoesNotKillPersistentRoot(t *testing.T) 
 	}
 	if time.Since(began) > 1500*time.Millisecond {
 		t.Fatal("construction cleanup budgets were not applied")
+	}
+}
+
+func TestNativeUnixClientRetainsBlockedOutputOwnerUntilJoin(t *testing.T) {
+	config, _ := unixClientFixture(t, "--runtime-fixture-cwd")
+	entered := make(chan struct{})
+	release := make(chan struct{})
+	var once sync.Once
+	config.ForcePeriod = 20 * time.Millisecond
+	config.Output = func(_ api.OutputStream, _ []byte) { once.Do(func() { close(entered) }); <-release }
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	c, _, err := StartUnix(ctx, config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		select {
+		case <-release:
+		default:
+			close(release)
+		}
+		requireUnixClientCleanup(t, c)
+	}()
+	select {
+	case <-entered:
+	case <-ctx.Done():
+		t.Fatal("output owner did not enter")
+	}
+	short, stop := context.WithTimeout(context.Background(), 100*time.Millisecond)
+	f, err := c.Wait(short)
+	stop()
+	if !errors.Is(err, context.DeadlineExceeded) || f.CleanupComplete {
+		t.Fatal("blocked output falsely cleaned", f, err)
+	}
+	found := false
+	for _, r := range f.Residuals {
+		if r.Stage == api.OutputCleanup {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("missing retained output owner residual")
+	}
+	close(release)
+	f, err = c.Wait(ctx)
+	if !f.CleanupComplete || len(f.Residuals) != 0 || !errors.Is(err, errUnixJoinTimeout) {
+		t.Fatal("late output join did not repair current residual", f, err)
+	}
+}
+
+func TestNativeUnixClientOutputCallbackPanicIsOwned(t *testing.T) {
+	config, _ := unixClientFixture(t, "--runtime-fixture-cwd")
+	config.Output = func(_ api.OutputStream, _ []byte) { panic("owned callback fixture") }
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	c, start, err := StartUnix(ctx, config)
+	if c == nil || !start.Established {
+		t.Fatal("callback panic erased startup", start, err)
+	}
+	f, err := c.Wait(ctx)
+	if !f.CleanupComplete || err == nil || !strings.Contains(err.Error(), "callback panicked") || c.activeCallbacks.Load() != 0 {
+		t.Fatal("callback panic lost cleanup ownership", f, err)
 	}
 }
 
@@ -254,7 +319,7 @@ func TestNativeUnixClientPTYResizeInputAndETX(t *testing.T) {
 		config.Spec.Executable = "/bin/bash"
 		config.Spec.Arguments = []string{"--noprofile", "--norc", "-i"}
 	}
-	config.Spec.Environment = []string{"PATH=/bin:/usr/bin", "HISTFILE=/dev/null", "ENV=/dev/null", "HOME=" + config.Spec.RootLocator, "TERM=xterm"}
+	config.Spec.Environment = []string{"PATH=/bin:/usr/bin", "HISTFILE=/dev/null", "ENV=/dev/null", "HOME=" + config.Spec.RootLocator, "TERM=xterm", "GORACE=" + os.Getenv("GORACE")}
 	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
 	c, start, err := StartUnix(ctx, config)
@@ -267,11 +332,17 @@ func TestNativeUnixClientPTYResizeInputAndETX(t *testing.T) {
 	if d, err := c.Resize(ctx, 27, 92); err != nil || !d.Completed {
 		t.Fatal("native resize", d, err)
 	}
-	if d, err := c.Write(ctx, []byte("stty size; sleep 20\n")); err != nil || !d.Completed {
+	shellGroup := must(unix.IoctlGetInt(int(c.terminal.file.Fd()), unix.TIOCGPGRP))
+	command := "stty size; '" + strings.ReplaceAll(must(os.Executable()), "'", "'\\''") + "' --runtime-fixture-foreground\n"
+	if d, err := c.Write(ctx, []byte(command)); err != nil || !d.Completed {
 		t.Fatal("native PTY input", d, err)
 	}
 	deadline := time.Now().Add(2 * time.Second)
-	for !strings.Contains(output.text(), "27 92\r\n") {
+	for {
+		foreground := must(unix.IoctlGetInt(int(c.terminal.file.Fd()), unix.TIOCGPGRP))
+		if strings.Contains(output.text(), "27 92") && strings.Contains(output.text(), "__owned_foreground_ready__") && foreground != shellGroup {
+			break
+		}
 		if time.Now().After(deadline) {
 			t.Fatal("actual resize absent", output.text())
 		}
@@ -280,11 +351,11 @@ func TestNativeUnixClientPTYResizeInputAndETX(t *testing.T) {
 	if d, err := c.Interrupt(ctx); err != nil || !d.Completed || d.Delivered != 1 {
 		t.Fatal("ETX delivery", d, err)
 	}
-	if _, err := c.Write(ctx, []byte("printf '__owned_interrupt__\\n'\n")); err != nil {
+	if _, err := c.Write(ctx, []byte("printf '__owned_%s__\\n' interrupt\n")); err != nil {
 		t.Fatal(err)
 	}
 	deadline = time.Now().Add(2 * time.Second)
-	for !strings.Contains(output.text(), "\r\n__owned_interrupt__\r\n") {
+	for !strings.Contains(output.text(), "__owned_interrupt__") {
 		if time.Now().After(deadline) {
 			t.Fatal("foreground interrupt control absent", output.text())
 		}

@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/Hans-Einar/gh-tree/internal/application/api"
@@ -15,6 +16,10 @@ import (
 
 func nativeSpec(t *testing.T) StartSpec {
 	t.Helper()
+	// Keep race instrumentation enabled, but remove its artificial one-second
+	// process-exit sleep from these deliberately short owned-helper fixtures.
+	// Existing race options/reporting remain present. Product budgets are unchanged.
+	t.Setenv("GORACE", strings.TrimSpace(os.Getenv("GORACE")+" atexit_sleep_ms=0"))
 	root := must(filepath.EvalSymlinks(t.TempDir()))
 	project := filepath.Join(root, " project")
 	if err := os.Mkdir(project, 0700); err != nil {
@@ -28,6 +33,7 @@ func nativeSpec(t *testing.T) StartSpec {
 	projectFile := must(os.Open(project))
 	defer projectFile.Close()
 	spec := testSpec()
+	spec.Environment = append(spec.Environment, "GORACE="+os.Getenv("GORACE"))
 	spec.RootLocator = root
 	spec.RootIdentity = must(ObserveDirectory(rootFile, ""))
 	spec.ProjectIdentity = must(ObserveDirectory(projectFile, ""))

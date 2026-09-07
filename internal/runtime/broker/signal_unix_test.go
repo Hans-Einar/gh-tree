@@ -23,6 +23,10 @@ import (
 func TestMain(m *testing.M) {
 	if len(os.Args) == 2 {
 		switch os.Args[1] {
+		case "--runtime-fixture-foreground":
+			fmt.Println("__owned_foreground_ready__")
+			time.Sleep(20 * time.Second)
+			os.Exit(0)
 		case "--runtime-fixture-input-count":
 			data := make([]byte, 65536)
 			n, err := io.ReadFull(os.Stdin, data)
@@ -371,6 +375,7 @@ func signalFixtureSuite() (result error) {
 }
 
 func TestNativeAcquiredSignalHelpers(t *testing.T) {
+	t.Setenv("GORACE", strings.TrimSpace(os.Getenv("GORACE")+" atexit_sleep_ms=0"))
 	executable := must(os.Executable())
 	ctx, cancel := context.WithTimeout(context.Background(), 25*time.Second)
 	defer cancel()

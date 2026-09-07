@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -64,23 +65,25 @@ type UnixDelivery struct {
 }
 
 type unixFile struct {
-	file  *os.File
-	stage api.RuntimeCleanupStage
-	once  sync.Once
-	err   error
+	file   *os.File
+	stage  api.RuntimeCleanupStage
+	once   sync.Once
+	err    error
+	closed atomic.Bool
 }
 
 func (f *unixFile) close() error {
 	if f == nil {
 		return nil
 	}
-	f.once.Do(func() { f.err = f.file.Close() })
+	f.once.Do(func() { f.err = f.file.Close(); f.closed.Store(true) })
 	return f.err
 }
 
 var errUnixStartup = errors.New("Unix private startup failed before verified establishment")
 var errUnixCleanup = errors.New("Unix resource cleanup is incomplete")
 var errUnixObservation = errors.New("Unix native ownership observation failed")
+var errUnixJoinTimeout = errors.New("Unix output owner exceeded its join reporting period")
 
 // UnixClient owns the exact supervisor, retained cwd and every parent pipe/PTY
 // and I/O worker. It is one native resource owner, never a SessionID registry.
@@ -114,6 +117,10 @@ type UnixClient struct {
 	mayHaveStarted                  bool
 	outputWG                        sync.WaitGroup
 	ioWG                            sync.WaitGroup
+	activeIO                        atomic.Int32
+	activeCallbacks                 atomic.Int32
+	readerActive                    atomic.Bool
+	cwdClosed                       atomic.Bool
 	outputDone                      chan struct{}
 	writeGate                       chan struct{}
 	setupErr                        error
@@ -363,9 +370,46 @@ func (c *UnixClient) factLocked() UnixFact {
 	f := c.latest
 	f.Residuals = nil
 	f.Err = nil
+	pending := make(map[api.RuntimeCleanupStage]error)
+	if !f.CleanupComplete {
+		for _, file := range c.files {
+			if !file.closed.Load() {
+				pending[file.stage] = errUnixCleanup
+			} else if file.err != nil {
+				pending[file.stage] = file.err
+			}
+		}
+		if c.acquired != nil && !c.cwdClosed.Load() {
+			pending[api.CwdAcquisition] = errUnixCleanup
+		}
+		if c.cmd != nil {
+			select {
+			case <-c.processDone:
+			default:
+				pending[api.SupervisorOrBroker] = errUnixCleanup
+			}
+		}
+		if f.Established && !f.RootExited {
+			pending[api.UserProcessWait] = errUnixCleanup
+		}
+		if c.mayHaveStarted && !f.Quiescent {
+			pending[api.Descendants] = errUnixCleanup
+		}
+		if c.activeIO.Load() != 0 {
+			pending[api.InputCleanup] = errUnixCleanup
+		}
+		if c.readerActive.Load() {
+			pending[api.ControlCleanup] = errUnixCleanup
+		}
+		select {
+		case <-c.outputDone:
+		default:
+			pending[api.OutputCleanup] = errUnixCleanup
+		}
+	}
 	for stage := api.Acquisition; stage <= api.EventTransfer; stage++ {
 		f.Err = errors.Join(f.Err, c.diagnostics[stage])
-		if err := errors.Join(c.residuals[stage], c.reported[stage]); err != nil {
+		if err := errors.Join(c.residuals[stage], c.reported[stage], pending[stage]); err != nil {
 			f.Residuals = append(f.Residuals, UnixResidual{stage, err})
 		}
 	}
@@ -383,11 +427,17 @@ func (c *UnixClient) finishStart() { c.startOnce.Do(func() { close(c.startDone) 
 
 func (c *UnixClient) drain(file *unixFile, stream api.OutputStream) {
 	defer c.outputWG.Done()
+	defer func() {
+		if recover() != nil {
+			c.record(errors.New("Unix output owner callback panicked"), api.OutputCleanup, false)
+			c.Stop()
+		}
+	}()
 	buffer := make([]byte, 32<<10)
 	for {
 		n, err := file.file.Read(buffer)
 		if n > 0 {
-			c.config.Output(stream, append([]byte(nil), buffer[:n]...))
+			c.deliverOutput(stream, buffer[:n])
 		}
 		if err != nil {
 			if err != io.EOF && !(c.config.Spec.Terminal && errors.Is(err, syscall.EIO)) && !errors.Is(err, os.ErrClosed) {
@@ -406,6 +456,12 @@ func (c *UnixClient) send(op Opcode, payload []byte) error {
 		return err
 	}
 	return c.channel.Send(op, payload)
+}
+
+func (c *UnixClient) deliverOutput(stream api.OutputStream, data []byte) {
+	c.activeCallbacks.Add(1)
+	defer c.activeCallbacks.Add(-1)
+	c.config.Output(stream, append([]byte(nil), data...))
 }
 
 func (c *UnixClient) run() {
@@ -434,6 +490,7 @@ func (c *UnixClient) run() {
 	frames := make(chan parentFrame, 1)
 	readerDone := make(chan struct{})
 	readerStop := make(chan struct{})
+	c.readerActive.Store(true)
 	go func() {
 		defer close(readerDone)
 		for {
@@ -489,6 +546,7 @@ loop:
 				c.mu.Unlock()
 				if c.acquired != nil {
 					c.record(c.acquired.Close(), api.CwdAcquisition, true)
+					c.cwdClosed.Store(true)
 				}
 				c.publish()
 				c.finishStart()
@@ -565,6 +623,7 @@ loop:
 	close(readerStop)
 	c.record(c.reply.close(), api.ControlCleanup, true)
 	<-readerDone
+	c.readerActive.Store(false)
 	c.joinAndClose(quiet)
 	c.mu.Lock()
 	if quiet {
@@ -593,11 +652,24 @@ func (c *UnixClient) joinAndClose(quiet bool) {
 	select {
 	case <-c.outputDone:
 	case <-time.After(c.config.ForcePeriod):
-		c.record(errUnixCleanup, api.OutputCleanup, true)
+		blockedCallback := c.activeCallbacks.Load() > 0
+		c.record(errUnixJoinTimeout, api.OutputCleanup, true)
 		for _, file := range c.outputs {
 			c.record(file.close(), file.stage, true)
 		}
 		<-c.outputDone // callbacks/readers remain owned until they actually join
+		if blockedCallback {
+			for _, file := range c.outputs {
+				if file.err != nil {
+					blockedCallback = false
+				}
+			}
+		}
+		if blockedCallback {
+			c.mu.Lock()
+			delete(c.residuals, api.OutputCleanup)
+			c.mu.Unlock()
+		}
 	}
 	for _, file := range c.files {
 		c.record(file.close(), file.stage, true)
@@ -605,6 +677,7 @@ func (c *UnixClient) joinAndClose(quiet bool) {
 	c.ioWG.Wait()
 	if c.acquired != nil {
 		c.record(c.acquired.Close(), api.CwdAcquisition, true)
+		c.cwdClosed.Store(true)
 	}
 }
 
@@ -637,12 +710,13 @@ func (c *UnixClient) Write(ctx context.Context, data []byte) (UnixDelivery, erro
 	allowed := c.latest.Established && !c.stopping && !c.latest.Quiescent
 	if allowed {
 		c.ioWG.Add(1)
+		c.activeIO.Add(1)
 	}
 	c.mu.Unlock()
 	if !allowed || c.input == nil {
 		return UnixDelivery{}, ErrProtocol
 	}
-	defer c.ioWG.Done()
+	defer func() { c.activeIO.Add(-1); c.ioWG.Done() }()
 	if err := ctx.Err(); err != nil {
 		return UnixDelivery{}, err
 	}
@@ -693,12 +767,13 @@ func (c *UnixClient) Resize(ctx context.Context, rows, columns uint16) (UnixDeli
 	allowed := c.latest.Established && !c.stopping && !c.latest.Quiescent
 	if allowed {
 		c.ioWG.Add(1)
+		c.activeIO.Add(1)
 	}
 	c.mu.Unlock()
 	if !allowed {
 		return UnixDelivery{}, ErrProtocol
 	}
-	defer c.ioWG.Done()
+	defer func() { c.activeIO.Add(-1); c.ioWG.Done() }()
 	err := pty.Setsize(c.terminal.file, &pty.Winsize{Rows: rows, Cols: columns})
 	return UnixDelivery{Completed: err == nil}, err
 }
