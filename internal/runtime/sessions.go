@@ -359,17 +359,47 @@ func (r *sessions) observe(s *session, owner nativeOwner) {
 		if complete {
 			s.mu.Lock()
 			s.observing = false
+			s.reobserve = false
 			s.mu.Unlock()
 			r.finalize(s)
 			return
 		}
 		if err != nil {
 			s.mu.Lock()
-			s.observing = false
+			retry := s.reobserve
+			s.reobserve = false
+			s.observing = retry
 			s.stopSent = false
+			close(s.changed)
+			s.changed = make(chan struct{})
 			s.mu.Unlock()
+			if retry {
+				r.requestStop(s)
+				continue
+			}
 			return
-		} // retained owner; a later Stop may restart observation
+		} // retained owner; an external cleanup request may resume observation
+	}
+}
+
+// Stop and Shutdown share one observation owner. A request arriving before an
+// incomplete-error handoff grants at most one further attempt; the observer
+// consumes that request instead of polling a permanently failed native owner.
+// Initial acquisition owns observation until startPending clears.
+func (r *sessions) requestCleanup(s *session) {
+	s.mu.Lock()
+	owner := s.owner
+	resume := !s.nativeClean && !s.startPending && owner != nil && !s.observing
+	if resume {
+		s.observing = true
+		s.reobserve = false
+	} else if !s.nativeClean {
+		s.reobserve = true
+	}
+	s.mu.Unlock()
+	r.requestStop(s)
+	if resume {
+		go r.observe(s, owner)
 	}
 }
 

@@ -35,17 +35,7 @@ func (r *sessions) stop(ctx context.Context, s *session) (api.SessionStopResult,
 	if !supported {
 		return s.stopResult(ctx.Err() != nil), errUnsupported
 	}
-	r.requestStop(s)
-	s.mu.Lock()
-	owner := s.owner
-	reobserve := owner != nil && !s.observing && !s.nativeClean
-	if reobserve {
-		s.observing = true
-	}
-	s.mu.Unlock()
-	if reobserve {
-		go r.observe(s, owner)
-	}
+	r.requestCleanup(s)
 	wait, cancel := context.WithTimeout(ctx, r.budgets.grace+r.budgets.force)
 	defer cancel()
 	err := r.waitCleanup(wait, s)
@@ -56,12 +46,13 @@ func (r *sessions) waitCleanup(ctx context.Context, s *session) error {
 	for {
 		s.mu.Lock()
 		phase := s.snapshot.Data().Phase
+		observing := s.observing
 		changed := s.changed
 		s.mu.Unlock()
 		if phase == api.Cleaned {
 			return nil
 		}
-		if phase == api.CleanupFailed {
+		if phase == api.CleanupFailed && !observing {
 			return errCleanup
 		}
 		select {
@@ -204,7 +195,7 @@ func (r *sessions) Shutdown(ctx context.Context) api.RuntimeShutdownResult {
 	all := r.registry.closeAdmission()
 	r.admission.Unlock()
 	for _, s := range all {
-		r.requestStop(s)
+		r.requestCleanup(s)
 	}
 	wait, cancel := context.WithTimeout(ctx, r.budgets.shutdown)
 	defer cancel()

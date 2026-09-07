@@ -32,6 +32,7 @@ type session struct {
 	producers    int
 	controlBusy  bool
 	observing    bool
+	reobserve    bool // one coalesced external recovery request across an error
 	acquired     api.Optional[api.AcquiredCwd]
 	exit         api.Optional[api.SessionExit]
 	diagnostics  map[api.RuntimeCleanupStage]api.Diagnostic
