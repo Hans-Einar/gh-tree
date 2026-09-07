@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"os"
@@ -103,7 +104,13 @@ func verifyCapturedModule(m listedModule, p *plan) error {
 	}
 	// Go's offline module loader needs only these derived records alongside the
 	// authenticated selected source tree. They introduce no mutable cache input.
-	for ext, b := range map[string][]byte{"mod": mod, "ziphash": []byte(expected), "info": jsonBytes(struct{ Version string }{m.Version})} {
+	// Match Go1.25's compact RevInfo encoding exactly. A pretty/partial record
+	// makes readDiskStat attempt a cache rewrite even for an offline read.
+	info, err := json.Marshal(struct{ Version, Time string }{m.Version, "0001-01-01T00:00:00Z"})
+	if err != nil {
+		return err
+	}
+	for ext, b := range map[string][]byte{"mod": mod, "ziphash": []byte(expected), "info": info} {
 		key := "modulemeta/" + escapeModule(m.Path) + "/@v/" + escapeModule(m.Version) + "." + ext
 		p.files[key] = captured{source: source{key, hash(b), len(b)}, bytes: append([]byte(nil), b...)}
 	}

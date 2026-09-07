@@ -18,6 +18,7 @@
     "GOTOOLCHAIN=local",
     "GO111MODULE=on",
     "inputs=isolated-recorded-tree",
+    "input-set=continuous-native-name-invalidation",
     "GOPROXY=off",
     "GOSUMDB=off",
     "gzip=best-compression,mtime=0,os=255,name=,comment=",
@@ -27,8 +28,8 @@
     "-pgo=off",
     "-ldflags=-buildid= -linkmode=internal"
   ],
-  "optionsDigest": "11280748ce283263d7be4d43e49f08b4aa9e870fc8b595e133ba4dd1c1e06cb3",
-  "sourceDigest": "8b7e1ecac4c0510dd99b8bb5e09ea1f5ad1488858fbc979efae8d565ef4e53f6",
+  "optionsDigest": "c194785949e99caf833b820c140ff864cb7e9bdf61f45e8de817ddbfd1e2f34f",
+  "sourceDigest": "3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968",
   "sources": [
     {
       "path": "module/golang.org/x/sys@v0.44.0/go.mod",
@@ -132,8 +133,8 @@
     },
     {
       "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.info",
-      "sha256": "68279b1eed15e0cffc55f04bbf8239a6d5194da8cc48c32b560168ab06c535eb",
-      "length": 27
+      "sha256": "bb310f9a0ff5c8a45525eb9feae97583aaea040c79e31d99ab27c8ff2dd80aaa",
+      "length": 51
     },
     {
       "path": "modulemeta/golang.org/x/sys/@v/v0.44.0.mod",
@@ -162,13 +163,13 @@
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/main.go",
-      "sha256": "8e4435c4a56a3d77c6db2f19b17bda12d58b8a27e64b216d75ab70aec2b39a73",
-      "length": 17040
+      "sha256": "4c7d0ff0f2a83433ac7257ce110c23dae768d7016bad1314463af3b78595d45f",
+      "length": 17209
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/modules.go",
-      "sha256": "a1d5156261ca7ec09f07af3a53ab9dab520544f09b3c1d35e3e7e18f7185df69",
-      "length": 3921
+      "sha256": "348722b87ec90998584ca4626486ea436026e7b5b4cdca0e29ffc8ddf4ca5844",
+      "length": 4173
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/path_other.go",
@@ -197,8 +198,18 @@
     },
     {
       "path": "recipe/internal/runtime/cmd/helpergen/snapshot.go",
-      "sha256": "31ee6edfc09dd6a513b6cb8a5a5ce5f55c1d199bbcf4e73cd9f476b9a7600eab",
-      "length": 6582
+      "sha256": "98b3f58a03683c7cdebcb972623bc3f20341042b509ba21f599d39fd8d5976c0",
+      "length": 9293
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/watch_other.go",
+      "sha256": "4ced4f6d3d5532ec31fce3f765e91a38a2918ff27f3a33fc48fa80fb7aa27a6f",
+      "length": 459
+    },
+    {
+      "path": "recipe/internal/runtime/cmd/helpergen/watch_windows.go",
+      "sha256": "1aac7dd976d8de52640933d795a27261b286353e4afb7d9ed14f3f31221541da",
+      "length": 4175
     },
     {
       "path": "repo/go.mod",

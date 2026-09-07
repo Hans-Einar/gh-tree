@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -13,16 +14,23 @@ import (
 )
 
 type buildSnapshot struct {
-	root   string
-	files  map[string]captured
-	guards []*os.File
+	root    string
+	files   map[string]captured
+	guards  []*os.File
+	watches []*directoryWatch
 }
 
-func (s *buildSnapshot) close() {
+func (s *buildSnapshot) close() error {
+	var result error
+	for i := len(s.watches) - 1; i >= 0; i-- {
+		result = errors.Join(result, s.watches[i].close())
+	}
+	s.watches = nil
 	for i := len(s.guards) - 1; i >= 0; i-- {
-		s.guards[i].Close()
+		result = errors.Join(result, s.guards[i].Close())
 	}
 	s.guards = nil
+	return result
 }
 
 func snapshotName(key string, modules []module) (string, error) {
@@ -40,12 +48,16 @@ func snapshotName(key string, modules []module) (string, error) {
 	return "", fmt.Errorf("unattributed snapshot input %q", key)
 }
 
-func materialize(p plan, tmp string) (buildSnapshot, error) {
-	s := buildSnapshot{root: tmp, files: map[string]captured{}}
+func materialize(p plan, tmp string) (s buildSnapshot, resultErr error) {
+	return materializeWithWatch(p, tmp, openDirectoryWatch)
+}
+
+func materializeWithWatch(p plan, tmp string, watchDirectory func(string) (*directoryWatch, error)) (s buildSnapshot, resultErr error) {
+	s = buildSnapshot{root: tmp, files: map[string]captured{}}
 	complete := false
 	defer func() {
 		if !complete {
-			s.close()
+			resultErr = errors.Join(resultErr, s.close())
 		}
 	}()
 	if p.manifest.SourceDigest != hash(jsonBytes(p.manifest.Sources)) || p.manifest.OptionsDigest != hash(jsonBytes(p.manifest.Options)) || p.manifest.ModuleDigest != hash(jsonBytes(p.manifest.Modules)) {
@@ -85,7 +97,7 @@ func materialize(p plan, tmp string) (buildSnapshot, error) {
 		}
 		s.files[path] = f
 	}
-	for _, name := range []string{"work", "cache", "gopath", "modcache"} {
+	for _, name := range []string{"work", "cache", "gopath", "source", "goroot", "modcache"} {
 		if err := os.MkdirAll(filepath.Join(tmp, name), 0700); err != nil {
 			return s, err
 		}
@@ -93,6 +105,9 @@ func materialize(p plan, tmp string) (buildSnapshot, error) {
 	// Parent-first retained directory guards bind the names used by Go. Each
 	// retained file is hashed through its guarded handle before build selection.
 	dirs := map[string]bool{tmp: true}
+	for _, name := range []string{"source", "goroot", "modcache"} {
+		dirs[filepath.Join(tmp, name)] = true
+	}
 	for path := range s.files {
 		for dir := filepath.Dir(path); dir != tmp; dir = filepath.Dir(dir) {
 			dirs[dir] = true
@@ -124,11 +139,62 @@ func materialize(p plan, tmp string) (buildSnapshot, error) {
 			return s, fmt.Errorf("sealed input integrity mismatch: %s", path)
 		}
 	}
+	// Acquire after opening the retained byte guards. Children precede parents
+	// so our initial native directory acquisition is outside its parent's watch.
+	// The entire set is validated only after ALL watches have been granted.
+	for i := len(names) - 1; i >= 0; i-- {
+		if names[i] == tmp {
+			continue
+		}
+		watch, err := watchDirectory(names[i])
+		if err != nil {
+			return s, err
+		}
+		s.watches = append(s.watches, watch)
+	}
+	// Once every directory is continuously watched, validate the initial entire
+	// input set, including non-Go/embed/include candidates. This closes the
+	// materialization-to-watch interval; later changes latch kernel invalidation.
+	for _, name := range []string{"source", "goroot", "modcache"} {
+		err := filepath.WalkDir(filepath.Join(tmp, name), func(path string, d os.DirEntry, e error) error {
+			if e != nil {
+				return e
+			}
+			if d.Type()&os.ModeSymlink != 0 {
+				return fmt.Errorf("redirected snapshot input %q", path)
+			}
+			if d.IsDir() {
+				if !dirs[path] {
+					return fmt.Errorf("unrecorded snapshot directory %q", path)
+				}
+				return nil
+			}
+			if _, ok := s.files[path]; !ok {
+				return fmt.Errorf("unrecorded snapshot file %q", path)
+			}
+			return nil
+		})
+		if err != nil {
+			return s, err
+		}
+	}
+	if err := s.checkDirectories(); err != nil {
+		return s, err
+	}
 	complete = true
 	return s, nil
 }
 
 func (s buildSnapshot) command(arch string, args ...string) ([]byte, error) {
+	return s.commandAfterStart(arch, nil, args...)
+}
+
+// The observer is a private test seam at the actual child-start boundary.
+// Production always passes nil; no test substitutes a fake Go build result.
+func (s buildSnapshot) commandAfterStart(arch string, started func(), args ...string) ([]byte, error) {
+	if err := s.checkDirectories(); err != nil {
+		return nil, err
+	}
 	overrides := map[string]string{"GOROOT": filepath.Join(s.root, "goroot"), "GOPATH": filepath.Join(s.root, "gopath"), "GOMODCACHE": filepath.Join(s.root, "modcache"), "GOTMPDIR": filepath.Join(s.root, "work"), "TEMP": filepath.Join(s.root, "work"), "TMP": filepath.Join(s.root, "work")}
 	env := []string{}
 	for _, line := range environment(arch, filepath.Join(s.root, "cache")) {
@@ -142,11 +208,33 @@ func (s buildSnapshot) command(arch string, args ...string) ([]byte, error) {
 	}
 	cmd := exec.Command(filepath.Join(s.root, "goroot", "bin", "go.exe"), args...)
 	cmd.Dir, cmd.Env = filepath.Join(s.root, "source"), env
-	b, err := cmd.CombinedOutput()
+	var output bytes.Buffer
+	cmd.Stdout, cmd.Stderr = &output, &output
+	err := cmd.Start()
+	if err == nil {
+		if started != nil {
+			started()
+		}
+		err = cmd.Wait()
+	}
+	guardErr := s.checkDirectories()
+	if guardErr != nil {
+		return nil, errors.Join(guardErr, err)
+	}
+	b := output.Bytes()
 	if err != nil {
 		return nil, fmt.Errorf("isolated go %s: %w\n%s", strings.Join(args, " "), err, b)
 	}
 	return b, nil
+}
+
+func (s buildSnapshot) checkDirectories() error {
+	for _, watch := range s.watches {
+		if err := watch.check(); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Re-select using the copied Go executable and only the copied source roots.

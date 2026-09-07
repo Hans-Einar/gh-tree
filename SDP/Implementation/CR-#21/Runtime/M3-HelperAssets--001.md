@@ -1,15 +1,18 @@
 # M3 Runtime helper assets — Issue #70
 
-## Input-set correction in progress (Master94f00a9e / ledger88)
+## Current input-set correction (Master94f00a9e / ledger88)
 
 The fresh re-review at `f6128251a0510021191880be658b705528fcc606` keeps H70-H01
-OPEN: post-selection source insertion is consumed by Go's subsequent selection.
+OPEN at its reviewed source: post-selection source insertion was consumed by
+Go's subsequent selection. This checkpoint corrects that continuation and is
+pending final exact-source checks and independent re-review.
 Existing-byte protection remains valid, and H70-M02/M03 are independently
 RESOLVED. Exact technical732fd9bb CI34071597307 passed20/20, but that does not
 exercise or resolve this continuation. The historical candidate summary below
 is superseded by this section until a new reviewed correction exists.
 
-Bounded native mechanism evidence on Windows amd64 Go1.25.0:
+Bounded native mechanism evidence on Windows amd64 Go1.25.0, preserved at
+`2b510264b448ed5cfd3c5e660f24b035cc22a948`:
 
 - An atomic NtCreateFile directory with OWNER RIGHTS and denied fresh
   WRITE_DAC/WRITE_OWNER/addition access blocks ordinary creation and permission
@@ -20,23 +23,47 @@ Bounded native mechanism evidence on Windows amd64 Go1.25.0:
   t.TempDir cleanup completed; no permission change outside those new fixtures
   or rejected-cache cleanup was attempted. It is not product code or a passing
   immutable-materialization mechanism.
-- `TestDirectoryOplockContinuousInvalidationProbe` passes. A native directory R
+- `TestDirectoryOplockContinuousInvalidationProbe` passes its bounded cases. A native directory R
   oplock stays pending without changes. A new file added and removed using a
   directory mutator handle opened BEFORE watcher acquisition durably breaks
   it (level1 to0); restoration cannot erase that notification. An unchanged
   request is canceled and joined; writes after release succeed. Directory
-  watches are advisory, so the proposed acceptance mechanism must reject any
-  invalidated build, never claim the write itself was prevented. The native
+  watches are advisory. Actual copied-tree wiring additionally exposed benign
+  child Stat/Open/ReadDir invalidations with system-managed Last Access updates
+  enabled. Reordering acquisition did not repair that limitation; no rearming
+  or global timestamp-policy change was adopted. The native
   [oplock contract](https://learn.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-fsctl_request_oplock)
   supplies continuous invalidation rather than a before/after scan.
 
-Next: Master assesses that equivalent consumed-input verification mechanism;
-then wire acquisition before selection, sticky invalidation through actual
-copied-Go exit, materialization-interval validation, and joined release into
-the bounded build path. Actual post-selection source/embed insertion and clean
-build controls, regeneration, exact checker and independent re-review remain.
-No H01 correction, full helper acceptance or newer Windows-source adoption is
-claimed by these probes.
+Master approved the bounded replacement: one queued asynchronous
+[ReadDirectoryChangesW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw)
+FILE_NAME|DIR_NAME request for every input directory. The request is never
+rearmed. Every completion/error/zero-byte overflow permanently invalidates the
+build, including insertion followed by removal through a previously granted
+handle. Existing native file-byte and root/ancestor guards remain held. After
+all requests are queued, the initial entire input set is checked, covering the
+materialization interval; requests then remain alive through actual copied-Go
+exit. Release distinguishes our own after-build cancellation from raced/early
+completion and cancels/joins every request before freeing aligned buffers,
+events or handles. No ACL, privilege, policy or trust-scope exception is used.
+
+Targeted actual controls pass: unchanged two-build amd64/ARM64 images retain
+recorded external bytes; source and wildcard-embedded data inserted/removed
+AFTER the real Go child starts invalidate otherwise successful builds; after-
+selection hardlink/rename and pre-watch granted directory-handle insertion/
+restoration refuse both targets. Native zero-byte overflow, unexpected early
+cancellation,16 close/write races, ordinary read stability, unsupported refusal
+and partial-acquisition cancel/join/handle-release controls pass. The guard
+also exposed Go1.25 attempting to canonicalize our generated .info metadata;
+it now uses exact compact RevInfo encoding, retaining the same verified pins.
+
+Actual guarded regeneration passes with917 inputs, digest
+`3817c9a3a9bde9aff8413e2404066b790e721f26f3ebd614d95a367b26335968`.
+Both gzip/image byte arrays remain the fixed ab608 outputs below. Next: final
+exact-source checker/no-rewrite/package checks, then the same independent
+reviewer inspects this corrected source. No helper/Runtime/Slice acceptance or
+newer Windows-source adoption is claimed. Historical details below apply only
+at their explicitly recorded prior SHAs.
 
 Disposition: corrected bounded candidate frozen for independent re-review.
 Technical source: `732fd9bbfe1dad7430f71ceca8270283b82a29d7`.

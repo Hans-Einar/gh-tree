@@ -8,6 +8,7 @@ import (
 	"debug/pe"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"go/ast"
@@ -169,7 +170,7 @@ func admit(root string) error {
 
 func capture(root string) (plan, error) {
 	p := plan{files: map[string]captured{}, targetSources: map[string][]source{}, targetIncludes: map[string]map[string]bool{}}
-	p.manifest = manifest{Schema: 1, Toolchain: "go1.25.0", Builder: "windows/amd64", Options: append([]string{"CGO_ENABLED=0", "GOOS=windows", "GOAMD64=v1", "GOARM64=v8.0", "GO386=sse2", "GOARM=7", "GOEXPERIMENT=", "GOFIPS140=off", "GOWORK=off", "GOTOOLCHAIN=local", "GO111MODULE=on", "inputs=isolated-recorded-tree", "GOPROXY=off", "GOSUMDB=off", "gzip=best-compression,mtime=0,os=255,name=,comment="}, buildFlags...)}
+	p.manifest = manifest{Schema: 1, Toolchain: "go1.25.0", Builder: "windows/amd64", Options: append([]string{"CGO_ENABLED=0", "GOOS=windows", "GOAMD64=v1", "GOARM64=v8.0", "GO386=sse2", "GOARM=7", "GOEXPERIMENT=", "GOFIPS140=off", "GOWORK=off", "GOTOOLCHAIN=local", "GO111MODULE=on", "inputs=isolated-recorded-tree", "input-set=continuous-native-name-invalidation", "GOPROXY=off", "GOSUMDB=off", "gzip=best-compression,mtime=0,os=255,name=,comment="}, buildFlags...)}
 	p.manifest.OptionsDigest = hash(jsonBytes(p.manifest.Options))
 	add := func(key, path, repoPath string, text bool) error {
 		b, e := os.ReadFile(path)
@@ -392,17 +393,17 @@ func contained(root, path string) (string, error) {
 	return filepath.ToSlash(r), nil
 }
 
-func build(p plan) (map[string][]byte, error) {
+func build(p plan) (_ map[string][]byte, resultErr error) {
 	tmp, e := os.MkdirTemp("", "gh-tree-helpergen-")
 	if e != nil {
 		return nil, e
 	}
-	defer os.RemoveAll(tmp)
+	defer func() { resultErr = errors.Join(resultErr, os.RemoveAll(tmp)) }()
 	snapshot, e := materialize(p, tmp)
 	if e != nil {
 		return nil, e
 	}
-	defer snapshot.close()
+	defer func() { resultErr = errors.Join(resultErr, snapshot.close()) }()
 	images := map[string][]byte{}
 	for _, arch := range arches {
 		if e := snapshot.verifySelection(p, arch); e != nil {

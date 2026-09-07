@@ -33,7 +33,7 @@ func TestBuildConsumesCapturedModuleAndToolchain(t *testing.T) {
 		t.Fatal(err)
 	}
 	writeFixture(t, filepath.Join(owned.root, "source"), "internal/runtime/broker/unrecorded_windows.go", []byte("package broker\nconst Unrecorded = 1\n"))
-	if err := owned.verifySelection(initial, "amd64"); err == nil || !strings.Contains(err.Error(), "unrecorded selected build input") {
+	if err := owned.verifySelection(initial, "amd64"); err == nil || !strings.Contains(err.Error(), "input directory invalidated") {
 		owned.close()
 		t.Fatalf("unrecorded selected snapshot file: %v", err)
 	}
