@@ -610,6 +610,19 @@
         "IMPL72"
       ],
       "scope": "native components only; parent and full Runtime remain"
+    },
+    {
+      "from": "IMPL71",
+      "relation": "bounded_common_engine_accepted",
+      "to": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
+      "reviewHead": "01641986c702b9c6a1abd176586b4d58b39f13fa"
+    },
+    {
+      "from": "IMPL63",
+      "relation": "bounded_fault_resource_delta_accepted",
+      "to": "ff40e32dcebf36c7182f757b0bc5cb2bdfe08cf8",
+      "reviewHead": "5380629ec23552cdb750f15aeb50bc5260438c5a",
+      "ci": 34080421099
     }
   ],
   "errata": [

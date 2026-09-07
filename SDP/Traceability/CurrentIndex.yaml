@@ -689,7 +689,7 @@
       "id": "IMPL63",
       "kind": "implementation_contribution",
       "issue": 63,
-      "state": "bounded_fault_resource_candidate_independent_review_ready",
+      "state": "bounded_fault_resource_accepted_full_adapter_open",
       "layer": "Persistence",
       "slices": [
         "SLC-01",
@@ -713,14 +713,14 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "lastCheckpoint": "3772fafc903ccb153a8604230b4143b7e7433e0f",
+      "lastCheckpoint": "5380629ec23552cdb750f15aeb50bc5260438c5a",
       "checkpointScope": "all6 methods present; bounded Windows identity correction independently accepted; full adapter open",
       "sourceCI": {
         "head": "bfdc79c2289274636f66574a3c86f467bb993615",
         "run": 34066675310,
         "result": "18 SUCCESS, native FreeBSD FAILURE, expected helper skip; full adapter gate failing"
       },
-      "activeWorker": "m3_persistence_completion_worker",
+      "activeWorker": null,
       "pendingNativeFinding": "FreeBSD user scope decision, no-birth association, Unix source-name interval and full fault/resource gates remain",
       "sharedPrerequisiteAdoption": "8a8a987413fa00bff202aa1013ec837d581e3c9f",
       "adoptionCheck": "owned source tree unchanged; Windows package compile-only PASS; branch pushed; combined CI pending",
@@ -760,7 +760,9 @@
       "identityDisposition": "ACCEPT bounded correction; no implementation findings; no full adapter or integration acceptance",
       "remainingPassBase": "53de3e1daea2c7ffd0fe6c6bdf365a8c2160357f",
       "remainingPassScope": "Concrete remaining native fault/resource/admission gaps only; existing profile/trust decisions not waived",
-      "remainingPassReview": "SDP/Implementation/CR-#21/Persistence/M3-Fault-Resource-Review--001.md"
+      "remainingPassReview": "SDP/Implementation/CR-#21/Persistence/M3-Fault-Resource-Review--001.md",
+      "remainingPassReviewHead": "5380629ec23552cdb750f15aeb50bc5260438c5a",
+      "remainingPassDisposition": "ACCEPT admission/fault/resource delta, no findings; full profile/association/source-name gates open"
     },
     {
       "id": "IMPL64",
@@ -804,7 +806,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "native_integration_fixture_correction_authorized",
+      "state": "native_integration_windows_cleanup_investigation",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -828,16 +830,16 @@
       "worktreeCreated": true,
       "activeWorker": "m3_runtime_worker",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "510139d18da16a0d42c62ee88fba8053813f2b13",
+      "lastCheckpoint": "bab42e903f94edba3fe35d20187087aa0e2eddb1",
       "subContributions": [
         "IMPL69",
         "IMPL71",
         "IMPL72"
       ],
       "latestVerification": {
-        "head": "510139d18da16a0d42c62ee88fba8053813f2b13",
-        "run": 34080586354,
-        "result": "19 SUCCESS, FreeBSD blocked-output test FAILURE; returned fact is fully clean/error nil, fixture expected historical join timeout. Exact native cause/synchronization correction required."
+        "head": "941f4be195bf1a0fefdb13d41e13435e0628bf76",
+        "run": 34081403751,
+        "result": "19 SUCCESS; only Windows ARM64 extracted lifecycle FAILURE: final cleaned/empty residuals plus historical helper-extraction permission error. Unix fixture corrected; Windows cause/postconditions require investigation."
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
@@ -852,7 +854,8 @@
         "M65-U02"
       ],
       "nativeIntegrationHead": "510139d18da16a0d42c62ee88fba8053813f2b13",
-      "nativeIntegrationChecks": "Windows root/broker/assets race PASS; all12 architecture, Runtime vet, exact955-input helper rebuild PASS; committed-head CI pending"
+      "nativeIntegrationChecks": "Windows root/broker/assets race PASS; all12 architecture, Runtime vet, exact955-input helper rebuild PASS; committed-head CI pending",
+      "nativeIntegrationTestSource": "941f4be195bf1a0fefdb13d41e13435e0628bf76"
     },
     {
       "id": "IMPL66",
@@ -1026,7 +1029,7 @@
       "id": "IMPL71",
       "kind": "runtime_parent_contribution",
       "issue": 71,
-      "state": "remaining_startup_sequence_correction_authorized",
+      "state": "common_parent_engine_accepted_held_for_native_gate",
       "baseCandidate": "6be865b36e40ec47c7a59f3a42e27bcf1a0d6f9d",
       "scope": "internal/runtime root Go/tests/README and M3-Sessions report only; private broker clients owned separately",
       "branch": "codex/cr21-runtime-sessions",
@@ -1035,8 +1038,8 @@
       "workerBase": "c3f23b89610a8695125fcd881711a929c7828374",
       "phase": "common parent lifecycle/12 methods through unexported test-only nativeOwner construction; real production bridges after reviewed native/assets bindings",
       "nativeBaseState": "known M65-U01/U02 under separate correction; no native acceptance implied",
-      "lastCheckpoint": "15eed03fed36f844d6f7d50001a62760c5dddec0",
-      "technicalSource": "4495635dbb52ba2a281e52a08fe1f84d7bb9fd07",
+      "lastCheckpoint": "01641986c702b9c6a1abd176586b4d58b39f13fa",
+      "technicalSource": "5a14f7daed121c5d8f357d81d45c8ee8db1a599d",
       "review": "SDP/Implementation/CR-#21/Runtime/M3-Sessions-Review--001.md",
       "latestVerification": {
         "head": "fff5ee4a30f3b2d67997fcf74fb864a1174fead0",
@@ -1044,15 +1047,14 @@
         "result": "6 native/race SUCCESS, expected helper prerequisite FAIL; local root race/vet/all12 architecture/build PASS. Common controlled-owner proof only, real bridges/constructor pending"
       },
       "rootTestException": "IMPL72 owns helper_binding_windows_test.go separately; no other root file/TestMain delegation",
-      "reviewHead": "15eed03fed36f844d6f7d50001a62760c5dddec0",
-      "disposition": "CHANGES_REQUIRED",
-      "findings": [
-        "M71-M02"
-      ],
+      "reviewHead": "01641986c702b9c6a1abd176586b4d58b39f13fa",
+      "disposition": "ACCEPT bounded common parent engine; real bridges/constructor/full native gates remain",
+      "findings": [],
       "correctionChecks": "Root race/vet/all12 architecture/build PASS; original reviewer overlay10x race PASS; exact source CI and independent confirmation pending",
       "resolvedFindings": [
         "M71-H01",
-        "M71-M01"
+        "M71-M01",
+        "M71-M02"
       ],
       "remainingFinding": "Original resize case corrected; established Start at near-exhaustion can panic when its cwd remains unpublished"
     },

@@ -166,3 +166,13 @@ actual final fact is clean/error nil, so its historical-timeout synchronization
 is being checked without weakening native ownership. Persistence sourceff40e32/
 report3772faf awaits fresh bounded fault/resource review; CI18PASS/known FreeBSD
 failure. CurrentIndex and separate branch reports contain exact refs.
+
+Latest accepted bounded sources: parent common5a14f7d/review01641986 and
+Persistence ff40e32/review5380629 (admission/fault/resource only). Native integration
+941f4be/reportbab42e9 CI34081403751 has19 successes, with one Windows ARM64
+extraction-test error: actual final cleanup true/zero residuals plus historical
+permission diagnostic. Cause and actual artifact/handle postconditions are under
+Windows-owner investigation; no blanket error allowance or source gate waiver.
+Real parent construction/bridges wait for this native gate. Remaining Persistence
+association/source-name obligations are eligible for bounded read-only assessment;
+no-birth/source interval and FreeBSD decisions are not silently closed.

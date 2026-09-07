@@ -449,3 +449,19 @@ and its report; retain actual caller-vs-native deadline distinction and full
 assertions, no product/period changes without evidence and Master coordination.
 Persistence3772faf/ff40e32 now receives fresh bounded admission/fault/resource
 review; source CI18PASS/FreeBSD failure, all hard profile/identity gates still open.
+
+Parent common engine is independently accepted at01641986 (technical5a14f7d),
+all M71 findings resolved. Persistence bounded admission/fault/resource review
+5380629 accepts ff40e32 with no findings; full remaining boundaries stay open.
+
+Native integration fixture941f4be corrects the FreeBSD causal timeout assertion.
+Exact CI34081403751 now19PASS/one Windows ARM64 failure: extracted lifecycle
+returns fully clean/empty residuals plus historical permission error at extraction
+cleanup. Existing Windows author may investigate actual native cause and current
+artifact/handle postconditions in this integrated branch, using only owned
+fixtures/diagnostics. Test-only correction is allowed only if actual evidence
+establishes contract-faithful repaired-cleanup semantics; no broad error allowance,
+success rerun as a fix, or product change without a concrete Master-assessed defect.
+Remaining Persistence no-birth/source-name gates may be assessed read-only against
+exact frozen authority, without privilege/profile/contract changes or a silent
+waiver. FreeBSD user decision remains separate and pending.
