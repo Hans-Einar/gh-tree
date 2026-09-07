@@ -327,3 +327,9 @@ The Issue preserves all12 methods, ordering/reservations, input split accounting
 retained cleanup ownership and separate fresh native/parent reviews. Test-only
 owners may support early state proofs; final acceptance requires real clients.
 No unreviewed native merge, production placeholder or public contract change.
+
+#70 source b72ad94 has CHANGES_REQUIRED at review7fdfc9b: H01 external input
+snapshot binding, M02 fresh-cache admission and M03 canonical Go root junctions.
+Fresh author corrections stay in existing #70 paths, then regenerate/push and
+independently confirm. Build-only pinned Go dependency preparation is allowed
+within -check; no product runtime download/compiler, pin mutation or CI waiver.
