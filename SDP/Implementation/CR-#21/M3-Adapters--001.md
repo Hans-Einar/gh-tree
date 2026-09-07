@@ -587,3 +587,11 @@ review owns only M3-Unix-Integration-Review--001.md; it may reuse the now-idle R
 worktree without product edits. Exact CI34084151911 is pending; no passing rerun or
 unreviewed product merge closes this gate. #71 author may read/prepare real bridge
 milestones now but must await Master-published accepted native/parent integration.
+
+Linux bounded reviewbf8df249 accepts the read-side correction and records only
+M65-I01: acquisition can return ESRCH for the same disappeared task, while open
+currently recognizes only ENOENT. Native ordinary-user retained-directory openat
+control and full Linux/resource suite prove the case; CI99af6bf is20/20PASS.
+Same author may correct only this acquisition predicate and its focused control,
+then the independent reviewer confirms this delta. No signaling/cleanup/other
+platform changes, whole-review restart or parent merge before confirmation.

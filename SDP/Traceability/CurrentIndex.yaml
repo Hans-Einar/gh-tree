@@ -825,7 +825,7 @@
       "id": "IMPL65",
       "kind": "implementation_contribution",
       "issue": 65,
-      "state": "native_linux_correction_review_and_ci",
+      "state": "native_linux_open_correction",
       "layer": "Runtime",
       "slices": [
         "SLC-09",
@@ -847,9 +847,9 @@
       ],
       "integrationHead": null,
       "worktreeCreated": true,
-      "activeWorker": null,
+      "activeWorker": "m3_runtime_unix_integration_fix",
       "verifiedProductBase": "d5eeaac4acb11894bbb2209aa7e04104ee634f1d",
-      "lastCheckpoint": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
+      "lastCheckpoint": "bf8df249b256aba54a89a86c6cce0986ebae73a0",
       "subContributions": [
         "IMPL69",
         "IMPL71",
@@ -858,7 +858,7 @@
       "latestVerification": {
         "head": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
         "run": 34084151911,
-        "result": "in progress; native deterministic retained-proc ESRCH regression fails before correction and passes after;20 targeted repeats/full Linux broker/vet/four Linux builds PASS. Independent correction review pending."
+        "result": "20 SUCCESS; independent full Linux suite/resource controls PASS. Read-side correction accepted, M65-I01 open-side ESRCH remains."
       },
       "nativeClientSeamHead": "9a73ffc1691b62a63a816411dbbcd56907433d08",
       "nativeReview": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Review--001.md",
@@ -874,7 +874,13 @@
       ],
       "nativeIntegrationHead": "510139d18da16a0d42c62ee88fba8053813f2b13",
       "nativeIntegrationChecks": "Reviewed product and helper closure unchanged; local race/vet/architecture/exact955-input rebuild passed. Latest integrated CI retains one Linux native failure.",
-      "nativeIntegrationTestSource": "99af6bf2217f91c1f3b870a1f7389bb71269c669"
+      "nativeIntegrationTestSource": "99af6bf2217f91c1f3b870a1f7389bb71269c669",
+      "integrationCorrectionReview": {
+        "head": "bf8df249b256aba54a89a86c6cce0986ebae73a0",
+        "report": "SDP/Implementation/CR-#21/Runtime/M3-Unix-Integration-Review--001.md",
+        "finding": "M65-I01",
+        "scope": "read-side accepted; native acquisition ESRCH predicate remains"
+      }
     },
     {
       "id": "IMPL66",

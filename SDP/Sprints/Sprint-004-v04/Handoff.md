@@ -37,7 +37,7 @@ named branches and indexed in CurrentIndex; historical evidence is not repeated.
 | GitHub/github-implementation | codereview-21/layer-github | ccbc8430618c24fd2e490d7f7c6565063dd35bbe | All5 methods independently accepted; held for Git-first integration |
 | Persistence/persistence-implementation | codereview-21/layer-persistence | f6d07fbfd972e06ce04122b78f2338013c5b7ba3 | Prior bounded deltas accepted; Windows prepared-byte defect and full adapter gates open |
 | Discovery/discovery-implementation | codereview-21/layer-launchdiscovery | 4e9f4793de6b438aec0a0d5e77e37631a829a1d6 | All2 methods independently accepted; prior serial gates held |
-| Native Runtime/runtime-implementation | codereview-21/layer-runtime | 99af6bf2217f91c1f3b870a1f7389bb71269c669 | Linux correction frozen for independent review and exact integrated CI |
+| Native Runtime/runtime-implementation | codereview-21/layer-runtime | bf8df249b256aba54a89a86c6cce0986ebae73a0 | CI20PASS/read correction accepted; bounded open-side M65-I01 correction pending |
 | Windows/runtime-windows | codex/cr21-runtime-windows | 9b06f8bd0e8bc4baaaabb7dccd1054f38d74fec8 | Native sourcebd78dea independently accepted |
 | Helper/runtime-helper-assets | codex/cr21-runtime-helper-assets | 6f385a9cab6798661970c4dc2a0aa56edba6c97b | Generator/assets/policy independently accepted |
 | Parent/runtime-sessions | codex/cr21-runtime-sessions | 01641986c702b9c6a1abd176586b4d58b39f13fa | Common12-method engine accepted; production bridges pending |
@@ -56,7 +56,9 @@ acceptance does not close a full Runtime adapter or vertical Slice.
   of NotFound. Linux-only99af6bf fixes demonstrated retained-proc ESRCH disappearance
   and preserves independent close/read errors. Deterministic negative-before/positive-
   after,20 targeted repeats/full native Linux broker/vet/build checks pass. Exact
-  CI34084151911 and fresh bounded independent review precede further integration.
+  CI34084151911 passes20/20. Reviewbf8df249 accepts read handling but retains
+  M65-I01 for acquisition-side ESRCH. Same-author predicate correction and bounded
+  confirmation precede further integration.
 - Prior FreeBSD blocked-output fixture now observes actual join-timeout fact before
   releasing its callback. Windows extraction fixture now proves full native cleanup
   and admits only the exact repaired historical STATUS_CANNOT_DELETE; deterministic
