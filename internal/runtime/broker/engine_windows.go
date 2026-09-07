@@ -212,6 +212,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		}()
 	}
 	stopping := false
+	controlFailed := false
 	gracePeriod, forcePeriod := 2*time.Second, 3*time.Second
 	var stopAfter time.Time
 	ticker := time.NewTicker(20 * time.Millisecond)
@@ -231,6 +232,7 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 		select {
 		case got := <-incoming:
 			if got.err != nil {
+				controlFailed = true
 				stopping = true
 				stopAfter = time.Time{}
 				continue
@@ -323,6 +325,9 @@ func runWindowsEngine(channel *Channel, input, output *os.File, parent windows.H
 	exit := binary.BigEndian.AppendUint32(nil, p.exit)
 	if err := sendControl(channel, output, UserExit, exit); err != nil {
 		return 0
+	}
+	if controlFailed {
+		return fail(ErrProtocol)
 	}
 	if err := sendControl(channel, output, Quiescent, nil); err != nil {
 		return 0

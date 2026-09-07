@@ -35,6 +35,7 @@ type userProcess struct {
 	rootWaited            bool
 	hook                  func(string)
 	closeTerminal         func(windows.Handle)
+	fault                 func(string) error
 }
 
 func (p *userProcess) pipe() (windows.Handle, windows.Handle, error) {
@@ -46,7 +47,20 @@ func (p *userProcess) pipe() (windows.Handle, windows.Handle, error) {
 	if w != 0 {
 		p.childHandles = append(p.childHandles, w)
 	}
+	if err == nil {
+		err = p.check("pipe-created")
+	}
 	return r, w, err
+}
+
+func (p *userProcess) check(stage string) error {
+	if p.hook != nil {
+		p.hook(stage)
+	}
+	if p.fault != nil {
+		return p.fault(stage)
+	}
+	return nil
 }
 
 func (p *userProcess) take(h windows.Handle, name string) *os.File {
@@ -61,7 +75,7 @@ func (p *userProcess) take(h windows.Handle, name string) *os.File {
 
 func (p *userProcess) prepare(spec StartSpec) error {
 	var err error
-	p.cwd, err = acquireCwd(spec, p.hook)
+	p.cwd, err = acquireCwdFault(spec, p.hook, p.fault)
 	if err != nil {
 		return err
 	}
@@ -69,8 +83,8 @@ func (p *userProcess) prepare(spec StartSpec) error {
 	if err != nil {
 		return err
 	}
-	if p.hook != nil {
-		p.hook("inner-job-created")
+	if err = p.check("inner-job-created"); err != nil {
+		return err
 	}
 	r, w, err := p.pipe()
 	if err != nil {
@@ -92,8 +106,8 @@ func (p *userProcess) prepare(spec StartSpec) error {
 		if err != nil {
 			return err
 		}
-		if p.hook != nil {
-			p.hook("conpty-created")
+		if err = p.check("conpty-created"); err != nil {
+			return err
 		}
 	} else {
 		r, w, err = p.pipe()
@@ -231,6 +245,9 @@ func (p *userProcess) start(ctx context.Context, spec StartSpec) error {
 	if err != nil {
 		return err
 	}
+	if err = p.check("attributes-created"); err != nil {
+		return err
+	}
 	if spec.Terminal {
 		// This attribute takes the opaque HPCON value itself, not a pointer to
 		// Go memory. Keep it a uintptr through the native syscall boundary.
@@ -268,18 +285,19 @@ func (p *userProcess) start(ctx context.Context, spec StartSpec) error {
 		return err
 	}
 	p.debug.attached = true
-	if p.hook != nil {
-		p.hook("user-created-suspended")
+	if err = p.check("user-created-suspended"); err != nil {
+		return err
 	}
 	if err = windows.AssignProcessToJobObject(p.job, p.debug.process.Process); err != nil {
 		return err
 	}
-	if p.hook != nil {
-		p.hook("user-assigned-inner-job")
+	if err = p.check("user-assigned-inner-job"); err != nil {
+		return err
 	}
 	if err = p.closeChildHandles(); err != nil {
 		return err
 	}
+	p.debug.fault = p.fault
 	if err = p.debug.barrier(ctx, p.cwd, p.hook); err != nil {
 		return err
 	}

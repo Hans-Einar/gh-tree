@@ -2,6 +2,8 @@ package broker
 
 import (
 	"context"
+	"crypto/sha256"
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,6 +17,52 @@ import (
 func extractedFixture(t *testing.T) *WindowsImage {
 	t.Helper()
 	return extractedNativeFixture(t)
+}
+
+func TestWindowsExtractionPartialFailuresAndTamper(t *testing.T) {
+	path, machine := nativeFixture(t)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(data)
+	for _, stage := range []string{"temporary-parent-acquired", "helper-directory-created", "helper-image-created", "helper-image-flushed", "helper-writer-closed", "helper-read-guard-acquired", "helper-verified"} {
+		t.Run(stage, func(t *testing.T) {
+			injected := errors.New("owned extraction fixture failure")
+			image, err := extractWindowsImage(data, machine, digest, ProtocolVersion, func(actual string, _ *WindowsImage) error {
+				if actual == stage {
+					return injected
+				}
+				return nil
+			})
+			if image == nil || !errors.Is(err, injected) {
+				t.Fatalf("partial owner lost: image=%v %v", image != nil, err)
+			}
+			path := image.Path()
+			if err = image.Cleanup(); err != nil {
+				t.Fatal(err)
+			}
+			if path != "" {
+				if _, err = os.Stat(filepath.Dir(path)); !os.IsNotExist(err) {
+					t.Fatalf("partial extraction remains: %v", err)
+				}
+			}
+		})
+	}
+	t.Run("same-object-byte-tamper", func(t *testing.T) {
+		image, err := extractWindowsImage(data, machine, digest, ProtocolVersion, func(stage string, image *WindowsImage) error {
+			if stage == "helper-writer-closed" {
+				return os.WriteFile(image.Path(), []byte("tampered owned image"), 0600)
+			}
+			return nil
+		})
+		if image == nil || err == nil {
+			t.Fatalf("tampered image accepted: image=%v %v", image != nil, err)
+		}
+		if err = image.Cleanup(); err != nil {
+			t.Fatal(err)
+		}
+	})
 }
 
 func TestWindowsExtractionIdentityACLAndInterlock(t *testing.T) {

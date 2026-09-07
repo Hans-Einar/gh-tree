@@ -28,6 +28,7 @@ type WindowsConfig struct {
 	GracePeriod time.Duration
 	ForcePeriod time.Duration
 	hook        func(string, *WindowsClient)
+	fault       func(string) error
 }
 
 type WindowsStartResult struct {
@@ -177,6 +178,9 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	if err = c.check("outer-job-created"); err != nil {
+		return err
+	}
 	var childRead, parentWrite, parentRead, childWrite windows.Handle
 	sa := windows.SecurityAttributes{Length: uint32(unsafe.Sizeof(windows.SecurityAttributes{})), InheritHandle: 1}
 	if err = windows.CreatePipe(&childRead, &parentWrite, &sa, 64<<10); err != nil {
@@ -184,6 +188,9 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	}
 	c.childHandles = append(c.childHandles, childRead)
 	c.write = os.NewFile(uintptr(parentWrite), "broker-control-write")
+	if err = c.check("control-input-pipe-created"); err != nil {
+		return err
+	}
 	if err = windows.SetHandleInformation(parentWrite, windows.HANDLE_FLAG_INHERIT, 0); err != nil {
 		return err
 	}
@@ -192,6 +199,9 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	}
 	c.childHandles = append(c.childHandles, childWrite)
 	c.read = os.NewFile(uintptr(parentRead), "broker-control-read")
+	if err = c.check("control-output-pipe-created"); err != nil {
+		return err
+	}
 	if err = windows.SetHandleInformation(parentRead, windows.HANDLE_FLAG_INHERIT, 0); err != nil {
 		return err
 	}
@@ -200,11 +210,17 @@ func (c *WindowsClient) create(ctx context.Context) error {
 		return err
 	}
 	c.childHandles = append(c.childHandles, parent)
+	if err = c.check("parent-capability-created"); err != nil {
+		return err
+	}
 	attrs, err := windows.NewProcThreadAttributeList(1)
 	if err != nil {
 		return err
 	}
 	defer attrs.Delete()
+	if err = c.check("broker-attributes-created"); err != nil {
+		return err
+	}
 	handles := []windows.Handle{childRead, childWrite, parent}
 	if err = attrs.Update(windows.PROC_THREAD_ATTRIBUTE_HANDLE_LIST, unsafe.Pointer(&handles[0]), uintptr(len(handles))*unsafe.Sizeof(handles[0])); err != nil {
 		return err
@@ -241,8 +257,8 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	if c.config.hook != nil {
-		c.config.hook("broker-created-suspended", c)
+	if err = c.check("broker-created-suspended"); err != nil {
+		return err
 	}
 	if err = windows.AssignProcessToJobObject(c.job, c.process.Process); err != nil {
 		return err
@@ -255,8 +271,8 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	if err = ctx.Err(); err != nil {
 		return err
 	}
-	if c.config.hook != nil {
-		c.config.hook("broker-before-resume", c)
+	if err = c.check("broker-before-resume"); err != nil {
+		return err
 	}
 	if err = ctx.Err(); err != nil {
 		return err
@@ -267,6 +283,9 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	}
 	if count != 1 {
 		return errors.New("unexpected broker suspend count")
+	}
+	if err = c.check("broker-resumed"); err != nil {
+		return err
 	}
 	if err = closeHandle(&c.process.Thread); err != nil {
 		return err
@@ -285,6 +304,16 @@ func (c *WindowsClient) create(ctx context.Context) error {
 	}
 	_, err = c.send(Start, payload, nil)
 	return err
+}
+
+func (c *WindowsClient) check(stage string) error {
+	if c.config.hook != nil {
+		c.config.hook(stage, c)
+	}
+	if c.config.fault != nil {
+		return c.config.fault(stage)
+	}
+	return nil
 }
 
 func (c *WindowsClient) send(op Opcode, payload []byte, reply chan controlReply) (uint64, error) {

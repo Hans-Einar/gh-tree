@@ -28,6 +28,7 @@ type AcquiredDirectory struct {
 	anchorOwned    bool
 	spec           StartSpec
 	path           string
+	fault          func(string) error
 }
 
 func (a *AcquiredDirectory) Path() string { return a.path }
@@ -51,6 +52,10 @@ func (a *AcquiredDirectory) Close() error {
 func AcquireCwd(spec StartSpec) (*AcquiredDirectory, error) { return acquireCwd(spec, nil) }
 
 func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error) {
+	return acquireCwdFault(spec, barrier, nil)
+}
+
+func acquireCwdFault(spec StartSpec, barrier func(string), fault func(string) error) (*AcquiredDirectory, error) {
 	if !spec.valid() || spec.RootIdentity.Platform() != api.DirectoryWindows || !filepath.IsAbs(spec.RootLocator) || filepath.Clean(spec.RootLocator) != spec.RootLocator {
 		return nil, ErrCwd
 	}
@@ -60,7 +65,7 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 	if len(volume) != 2 || volume[1] != ':' || strings.ContainsAny(spec.RootLocator[2:], ":") {
 		return nil, ErrCwd
 	}
-	a := &AcquiredDirectory{spec: spec, path: spec.RootLocator}
+	a := &AcquiredDirectory{spec: spec, path: spec.RootLocator, fault: fault}
 	base, err := windows.UTF16PtrFromString(volume + `\`)
 	if err != nil {
 		return a, err
@@ -70,6 +75,9 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 		return a, err
 	}
 	a.chain = append(a.chain, h)
+	if err = a.inject("cwd-volume-opened"); err != nil {
+		return a, err
+	}
 	if err = directoryAttributes(h); err != nil {
 		return a, err
 	}
@@ -81,6 +89,9 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 		}
 	}
 	a.root = h
+	if err = a.inject("root-acquired"); err != nil {
+		return a, err
+	}
 	if barrier != nil {
 		barrier("root-acquired")
 	}
@@ -98,6 +109,9 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 		a.path = filepath.Join(a.path, name)
 	}
 	a.target = h
+	if err = a.inject("project-acquired"); err != nil {
+		return a, err
+	}
 	if barrier != nil {
 		barrier("project-acquired")
 	}
@@ -120,10 +134,20 @@ func acquireCwd(spec StartSpec, barrier func(string)) (*AcquiredDirectory, error
 	if err != nil {
 		return a, err
 	}
+	if err = a.inject("anchor-acquired"); err != nil {
+		return a, err
+	}
 	if barrier != nil {
 		barrier("anchor-acquired")
 	}
 	return a, a.Revalidate()
+}
+
+func (a *AcquiredDirectory) inject(stage string) error {
+	if a.fault != nil {
+		return a.fault(stage)
+	}
+	return nil
 }
 
 // Enumerate through the acquired directory handle, with a fixed 64KiB bound.
@@ -189,6 +213,9 @@ func (a *AcquiredDirectory) child(parent windows.Handle, name string) (windows.H
 		return 0, err
 	}
 	a.chain = append(a.chain, h)
+	if err = a.inject("cwd-child-opened"); err != nil {
+		return h, err
+	}
 	return h, directoryAttributes(h)
 }
 

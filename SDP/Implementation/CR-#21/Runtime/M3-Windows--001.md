@@ -6,6 +6,10 @@ split within Runtime. Frozen Application--Runtime/BoundaryTypes 1.0.0,
 WindowsBroker/CwdAcquisition and Verification govern this contribution. No
 acceptance, integration, full adapter or native platform completion is claimed.
 
+Current disposition: **standalone Windows native candidate frozen for fresh
+independent review**. Latest candidate status and outstanding dependent gates are
+at the end of this record; earlier partial checkpoints are historical evidence.
+
 ## Partial checkpoint 1
 
 New Windows-only broker files establish retained native Jobs, wait/identity
@@ -199,3 +203,59 @@ The actual reviewed cmd/bat carrier also passes literal empty/whitespace/Unicode
 metacharacter and trailing-backslash arguments through an owned `.cmd` shim into
 the native fixture. Quotes, percent and CR/LF operands refuse before execution.
 Targeted loader/batch tests pass; these add no product source-closure change.
+
+## Frozen standalone Windows native candidate
+
+The candidate is the commit adding this section; Master records its resolved exact
+SHA for independent review and source-closure regeneration. Product code is confined
+to Windows-selected broker files and its private entry. Shared wire/start, Unix,
+parent registry/Sessions, other layers, module/workflow and frozen governance remain
+unchanged. The source dependency graph contains no brokerassets import.
+
+Latest local validation before freeze: Go1.25.0 Windows amd64 full broker race
+suite **PASS 41.402s**, native386/WOW64 full broker suite **PASS 31.117s**, broker
+vet **PASS**, `git diff --check` **PASS**, and `CGO_ENABLED=0 go build ./...` **PASS
+for all twelve release OS/architecture selections**. These builds compile package
+selections; they are not native execution or public release packaging proof.
+
+Native CI already establishes earlier material source checkpoints: bed507e
+CI34069650439 and e0520a8 CI34069880581 each passed all six independent jobs,
+including Windows amd64 and Windows ARM64. The only failure was the expected M1
+inventory/helper prerequisite. That proves mapped-machine/target/parent routing
+and installed native DLL/TLS/debug-heap execution on those exact earlier sources;
+the current frozen candidate still requires its own native CI and fresh review.
+
+| Native requirement | Actual candidate evidence |
+|---|---|
+| Suspended broker/outer Job and user/inner Job before resume | Client/user hooks inspect actual containment before resume; primary-thread original-handle closure uses retained identity proof duplicates. |
+| Real cwd guards/nonempty anchors | Handle-relative acquisition and bounded existing-child pinning; stale/reparse refusal; preserved existing child; metadata-only FSCTL negative control succeeds while real protected startup barriers refuse it. |
+| Correct startup ABI/cwd object/pending detach | Compiled and mapped PE machines asserted; native/WOW64/emulated-parent matrix; full duplicated cwd FileIdInfo; no user marker before pending-event guard release; no debugger/anchor in user initialization; immediate user chdir. |
+| DLL/TLS/debug heap/batch | Actual DLL static import and DLL/exe TLS callbacks plus static debug CRT/native heap; literal owned cmd shim and unsupported operand refusal. |
+| Every partial ownership family | 16 cwd/user/debug acquisition-failure stages, eight parent acquisition-failure stages, seven extraction stages and same-object byte tamper; eight native cancellation stages. All retain an owner and join without user initialization. |
+| Root/child/grandchild cleanup and owner failure | Actual three-level fixture, root-first and Stop; retained outer Job proves zero after broker crash, foreign frame and control EOF; actual parent exit closes its last Job handle while separately retained process handles prove all four known tree members exit. |
+| Transport/terminal barriers | Real ConPTY input/100x30 resize; blocked input reports accepted/partial native delivery before Quiescent; injected blocked real ConPTY close retains resources at deadline and joins after release; two MiB raw multi-stream output drains without event consumption and callback copies remain stable. |
+| Concurrency/residual/resource facts | 32 concurrent Stop callers coalesce; Wait timeout retains typed copied unproved barriers; completed cleanup clears residuals separately from historical errors; repeated ConPTY cycles keep current-process File/Pipe/Job/Process counts and goroutine counts stable. |
+| Extraction | Protected binary-trustee ACL checks, PE/hash/protocol, no-reparse full chain, exclusive create/write/flush/read-only guard, exact identity/hash, no-write/no-delete interlocks, replacement/unexpected-entry preservation, and post-outer removal. |
+
+One protocol-EOF case found during adverse testing required a correction: a poisoned
+receiver cannot consume Release. The engine now completes owned user cleanup and
+reports failure/exits rather than reporting Quiescent and waiting for an unreadable
+Release. The parent's outer barrier remains authoritative. Product fault seams are
+private and nil in normal construction; tests fail immediately after real native
+acquisitions, not by replacing those operations with mocks.
+
+Outstanding dependent gates, not waived: fresh independent native source review;
+current-candidate Windows amd64/ARM64 CI; reviewed #70 generator/assets regenerated
+against this actual final selected source closure and real committed-image execution
+binding; later parent Sessions integration and combined review; full-stack actual
+package-manager/Discovery/host scenarios, aggregate registry behavior and final
+twelve-asset release/install proof. Local `yarn.cmd` is not installed, so no actual
+local yarn integration is claimed. The ordinary native cmd-shim carrier is tested.
+No helper source/provenance acceptance can use the older ab608-based #70 bytes as
+if they matched this source. Master alone integrates after the required independent
+reviews and evidence; this candidate does not close #65/#69, any Slice, or M3.
+
+The working tree is to remain clean and the candidate held while the fresh reviewer
+inspects it. Next permitted action is independent review, followed only by bounded
+corrections/re-review or Master-coordinated helper binding/integration. The unrelated
+blocked Git foundation review has not been retrieved, retried or replaced.

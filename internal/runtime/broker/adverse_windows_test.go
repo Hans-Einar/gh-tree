@@ -457,3 +457,287 @@ func TestWindowsNativeResourceCycles(t *testing.T) {
 	}
 	t.Logf("joined ConPTY resource cycles: owned handles %v -> %v; total including Go thread/event pool %d -> %d, goroutines %d -> %d", ownedBefore, ownedAfter, before, after, goroutines, runtime.NumGoroutine())
 }
+
+func TestWindowsPartialNativeAcquisitionFailures(t *testing.T) {
+	for _, stage := range []string{"cwd-volume-opened", "cwd-child-opened", "root-acquired", "project-acquired", "anchor-acquired", "inner-job-created", "pipe-created", "conpty-created", "attributes-created", "user-created-suspended", "user-assigned-inner-job", "target-profile-acquired", "before-user-resume", "debug-image-acquired", "cwd-handle-duplicated", "cwd-identity-verified"} {
+		t.Run(stage, func(t *testing.T) {
+			runtime.LockOSThread()
+			defer runtime.UnlockOSThread()
+			s := windowsSpec(t)
+			s.Environment = os.Environ()
+			s.Terminal = true
+			exe, err := os.Executable()
+			if err != nil {
+				t.Fatal(err)
+			}
+			s.Executable = exe
+			s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+			injected := errors.New("owned fixture injected acquisition failure")
+			p := &userProcess{fault: func(actual string) error {
+				if actual == stage {
+					return injected
+				}
+				return nil
+			}}
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			err = p.prepare(s)
+			var readers sync.WaitGroup
+			for _, out := range p.outputs {
+				readers.Add(1)
+				go func(out nativeOutput) {
+					defer readers.Done()
+					buffer := make([]byte, 1024)
+					for {
+						if _, e := out.file.Read(buffer); e != nil {
+							return
+						}
+					}
+				}(out)
+			}
+			if err == nil {
+				err = p.start(ctx, s)
+			}
+			if !errors.Is(err, injected) {
+				t.Errorf("failure stage %s returned %v", stage, err)
+			}
+			if err = p.cleanup(ctx); err != nil {
+				t.Fatal(err)
+			}
+			readers.Wait()
+			for i := range p.outputs {
+				if err = closeFile(&p.outputs[i].file); err != nil {
+					t.Error(err)
+				}
+			}
+			if _, err = os.Stat(filepath.Join(s.RootLocator, "user-ran")); !os.IsNotExist(err) {
+				t.Fatalf("failed acquisition ran user initialization: %v", err)
+			}
+			if p.job != 0 || p.hpc != 0 || p.debug.process.Process != 0 || p.debug.process.Thread != 0 || p.debug.attached {
+				t.Fatal("partial owner retained native resources")
+			}
+		})
+	}
+}
+
+func TestWindowsPartialParentAcquisitionFailures(t *testing.T) {
+	for _, stage := range []string{"outer-job-created", "control-input-pipe-created", "control-output-pipe-created", "parent-capability-created", "broker-attributes-created", "broker-created-suspended", "broker-before-resume", "broker-resumed"} {
+		t.Run(stage, func(t *testing.T) {
+			s := windowsSpec(t)
+			s.Environment = os.Environ()
+			exe, err := os.Executable()
+			if err != nil {
+				t.Fatal(err)
+			}
+			s.Executable = exe
+			s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+			injected := errors.New("owned fixture injected parent failure")
+			config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(api.OutputStream, []byte) {}, fault: func(actual string) error {
+				if actual == stage {
+					return injected
+				}
+				return nil
+			}}
+			if _, emulated, e := MachineRoute(); e != nil {
+				t.Fatal(e)
+			} else if emulated {
+				config.Extraction = extractedNativeFixture(t)
+				config.Image = config.Extraction.Path()
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			client, start, err := StartWindows(ctx, config)
+			if client == nil || start.Established || !errors.Is(err, injected) {
+				t.Fatalf("partial Start lost injected facts: client=%v %+v %v", client != nil, start, err)
+			}
+			final, _ := client.Wait(ctx)
+			if !final.CleanupComplete || len(final.Residuals) != 0 {
+				t.Fatalf("partial parent cleanup %+v", final)
+			}
+			if _, err = os.Stat(filepath.Join(s.RootLocator, "user-ran")); !os.IsNotExist(err) {
+				t.Fatalf("partial parent startup ran user initialization: %v", err)
+			}
+		})
+	}
+}
+
+func TestWindowsBrokerFailureAndForeignFrameCleanup(t *testing.T) {
+	for _, mode := range []string{"broker-crash", "foreign-frame", "control-eof"} {
+		t.Run(mode, func(t *testing.T) {
+			s := windowsSpec(t)
+			s.Environment = os.Environ()
+			exe, err := os.Executable()
+			if err != nil {
+				t.Fatal(err)
+			}
+			s.Executable = exe
+			s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+			var mu sync.Mutex
+			var output bytes.Buffer
+			config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(_ api.OutputStream, b []byte) { mu.Lock(); output.Write(b); mu.Unlock() }}
+			if _, emulated, e := MachineRoute(); e != nil {
+				t.Fatal(e)
+			} else if emulated {
+				config.Extraction = extractedNativeFixture(t)
+				config.Image = config.Extraction.Path()
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			client, start, err := StartWindows(ctx, config)
+			if err != nil || !start.Established {
+				t.Fatalf("start %+v %v", start, err)
+			}
+			defer client.Stop()
+			for {
+				mu.Lock()
+				ready := bytes.Contains(output.Bytes(), []byte("OWNED_CHILD"))
+				mu.Unlock()
+				if ready {
+					break
+				}
+				select {
+				case <-ctx.Done():
+					t.Fatal("tree not ready")
+				case <-time.After(time.Millisecond):
+				}
+			}
+			var retainedJob windows.Handle
+			if err = windows.DuplicateHandle(windows.CurrentProcess(), client.job, windows.CurrentProcess(), &retainedJob, 0, false, windows.DUPLICATE_SAME_ACCESS); err != nil {
+				t.Fatal(err)
+			}
+			defer windows.CloseHandle(retainedJob)
+			if active, e := activeProcesses(retainedJob); e != nil || active < 4 {
+				t.Fatalf("missing broker/root/child/grandchild containment: %d %v", active, e)
+			}
+			switch mode {
+			case "broker-crash":
+				if err = windows.TerminateProcess(client.process.Process, 77); err != nil {
+					t.Fatal(err)
+				}
+			case "foreign-frame":
+				client.controlMu.Lock()
+				nonce := client.channel.nonce
+				nonce[0] ^= 1
+				frame, e := EncodeFrame(Frame{Role: Parent, Opcode: Stop, SessionID: config.SessionID, Sequence: client.sequence + 1, Nonce: nonce})
+				if e == nil {
+					_, e = client.write.Write(frame)
+				}
+				client.controlMu.Unlock()
+				if e != nil {
+					t.Fatal(e)
+				}
+			case "control-eof":
+				client.controlMu.Lock()
+				err = closeFile(&client.write)
+				client.controlMu.Unlock()
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+			final, err := client.Wait(ctx)
+			if !final.CleanupComplete || err == nil || len(final.Residuals) != 0 {
+				t.Fatalf("failed protocol/broker cleanup facts %+v %v", final, err)
+			}
+			if active, e := activeProcesses(retainedJob); e != nil || active != 0 {
+				t.Fatalf("outer residual survived failure: %d %v", active, e)
+			}
+		})
+	}
+}
+
+func TestWindowsRawOutputAndDetachedConsumer(t *testing.T) {
+	s := windowsSpec(t)
+	s.Environment = os.Environ()
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Executable = exe
+	s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "flood"}
+	var mu sync.Mutex
+	counts := make(map[api.OutputStream]int)
+	var retained []byte
+	var retainedCopy []byte
+	config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(stream api.OutputStream, data []byte) {
+		mu.Lock()
+		defer mu.Unlock()
+		counts[stream] += len(data)
+		if retained == nil && bytes.Contains(data, []byte{0, 0xff, 0x1b}) {
+			retained = data
+			retainedCopy = append([]byte(nil), data...)
+		}
+	}}
+	if _, emulated, e := MachineRoute(); e != nil {
+		t.Fatal(e)
+	} else if emulated {
+		config.Extraction = extractedNativeFixture(t)
+		config.Image = config.Extraction.Path()
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, start, err := StartWindows(ctx, config)
+	if err != nil || !start.Established {
+		t.Fatalf("start %+v %v", start, err)
+	}
+	// Do not consume any lifecycle hint while two MiB of raw output drains.
+	final, err := client.Wait(ctx)
+	if err != nil || !final.CleanupComplete {
+		t.Fatalf("detached consumer %+v %v", final, err)
+	}
+	mu.Lock()
+	defer mu.Unlock()
+	if counts[api.Stdout] < 1<<20 || counts[api.Stderr] != 1<<20 {
+		t.Fatalf("raw stream byte loss: %v", counts)
+	}
+	if retained == nil || !bytes.Equal(retained, retainedCopy) {
+		t.Fatal("output callback's retained copy mutated across native reads")
+	}
+}
+
+func TestWindowsWaitTimeoutKeepsTypedResidualsAndCoalescesStop(t *testing.T) {
+	s := windowsSpec(t)
+	s.Environment = os.Environ()
+	exe, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Executable = exe
+	s.Arguments = []string{"-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "hold"}
+	config := WindowsConfig{SessionID: 1, Spec: s, Image: exe, Output: func(api.OutputStream, []byte) {}}
+	if _, emulated, e := MachineRoute(); e != nil {
+		t.Fatal(e)
+	} else if emulated {
+		config.Extraction = extractedNativeFixture(t)
+		config.Image = config.Extraction.Path()
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, start, err := StartWindows(ctx, config)
+	if err != nil || !start.Established {
+		t.Fatalf("start %+v %v", start, err)
+	}
+	defer client.Stop()
+	short, stop := context.WithTimeout(context.Background(), time.Millisecond)
+	defer stop()
+	partial, err := client.Wait(short)
+	if !errors.Is(err, context.DeadlineExceeded) || partial.CleanupComplete || len(partial.Residuals) == 0 {
+		t.Fatalf("timeout lost retained barriers %+v %v", partial, err)
+	}
+	partial.Residuals[0].Stage = 0
+	again, _ := client.Wait(short)
+	for _, residual := range again.Residuals {
+		if !residual.Stage.Valid() {
+			t.Fatal("returned residual aliases owner state")
+		}
+	}
+	var callers sync.WaitGroup
+	for n := 0; n < 32; n++ {
+		callers.Add(1)
+		go func() { defer callers.Done(); client.Stop() }()
+	}
+	callers.Wait()
+	final, err := client.Wait(ctx)
+	if err != nil || !final.CleanupComplete || len(final.Residuals) != 0 {
+		t.Fatalf("coalesced Stop %+v %v", final, err)
+	}
+}

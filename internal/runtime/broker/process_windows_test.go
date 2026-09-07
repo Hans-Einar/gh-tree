@@ -21,6 +21,9 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if len(os.Args) == 3 && os.Args[1] == "--owned-job-parent-fixture" {
+		os.Exit(runOwnedParentDeathFixture(os.Args[2]))
+	}
 	if len(os.Args) > 1 && os.Args[1] == WindowsPrivateMode {
 		os.Exit(RunWindowsPrivate())
 	}
@@ -38,6 +41,20 @@ func TestWindowsOwnedUserFixture(t *testing.T) {
 			mode := os.Args[i+1]
 			if mode == "leaf" {
 				fmt.Println("OWNED_LEAF_READY")
+				time.Sleep(15 * time.Second)
+				os.Exit(0)
+			}
+			if mode == "branch" {
+				exe, _ := os.Executable()
+				child := exec.Command(exe, "-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "leaf")
+				child.Stdin, child.Stdout, child.Stderr = os.Stdin, os.Stdout, os.Stderr
+				if err := child.Start(); err != nil {
+					os.Exit(39)
+				}
+				fmt.Printf("OWNED_GRANDCHILD %d\n", child.Process.Pid)
+				if err := os.WriteFile("grandchild-ready", []byte(fmt.Sprint(child.Process.Pid)), 0600); err != nil {
+					os.Exit(40)
+				}
 				time.Sleep(15 * time.Second)
 				os.Exit(0)
 			}
@@ -69,14 +86,37 @@ func TestWindowsOwnedUserFixture(t *testing.T) {
 			b, _ := json.Marshal(struct {
 				Cwd  string
 				Args []string
-			}{cwd, os.Args[i+2:]})
+				PID  int
+			}{cwd, os.Args[i+2:], os.Getpid()})
 			fmt.Printf("FIXTURE_READY %s\n", b)
+			if mode == "flood" {
+				block := bytes.Repeat([]byte{0, 0xff, 0x1b, 0x0d, 0x0a, 0x80, 0x41, 0x42}, 32<<10)
+				for n := 0; n < 4; n++ {
+					if _, err = os.Stdout.Write(block); err != nil {
+						os.Exit(42)
+					}
+					if _, err = os.Stderr.Write(block); err != nil {
+						os.Exit(43)
+					}
+				}
+				os.Exit(0)
+			}
 			if mode == "hold" || mode == "root-first" {
 				exe, _ := os.Executable()
-				child := exec.Command(exe, "-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "leaf")
+				child := exec.Command(exe, "-test.run=^TestWindowsOwnedUserFixture$", "--", "--owned-windows-fixture", "branch")
 				child.Stdin, child.Stdout, child.Stderr = os.Stdin, os.Stdout, os.Stderr
 				if err = child.Start(); err != nil {
 					os.Exit(38)
+				}
+				deadline := time.Now().Add(5 * time.Second)
+				for {
+					if _, err = os.Stat("grandchild-ready"); err == nil {
+						break
+					}
+					if time.Now().After(deadline) {
+						os.Exit(41)
+					}
+					time.Sleep(time.Millisecond)
 				}
 				fmt.Printf("OWNED_CHILD %d\n", child.Process.Pid)
 				if mode == "hold" {
@@ -163,6 +203,14 @@ func TestWindowsBrokerClientLifecycle(t *testing.T) {
 				}
 				client.Stop()
 			}
+			if mode == "hold" || mode == "root-first" {
+				mu.Lock()
+				hasGrandchild := strings.Contains(output.String(), "OWNED_GRANDCHILD")
+				mu.Unlock()
+				if mode == "hold" && !hasGrandchild {
+					t.Error("root/child/grandchild fixture did not establish")
+				}
+			}
 			final, err := client.Wait(ctx)
 			if err != nil || !final.CleanupComplete || !final.RootExited || !final.Quiescent || !final.Established {
 				t.Fatalf("final: %+v %v", final, err)
@@ -172,6 +220,9 @@ func TestWindowsBrokerClientLifecycle(t *testing.T) {
 			mu.Unlock()
 			if !strings.Contains(captured, "FIXTURE_READY") {
 				t.Fatalf("missing output: %q", captured)
+			}
+			if (mode == "hold" || mode == "root-first") && !strings.Contains(captured, "OWNED_GRANDCHILD") {
+				t.Fatalf("missing actual grandchild identity: %s", captured)
 			}
 			if mode == "terminal" && !strings.Contains(captured, "SIZE 100 30") {
 				t.Fatalf("terminal output: %q", captured)

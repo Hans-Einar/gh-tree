@@ -92,6 +92,14 @@ func (i *WindowsImage) acquireParent(path string) error {
 // ExtractWindowsImage returns its cleanup owner even on partial acquisition.
 // Callers must retain it with admitted session resources until Cleanup succeeds.
 func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol uint16) (*WindowsImage, error) {
+	return extractWindowsImage(image, machine, digest, protocol, nil)
+}
+
+func extractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol uint16, fault func(string, *WindowsImage) error) (*WindowsImage, error) {
+	if len(image) > 32<<20 {
+		return nil, ErrProtocol
+	}
+	image = append([]byte(nil), image...)
 	if len(image) == 0 || len(image) > 32<<20 || protocol != ProtocolVersion || sha256.Sum256(image) != digest {
 		return nil, ErrProtocol
 	}
@@ -112,6 +120,11 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	parent := filepath.Clean(os.TempDir())
 	if err = i.acquireParent(parent); err != nil {
 		return i, err
+	}
+	if fault != nil {
+		if err = fault("temporary-parent-acquired", i); err != nil {
+			return i, err
+		}
 	}
 	user, err := windows.GetCurrentProcessToken().GetTokenUser()
 	if err != nil {
@@ -141,6 +154,11 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	if err = validateImageACL(i.directory, user.User.Sid); err != nil {
 		return i, err
 	}
+	if fault != nil {
+		if err = fault("helper-directory-created", i); err != nil {
+			return i, err
+		}
+	}
 	writer, err := createProtected(i.directory, i.name, sd, windows.FILE_GENERIC_READ|windows.FILE_GENERIC_WRITE|windows.DELETE, windows.FILE_NON_DIRECTORY_FILE)
 	if err != nil {
 		return i, err
@@ -150,6 +168,11 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	i.imageID, err = identity(writer)
 	if err != nil {
 		return i, err
+	}
+	if fault != nil {
+		if err = fault("helper-image-created", i); err != nil {
+			return i, err
+		}
 	}
 	for left := image; len(left) > 0; {
 		n, e := i.writer.Write(left)
@@ -164,14 +187,29 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	if err = i.writer.Sync(); err != nil {
 		return i, err
 	}
+	if fault != nil {
+		if err = fault("helper-image-flushed", i); err != nil {
+			return i, err
+		}
+	}
 	if err = closeFile(&i.writer); err != nil {
 		return i, err
+	}
+	if fault != nil {
+		if err = fault("helper-writer-closed", i); err != nil {
+			return i, err
+		}
 	}
 	guard, err := openRelative(i.directory, i.name, windows.FILE_GENERIC_READ, windows.FILE_SHARE_READ, windows.FILE_OPEN, windows.FILE_NON_DIRECTORY_FILE)
 	if err != nil {
 		return i, err
 	}
 	i.guard = os.NewFile(uintptr(guard), "owned-helper-readonly-guard")
+	if fault != nil {
+		if err = fault("helper-read-guard-acquired", i); err != nil {
+			return i, err
+		}
+	}
 	if err = validateImageACL(guard, user.User.Sid); err != nil {
 		return i, err
 	}
@@ -203,6 +241,14 @@ func ExtractWindowsImage(image []byte, machine uint16, digest [32]byte, protocol
 	}
 	if err = directoryAttributes(i.directory); err != nil {
 		return i, err
+	}
+	if err = validateImageACL(i.directory, user.User.Sid); err != nil {
+		return i, err
+	}
+	if fault != nil {
+		if err = fault("helper-verified", i); err != nil {
+			return i, err
+		}
 	}
 	return i, nil
 }

@@ -174,6 +174,14 @@ type debugOwner struct {
 	pendingPID, pendingTID uint32
 	owned                  []windows.Handle
 	architecture           WindowsArchitecture
+	fault                  func(string) error
+}
+
+func (d *debugOwner) inject(stage string) error {
+	if d.fault != nil {
+		return d.fault(stage)
+	}
+	return nil
 }
 
 func (d *debugOwner) continuation() error {
@@ -205,11 +213,17 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 		return err
 	}
 	d.architecture = profile.architecture
+	if err = d.inject("target-profile-acquired"); err != nil {
+		return err
+	}
 	if err = cwd.Revalidate(); err != nil {
 		return err
 	}
 	if hook != nil {
 		hook("before-user-resume")
+	}
+	if err = d.inject("before-user-resume"); err != nil {
+		return err
 	}
 	if err = ctx.Err(); err != nil {
 		return err
@@ -264,6 +278,9 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 			if h := word(offset); h != 0 {
 				d.owned = append(d.owned, h)
 			}
+			if err = d.inject("debug-image-acquired"); err != nil {
+				return err
+			}
 		case 2: // CREATE_THREAD_DEBUG_EVENT
 			// ContinueDebugEvent(EXIT_THREAD) / detach closes the event handle.
 		case 6: // LOAD_DLL_DEBUG_EVENT
@@ -309,6 +326,9 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 				return e
 			}
 			d.owned = append(d.owned, duplicate)
+			if err = d.inject("cwd-handle-duplicated"); err != nil {
+				return err
+			}
 			actual, e := identity(duplicate)
 			if e != nil {
 				return e
@@ -319,6 +339,9 @@ func (d *debugOwner) barrier(ctx context.Context, cwd *AcquiredDirectory, hook f
 			}
 			if actual != expected {
 				return ErrCwd
+			}
+			if err = d.inject("cwd-identity-verified"); err != nil {
+				return err
 			}
 			if e = cwd.Revalidate(); e != nil {
 				return e
